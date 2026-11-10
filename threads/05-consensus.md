@@ -1,0 +1,451 @@
+# Thread : How strangers agree: consensus 101 to 401
+
+- Sujet : 5. Le consensus, comment des inconnus se mettent d'accord
+- Angle : PoW, PoS, BFT et leurs compromis, avec des attaques réelles.
+- Préfixe : `#Blockchain Consensus #N:`
+- Hashtags fixes : #ProofOfStake #ProofOfWork
+- Statut : draft
+
+Notes : longueurs comptées au poids X (« ≈ » compte 2). Les posts « draft » s'appuient sur des sources primaires connues mais n'ont pas pu être relus en ligne pendant la rédaction (quota de recherche épuisé) : à revérifier avant publication.
+
+---
+
+### 1/ · checked · choix :
+
+**1a (simple)** : #Blockchain Consensus #1: Thousands of computers that don't know or trust each other agree on one shared history, with no boss. How? This series explains consensus: Proof of Work, Proof of Stake, BFT, and the real attacks that tested them. #ProofOfStake #ProofOfWork
+
+**1b (tech)** : #Blockchain Consensus #1: Consensus: getting untrusted nodes to agree on one ordered log despite crashes, liars and network delays. Coming up: Byzantine faults, FLP, Nakamoto PoW, Casper, Tendermint, Avalanche, and real 51% attacks. #ProofOfStake #ProofOfWork
+
+**1c (variante)** : #Blockchain Consensus #1: No CEO, no referee, no voting booth. Yet blockchains agree on every block. Consensus is the most underrated trick in crypto. One idea per day, starting now. #ProofOfStake #ProofOfWork
+
+Source : https://bitcoin.org/bitcoin.pdf
+
+### 2/ · checked · choix :
+
+**2a (simple)** : #Blockchain Consensus #2: The 'Byzantine Generals Problem' (Lamport, Shostak, Pease, 1982): generals must agree to attack or retreat while some of them are traitors sending fake messages. Every blockchain solves a version of it. #ProofOfStake #ProofOfWork
+
+**2b (tech)** : #Blockchain Consensus #2: Lamport, Shostak & Pease (ACM TOPLAS, 1982) defined the Byzantine fault: a node that acts arbitrarily, lies, or tells different peers different things. BFT = reaching agreement despite such nodes. #ProofOfStake #ProofOfWork
+
+Source : https://www.microsoft.com/en-us/research/publication/byzantine-generals-problem/
+
+### 3/ · checked · choix :
+
+**3a (simple)** : #Blockchain Consensus #3: Why do so many blockchains need a 2/3 majority? To survive f dishonest nodes, classic BFT needs at least 3f+1 nodes in total. With 4 nodes you can tolerate 1 liar; with 100, up to 33. #ProofOfStake #ProofOfWork
+
+**3b (tech)** : #Blockchain Consensus #3: With unsigned (oral) messages, Byzantine agreement needs n >= 3f+1. BFT protocols use quorums of 2f+1: any two overlap in at least f+1 nodes, so at least one honest node is in both. Hence the 2/3 threshold. #ProofOfStake #ProofOfWork
+
+Source : https://www.microsoft.com/en-us/research/publication/byzantine-generals-problem/
+
+### 4/ · checked · choix :
+
+**4a (simple)** : #Blockchain Consensus #4: Not all failures are equal. A crashed server just goes silent; a 'Byzantine' one can lie. Surviving f crashes needs 2f+1 nodes (a simple majority). Surviving f liars needs 3f+1. #ProofOfStake #ProofOfWork
+
+**4b (tech)** : #Blockchain Consensus #4: Crash-fault-tolerant protocols like Paxos (Lamport) and Raft (Ongaro & Ousterhout, 2014) tolerate f crashes with n = 2f+1. They run databases, but assume nodes never lie, so open blockchains need more. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/raft/raft.github.io/master/raft.pdf ; https://www.microsoft.com/en-us/research/publication/byzantine-generals-problem/ (3f+1, cf. post 3)
+
+### 5/ · checked · choix :
+
+**5a (simple)** : #Blockchain Consensus #5: A famous 1985 result (Fischer, Lynch, Paterson): if messages can be delayed without limit, no deterministic protocol can guarantee agreement if even one node may crash. Every blockchain works around it. #ProofOfStake #ProofOfWork
+
+**5b (tech)** : #Blockchain Consensus #5: FLP impossibility (JACM, 1985): in a fully asynchronous network, no deterministic consensus protocol guarantees termination with even one crash fault. Escapes: randomness, timing assumptions, or probabilistic finality. #ProofOfStake #ProofOfWork
+
+Source : https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf
+
+### 6/ · checked · choix :
+
+**6a (simple)** : #Blockchain Consensus #6: Most BFT blockchains assume the network is 'eventually' well-behaved: messages may be late for a while, but after some unknown point they arrive on time. This model comes from a 1988 paper. #ProofOfStake #ProofOfWork
+
+**6b (tech)** : #Blockchain Consensus #6: Partial synchrony (Dwork, Lynch, Stockmeyer, JACM 1988): after an unknown Global Stabilization Time, message delay is bounded. PBFT, Tendermint and HotStuff stay safe always, live after GST. Dijkstra Prize 2007. #ProofOfStake #ProofOfWork
+
+Source : https://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
+
+### 7/ · checked · choix :
+
+**7a (simple)** : #Blockchain Consensus #7: Two promises every consensus protocol juggles: safety (no two conflicting histories) and liveness (new blocks keep coming). When the network splits, a protocol has to favor one of them. #ProofOfStake #ProofOfWork
+
+**7b (tech)** : #Blockchain Consensus #7: Safety: honest nodes never finalize conflicting blocks. Liveness: valid transactions eventually get in. Under a partition, BFT chains like Tendermint halt to stay safe; Nakamoto chains keep going and may reorg later. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/cometbft/cometbft/main/spec/consensus/consensus.md ; https://bitcoin.org/bitcoin.pdf
+
+### 8/ · checked · choix :
+
+**8a (simple)** : #Blockchain Consensus #8: Online, one person can create a million fake identities for free: a Sybil attack (Douceur, 2002). Counting heads fails, so blockchains weigh votes by something costly: computing power (PoW) or locked coins (PoS). #ProofOfStake #ProofOfWork
+
+**8b (tech)** : #Blockchain Consensus #8: Douceur (IPTPS 2002): without a central authority, an attacker can present many fake identities. PoW and PoS are Sybil resistance: weight = hashrate or stake, not node count. The consensus rule sits on top. #ProofOfStake #ProofOfWork
+
+Source : https://www.microsoft.com/en-us/research/publication/the-sybil-attack/
+
+### 9/ · checked · choix :
+
+**9a (simple)** : #Blockchain Consensus #9: Proof of Work is older than Bitcoin. In 1992, Cynthia Dwork and Moni Naor proposed making senders solve a small computing puzzle per email, so spam gets expensive. Bitcoin reused the idea to secure blocks. #ProofOfStake #ProofOfWork
+
+**9b (tech)** : #Blockchain Consensus #9: Dwork & Naor, 'Pricing via Processing or Combatting Junk Mail' (CRYPTO 1992): a moderately hard, easy-to-verify function as a cost per message. Bitcoin's whitepaper builds on Adam Back's Hashcash. #ProofOfStake #ProofOfWork
+
+Source : https://Www.Gwern.net/doc/bitcoin/1993-dwork.pdf ; https://bitcoin.org/bitcoin.pdf
+
+### 10/ · checked · choix :
+
+**10a (simple)** : #Blockchain Consensus #10: In 2008, Satoshi Nakamoto published the Bitcoin whitepaper. Key idea: nodes follow the chain with the most work behind it, so rewriting history means redoing all that work, faster than everyone else. #ProofOfStake #ProofOfWork
+
+**10b (tech)** : #Blockchain Consensus #10: Bitcoin whitepaper, section 4: miners try nonces until the block's hash starts with enough zero bits. 'The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it.' #ProofOfStake #ProofOfWork
+
+Source : https://bitcoin.org/bitcoin.pdf
+
+### 11/ · checked · choix :
+
+**11a (simple)** : #Blockchain Consensus #11: 'Longest chain' is a shortcut. Bitcoin nodes follow the chain with the most total work, not the most blocks. Otherwise an attacker could pile up many easy blocks and win. #ProofOfStake #ProofOfWork
+
+**11b (tech)** : #Blockchain Consensus #11: Bitcoin Core picks the valid chain with the greatest cumulative chainwork (sum of expected hashes per block, derived from each target), not block count. A long run of low-difficulty blocks loses to fewer, harder ones. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/bitcoin/bitcoin/master/src/chain.h ; https://raw.githubusercontent.com/bitcoin/bitcoin/master/src/validation.cpp
+
+### 12/ · checked · choix :
+
+**12a (simple)** : #Blockchain Consensus #12: Bitcoin aims for one block every 10 minutes. About every two weeks, the network adjusts the puzzle's difficulty so blocks keep that pace, however much computing power joins or leaves. #ProofOfStake #ProofOfWork
+
+**12b (tech)** : #Blockchain Consensus #12: Bitcoin retargets difficulty every 2016 blocks (≈2 weeks at 10 min), comparing the actual time taken with the expected time. Each adjustment is capped at a factor of 4 up or down. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/bitcoin/bitcoin/master/src/pow.cpp
+
+### 13/ · checked · choix :
+
+**13a (simple)** : #Blockchain Consensus #13: Why wait for '6 confirmations'? The Bitcoin whitepaper computes that against an attacker with 10% of the hashrate, the odds of reversing a payment fall below 0.1% after 5 blocks. 6 became the custom. #ProofOfStake #ProofOfWork
+
+**13b (tech)** : #Blockchain Consensus #13: Whitepaper section 11 models an attacker catching up as a random walk. For P < 0.1%: q=0.10 needs z=5 blocks, q=0.30 needs z=24, q=0.45 needs z=340. '6 confirmations' is a convention, not a protocol rule. #ProofOfStake #ProofOfWork
+
+**13c (variante)** : #Blockchain Consensus #13: Against an attacker with 30% of Bitcoin's hashrate, the whitepaper says you'd need 24 confirmations to push the risk of a reversal below 0.1%. The famous '6' assumes a much weaker attacker. #ProofOfStake #ProofOfWork
+
+Source : https://bitcoin.org/bitcoin.pdf
+
+### 14/ · checked · choix :
+
+**14a (simple)** : #Blockchain Consensus #14: In Bitcoin, a payment is never 100% final: it just gets harder to reverse with every block added on top. That's 'probabilistic finality'. Many PoS chains add a hard point after which blocks are final. #ProofOfStake #ProofOfWork
+
+**14b (tech)** : #Blockchain Consensus #14: Nakamoto consensus gives probabilistic finality: if the attacker has < 50% of hashrate, the chance of a reversal drops exponentially with depth. BFT-style protocols (Casper FFG, Tendermint) give explicit finality. #ProofOfStake #ProofOfWork
+
+Source : https://bitcoin.org/bitcoin.pdf ; https://raw.githubusercontent.com/ethereum/ethereum-org-website/dev/public/content/developers/docs/consensus-mechanisms/pos/gasper/index.md
+
+### 15/ · checked · choix :
+
+**15a (simple)** : #Blockchain Consensus #15: A '51% attack' doesn't let you steal anyone's coins or print money. With most of the hashrate, an attacker can undo recent blocks and double-spend their own coins. #ProofOfStake #ProofOfWork
+
+**15b (tech)** : #Blockchain Consensus #15: Majority hashrate lets an attacker out-mine the honest chain and reorg it: double-spend its own payments, orphan others' blocks. It can't forge signatures or break rules every node checks, like the supply cap. #ProofOfStake #ProofOfWork
+
+**15c (variante)** : #Blockchain Consensus #15: Myth: a 51% attacker can take your bitcoin. Reality: they can only rewrite recent history, mostly to spend their own coins twice. Every node still rejects invalid blocks. #ProofOfStake #ProofOfWork
+
+Source : https://bitcoin.org/bitcoin.pdf
+
+### 16/ · checked · choix :
+
+**16a (simple)** : #Blockchain Consensus #16: In mid-2014, a single mining pool, GHash.io, briefly controlled more than half of Bitcoin's hashrate. No attack followed, but after a backlash it pledged to stay below 40%. #ProofOfStake #ProofOfWork
+
+**16b (tech)** : #Blockchain Consensus #16: June 2014: GHash.io briefly passed 51% of Bitcoin hashrate; in July it pledged a voluntary 40% cap. Pools matter because the pool operator, not the individual miners, chooses which block template everyone hashes. #ProofOfStake #ProofOfWork
+
+Source : https://en.wikipedia.org/wiki/GHash.io (51% cité à The Guardian, 16 juin 2014) ; https://arstechnica.com/business/2014/07/bitcoin-pool-ghash-io-commits-to-40-hashrate-limit-after-its-51-breach/ (engagement 40 %, 16 juillet 2014)
+
+### 17/ · checked · choix :
+
+**17a (simple)** : #Blockchain Consensus #17: You'd think honest mining is always best below 50%. In 2013, Eyal and Sirer showed a 'selfish' miner who hides blocks and releases them at the right moment can earn more than its fair share. #ProofOfStake #ProofOfWork
+
+**17b (tech)** : #Blockchain Consensus #17: Selfish mining (Eyal & Sirer, 2013): withhold blocks to waste honest work. With no network edge it pays above 1/3 of hashrate; if the attacker wins every block race, any size works. Their proposed fix sets the bar at 1/4. #ProofOfStake #ProofOfWork
+
+**17c (variante)** : #Blockchain Consensus #17: Bitcoin's incentives were thought safe up to 50%. A 2013 paper showed a smart pool can profit from cheating-by-silence with far less, about 1/3 or even below. #ProofOfStake #ProofOfWork
+
+Source : https://arxiv.org/pdf/1311.0243 (texte intégral : §4.4 seuils 1/3 pour γ=0, 1/4 pour γ=1/2, 0 pour γ=1 ; §6 correctif → 1/4)
+
+### 18/ · checked · choix :
+
+**18a (simple)** : #Blockchain Consensus #18: You don't always need lots of hashpower to fool a node: surround it. In an 'eclipse attack', the attacker controls all of a node's connections and feeds it a fake view of the network. #ProofOfStake #ProofOfWork
+
+**18b (tech)** : #Blockchain Consensus #18: Heilman et al. (USENIX Security 2015): an attacker with enough IP addresses could monopolize a Bitcoin node's peer connections, then split mining power or double-spend. Bitcoin Core adopted countermeasures. #ProofOfStake #ProofOfWork
+
+Source : https://www.usenix.org/conference/usenixsecurity15/technical-sessions/presentation/heilman
+
+### 19/ · checked · choix :
+
+**19a (simple)** : #Blockchain Consensus #19: March 2013: Bitcoin accidentally split in two. Nodes on version 0.8 accepted a large block that older nodes rejected. Big mining pools downgraded so the old chain won, and the network rejoined it. #ProofOfStake #ProofOfWork
+
+**19b (tech)** : #Blockchain Consensus #19: BIP 50 (March 2013): a block with many tx inputs hit a Berkeley DB lock limit in pre-0.8 nodes, while 0.8 (LevelDB) accepted it. Pools downgraded to back the old chain. At least one double spend happened during the split. #ProofOfStake #ProofOfWork
+
+Source : https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki
+
+### 20/ · checked · choix :
+
+**20a (simple)** : #Blockchain Consensus #20: May 2018: Bitcoin Gold, a fork of Bitcoin with its own mining algorithm, was hit by a 51% attack. The attacker double-spent coins deposited on exchanges, an estimated $18M+. #ProofOfStake #ProofOfWork
+
+**20b (tech)** : #Blockchain Consensus #20: Bitcoin Gold, May 2018: an attacker with majority hashrate reorged the chain to double-spend exchange deposits. Over 388,000 BTG passed through the attacker's address, estimated at over $18M. #ProofOfStake #ProofOfWork
+
+Source : https://bleepingcomputer.com/news/security/hacker-makes-over-18-million-in-double-spend-attack-on-bitcoin-gold-network
+
+### 21/ · checked · choix :
+
+**21a (simple)** : #Blockchain Consensus #21: January 2019: Ethereum Classic suffered a 51% attack. Coinbase spotted 15 chain rewrites, 12 of them double spends, worth ≈219,500 ETC (≈$1.1M at the time). #ProofOfStake #ProofOfWork
+
+**21b (tech)** : #Blockchain Consensus #21: Coinbase, Jan 2019: from Jan 5, 15 deep reorgs on Ethereum Classic, 12 containing double spends totaling 219,500 ETC (≈$1.1M). The double-spend reorgs were 25 to 123 blocks deep. #ProofOfStake #ProofOfWork
+
+Source : https://medium.com/the-coinbase-blog/ethereum-classic-etc-is-currently-being-51-attacked-33be13ce32de
+
+### 22/ · checked · choix :
+
+**22a (simple)** : #Blockchain Consensus #22: August 2020: Ethereum Classic was 51%-attacked three times in one month. The last attack rewrote over 7,000 blocks, about two days of history. #ProofOfStake #ProofOfWork
+
+**22b (tech)** : #Blockchain Consensus #22: ETC, Aug 2020: three 51% attacks reorganized ≈3,693 blocks (Aug 1), ≈4,000 (Aug 6) and 7,000+ (Aug 29). A small PoW chain is cheap to overpower when most hashrate for its algorithm lives elsewhere. #ProofOfStake #ProofOfWork
+
+Source : https://www.theblock.co/news/ecosystems/2020-08-31-ethereum-classic-etc-third-51-attack-76431
+
+### 23/ · checked · choix :
+
+**23a (simple)** : #Blockchain Consensus #23: When two miners find a block at nearly the same time, one is orphaned and its work wasted. Ethereum's PoW era paid 'uncle' rewards for those near-miss blocks, keeping things fairer for small miners. #ProofOfStake #ProofOfWork
+
+**23b (tech)** : #Blockchain Consensus #23: GHOST (Sompolinsky & Zohar, 2013) counts orphaned blocks' weight in fork choice. Ethereum PoW used a variant: referenced uncles earned partial rewards. Ethereum PoS fork choice today is LMD-GHOST. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/ethereum/ethereum-org-website/dev/public/content/whitepaper/index.md ; https://raw.githubusercontent.com/ethereum/ethereum-org-website/dev/public/content/developers/docs/consensus-mechanisms/pos/index.md
+
+### 24/ · checked · choix :
+
+**24a (simple)** : #Blockchain Consensus #24: Proof of Stake swaps electricity for collateral: validators lock coins, and their chance to propose and the weight of their votes depend on how much they lock. Cheating can cost them that deposit. #ProofOfStake #ProofOfWork
+
+**24b (tech)** : #Blockchain Consensus #24: PoS: proposal rights and vote weight are proportional to bonded stake. Security rests on the cost of acquiring stake and on slashing provable misbehavior, not on energy spent. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/ethereum/consensus-specs/master/specs/phase0/beacon-chain.md ; https://raw.githubusercontent.com/ethereum/ethereum-org-website/dev/public/content/developers/docs/consensus-mechanisms/pos/index.md
+
+### 25/ · checked · choix :
+
+**25a (simple)** : #Blockchain Consensus #25: The first Proof of Stake coin was Peercoin, launched in August 2012 by Sunny King (a pseudonym) and Scott Nadal. It still used Proof of Work too, as a hybrid. #ProofOfStake #ProofOfWork
+
+**25b (tech)** : #Blockchain Consensus #25: Peercoin (Aug 2012): PoS blocks were minted using 'coin age' (amount x time held), alongside PoW blocks. If the chain split, the branch with the most consumed coin age won. #ProofOfStake #ProofOfWork
+
+Source : https://en.wikipedia.org/wiki/Peercoin
+
+### 26/ · checked · choix :
+
+**26a (simple)** : #Blockchain Consensus #26: Early PoS had a flaw called 'nothing at stake': during a fork, voting for every branch costs a validator nothing, unlike mining, which splits real hashpower. Modern PoS punishes double voting. #ProofOfStake #ProofOfWork
+
+**26b (tech)** : #Blockchain Consensus #26: Nothing-at-stake: signing on several forks is free, so naive PoS may not converge and can help double-spends. Fix: slashing. Two signed conflicting votes are proof of misbehavior and burn stake. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/vbuterin/blog/master/posts/pos_faq.md
+
+### 27/ · checked · choix :
+
+**27a (simple)** : #Blockchain Consensus #27: Old validator keys could forge an alternate history from far back, after their owners withdrew. So a new PoS node starts from a recent trusted checkpoint. That's 'weak subjectivity'. #ProofOfStake #ProofOfWork
+
+**27b (tech)** : #Blockchain Consensus #27: Long-range attack: exited validators can't be slashed, so their keys can sign an alternative chain from early history. Weak subjectivity (Buterin, 2014): sync from a recent checkpoint, reject reorgs deeper than it. #ProofOfStake #ProofOfWork
+
+Source : https://blog.ethereum.org/2014/11/25/proof-stake-learned-love-weak-subjectivity
+
+### 28/ · checked · choix :
+
+**28a (simple)** : #Blockchain Consensus #28: On Sept 15, 2022, Ethereum switched from Proof of Work to Proof of Stake in 'The Merge'. Its energy use dropped by an estimated 99.95%. #ProofOfStake #ProofOfWork
+
+**28b (tech)** : #Blockchain Consensus #28: The Merge (Sept 15, 2022): Ethereum's execution layer joined the Beacon Chain, a PoS chain live since Dec 1, 2020. Miners gave way to validators; ethereum.org estimates energy use fell ≈99.95%. #ProofOfStake #ProofOfWork
+
+Source : https://ethereum.org/roadmap/merge/
+
+### 29/ · checked · choix :
+
+**29a (simple)** : #Blockchain Consensus #29: Ethereum PoS runs on a clock: a slot every 12 seconds, each with one randomly chosen validator allowed to propose a block. 32 slots make an epoch, 6.4 minutes. #ProofOfStake #ProofOfWork
+
+**29b (tech)** : #Blockchain Consensus #29: Beacon chain: 12 s slots (SLOT_DURATION_MS = 12000), SLOTS_PER_EPOCH = 32 (6.4 min). Each slot has one pseudo-randomly selected proposer (RANDAO) and attester committees; every active validator attests once per epoch. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/ethereum/consensus-specs/master/configs/mainnet.yaml ; https://raw.githubusercontent.com/ethereum/consensus-specs/master/specs/phase0/beacon-chain.md ; https://raw.githubusercontent.com/ethereum/ethereum-org-website/dev/public/content/developers/docs/consensus-mechanisms/pos/index.md
+
+### 30/ · checked · choix :
+
+**30a (simple)** : #Blockchain Consensus #30: Ethereum's finality comes from 'Casper FFG' (Buterin & Griffith, 2017). Validators vote on checkpoints; once 2/3 of the stake links two in a row, the earlier one becomes final. #ProofOfStake #ProofOfWork
+
+**30b (tech)** : #Blockchain Consensus #30: Casper FFG: votes are source-to-target checkpoint links. A 2/3-stake supermajority link from a justified source justifies the target; a justified checkpoint is finalized when its direct child is justified from it. #ProofOfStake #ProofOfWork
+
+Source : https://arxiv.org/abs/1710.09437
+
+### 31/ · checked · choix :
+
+**31a (simple)** : #Blockchain Consensus #31: On Ethereum, a new block usually becomes final in about 15 minutes. Before that it can in theory be reorganized; after that, reversing it would cost attackers a huge amount of staked ETH. #ProofOfStake #ProofOfWork
+
+**31b (tech)** : #Blockchain Consensus #31: Finality on Ethereum takes 2 justified epochs: a checkpoint is justified at the end of its epoch and finalized one epoch later. So a block is final ≈12.8 to 19.2 min after it lands, depending on its slot. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/ethereum/ethereum-org-website/dev/public/content/roadmap/single-slot-finality/index.md ; https://raw.githubusercontent.com/ethereum/ethereum-org-website/dev/public/content/developers/docs/consensus-mechanisms/pos/index.md
+
+### 32/ · checked · choix :
+
+**32a (simple)** : #Blockchain Consensus #32: Ethereum uses two rules at once: one picks the current chain tip every 12 seconds (LMD-GHOST), the other locks in history every few minutes (Casper FFG). Together they're called Gasper. #ProofOfStake #ProofOfWork
+
+**32b (tech)** : #Blockchain Consensus #32: Gasper (Buterin et al., 2020) = LMD-GHOST fork choice + Casper FFG finality. LMD-GHOST walks the block tree from the justified checkpoint, picking the child backed by the most stake in validators' latest votes. #ProofOfStake #ProofOfWork
+
+Source : https://ethereum.org/developers/docs/consensus-mechanisms/pos/gasper/
+
+### 33/ · checked · choix :
+
+**33a (simple)** : #Blockchain Consensus #33: Ethereum validators get 'slashed' (lose stake and get kicked out) for provable cheating: proposing two blocks for one slot, or signing contradictory votes. Simply being offline is not slashable. #ProofOfStake #ProofOfWork
+
+**33b (tech)** : #Blockchain Consensus #33: Slashable offences: double proposal (two blocks, same slot), double vote (two attestations, same target epoch), surround vote (one vote's source-target span surrounds another's). Evidence is submitted on-chain. #ProofOfStake #ProofOfWork
+
+Source : https://ethereum.org/developers/docs/consensus-mechanisms/pos/gasper/
+
+### 34/ · checked · choix :
+
+**34a (simple)** : #Blockchain Consensus #34: Getting slashed alone costs little at first: ≈0.0078 ETH for a 32 ETH validator, then forced exit over 36 days. But if many get slashed together, they can lose their whole stake. #ProofOfStake #ProofOfWork
+
+**34b (tech)** : #Blockchain Consensus #34: Slashing: immediate burn of 1/4096 of effective balance (0.0078125 ETH per 32), exit over 36 days, and at day 18 a correlation penalty scaled by total stake slashed in a ≈36-day window, up to the full balance. #ProofOfStake #ProofOfWork
+
+Source : https://ethereum.org/developers/docs/consensus-mechanisms/pos/rewards-and-penalties/
+
+### 35/ · checked · choix :
+
+**35a (simple)** : #Blockchain Consensus #35: To undo a finalized Ethereum block, an attacker would need 2/3 of all staked ETH, and at least 1/3 of the total stake would be destroyed by slashing. Finality comes with a price tag. #ProofOfStake #ProofOfWork
+
+**35b (tech)** : #Blockchain Consensus #35: Accountable safety (Casper FFG): two conflicting finalized checkpoints imply at least 1/3 of stake signed slashable votes. So reverting finality burns at least 1/3 of all stake, and the culprits are identifiable. #ProofOfStake #ProofOfWork
+
+Source : https://ethereum.org/developers/docs/consensus-mechanisms/pos/gasper/
+
+### 36/ · checked · choix :
+
+**36a (simple)** : #Blockchain Consensus #36: In PoS, attack power depends on stake share. With 1/3 of the stake you can stop finality; with a majority you can steer which blocks win; with 2/3 you could finalize the chain you want. #ProofOfStake #ProofOfWork
+
+**36b (tech)** : #Blockchain Consensus #36: Ethereum PoS thresholds: > 1/3 of stake can block finality (no 2/3 quorum), > 1/2 can dominate LMD-GHOST fork choice and censor, >= 2/3 can finalize its own chain. Defenses: inactivity leak, slashing, social fork. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/ethereum/ethereum-org-website/dev/public/content/developers/docs/consensus-mechanisms/pos/attack-and-defense/index.md
+
+### 37/ · checked · choix :
+
+**37a (simple)** : #Blockchain Consensus #37: If over 1/3 of Ethereum validators go offline, the chain can't finalize. After 4 epochs without finality, the 'inactivity leak' drains offline validators' stake until online ones hold 2/3 again. #ProofOfStake #ProofOfWork
+
+**37b (tech)** : #Blockchain Consensus #37: Inactivity leak: after > 4 epochs without finality, inactive validators' penalties grow each epoch until active stake exceeds 2/3 and finality resumes. Blocks keep coming throughout: Ethereum favors liveness. #ProofOfStake #ProofOfWork
+
+Source : https://ethereum.org/developers/docs/consensus-mechanisms/pos/rewards-and-penalties/
+
+### 38/ · checked · choix :
+
+**38a (simple)** : #Blockchain Consensus #38: May 2023: Ethereum briefly stopped finalizing, twice in two days, because of client bugs under heavy load. Blocks kept coming and finality returned on its own, with no manual restart. #ProofOfStake #ProofOfWork
+
+**38b (tech)** : #Blockchain Consensus #38: May 11-12, 2023: finality stalled ≈4 epochs, then ≈9. Some clients (incl. Prysm) burned resources regenerating old states to check stale attestations. Participation fell to ≈31%; the inactivity leak kicked in. #ProofOfStake #ProofOfWork
+
+Source : https://prysm.offchainlabs.com/docs/misc/mainnet-postmortems/
+
+### 39/ · checked · choix :
+
+**39a (simple)** : #Blockchain Consensus #39: Running an Ethereum validator takes at least 32 ETH. Since the Pectra upgrade (May 7, 2025), one validator can hold up to 2,048 ETH, so big stakers need far fewer validators. #ProofOfStake #ProofOfWork
+
+**39b (tech)** : #Blockchain Consensus #39: EIP-7251 (Pectra, May 7, 2025): max effective balance raised from 32 to 2048 ETH for compounding validators; minimum stays 32. Rewards count on each 1 ETH above 32, and validators can be consolidated. #ProofOfStake #ProofOfWork
+
+Source : https://ethereum.org/roadmap/pectra/
+
+### 40/ · checked · choix :
+
+**40a (simple)** : #Blockchain Consensus #40: Ethereum has several independent client programs on purpose. If one client ran on over 2/3 of validators and had a bug, it could finalize a broken chain. That's why client diversity matters. #ProofOfStake #ProofOfWork
+
+**40b (tech)** : #Blockchain Consensus #40: Client diversity: a bug in a client with > 1/3 of stake can stall finality; with > 2/3 it could finalize an invalid chain, and its validators would be stuck or slashed when switching back. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/ethereum/ethereum-org-website/dev/public/content/developers/docs/nodes-and-clients/client-diversity/index.md
+
+### 41/ · checked · choix :
+
+**41a (simple)** : #Blockchain Consensus #41: Before blockchains, 'Practical Byzantine Fault Tolerance' (Castro & Liskov, 1999) showed liar-proof agreement could be fast enough for real systems. Many blockchain BFT protocols descend from it. #ProofOfStake #ProofOfWork
+
+**41b (tech)** : #Blockchain Consensus #41: PBFT (OSDI 1999): a primary proposes, then pre-prepare, prepare and commit phases with 2f+1 quorums out of 3f+1 replicas. All-to-all voting costs O(n^2) messages per decision, so it suits small validator sets. #ProofOfStake #ProofOfWork
+
+Source : https://pmg.csail.mit.edu/papers/osdi99.pdf
+
+### 42/ · checked · choix :
+
+**42a (simple)** : #Blockchain Consensus #42: HotStuff made BFT cheaper: votes go to the leader instead of to everyone, so the message count grows linearly with validators. It was the basis of the consensus in Meta's Libra/Diem project. #ProofOfStake #ProofOfWork
+
+**42b (tech)** : #Blockchain Consensus #42: HotStuff (Yin, Malkhi, Reiter, Gueta, Abraham; PODC 2019): the leader aggregates votes into quorum certificates, giving linear communication, even on leader change. A 3-chain commit rule. Basis of LibraBFT. #ProofOfStake #ProofOfWork
+
+Source : https://arxiv.org/abs/1803.05069
+
+### 43/ · checked · choix :
+
+**43a (simple)** : #Blockchain Consensus #43: Tendermint, the engine of Cosmos chains (now CometBFT), finalizes each block at once: when 2/3 of the stake signs it, it's final. No waiting for confirmations, no reorgs. #ProofOfStake #ProofOfWork
+
+**43b (tech)** : #Blockchain Consensus #43: Tendermint (Buchman, Kwon, Milosevic, 2018): rounds of propose, prevote, precommit. A block commits with > 2/3 voting-power precommits. Locking rules keep it safe with < 1/3 Byzantine under partial synchrony. #ProofOfStake #ProofOfWork
+
+Source : https://arxiv.org/abs/1807.04938
+
+### 44/ · checked · choix :
+
+**44a (simple)** : #Blockchain Consensus #44: If more than 1/3 of a Cosmos-style chain's stake goes offline, the chain stops making blocks instead of splitting. Safety over liveness: no fork, but validators must come back to restart it. #ProofOfStake #ProofOfWork
+
+**44b (tech)** : #Blockchain Consensus #44: CometBFT needs > 2/3 voting power to commit. With >= 1/3 offline, no block can commit, so the chain halts rather than fork. Unlike Ethereum's inactivity leak, nothing automatically shrinks the missing stake. #ProofOfStake #ProofOfWork
+
+Source : https://arxiv.org/abs/1807.04938
+
+### 45/ · checked · choix :
+
+**45a (simple)** : #Blockchain Consensus #45: Delegated Proof of Stake: coin holders vote for a small set of block producers who take turns. EOSIO chains like EOS use 21. Fast and cheap, but power sits with a few elected operators. #ProofOfStake #ProofOfWork
+
+**45b (tech)** : #Blockchain Consensus #45: DPoS: stake-weighted votes elect a fixed producer set that rotates on a schedule. Original EOSIO design: 21 active producers; a block became irreversible once 15 of them (2/3+1) had signed it. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/EOSIO/Documentation/master/TechnicalWhitePaper.md
+
+### 46/ · checked · choix :
+
+**46a (simple)** : #Blockchain Consensus #46: Proof of Authority: only a list of known, approved validators can make blocks. Common on testnets and private chains. Simple and fast, but you trust whoever controls that list. #ProofOfStake #ProofOfWork
+
+**46b (tech)** : #Blockchain Consensus #46: PoA, e.g. Clique (EIP-225): whitelisted signers take turns; each may sign at most 1 of every floor(N/2)+1 consecutive blocks, and signers vote to add or remove signers. Ethereum's Rinkeby testnet used it. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/ethereum/EIPs/master/EIPS/eip-225.md
+
+### 47/ · checked · choix :
+
+**47a (simple)** : #Blockchain Consensus #47: Algorand picks a small random committee each step by secret lottery. No one knows who is on it until members reveal themselves, so attackers can't target them in advance. #ProofOfStake #ProofOfWork
+
+**47b (tech)** : #Blockchain Consensus #47: Algorand (Gilad, Hemo, Micali, Vlachos, Zeldovich; SOSP 2017): cryptographic sortition with VRFs picks stake-weighted committees; each member speaks once with a proof (player replaceability) in BA*. #ProofOfStake #ProofOfWork
+
+Source : https://people.csail.mit.edu/nickolai/papers/gilad-algorand.pdf
+
+### 48/ · checked · choix :
+
+**48a (simple)** : #Blockchain Consensus #48: Avalanche consensus works like polling friends: each node repeatedly asks 20 random validators what they prefer and follows a strong majority. After enough agreeing rounds in a row, it decides. #ProofOfStake #ProofOfWork
+
+**48b (tech)** : #Blockchain Consensus #48: Snowball on Avalanche: sample k=20 validators (stake-weighted); if α=14 agree, adopt that preference; decide after β=20 consecutive successful rounds. Safety is probabilistic, from Team Rocket's 2018 paper. #ProofOfStake #ProofOfWork
+
+Source : https://docs.avax.network/learn/avalanche-consensus
+
+### 49/ · checked · choix :
+
+**49a (simple)** : #Blockchain Consensus #49: Solana's 'Proof of History' was never a consensus mechanism on its own, just a cryptographic clock: a chain of hashes proving time passed. Votes ran in Tower BFT until the Alpenglow upgrade retired both in Oct 2026. #ProofOfStake #ProofOfWork
+
+**49b (tech)** : #Blockchain Consensus #49: PoH: a sequential SHA-256 chain, each output feeding the next, proving order and elapsed time. Solana paired it with Tower BFT, a PBFT-like vote protocol, until Oct 21, 2026, when Alpenglow's Votor replaced both. #ProofOfStake #ProofOfWork
+
+Source : https://solana.com/solana-whitepaper.pdf ; https://solana.com/upgrades/alpenglow (Votor actif depuis l'epoch 1064, 21 oct. 2026 ; PoH retiré)
+
+### 50/ · checked · choix :
+
+**50a (simple)** : #Blockchain Consensus #50: Sept 14, 2021: Solana stopped for about 17 hours after bots flooded it during a token launch. Validators had to coordinate a restart, which needed 80% of the stake to agree. #ProofOfStake #ProofOfWork
+
+**50b (tech)** : #Blockchain Consensus #50: Solana, Sept 14, 2021: a bot flood (Grape IDO on Raydium) exhausted validator memory, forks piled up and consensus stalled. 1,000+ validators restarted from the last confirmed slot, with 80% of stake required. #ProofOfStake #ProofOfWork
+
+Source : https://solana.com/news/9-14-network-outage-initial-overview
+
+### 51/ · checked · choix :
+
+**51a (simple)** : #Blockchain Consensus #51: Cardano's Ouroboros was one of the first PoS protocols with a peer-reviewed security proof (CRYPTO 2017). Time is cut into 1-second slots, and leaders are drawn according to stake. #ProofOfStake #ProofOfWork
+
+**51b (tech)** : #Blockchain Consensus #51: Ouroboros (Kiayias, Russell, David, Oliynykov; CRYPTO 2017). Cardano runs Ouroboros Praos: 1 s slots, 432,000-slot (5-day) epochs; each slot's leaders self-select privately via a stake-weighted VRF lottery. #ProofOfStake #ProofOfWork
+
+Source : https://docs.cardano.org/about-cardano/learn/cardano-node
+
+### 52/ · checked · choix :
+
+**52a (simple)** : #Blockchain Consensus #52: Polkadot splits the job in two: BABE produces blocks, GRANDPA finalizes them. GRANDPA can finalize a long run of blocks in one round of votes, so it catches up fast after a slowdown. #ProofOfStake #ProofOfWork
+
+**52b (tech)** : #Blockchain Consensus #52: Polkadot: BABE (VRF-based slot leader election) for block production + GRANDPA finality gadget. GRANDPA validators vote on chains, not single blocks: once > 2/3 vote for a chain, all blocks up to it finalize at once. #ProofOfStake #ProofOfWork
+
+Source : https://raw.githubusercontent.com/w3f/polkadot-wiki/master/docs/learn/learn-consensus.md
+
+### 53/ · checked · choix :
+
+**53a (simple)** : #Blockchain Consensus #53: Not every ledger is a chain. Hedera's hashgraph is a graph of 'gossip about gossip': nodes record who told them what, then run 'virtual voting' on that history with no extra vote messages. #ProofOfStake #ProofOfWork
+
+**53b (tech)** : #Blockchain Consensus #53: Hashgraph (Leemon Baird, Swirlds tech report, 2016): a gossip-about-gossip DAG plus virtual voting. It is designed as asynchronous BFT (aBFT) with < 1/3 malicious; a Coq proof later checked that property. #ProofOfStake #ProofOfWork
+
+Source : https://www.swirlds.com/wp-content/uploads/2016/06/2016-05-31-Swirlds-Consensus-Algorithm-TR-2016-01.pdf
+
+### 54/ · checked · choix :
+
+**54a (simple)** : #Blockchain Consensus #54: Recap: strangers agree by making votes costly (work or stake), waiting for depth (PoW) or collecting 2/3 signatures (BFT). Each design trades speed, finality and resilience. Follow for the next series. #ProofOfStake #ProofOfWork
+
+**54b (tech)** : #Blockchain Consensus #54: Recap: Sybil resistance (PoW/PoS) + a rule (heaviest chain, 2/3 quorums, sampling). Nakamoto keeps liveness, BFT keeps safety, Ethereum mixes both. 51% attacks are real, not theory. Follow for more. #ProofOfStake #ProofOfWork
+
+Source : https://bitcoin.org/bitcoin.pdf
