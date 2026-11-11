@@ -41,7 +41,14 @@ L'exécutable est autonome (un seul fichier, .NET inclus). Copier le dossier `pu
 À côté de l'exécutable :
 
 - `appsettings.json` : les réglages par défaut (fourni) ;
-- `appsettings.local.json` : les réglages du serveur et les **secrets**, à créer à partir de `appsettings.local.example.json`. Il est ignoré par git ; ne jamais le committer.
+- `appsettings.local.json` : les réglages propres au serveur (au minimum `RepoPath`), à créer à partir de `appsettings.local.example.json`. Il est ignoré par git ; ne jamais le committer.
+
+Dans le dossier de chaque compte, `accounts/<Compte>/` :
+
+- `account.json` (commité) : `enabled` et `x.username`, jamais de clés ;
+- `account.local.json` (**sur le serveur seulement**, ignoré par git) : les 4 clés de l'API X du compte, à créer à partir de `accounts/XCryptoKeys/account.local.example.json`.
+
+Pour un compte, les réglages sont lus dans cet ordre, le dernier l'emporte : `account.json`, `account.local.json`, puis la section `Accounts.<Compte>` de `appsettings(.local).json` et les variables d'environnement. Un fichier du compte illisible ou invalide fait ignorer ce compte (erreur dans le log) ; les autres comptes sont publiés normalement.
 
 Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, par exemple `XCK__Accounts__XCryptoKeys__X__ApiKey` ou `XCK__RepoPath`.
 
@@ -60,29 +67,43 @@ Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, 
 | `Git.Remote` / `Git.Branch` | `origin` / branche courante | Où pousser |
 | `Git.UserName` / `Git.UserEmail` | | Auteur des commits du serveur |
 | `X.ApiBaseUrl` | `https://api.x.com` | Adresse de l'API X, commune à tous les comptes |
-| `Accounts.<Compte>.Enabled` | `true` | `false` : le compte est ignoré, sans erreur |
-| `Accounts.<Compte>.X.Username` | nom du dossier | Nom du compte sur X, sert à construire l'URL des posts (`xcryptokeys` pour XCryptoKeys) |
-| `Accounts.<Compte>.X.ApiKey`, `.ApiKeySecret`, `.AccessToken`, `.AccessTokenSecret` | | Clés OAuth 1.0a du compte (voir plus bas). Chaque compte a les siennes ; elles ne sont jamais prises d'un autre compte |
+| `enabled` (`account.json`) | `true` | `false` : le compte est ignoré, sans erreur |
+| `x.username` (`account.json`) | nom du dossier | Nom du compte sur X, sert à construire l'URL des posts (`xcryptokeys` pour XCryptoKeys) |
+| `x.apiKey`, `x.apiKeySecret`, `x.accessToken`, `x.accessTokenSecret` (`account.local.json`) | | Clés OAuth 1.0a du compte (voir plus bas). Chaque compte a les siennes ; elles ne sont jamais prises d'un autre compte |
+| `Accounts.<Compte>.Enabled`, `Accounts.<Compte>.X.…` | | Facultatif : remplace, depuis `appsettings(.local).json` ou une variable d'environnement, une valeur des fichiers du compte |
 
-`<Compte>` est le nom du dossier dans `accounts/`, par exemple `XCryptoKeys` (majuscules indifférentes). Exemple d'`appsettings.local.json` :
+`<Compte>` est le nom du dossier dans `accounts/`, par exemple `XCryptoKeys` (majuscules indifférentes). Exemple :
+
+`appsettings.local.json`
 
 ```json
 {
-  "RepoPath": "/srv/x-bots",
-  "Accounts": {
-    "XCryptoKeys": {
-      "X": { "ApiKey": "…", "ApiKeySecret": "…", "AccessToken": "…", "AccessTokenSecret": "…" }
-    },
-    "AutreCompte": {
-      "X": { "Username": "autrecompte", "ApiKey": "…", "ApiKeySecret": "…", "AccessToken": "…", "AccessTokenSecret": "…" }
-    }
-  }
+  "RepoPath": "/srv/x-bots"
 }
 ```
 
+`accounts/XCryptoKeys/account.json` (commité)
+
+```json
+{
+  "enabled": true,
+  "x": { "username": "xcryptokeys" }
+}
+```
+
+`accounts/XCryptoKeys/account.local.json` (sur le serveur seulement)
+
+```json
+{
+  "x": { "apiKey": "…", "apiKeySecret": "…", "accessToken": "…", "accessTokenSecret": "…" }
+}
+```
+
+Le bot ne commite que les `status.json` et `posts.json` des campagnes : `account.local.json`, ignoré par git, n'est jamais ajouté, et le `git pull --rebase --autostash` le laisse en place.
+
 ### Passage depuis l'ancienne configuration (un seul compte)
 
-Avant, les clés étaient dans la section `X` et les campagnes dans `threads/`. Le programme refuse maintenant de démarrer (code 2) si des clés sont encore dans `X` : les déplacer dans `Accounts.XCryptoKeys.X` (et `XCK__X__ApiKey` devient `XCK__Accounts__XCryptoKeys__X__ApiKey`). Supprimer aussi `ThreadsFolder` s'il était réglé.
+Avant, les clés étaient dans la section `X` et les campagnes dans `threads/`. Le programme refuse maintenant de démarrer (code 2) si des clés sont encore dans `X` : les déplacer dans `accounts/XCryptoKeys/account.local.json` (section `x`, voir l'exemple plus haut), puis ne garder que `RepoPath` dans `appsettings.local.json`. Une section `Accounts.XCryptoKeys.X` dans `appsettings.local.json`, ou `XCK__Accounts__XCryptoKeys__X__ApiKey` (ancien `XCK__X__ApiKey`), marche aussi. Supprimer aussi `ThreadsFolder` s'il était réglé.
 
 ## Clés de l'API X
 
@@ -90,7 +111,7 @@ Avant, les clés étaient dans la section `X` et les campagnes dans `threads/`. 
 
 1. Sur [developer.x.com](https://developer.x.com), dans le projet et l'app du compte (par exemple @xcryptokeys) : **User authentication settings** → activer OAuth 1.0a, permissions **Read and write**.
 2. Dans **Keys and tokens** : copier l'**API Key** et l'**API Key Secret**, puis **générer** l'**Access Token** et l'**Access Token Secret**, connecté en tant que ce compte. Si les tokens ont été générés avant le passage en Read and write, il faut les régénérer, sinon X refuse les posts (403).
-3. Mettre les 4 valeurs dans `appsettings.local.json`, section `Accounts.<Compte>.X`.
+3. Sur le serveur, mettre les 4 valeurs dans `accounts/<Compte>/account.local.json` (à partir de `accounts/XCryptoKeys/account.local.example.json`). Ce fichier est ignoré par git : ne jamais le committer.
 
 Appels utilisés : `POST /2/media/upload` (image), `POST /2/media/metadata` (texte alternatif), `POST /2/tweets`. En pay-per-use, chaque passage écrit dans le log le nombre d'appels envoyés : 3 par post avec image, 2 avec `AltText: false`, 1 sans image.
 
@@ -140,8 +161,8 @@ Dans `accounts/<Compte>/threads/<campagne>/status.json`, passer `status` à `act
 
 ## Ajouter un compte
 
-1. Créer `accounts/<Compte>/threads/` dans le dépôt, avec ses campagnes (partir de `accounts/XCryptoKeys/threads/_template/`).
-2. Générer les clés X du compte (voir [Clés de l'API X](#clés-de-lapi-x)) et les mettre dans `appsettings.local.json` du serveur, section `Accounts.<Compte>.X`, avec `Username` si le nom sur X diffère du nom du dossier.
+1. Créer `accounts/<Compte>/threads/` dans le dépôt, avec ses campagnes (partir de `accounts/XCryptoKeys/threads/_template/`), et `accounts/<Compte>/account.json` avec `x.username`, le nom du compte sur X. Rien à changer dans `src/`.
+2. Générer les clés X du compte (voir [Clés de l'API X](#clés-de-lapi-x)) et les mettre sur le serveur dans `accounts/<Compte>/account.local.json` (ignoré par git).
 3. Vérifier avec `xck-publisher --dry-run --account <Compte>`, puis passer une campagne en `active`.
 
 ## Codes de sortie et logs

@@ -6,3 +6,6 @@ publish/
 .vs/
 src/**/appsettings.local.json
 src/**/logs/
+
+# Clés X de chaque compte (sur le serveur seulement)
+accounts/*/account.local.json

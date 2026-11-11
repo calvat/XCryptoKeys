@@ -10,6 +10,8 @@ Posts et threads préparés pour le compte X **@xcryptokeys** : blockchains et c
 | `STYLE.md` | Les règles de rédaction de chaque post |
 | `STYLE-GRAPHIQUE.md` | Le style des illustrations (palette, polices, composition) |
 | `reference-banner.png` | La bannière du compte, référence du style graphique |
+| `account.json` | Le compte pour le bot : `enabled` (`false` = rien n'est publié) et `x.username` (nom sur X, `xcryptokeys`). Jamais de clés ici |
+| `account.local.json` | Les 4 clés de l'API X du compte, **sur le serveur seulement** : à créer à partir de `account.local.example.json`. Ignoré par git, jamais commité |
 | `card.json` | Signature et préfixes utilisés par `design/card.py` (à la racine du dépôt) pour générer les cartes |
 | `threads/` | Un dossier par campagne, nommé `<nom technique>-<numéro sur 3 chiffres>` : par exemple `threads/pactus-001/` pour la 1re campagne Pactus. Il contient `index.md` (description de la campagne), `posts.json` (les posts) et `status.json` (où en est la publication) |
 | `threads/_template/` | Le modèle à copier pour une nouvelle campagne |

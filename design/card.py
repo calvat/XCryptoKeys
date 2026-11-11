@@ -78,7 +78,7 @@ def main():
     # accounts/<compte>/threads/<campagne> -> accounts/<compte>/card.json
     account = os.path.dirname(os.path.dirname(os.path.abspath(camp)))
     conf = json.load(open(os.path.join(account, 'card.json'), encoding='utf-8'))
-    posts = json.load(open(os.path.join(camp, 'posts.json')))
+    posts = json.load(open(os.path.join(camp, 'posts.json'), encoding='utf-8'))
     os.makedirs(os.path.join(camp, 'src'), exist_ok=True)
     want = set(int(a) for a in args)
     out = []
@@ -86,8 +86,8 @@ def main():
         if want and p['index'] not in want: continue
         if 'card' not in p: continue
         path = os.path.join(camp, 'src', f"post_{p['index']}.html")
-        if not (os.path.exists(path) and 'auto-card' not in open(path).read()):
-            open(path, 'w').write(card_svg(conf['prefixes'][name], p['index'], p['card'], conf['handle']))
+        if not (os.path.exists(path) and 'auto-card' not in open(path, encoding='utf-8').read()):
+            open(path, 'w', encoding='utf-8').write(card_svg(conf['prefixes'][name], p['index'], p['card'], conf['handle']))
         out.append(path)
     if '--png' in sys.argv:
         here = os.path.dirname(os.path.abspath(__file__))

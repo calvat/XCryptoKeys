@@ -19,8 +19,8 @@ Bot de publication automatique sur X, pour plusieurs comptes. Le code du bot est
 
 ## Ajouter un compte
 
-1. Créer `accounts/<Compte>/threads/` (copier `accounts/XCryptoKeys/threads/_template/` pour la première campagne) et un `README.md` qui décrit le compte.
-2. Sur le serveur, ajouter ses clés X dans `appsettings.local.json`, section `Accounts.<Compte>.X` (voir [`src/README.md`](src/README.md#configuration)).
+1. Créer `accounts/<Compte>/threads/` (copier `accounts/XCryptoKeys/threads/_template/` pour la première campagne), un `README.md` qui décrit le compte et un `account.json` avec son nom sur X (copier celui de XCryptoKeys).
+2. Sur le serveur, mettre ses clés X dans `accounts/<Compte>/account.local.json`, à créer à partir de `accounts/XCryptoKeys/account.local.example.json`. Ce fichier est ignoré par git : les clés ne sont jamais commitées (voir [`src/README.md`](src/README.md#configuration)).
 3. Passer une campagne en `active` dans son `status.json`, puis commit et push : le bot la publie au passage suivant.
 
 Le format de `posts.json` et de `status.json` est décrit dans le README de chaque compte (par exemple [celui de XCryptoKeys](accounts/XCryptoKeys/README.md)).

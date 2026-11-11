@@ -123,9 +123,20 @@ using (lockFile)
     {
         foreach (var account in accounts)
         {
+            try
+            {
+                settings.LoadAccountFiles(account);
+            }
+            catch (Exception e) when (e is InvalidDataException or IOException or UnauthorizedAccessException or System.Text.Json.JsonException)
+            {
+                // Un compte mal configuré ne bloque pas les autres.
+                log.Error($"[{account.Name}] réglages du compte illisibles ({e.Message}) ; compte ignoré.");
+                continue;
+            }
+
             if (!settings.AccountSettingsFor(account.Name).Enabled)
             {
-                log.Info($"[{account.Name}] compte désactivé (Accounts.{account.Name}.Enabled = false).");
+                log.Info($"[{account.Name}] compte désactivé (enabled = false dans {Settings.AccountFile} ou Accounts.{account.Name}.Enabled).");
                 continue;
             }
 
@@ -137,7 +148,7 @@ using (lockFile)
                 {
                     // Un compte pas encore configuré ne bloque pas les autres.
                     if (account.HasActiveCampaign())
-                        log.Error($"[{account.Name}] identifiants X manquants ({string.Join(", ", missing)}) dans Accounts.{account.Name}.X ; compte ignoré.");
+                        log.Error($"[{account.Name}] identifiants X manquants ({string.Join(", ", missing)}) dans {settings.AccountsFolder}/{account.Name}/{Settings.AccountLocalFile} ; compte ignoré.");
                     else
                         log.Info($"[{account.Name}] pas d'identifiants X et aucune campagne active ; compte ignoré.");
                     continue;

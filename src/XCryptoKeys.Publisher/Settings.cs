@@ -33,6 +33,65 @@ public sealed class Settings
         public XSettings X { get; set; } = new();
     }
 
+    /// <summary>Fichier du compte, commité (Enabled, X.Username ; jamais de clés).</summary>
+    public const string AccountFile = "account.json";
+    /// <summary>Fichier des clés X du compte, sur le serveur seulement (ignoré par git).</summary>
+    public const string AccountLocalFile = "account.local.json";
+
+    /// <summary>Settings fusionnés bruts (fichiers + variables d'environnement), gardés pour fusionner les fichiers des comptes en dessous.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public JsonObject? Raw { get; set; }
+
+    private static readonly JsonDocumentOptions DocumentOptions = new() { CommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true };
+    private static readonly JsonSerializerOptions SerializerOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
+    };
+
+    /// <summary>
+    /// Charge les réglages du compte depuis son dossier : account.json, puis account.local.json (clés X),
+    /// puis la section Accounts.&lt;compte&gt; des settings et des variables d'environnement par-dessus.
+    /// Un fichier illisible ou invalide lève une exception (le compte est alors ignoré par l'appelant).
+    /// </summary>
+    public void LoadAccountFiles(Account account)
+    {
+        JsonObject merged = new();
+        foreach (string name in new[] { AccountFile, AccountLocalFile })
+        {
+            string file = Path.Combine(account.Directory, name);
+            if (!File.Exists(file)) continue;
+            JsonNode? node;
+            try { node = JsonNode.Parse(File.ReadAllText(file), documentOptions: DocumentOptions); }
+            catch (JsonException e) { throw new InvalidDataException($"{name} invalide : {e.Message}", e); }
+            if (node is not JsonObject obj) throw new InvalidDataException($"{name} doit contenir un objet JSON.");
+            Merge(merged, obj);
+        }
+
+        JsonObject? section = null;
+        if (Raw is not null)
+        {
+            var accounts = Raw.FirstOrDefault(p => string.Equals(p.Key, nameof(Accounts), StringComparison.OrdinalIgnoreCase)).Value as JsonObject;
+            section = accounts?.FirstOrDefault(p => string.Equals(p.Key, account.Name, StringComparison.OrdinalIgnoreCase)).Value as JsonObject;
+        }
+        else if (Accounts.FirstOrDefault(kv => string.Equals(kv.Key, account.Name, StringComparison.OrdinalIgnoreCase)).Value is { } typed)
+        {
+            // Settings construits en code (sans Load) : seules les valeurs renseignées priment sur les fichiers.
+            section = new JsonObject();
+            if (!typed.Enabled) section["Enabled"] = false;
+            var x = new JsonObject();
+            foreach (var (k, v) in new[] { ("Username", typed.X.Username), ("ApiKey", typed.X.ApiKey), ("ApiKeySecret", typed.X.ApiKeySecret), ("AccessToken", typed.X.AccessToken), ("AccessTokenSecret", typed.X.AccessTokenSecret) })
+                if (!string.IsNullOrWhiteSpace(v)) x[k] = v;
+            section["X"] = x;
+        }
+        if (section is not null) Merge(merged, section);
+
+        var settings = merged.Deserialize<AccountSettings>(SerializerOptions) ?? new AccountSettings();
+        foreach (string key in Accounts.Keys.Where(k => string.Equals(k, account.Name, StringComparison.OrdinalIgnoreCase)).ToList())
+            Accounts.Remove(key);
+        Accounts[account.Name] = settings;
+    }
+
     /// <summary>Réglages du compte (nom insensible à la casse) ; des réglages vides s'il n'est pas configuré.</summary>
     public AccountSettings AccountSettingsFor(string account) =>
         Accounts.FirstOrDefault(kv => string.Equals(kv.Key, account, StringComparison.OrdinalIgnoreCase)).Value ?? new AccountSettings();
@@ -118,8 +177,7 @@ public sealed class Settings
         foreach (string file in files)
         {
             if (!File.Exists(file)) continue;
-            var node = JsonNode.Parse(File.ReadAllText(file),
-                documentOptions: new JsonDocumentOptions { CommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true });
+            var node = JsonNode.Parse(File.ReadAllText(file), documentOptions: DocumentOptions);
             if (node is JsonObject obj) Merge(merged, obj);
         }
 
@@ -131,11 +189,8 @@ public sealed class Settings
             SetPath(merged, path, (string?)e.Value ?? "");
         }
 
-        var settings = merged.Deserialize<Settings>(new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true,
-            NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
-        }) ?? new Settings();
+        var settings = merged.Deserialize<Settings>(SerializerOptions) ?? new Settings();
+        settings.Raw = merged;
         return settings;
     }
 
@@ -147,7 +202,7 @@ public sealed class Settings
         // AccountsPath est vérifié après le git pull : un clone resté sur l'ancienne organisation doit pouvoir se mettre à jour.
         if (string.IsNullOrWhiteSpace(DefaultVersion)) yield return "DefaultVersion est vide.";
         if (!string.IsNullOrWhiteSpace(X.ApiKey) || !string.IsNullOrWhiteSpace(X.AccessToken))
-            yield return "Les identifiants X ne vont plus dans la section X mais dans Accounts.<compte>.X (voir src/README.md).";
+            yield return "Les identifiants X ne vont plus dans la section X mais dans accounts/<compte>/account.local.json (voir src/README.md).";
     }
 
     private static void Merge(JsonObject target, JsonObject source)

@@ -1,0 +1,8 @@
+{
+  "x": {
+    "apiKey": "<API Key (Consumer Key)>",
+    "apiKeySecret": "<API Key Secret (Consumer Secret)>",
+    "accessToken": "<Access Token>",
+    "accessTokenSecret": "<Access Token Secret>"
+  }
+}

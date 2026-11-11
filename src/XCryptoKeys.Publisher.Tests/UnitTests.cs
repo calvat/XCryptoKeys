@@ -317,4 +317,109 @@ public class AccountTests
             File.Delete(file);
         }
     }
+
+    private static Account TempAccount(string name, string? accountJson, string? localJson)
+    {
+        string dir = Path.Combine(Path.GetTempPath(), "xck-accfiles-" + Guid.NewGuid().ToString("N"), name);
+        Directory.CreateDirectory(Path.Combine(dir, "threads"));
+        if (accountJson is not null) File.WriteAllText(Path.Combine(dir, Settings.AccountFile), accountJson);
+        if (localJson is not null) File.WriteAllText(Path.Combine(dir, Settings.AccountLocalFile), localJson);
+        return new Account(dir);
+    }
+
+    [Fact]
+    public void Account_files_merge_account_json_then_local_then_settings()
+    {
+        var account = TempAccount("Alpha",
+            """{ "enabled": true, "x": { "username": "alpha_x", "apiKey": "from-account-json" } }""",
+            """
+            // commentaire accepté
+            { "x": { "apiKey": "from-local", "apiKeySecret": "s", "accessToken": "t", "accessTokenSecret": "ts", }, }
+            """);
+        string file = Path.Combine(Path.GetTempPath(), "xck-settings-" + Guid.NewGuid().ToString("N") + ".json");
+        File.WriteAllText(file, """{"RepoPath": "/tmp", "Accounts": {"alpha": {"X": {"AccessToken": "from-settings"}}}}""");
+        try
+        {
+            var settings = Settings.Load(file);
+            settings.LoadAccountFiles(account);
+            var x = settings.XFor("Alpha");
+            Assert.Equal("alpha_x", x.Username);
+            Assert.Equal("from-local", x.ApiKey);
+            Assert.Equal("s", x.ApiKeySecret);
+            Assert.Equal("from-settings", x.AccessToken);
+            Assert.Empty(settings.MissingCredentials("Alpha"));
+            // Un autre compte ne récupère jamais ces clés.
+            Assert.Equal(4, settings.MissingCredentials("Beta").Count());
+        }
+        finally
+        {
+            File.Delete(file);
+            Directory.Delete(Path.GetDirectoryName(account.Directory)!, true);
+        }
+    }
+
+    [Fact]
+    public void Account_json_can_disable_and_settings_without_load_still_override()
+    {
+        var account = TempAccount("Gamma", """{ "enabled": false, "x": { "username": "gamma" } }""", null);
+        var settings = new Settings
+        {
+            Accounts = new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["gamma"] = new Settings.AccountSettings { X = new Settings.XSettings { ApiKey = "k" } },
+            },
+        };
+        try
+        {
+            settings.LoadAccountFiles(account);
+            Assert.False(settings.AccountSettingsFor("Gamma").Enabled);
+            Assert.Equal("gamma", settings.XFor("Gamma").Username);
+            Assert.Equal("k", settings.XFor("Gamma").ApiKey);
+        }
+        finally
+        {
+            Directory.Delete(Path.GetDirectoryName(account.Directory)!, true);
+        }
+    }
+
+    [Fact]
+    public void Invalid_account_file_throws_and_leaves_other_accounts_alone()
+    {
+        var bad = TempAccount("Bad", null, """{ "x": { "apiKey": """);
+        var good = TempAccount("Good", """{ "x": { "username": "good" } }""", null);
+        var settings = new Settings();
+        try
+        {
+            var e = Assert.Throws<InvalidDataException>(() => settings.LoadAccountFiles(bad));
+            Assert.Contains(Settings.AccountLocalFile, e.Message);
+            settings.LoadAccountFiles(good);
+            Assert.Equal("good", settings.XFor("Good").Username);
+            Assert.Throws<InvalidDataException>(() => settings.LoadAccountFiles(TempAccount("Arr", "[1, 2]", null)));
+        }
+        finally
+        {
+            Directory.Delete(Path.GetDirectoryName(bad.Directory)!, true);
+            Directory.Delete(Path.GetDirectoryName(good.Directory)!, true);
+        }
+    }
+
+    [Fact]
+    public void Real_account_files_parse_and_hold_no_secrets()
+    {
+        string? dir = AppContext.BaseDirectory;
+        while (dir is not null && !Directory.Exists(Path.Combine(dir, "accounts"))) dir = Path.GetDirectoryName(dir);
+        if (dir is null) return;
+        foreach (var a in Account.Discover(Path.Combine(dir, "accounts")))
+        {
+            string file = Path.Combine(a.Directory, Settings.AccountFile);
+            Assert.True(File.Exists(file), $"{a.Name} : {Settings.AccountFile} manquant");
+            var node = JsonNode.Parse(File.ReadAllText(file))!.AsObject();
+            var x = node["x"] as JsonObject;
+            Assert.False(string.IsNullOrWhiteSpace((string?)x?["username"]), $"{a.Name} : x.username manquant");
+            foreach (string secret in new[] { "apiKey", "apiKeySecret", "accessToken", "accessTokenSecret" })
+                Assert.False(x!.Any(p => string.Equals(p.Key, secret, StringComparison.OrdinalIgnoreCase)), $"{a.Name} : {secret} ne doit pas être dans {Settings.AccountFile}");
+            var settings = new Settings();
+            settings.LoadAccountFiles(new Account(a.Directory) );
+        }
+    }
 }
