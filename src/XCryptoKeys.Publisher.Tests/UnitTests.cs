@@ -255,6 +255,36 @@ public class PublisherTests
         }
         Assert.Empty(problems);
     }
+
+    [Fact]
+    public void Real_posts_not_yet_published_have_at_most_two_hashtags()
+    {
+        // Texte tel que publié (hashtag de campagne ajouté) : préfixe + campagne = 2.
+        // Un hashtag = # suivi d'une lettre : la numérotation « #12: » n'en est pas un.
+        var hashtag = new System.Text.RegularExpressions.Regex(@"(?<![\w&])#[A-Za-z]\w*");
+        string? dir = AppContext.BaseDirectory;
+        while (dir is not null && !Directory.Exists(Path.Combine(dir, "accounts"))) dir = Path.GetDirectoryName(dir);
+        if (dir is null) return;
+        var problems = new List<string>();
+        foreach (var a in Account.Discover(Path.Combine(dir, "accounts")))
+        foreach (var c in a.Campaigns())
+        {
+            c.Load();
+            foreach (var post in c.Posts.OfType<JsonObject>())
+            {
+                if ((string?)post["status"] == "posted") continue;
+                foreach (string version in new[] { "simple", "tech", "variant" })
+                {
+                    if ((string?)post[version] is not { Length: > 0 } raw) continue;
+                    // La longueur n'est vérifiée que pour la version publiée (test précédent) ; ici, le nombre de hashtags de chaque version.
+                    string text = TweetText.AppendHashtag(raw.Trim(), c.Hashtag);
+                    int n = hashtag.Matches(text).Count;
+                    if (n > 2) problems.Add($"{a.Name}/{c.Name} #{post["index"]} {version}: {n} hashtags");
+                }
+            }
+        }
+        Assert.Empty(problems);
+    }
 }
 
 public class AccountTests

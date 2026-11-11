@@ -3,7 +3,7 @@
 - Sujet : 10. L'anonymat dans la crypto
 - Angle : casser le mythe "Bitcoin est anonyme" : la blockchain est pseudonyme, comment on remonte jusqu'aux gens, et ce qui rend vraiment anonyme.
 - Préfixe : `Crypto #Anonymity Myths #N:`
-- Hashtags fixes : #CryptoPrivacy #Monero
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKano1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (67 posts checked, 0 draft)
 - Longueur : comptée façon X (≈, € et emojis comptent 2). Aucun emoji utilisé.

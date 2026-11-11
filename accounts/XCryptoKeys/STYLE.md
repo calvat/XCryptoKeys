@@ -35,10 +35,9 @@ Un sujet n'est retenu que s'il :
 - Il compte dans les 280 caractères : viser 30 caractères au plus.
 - La liste des préfixes validés est dans `SUJETS.md`.
 
-## Hashtags fixes
+## Hashtags : 2 maximum par post
 
-- Chaque série a **1 à 3 hashtags fixes** (2 en général), présents dans **tous** ses posts, en fin de post (comme `#PAC @PactusChain` pour Pactus).
-- Ils sont choisis parmi les **hashtags les plus utilisés**, pour que les posts ressortent dans la recherche par hashtag.
-- Ils ne répètent pas le hashtag du préfixe.
-- Ils **collent au sujet** de la série : pas de #Bitcoin ou #Ethereum dans une série qui ne parle pas surtout de ces chaînes.
-- Ils sont notés dans `SUJETS.md`, à côté du préfixe du thème. Ils comptent dans les 280 caractères.
+- **2 hashtags maximum par post**, tels que publiés : celui du **préfixe** et le **hashtag de campagne** (`#XCKbtc1`…), que le programme ajoute à la fin. Au-delà, X et les lecteurs y voient du spam.
+- Le texte écrit (`simple`, `tech`, `variant`) ne contient donc **aucun autre hashtag** : ni hashtags fixes en fin de post, ni hashtag dans les phrases (écrire le mot sans `#`). Une mention comme `@PactusChain` reste possible.
+- La numérotation (`#12:`) n'est pas un hashtag.
+- Le hashtag de campagne compte dans les 280 caractères.

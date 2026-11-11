@@ -21,7 +21,12 @@ Un compte dont les clés X ne sont pas encore renseignées (`account.local.json`
 
 Chaque campagne a un hashtag unique, défini par le compte ; pour XCryptoKeys, `#XCK` + 3 lettres du sujet + numéro de campagne (par exemple `#XCKbtc1`). Il est défini dans `index.md` et dans le champ `hashtag` de `status.json`. Le programme lit `status.json` et l'ajoute à la fin de chaque post s'il n'y est pas déjà. Cliquer dessus sur X affiche les posts de la campagne (onglet « Latest ») ; `from:xcryptokeys #XCKbtc1` dans la recherche est la requête la plus fiable.
 
-Le test `Real_campaigns_all_fit_in_280_with_their_hashtag` vérifie que toutes les versions `simple` du dépôt, tous comptes confondus, tiennent dans 280 caractères avec leur hashtag. À lancer après avoir écrit une nouvelle campagne.
+Avec le hashtag du préfixe, cela fait **2 hashtags par post** : la règle est de 2 au maximum, donc pas d'autre hashtag dans le texte des posts.
+
+Deux tests vérifient le vrai dépôt, tous comptes confondus, à lancer après avoir écrit une nouvelle campagne :
+
+- `Real_campaigns_all_fit_in_280_with_their_hashtag` : chaque version `simple` tient dans 280 caractères avec le hashtag de campagne ;
+- `Real_posts_not_yet_published_have_at_most_two_hashtags` : les versions `simple`, `tech` et `variant` des posts pas encore publiés, hashtag de campagne compris, ont 2 hashtags au plus (la numérotation `#12:` ne compte pas).
 
 ## Compiler
 

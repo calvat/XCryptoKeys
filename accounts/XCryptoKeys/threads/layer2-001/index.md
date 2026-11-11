@@ -3,7 +3,7 @@
 - Sujet : 6. Le scaling : Lightning, rollups et L2 (voir SUJETS.md)
 - Angle : ce que garantit vraiment un L2 et ce qu'il ne garantit pas.
 - Préfixe : `Crypto #Layer2 Unlocked #N:`
-- Hashtags fixes : #Rollups #Lightning
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKlay1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (67 posts checked, 0 draft)
 

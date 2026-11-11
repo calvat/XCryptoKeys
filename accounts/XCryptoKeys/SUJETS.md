@@ -11,7 +11,7 @@ Les exemples ci-dessous viennent de ma connaissance du domaine. Chiffres et date
 ## 1. Bitcoin sous le capot
 **Titre :** "Bitcoin, line by line"  
 **Préfixe :** `#Bitcoin Internals #N:`  
-**Hashtags fixes :** #BTC #Crypto  
+**Hashtags fixes :** aucun (avant : #BTC #Crypto)  
 **Angle :** les règles précises (et les bizarreries) du protocole que la plupart des holders ignorent.
 
 Exemples :
@@ -31,7 +31,7 @@ Exemples :
 ## 2. Ethereum sous le capot
 **Titre :** "How Ethereum actually works"  
 **Préfixe :** `#Ethereum Deep Dive #N:`  
-**Hashtags fixes :** #ETH #SmartContracts  
+**Hashtags fixes :** aucun (avant : #ETH #SmartContracts)  
 **Angle :** du modèle de comptes au Merge et aux blobs, les mécanismes concrets.
 
 Exemples :
@@ -51,7 +51,7 @@ Exemples :
 ## 3. La cryptographie des cryptos
 **Titre :** "The math that guards your coins"  
 **Préfixe :** `#Crypto Math #N:`  
-**Hashtags fixes :** #Cryptography #Blockchain  
+**Hashtags fixes :** aucun (avant : #Cryptography #Blockchain)  
 **Angle :** signatures, hash et seed phrases expliqués par leurs détails, avec les échecs célèbres.
 
 Exemples :
@@ -71,7 +71,7 @@ Exemples :
 ## 4. Les grands hacks, expliqués techniquement
 **Titre :** "Anatomy of a crypto heist"  
 **Préfixe :** `Crypto #Hack Autopsy #N:`  
-**Hashtags fixes :** #CyberSecurity #InfoSec  
+**Hashtags fixes :** aucun (avant : #CyberSecurity #InfoSec)  
 **Angle :** pas le montant volé, mais la ligne de code ou la clé qui a lâché. C'est le sujet le plus viral.
 
 Exemples :
@@ -91,7 +91,7 @@ Exemples :
 ## 5. Le consensus, comment des inconnus se mettent d'accord
 **Titre :** "How strangers agree: consensus 101 to 401"  
 **Préfixe :** `#Blockchain Consensus #N:`  
-**Hashtags fixes :** #ProofOfStake #ProofOfWork  
+**Hashtags fixes :** aucun (avant : #ProofOfStake #ProofOfWork)  
 **Angle :** PoW, PoS, BFT et leurs compromis, avec des attaques réelles.
 
 Exemples :
@@ -111,7 +111,7 @@ Exemples :
 ## 6. Le scaling : Lightning, rollups et L2
 **Titre :** "Scaling without breaking: L2s explained"  
 **Préfixe :** `Crypto #Layer2 Unlocked #N:`  
-**Hashtags fixes :** #Rollups #Lightning  
+**Hashtags fixes :** aucun (avant : #Rollups #Lightning)  
 **Angle :** ce que garantit vraiment un L2 et ce qu'il ne garantit pas.
 
 Exemples :
@@ -131,7 +131,7 @@ Exemples :
 ## 7. MEV et mempool : la forêt sombre
 **Titre :** "The dark forest: MEV explained"  
 **Préfixe :** `Crypto #MEV Dark Forest #N:`  
-**Hashtags fixes :** #DeFi #CryptoTrading  
+**Hashtags fixes :** aucun (avant : #DeFi #CryptoTrading)  
 **Angle :** ce qui arrive à ta transaction entre "Envoyer" et l'inclusion dans un bloc.
 
 Exemples :
@@ -151,7 +151,7 @@ Exemples :
 ## 8. La mécanique de la DeFi
 **Titre :** "DeFi mechanics, formula by formula"  
 **Préfixe :** `#DeFi Mechanics #N:`  
-**Hashtags fixes :** #Stablecoins #Web3 #DEX  
+**Hashtags fixes :** aucun (avant : #Stablecoins #Web3 #DEX)  
 **Angle :** les formules derrière les DEX, prêts et stablecoins.
 
 Exemples :
@@ -171,7 +171,7 @@ Exemples :
 ## 9. Wallets et self-custody
 **Titre :** "Not your keys: wallet security deep dive"  
 **Préfixe :** `Crypto #Wallet Security #N:`  
-**Hashtags fixes :** #CryptoSecurity #SelfCustody  
+**Hashtags fixes :** aucun (avant : #CryptoSecurity #SelfCustody)  
 **Angle :** ce que fait réellement un wallet, et comment les gens se font vider.
 
 Exemples :
@@ -191,7 +191,7 @@ Exemples :
 ## 10. L'anonymat dans la crypto
 **Titre :** "Is crypto really anonymous?"  
 **Préfixe :** `Crypto #Anonymity Myths #N:`  
-**Hashtags fixes :** #CryptoPrivacy #Monero  
+**Hashtags fixes :** aucun (avant : #CryptoPrivacy #Monero)  
 **Angle :** casser le mythe "Bitcoin est anonyme" : la blockchain est pseudonyme, comment on remonte jusqu'aux gens, et ce qui rend vraiment anonyme.
 
 Exemples :
@@ -225,17 +225,17 @@ En réserve, si un sujet ne fonctionne pas : l'histoire de la crypto en moments 
 
 ## Préfixes et hashtags validés
 
-Règles : préfixe court, propre au sujet, qui montre qu'on parle de crypto, avec au moins un hashtag très utilisé. Chaque série a aussi **1 à 3 hashtags fixes**, présents dans tous ses posts, choisis parmi les plus utilisés pour être trouvés en recherche. Ils ne répètent pas le hashtag du préfixe, et ils collent au sujet : #Bitcoin ou #Ethereum seulement pour les séries sur ces chaînes.
+Règles : préfixe court, propre au sujet, qui montre qu'on parle de crypto, avec au moins un hashtag très utilisé. **2 hashtags maximum par post** : celui du préfixe (pour être trouvé en recherche) et le hashtag de campagne que le programme ajoute à la fin (`#XCKbtc1`…, pour retrouver toute la série). Plus de hashtags fixes en fin de texte : la colonne garde ceux d'avant pour mémoire.
 
 | # | Sujet | Préfixe | Hashtags fixes |
 |---|---|---|---|
-| 1 | Bitcoin sous le capot | `#Bitcoin Internals #N:` | #BTC #Crypto |
-| 2 | Ethereum sous le capot | `#Ethereum Deep Dive #N:` | #ETH #SmartContracts |
-| 3 | La cryptographie des cryptos | `#Crypto Math #N:` | #Cryptography #Blockchain |
-| 4 | Les grands hacks | `Crypto #Hack Autopsy #N:` | #CyberSecurity #InfoSec |
-| 5 | Le consensus | `#Blockchain Consensus #N:` | #ProofOfStake #ProofOfWork |
-| 6 | Le scaling, L2 | `Crypto #Layer2 Unlocked #N:` | #Rollups #Lightning |
-| 7 | MEV et mempool | `Crypto #MEV Dark Forest #N:` | #DeFi #CryptoTrading |
-| 8 | La mécanique de la DeFi | `#DeFi Mechanics #N:` | #Stablecoins #Web3 #DEX |
-| 9 | Wallets et self-custody | `Crypto #Wallet Security #N:` | #CryptoSecurity #SelfCustody |
-| 10 | L'anonymat dans la crypto | `Crypto #Anonymity Myths #N:` | #CryptoPrivacy #Monero |
+| 1 | Bitcoin sous le capot | `#Bitcoin Internals #N:` | aucun (avant : #BTC #Crypto) |
+| 2 | Ethereum sous le capot | `#Ethereum Deep Dive #N:` | aucun (avant : #ETH #SmartContracts) |
+| 3 | La cryptographie des cryptos | `#Crypto Math #N:` | aucun (avant : #Cryptography #Blockchain) |
+| 4 | Les grands hacks | `Crypto #Hack Autopsy #N:` | aucun (avant : #CyberSecurity #InfoSec) |
+| 5 | Le consensus | `#Blockchain Consensus #N:` | aucun (avant : #ProofOfStake #ProofOfWork) |
+| 6 | Le scaling, L2 | `Crypto #Layer2 Unlocked #N:` | aucun (avant : #Rollups #Lightning) |
+| 7 | MEV et mempool | `Crypto #MEV Dark Forest #N:` | aucun (avant : #DeFi #CryptoTrading) |
+| 8 | La mécanique de la DeFi | `#DeFi Mechanics #N:` | aucun (avant : #Stablecoins #Web3 #DEX) |
+| 9 | Wallets et self-custody | `Crypto #Wallet Security #N:` | aucun (avant : #CryptoSecurity #SelfCustody) |
+| 10 | L'anonymat dans la crypto | `Crypto #Anonymity Myths #N:` | aucun (avant : #CryptoPrivacy #Monero) |

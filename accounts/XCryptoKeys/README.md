@@ -6,7 +6,7 @@ Posts et threads préparés pour le compte X **@xcryptokeys** : blockchains et c
 
 | Fichier / dossier | Contenu |
 |---|---|
-| `SUJETS.md` | Les 10 sujets, leurs préfixes, leurs hashtags fixes et l'ordre de rédaction |
+| `SUJETS.md` | Les 10 sujets, leurs préfixes et l'ordre de rédaction |
 | `STYLE.md` | Les règles de rédaction de chaque post |
 | `STYLE-GRAPHIQUE.md` | Le style des illustrations (palette, polices, composition) |
 | `reference-banner.png` | La bannière du compte, référence du style graphique |
@@ -24,7 +24,7 @@ Le programme qui publie les posts est commun à tous les comptes : il est dans `
 - Technique mais compréhensible par un non-développeur.
 - **2 versions minimum par post** (a simple, b tech, parfois c) : Johan choisit au moment de publier.
 - Un **préfixe par thread**, identique sur tous ses posts, qui montre qu'on parle de crypto et contient un hashtag très utilisé.
-- **1 à 3 hashtags fixes par série**, très utilisés, dans tous ses posts.
+- **2 hashtags maximum par post** : celui du préfixe et le hashtag de campagne ajouté par le programme ; aucun autre hashtag dans le texte.
 
 ## Format de `posts.json`
 

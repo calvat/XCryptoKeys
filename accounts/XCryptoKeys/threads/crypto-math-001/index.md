@@ -3,7 +3,7 @@
 - Sujet : 3. La cryptographie des cryptos
 - Angle : signatures, hash et seed phrases expliqués par leurs détails, avec les échecs célèbres.
 - Préfixe : `#Crypto Math #N:`
-- Hashtags fixes : #Cryptography #Blockchain
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKcry1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (76 posts checked, 0 draft)
 

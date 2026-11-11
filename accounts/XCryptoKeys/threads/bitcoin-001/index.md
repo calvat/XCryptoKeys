@@ -3,7 +3,7 @@
 - Sujet : 1. Bitcoin sous le capot (voir SUJETS.md)
 - Angle : les règles précises (et les bizarreries) du protocole que la plupart des holders ignorent.
 - Préfixe : `#Bitcoin Internals #N:`
-- Hashtags fixes : #BTC #Crypto
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKbtc1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (71 posts checked, 0 draft)
 

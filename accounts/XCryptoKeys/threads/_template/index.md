@@ -3,7 +3,7 @@
 - Sujet : <numéro et nom dans SUJETS.md>
 - Angle : <une phrase>
 - Préfixe : `<préfixe du thème> #N:` (voir SUJETS.md)
-- Hashtags fixes : <1 à 3, voir SUJETS.md>
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCK` + 3 lettres du sujet + numéro de campagne (ex. `#XCKbtc1`), unique à la campagne ; à reporter dans `status.json` (`hashtag`)
 - Statut : draft
 

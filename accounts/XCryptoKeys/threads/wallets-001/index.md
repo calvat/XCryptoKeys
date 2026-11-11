@@ -3,7 +3,7 @@
 - Sujet : 9. Wallets et self-custody (voir SUJETS.md)
 - Angle : ce que fait réellement un wallet, et comment les gens se font vider.
 - Préfixe : `Crypto #Wallet Security #N:`
-- Hashtags fixes : #CryptoSecurity #SelfCustody
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKwal1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (67 posts checked, 0 draft)
 

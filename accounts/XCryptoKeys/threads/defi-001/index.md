@@ -3,7 +3,7 @@
 - Sujet : 8. La mécanique de la DeFi
 - Angle : les formules derrière les DEX, les prêts, les stablecoins, les oracles et les vaults, avec leurs cas limites et les incidents qui les ont révélées.
 - Préfixe : `#DeFi Mechanics #N:`
-- Hashtags fixes : #Stablecoins #Web3 #DEX
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKdfi1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (53 posts checked, 0 draft)
 

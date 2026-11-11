@@ -3,7 +3,7 @@
 - Sujet : 7. MEV et mempool : la forêt sombre
 - Angle : ce qui arrive à ta transaction entre "Envoyer" et l'inclusion dans un bloc.
 - Préfixe : `Crypto #MEV Dark Forest #N:`
-- Hashtags fixes : #DeFi #CryptoTrading
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKmev1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (52 posts checked, 0 draft)
 

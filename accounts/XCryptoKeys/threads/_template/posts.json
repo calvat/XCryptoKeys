@@ -2,8 +2,8 @@
   {
     "index": 1,
     "long": "<ce qu'on cherche à dire, 500 caractères max, sans préfixe ni hashtags>",
-    "tech": "<Préfixe #1:> <version tech> <hashtags fixes>",
-    "simple": "<Préfixe #1:> <version simple> <hashtags fixes>",
+    "tech": "<Préfixe #1:> <version tech, sans hashtag>",
+    "simple": "<Préfixe #1:> <version simple, sans hashtag>",
     "source": "<URL lue pour vérifier>",
     "status": "draft"
   }

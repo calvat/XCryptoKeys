@@ -2,8 +2,8 @@
   {
     "index": 1,
     "long": "Series opener. The largest crypto heists, from The DAO in 2016 to Bybit in 2025 (about $1.5B), almost never broke the cryptography itself. What failed was one forgotten check, a reentrant call, an unchecked account, a stolen or leaked signer key, or a tampered user interface. Each post looks at one incident and explains, at the level of principle, what actually gave way rather than how much was taken.",
-    "tech": "Crypto #Hack Autopsy #1: From The DAO (2016) to Bybit (about $1.5B, 2025), the root cause is almost never broken math: a reentrant call, an unchecked account, a leaked signer key, a tampered UI. Daily autopsies of what actually failed. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #1: The biggest crypto heists rarely \"break\" cryptography. They exploit one forgotten check, one stolen key, one fake screen. One hack a day, explained: not how much was taken, but what failed. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #1: From The DAO (2016) to Bybit (about $1.5B, 2025), the root cause is almost never broken math: a reentrant call, an unchecked account, a leaked signer key, a tampered UI. Daily autopsies of what actually failed.",
+    "simple": "Crypto #Hack Autopsy #1: The biggest crypto heists rarely \"break\" cryptography. They exploit one forgotten check, one stolen key, one fake screen. One hack a day, explained: not how much was taken, but what failed.",
     "card": {
       "title": "Heists rarely break the cryptography",
       "sub": "They exploit one forgotten check, one stolen key or one fake screen."
@@ -14,8 +14,8 @@
   {
     "index": 2,
     "long": "The DAO, June 17, 2016: a reentrancy bug. Its split/withdraw logic made an external call that sent ETH before the sender's balance was zeroed. A malicious contract could therefore call back in before the books were updated, again and again, and about 3.64M ETH moved out. It is the textbook case of why state must be updated before value is sent out.",
-    "tech": "Crypto #Hack Autopsy #2: The DAO (June 17, 2016): a reentrancy bug. The split/withdraw logic made an external call before zeroing the sender's balance, so a malicious contract re-entered it again and again. About 3.64M ETH moved out. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #2: The DAO, June 17, 2016. Its withdraw function sent ETH before updating the user's balance. The attacker kept asking again mid-payment and drained about 3.6M ETH. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #2: The DAO (June 17, 2016): a reentrancy bug. The split/withdraw logic made an external call before zeroing the sender's balance, so a malicious contract re-entered it again and again. About 3.64M ETH moved out.",
+    "simple": "Crypto #Hack Autopsy #2: The DAO, June 17, 2016. Its withdraw function sent ETH before updating the user's balance. The attacker kept asking again mid-payment and drained about 3.6M ETH.",
     "card": {
       "big": "3.64M ETH",
       "title": "The DAO paid out before updating its books",
@@ -27,8 +27,8 @@
   {
     "index": 3,
     "long": "The DAO's split mechanism moved the drained ETH into a child DAO whose funds were locked for 28 days. That delay gave the Ethereum community a window: on July 20, 2016 it hard forked to return the funds. Those who rejected the fork kept running the original chain, which lives on as Ethereum Classic. The theft's aftermath split one blockchain into two.",
-    "tech": "Crypto #Hack Autopsy #3: The DAO's split mechanism moved the drained ETH into a child DAO with a 28-day withdrawal lock. Ethereum used that window to hard fork (July 20, 2016) and return the funds. The unforked chain lives on as Ethereum Classic. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #3: The DAO's stolen ETH sat in a \"child DAO\" locked for 28 days. That delay gave Ethereum time to hard fork on July 20, 2016 and undo the theft. Those who refused kept the old chain: Ethereum Classic. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #3: The DAO's split mechanism moved the drained ETH into a child DAO with a 28-day withdrawal lock. Ethereum used that window to hard fork (July 20, 2016) and return the funds. The unforked chain lives on as Ethereum Classic.",
+    "simple": "Crypto #Hack Autopsy #3: The DAO's stolen ETH sat in a \"child DAO\" locked for 28 days. That delay gave Ethereum time to hard fork on July 20, 2016 and undo the theft. Those who refused kept the old chain: Ethereum Classic.",
     "card": {
       "title": "A 28-day lock that bought Ethereum time",
       "sub": "It hard forked on July 20, 2016. The unforked chain lives on as Ethereum Classic."
@@ -39,8 +39,8 @@
   {
     "index": 4,
     "long": "Bitcoin's value overflow incident, August 2010 (CVE-2010-5139, block 74638). A transaction with two huge outputs overflowed the 64-bit check that sums outputs, so about 184 billion BTC appeared valid, created from nothing. Satoshi shipped a fix within hours; the patched client rejected the transaction and the honest chain overtook the bad one, orphaning it. A missing overflow check, not broken cryptography.",
-    "tech": "Crypto #Hack Autopsy #4: Value overflow incident (CVE-2010-5139), block 74638: two huge outputs overflowed the 64-bit sum check, so about 184 billion BTC looked valid. A patched client rejected it and the honest chain overtook the bad one. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #4: In August 2010, one Bitcoin transaction created about 184 billion BTC out of nothing. The code added up outputs without checking for overflow. Satoshi shipped a fix within hours and the bad block was orphaned. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #4: Value overflow incident (CVE-2010-5139), block 74638: two huge outputs overflowed the 64-bit sum check, so about 184 billion BTC looked valid. A patched client rejected it and the honest chain overtook the bad one.",
+    "simple": "Crypto #Hack Autopsy #4: In August 2010, one Bitcoin transaction created about 184 billion BTC out of nothing. The code added up outputs without checking for overflow. Satoshi shipped a fix within hours and the bad block was orphaned.",
     "card": {
       "big": "184B BTC",
       "title": "Bitcoin coins created from nothing",
@@ -52,8 +52,8 @@
   {
     "index": 5,
     "long": "Mt. Gox was not one hack but a long leak. According to a 2023 US DOJ indictment of two Russian nationals, attackers got into the server holding Mt. Gox's wallets around September 2011 and siphoned about 647,000 BTC through 2014, laundering it through accounts at other exchanges. The lesson: a compromised wallet server can bleed an exchange for years before anyone notices.",
-    "tech": "Crypto #Hack Autopsy #5: Mt. Gox wasn't one hack but a leak. Per a 2023 DOJ indictment, attackers got into the server holding Mt. Gox's wallets around Sept 2011 and siphoned about 647,000 BTC through 2014, laundered via accounts at other exchanges. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #5: Mt. Gox's slow bleed started in 2011. In 2023 the US DOJ charged two Russian nationals with hacking the exchange's wallet server and laundering about 647,000 stolen BTC. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #5: Mt. Gox wasn't one hack but a leak. Per a 2023 DOJ indictment, attackers got into the server holding Mt. Gox's wallets around Sept 2011 and siphoned about 647,000 BTC through 2014, laundered via accounts at other exchanges.",
+    "simple": "Crypto #Hack Autopsy #5: Mt. Gox's slow bleed started in 2011. In 2023 the US DOJ charged two Russian nationals with hacking the exchange's wallet server and laundering about 647,000 stolen BTC.",
     "card": {
       "big": "647,000 BTC",
       "title": "Mt. Gox bled for years, not one night",
@@ -65,8 +65,8 @@
   {
     "index": 6,
     "long": "Bitfinex, 2016: according to the US DOJ, a hacker breached the exchange's systems and initiated more than 2,000 unauthorized transactions, moving 119,754 BTC. In February 2022 the DOJ said agents had recovered more than 94,000 of those coins, worth over $3.6B at the time. Public blockchains keep a permanent record, so stolen coins remained traceable for years.",
-    "tech": "Crypto #Hack Autopsy #6: Bitfinex (2016): per the DOJ, a hacker breached the exchange's systems and initiated 2,000+ unauthorized transactions, moving 119,754 BTC. In Feb 2022 the DOJ said agents had recovered more than 94,000 of them. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #6: Bitfinex, 2016: 119,754 BTC stolen. Six years later the US recovered more than 94,000 of them, worth over $3.6B at the time. Blockchains never forget: the coins stayed traceable. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #6: Bitfinex (2016): per the DOJ, a hacker breached the exchange's systems and initiated 2,000+ unauthorized transactions, moving 119,754 BTC. In Feb 2022 the DOJ said agents had recovered more than 94,000 of them.",
+    "simple": "Crypto #Hack Autopsy #6: Bitfinex, 2016: 119,754 BTC stolen. Six years later the US recovered more than 94,000 of them, worth over $3.6B at the time. Blockchains never forget: the coins stayed traceable.",
     "card": {
       "big": "119,754 BTC",
       "title": "Stolen bitcoin stayed traceable for years",
@@ -78,8 +78,8 @@
   {
     "index": 7,
     "long": "Parity multisig, July 19, 2017. The wallets shared a library whose initWallet function had no 'already initialized' guard, and it was reachable through each wallet's fallback delegatecall. Calling it again simply set a new owner. An attacker did that on 3 wallets and took about 153,037 ETH. A setup function left callable after setup is an open door.",
-    "tech": "Crypto #Hack Autopsy #7: Parity multisig (July 19, 2017): initWallet in the shared library had no \"already initialized\" guard and was reachable through the wallet's fallback delegatecall. Re-init = new owner. About 153,037 ETH taken from 3 wallets. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #7: July 19, 2017: a setup function in Parity's multisig wallet was left open to anyone. An attacker called it on 3 wallets, made himself owner, and walked off with about 153,000 ETH. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #7: Parity multisig (July 19, 2017): initWallet in the shared library had no \"already initialized\" guard and was reachable through the wallet's fallback delegatecall. Re-init = new owner. About 153,037 ETH taken from 3 wallets.",
+    "simple": "Crypto #Hack Autopsy #7: July 19, 2017: a setup function in Parity's multisig wallet was left open to anyone. An attacker called it on 3 wallets, made himself owner, and walked off with about 153,000 ETH.",
     "card": {
       "title": "A setup function left open to anyone",
       "sub": "Parity's initWallet had no guard, so an attacker made himself owner of 3 wallets."
@@ -90,8 +90,8 @@
   {
     "index": 8,
     "long": "Parity, November 6, 2017. The fixed library deployed after the July hack was itself left with its owner uninitialized. A user known as 'devops199' called its init function, became owner, then called kill(), self-destructing the library. 587 wallets that depended on it lost their logic and 513,774.16 ETH was frozen, not stolen, and is still stuck today.",
-    "tech": "Crypto #Hack Autopsy #8: Parity, Nov 6, 2017: the fixed library from July was deployed with its owner uninitialized. \"devops199\" called init, became owner, then kill(). 587 wallets lost their logic; 513,774.16 ETH frozen. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #8: November 6, 2017: a user poking at Parity's wallet code became owner of the shared library, then hit its self-destruct. 587 wallets lost their code. About 513,774 ETH frozen, still stuck today. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #8: Parity, Nov 6, 2017: the fixed library from July was deployed with its owner uninitialized. \"devops199\" called init, became owner, then kill(). 587 wallets lost their logic; 513,774.16 ETH frozen.",
+    "simple": "Crypto #Hack Autopsy #8: November 6, 2017: a user poking at Parity's wallet code became owner of the shared library, then hit its self-destruct. 587 wallets lost their code. About 513,774 ETH frozen, still stuck today.",
     "card": {
       "big": "513,774 ETH",
       "title": "One user hit self-destruct on Parity",
@@ -103,8 +103,8 @@
   {
     "index": 9,
     "long": "Why one deleted contract froze 587 Parity wallets: to save fees, each wallet was a thin proxy that forwarded every call via delegatecall to one shared library contract. When that library self-destructed, the proxies pointed at empty code. The funds were intact but no logic remained to move them: frozen, not stolen. Shared code is also a shared single point of failure.",
-    "tech": "Crypto #Hack Autopsy #9: Parity wallets were thin proxies: each forwarded calls via delegatecall to one library contract. After the library self-destructed, the proxies pointed at empty code. Funds intact, logic gone: frozen, not stolen. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #9: Why did one deleted contract freeze 587 wallets? To save fees, every Parity wallet borrowed its logic from one shared library. Delete the library and the wallets can no longer do anything, not even send. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #9: Parity wallets were thin proxies: each forwarded calls via delegatecall to one library contract. After the library self-destructed, the proxies pointed at empty code. Funds intact, logic gone: frozen, not stolen.",
+    "simple": "Crypto #Hack Autopsy #9: Why did one deleted contract freeze 587 wallets? To save fees, every Parity wallet borrowed its logic from one shared library. Delete the library and the wallets can no longer do anything, not even send.",
     "card": {
       "title": "Shared code, shared point of failure",
       "sub": "Every Parity wallet borrowed logic from one library. Delete it and they go dead."
@@ -115,8 +115,8 @@
   {
     "index": 10,
     "long": "Coincheck, January 26, 2018: nearly all of its XEM sat in one internet-connected hot wallet protected by a single-signature key, even though NEM supports multisig. Attackers who obtained that key moved about 523M XEM (about $530M at the time). Coincheck later refunded users. One online key guarding half a billion dollars was the failure.",
-    "tech": "Crypto #Hack Autopsy #10: Coincheck (Jan 26, 2018) kept nearly all its XEM in one internet-connected hot wallet with a single-signature key, though NEM supports multisig. Attackers who took the key moved about 523M XEM. Coincheck later refunded users. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #10: Coincheck, January 2018: about 523M NEM (about $530M) stolen. The coins sat in a hot wallet, online, protected by a single key, with no multisig. One key, one breach, half a billion gone. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #10: Coincheck (Jan 26, 2018) kept nearly all its XEM in one internet-connected hot wallet with a single-signature key, though NEM supports multisig. Attackers who took the key moved about 523M XEM. Coincheck later refunded users.",
+    "simple": "Crypto #Hack Autopsy #10: Coincheck, January 2018: about 523M NEM (about $530M) stolen. The coins sat in a hot wallet, online, protected by a single key, with no multisig. One key, one breach, half a billion gone.",
     "card": {
       "big": "$530M",
       "title": "Half a billion behind one online key",
@@ -128,8 +128,8 @@
   {
     "index": 11,
     "long": "Lendf.Me, April 19, 2020. The imBTC token follows ERC-777, a standard that calls a hook on the sender during transfers, so a transfer can run code. The lending protocol updated balances only after the transfer, so that hook could re-enter mid-deposit and get deposits credited twice. About $25M was drained, then returned. Reentrancy can hide inside a token's own transfer logic.",
-    "tech": "Crypto #Hack Autopsy #11: Lendf.Me (April 19, 2020): imBTC is ERC-777, which calls a sender hook during transfers. The protocol updated balances after the transfer, so the hook re-entered and credited deposits twice. About $25M drained, then returned. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #11: Lendf.Me, April 2020: a token called imBTC can run code when it's transferred. The lending app didn't expect that, so the attacker re-entered mid-deposit and inflated his balance. About $25M, later returned. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #11: Lendf.Me (April 19, 2020): imBTC is ERC-777, which calls a sender hook during transfers. The protocol updated balances after the transfer, so the hook re-entered and credited deposits twice. About $25M drained, then returned.",
+    "simple": "Crypto #Hack Autopsy #11: Lendf.Me, April 2020: a token called imBTC can run code when it's transferred. The lending app didn't expect that, so the attacker re-entered mid-deposit and inflated his balance. About $25M, later returned.",
     "card": {
       "title": "A token that runs code when it moves",
       "sub": "imBTC's ERC-777 hook let the attacker re-enter Lendf.Me mid-deposit. About $25M."
@@ -140,8 +140,8 @@
   {
     "index": 12,
     "long": "Uranium Finance, April 2021, a fork of Uniswap V2. It changed fee scaling of balances to 10000 in one place but kept 1000 in the constant-product (k) safety check. The invariant became 100 times too loose, so swaps could take out far more than they put in, and about $50M was drained. Copying audited code and changing one constant inconsistently broke it.",
-    "tech": "Crypto #Hack Autopsy #12: Uranium (April 2021), a Uniswap V2 fork, scaled balances by 10000 for fees but kept 1000 in the constant-product (k) check. The invariant was off by 100x, so swaps could pull out far more than they put in. About $50M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #12: Uranium Finance, April 2021: a copied exchange code changed a number in one place but not in another. The safety check became 100 times too loose. About $50M drained. One typo. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #12: Uranium (April 2021), a Uniswap V2 fork, scaled balances by 10000 for fees but kept 1000 in the constant-product (k) check. The invariant was off by 100x, so swaps could pull out far more than they put in. About $50M.",
+    "simple": "Crypto #Hack Autopsy #12: Uranium Finance, April 2021: a copied exchange code changed a number in one place but not in another. The safety check became 100 times too loose. About $50M drained. One typo.",
     "card": {
       "big": "100 times",
       "title": "One constant changed, the other forgotten",
@@ -153,8 +153,8 @@
   {
     "index": 13,
     "long": "Poly Network, August 10, 2021: about $611M taken across several chains, at the time the largest DeFi hack ever. The flaw: a crafted cross-chain message made the bridge's manager contract call its own data contract and replace the 'keeper' public keys the bridge trusted. With his own key installed, the attacker could sign withdrawals. He later returned almost all the funds.",
-    "tech": "Crypto #Hack Autopsy #13: Poly Network (Aug 10, 2021): a crafted cross-chain message made the bridge's manager contract call its own data contract and replace the \"keeper\" public keys. With his key installed, the attacker signed withdrawals. About $611M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #13: Poly Network, August 2021: about $611M taken across chains, at the time the largest DeFi hack ever. Then the attacker gave almost all of it back. The flaw: a message could rewrite who the bridge trusted. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #13: Poly Network (Aug 10, 2021): a crafted cross-chain message made the bridge's manager contract call its own data contract and replace the \"keeper\" public keys. With his key installed, the attacker signed withdrawals. About $611M.",
+    "simple": "Crypto #Hack Autopsy #13: Poly Network, August 2021: about $611M taken across chains, at the time the largest DeFi hack ever. Then the attacker gave almost all of it back. The flaw: a message could rewrite who the bridge trusted.",
     "card": {
       "big": "$611M",
       "title": "A message rewrote who the bridge trusted",
@@ -166,8 +166,8 @@
   {
     "index": 14,
     "long": "Smart contract functions are identified by a 4-byte selector derived from a keccak hash of their name. Poly Network's bridge built calls from method names chosen by the user. The attacker found a harmless-looking name whose selector equals that of putCurEpochConPubKeyBytes, the function that resets the keeper keys. A selector collision: same 4-byte ID, very different door.",
-    "tech": "Crypto #Hack Autopsy #14: Poly Network: the bridge built a call from user-chosen method names. The attacker brute-forced a name whose 4-byte keccak selector equals putCurEpochConPubKeyBytes, the keeper-reset function. A selector collision. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #14: Smart contract functions are called by a 4-byte ID. In Poly Network, the attacker searched for a harmless-looking name whose ID matched a powerful admin function. Same ID, different door. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #14: Poly Network: the bridge built a call from user-chosen method names. The attacker brute-forced a name whose 4-byte keccak selector equals putCurEpochConPubKeyBytes, the keeper-reset function. A selector collision.",
+    "simple": "Crypto #Hack Autopsy #14: Smart contract functions are called by a 4-byte ID. In Poly Network, the attacker searched for a harmless-looking name whose ID matched a powerful admin function. Same ID, different door.",
     "card": {
       "title": "Same 4-byte ID, very different door",
       "sub": "A harmless-looking name had the same selector as the function resetting keeper keys."
@@ -178,8 +178,8 @@
   {
     "index": 15,
     "long": "BadgerDAO, December 2, 2021: the smart contracts were fine. A compromised Cloudflare API key let attackers inject JavaScript into the app's website. The script prompted users to sign approve() calls granting token permissions to an attacker address, later used to move funds with transferFrom. About $120M was drained. The weak point was the web front end, not the chain.",
-    "tech": "Crypto #Hack Autopsy #15: BadgerDAO (Dec 2, 2021): a compromised Cloudflare API key let attackers inject JavaScript into the app. It prompted users to sign approve() calls to an attacker address, later used to transferFrom about $120M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #15: BadgerDAO, Dec 2021: the contracts were fine. Attackers took over the website's Cloudflare account and slipped in a script that asked users for unlimited token permissions. About $120M drained. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #15: BadgerDAO (Dec 2, 2021): a compromised Cloudflare API key let attackers inject JavaScript into the app. It prompted users to sign approve() calls to an attacker address, later used to transferFrom about $120M.",
+    "simple": "Crypto #Hack Autopsy #15: BadgerDAO, Dec 2021: the contracts were fine. Attackers took over the website's Cloudflare account and slipped in a script that asked users for unlimited token permissions. About $120M drained.",
     "card": {
       "big": "$120M",
       "title": "The contracts were fine, the website wasn't",
@@ -191,8 +191,8 @@
   {
     "index": 16,
     "long": "Qubit's QBridge, January 2022. The ERC-20 deposit path was given the zero address as the token. A low-level transferFrom call to an address with no code returns success instead of failing, so the deposit event fired even though nothing was sent, and xETH was minted on BSC against it. About $80M. A deposit that silently did nothing was treated as real.",
-    "tech": "Crypto #Hack Autopsy #16: Qubit QBridge (Jan 2022): the ERC-20 deposit path was fed the zero address as token. A low-level transferFrom to an address with no code returns success, so the event fired and xETH was minted on BSC. About $80M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #16: Qubit, January 2022: the bridge believed deposits that never happened. A \"transfer\" from a non-existent token didn't fail, it just did nothing, and the bridge counted it as real. About $80M minted. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #16: Qubit QBridge (Jan 2022): the ERC-20 deposit path was fed the zero address as token. A low-level transferFrom to an address with no code returns success, so the event fired and xETH was minted on BSC. About $80M.",
+    "simple": "Crypto #Hack Autopsy #16: Qubit, January 2022: the bridge believed deposits that never happened. A \"transfer\" from a non-existent token didn't fail, it just did nothing, and the bridge counted it as real. About $80M minted.",
     "card": {
       "title": "A deposit that never actually happened",
       "sub": "Qubit's bridge counted a transfer that silently did nothing as real. About $80M."
@@ -203,8 +203,8 @@
   {
     "index": 17,
     "long": "Wormhole, February 2, 2022. Its verify_signatures used the deprecated load_instruction_at, which does not check that the account passed in is the real Instructions sysvar. Supplying a fake account let the secp256k1 signature checks be skipped, so 120,000 wETH was minted on Solana with no ETH behind it. One missing account check broke the bridge's proof of signatures.",
-    "tech": "Crypto #Hack Autopsy #17: Wormhole (Feb 2, 2022): verify_signatures used the deprecated load_instruction_at, which doesn't check that the account passed is the real Instructions sysvar. A fake one skipped secp256k1 checks: 120,000 wETH minted. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #17: Wormhole, Feb 2022: the bridge checked signatures using an old function that didn't confirm where its data came from. The attacker fed it fake proof and minted 120,000 wETH on Solana with no ETH behind it. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #17: Wormhole (Feb 2, 2022): verify_signatures used the deprecated load_instruction_at, which doesn't check that the account passed is the real Instructions sysvar. A fake one skipped secp256k1 checks: 120,000 wETH minted.",
+    "simple": "Crypto #Hack Autopsy #17: Wormhole, Feb 2022: the bridge checked signatures using an old function that didn't confirm where its data came from. The attacker fed it fake proof and minted 120,000 wETH on Solana with no ETH behind it.",
     "card": {
       "big": "120,000 wETH",
       "title": "One missing account check broke Wormhole",
@@ -216,8 +216,8 @@
   {
     "index": 18,
     "long": "A bridge mint without a matching lock breaks the 1:1 peg. After Wormhole's exploit, wETH on Solana outnumbered the ETH held on Ethereum by 120,000, so the bridged tokens were no longer fully backed. Jump Crypto, a Wormhole backer, deposited 120,000 ETH of its own to restore the backing. Users were made whole by a private actor, not by the protocol.",
-    "tech": "Crypto #Hack Autopsy #18: A bridge mint without a lock breaks the 1:1 peg: Solana wETH outnumbered ETH held on Ethereum by 120,000. Jump Crypto, a Wormhole backer, deposited 120,000 ETH to re-collateralize it. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #18: After Wormhole's 120,000 wETH were minted from nothing, the bridge's tokens were no longer fully backed. Investor Jump Crypto put in 120,000 ETH of its own to restore the backing. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #18: A bridge mint without a lock breaks the 1:1 peg: Solana wETH outnumbered ETH held on Ethereum by 120,000. Jump Crypto, a Wormhole backer, deposited 120,000 ETH to re-collateralize it.",
+    "simple": "Crypto #Hack Autopsy #18: After Wormhole's 120,000 wETH were minted from nothing, the bridge's tokens were no longer fully backed. Investor Jump Crypto put in 120,000 ETH of its own to restore the backing.",
     "card": {
       "title": "A backer refilled the hole itself",
       "sub": "Jump Crypto deposited 120,000 ETH of its own to restore Wormhole's backing."
@@ -228,8 +228,8 @@
   {
     "index": 19,
     "long": "Ronin bridge, March 23, 2022. Withdrawals needed 5 of 9 validator signatures, but 4 validator keys were run by Sky Mavis and 1 by Axie DAO, so one company could almost sign alone. The attacker obtained all 5 needed keys and withdrew 173,600 ETH and 25.5M USDC. The code had no bug; it did exactly what 5 valid signatures told it to do.",
-    "tech": "Crypto #Hack Autopsy #19: Ronin (Mar 23, 2022): 5-of-9 validator threshold. 4 keys were run by Sky Mavis, 1 by Axie DAO: one company could almost sign alone. The attacker took all 5 and withdrew 173,600 ETH and 25.5M USDC. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #19: Ronin bridge, March 2022: withdrawals needed approval from 5 of 9 validators. The attacker got 5 keys. No bug in the code: it did exactly what 5 signatures told it to. 173,600 ETH + 25.5M USDC gone. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #19: Ronin (Mar 23, 2022): 5-of-9 validator threshold. 4 keys were run by Sky Mavis, 1 by Axie DAO: one company could almost sign alone. The attacker took all 5 and withdrew 173,600 ETH and 25.5M USDC.",
+    "simple": "Crypto #Hack Autopsy #19: Ronin bridge, March 2022: withdrawals needed approval from 5 of 9 validators. The attacker got 5 keys. No bug in the code: it did exactly what 5 signatures told it to. 173,600 ETH + 25.5M USDC gone.",
     "card": {
       "big": "5 of 9",
       "title": "Ronin's code did exactly what it was told",
@@ -241,8 +241,8 @@
   {
     "index": 20,
     "long": "Ronin's drain was two transactions on March 23, 2022, and it was only discovered on March 29, six days later. The bridge's reserves had just been emptied of hundreds of millions, yet no alert on bridge outflows fired. Missing monitoring turned a theft into a week-long head start for the attacker.",
-    "tech": "Crypto #Hack Autopsy #20: Ronin's drain was two transactions on Mar 23, 2022, discovered Mar 29. Six days with no alerting on bridge outflows, even though the bridge's reserves had just been emptied. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #20: The Ronin theft happened on March 23, 2022. Nobody noticed until March 29, six days later. Hundreds of millions left the bridge and no alarm went off. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #20: Ronin's drain was two transactions on Mar 23, 2022, discovered Mar 29. Six days with no alerting on bridge outflows, even though the bridge's reserves had just been emptied.",
+    "simple": "Crypto #Hack Autopsy #20: The Ronin theft happened on March 23, 2022. Nobody noticed until March 29, six days later. Hundreds of millions left the bridge and no alarm went off.",
     "card": {
       "title": "No alarm went off at Ronin",
       "sub": "Drained on March 23, 2022, the bridge's loss was only discovered on March 29."
@@ -253,8 +253,8 @@
   {
     "index": 21,
     "long": "How Ronin's attacker got a 5th key: in November 2021, Axie DAO allowlisted Sky Mavis to sign on its behalf, to handle load for a free-transaction program. The program stopped in December 2021, but the permission was never revoked. The attacker used Sky Mavis's gas-free RPC node as a backdoor to obtain the Axie DAO signature. A forgotten temporary permission completed the quorum.",
-    "tech": "Crypto #Hack Autopsy #21: Ronin's 5th signature: Axie DAO had allowlisted Sky Mavis to sign for it (Nov 2021) for a free-transaction program. Stopped in Dec, never revoked. The attacker used the gas-free RPC node as a backdoor to get it. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #21: How did Ronin's attacker get a 5th key? In Nov 2021, Axie DAO let Sky Mavis sign on its behalf to ease traffic. The program ended in December, but the permission was never removed. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #21: Ronin's 5th signature: Axie DAO had allowlisted Sky Mavis to sign for it (Nov 2021) for a free-transaction program. Stopped in Dec, never revoked. The attacker used the gas-free RPC node as a backdoor to get it.",
+    "simple": "Crypto #Hack Autopsy #21: How did Ronin's attacker get a 5th key? In Nov 2021, Axie DAO let Sky Mavis sign on its behalf to ease traffic. The program ended in December, but the permission was never removed.",
     "card": {
       "title": "A temporary permission never revoked",
       "sub": "Axie DAO let Sky Mavis sign for it. The program ended, the access stayed."
@@ -265,8 +265,8 @@
   {
     "index": 22,
     "long": "Ronin's entry point was a person, not code: spear-phishing compromised a Sky Mavis employee, giving the attacker access to IT infrastructure and the validator nodes. In April 2022 the FBI attributed the theft to North Korea's Lazarus Group, and the US Treasury sanctioned the address that received the funds. Social engineering remains a top route to signer keys.",
-    "tech": "Crypto #Hack Autopsy #22: Ronin: spear-phishing compromised a Sky Mavis employee, giving access to IT infrastructure and the validator nodes. The FBI named Lazarus Group (DPRK) in April 2022 and Treasury sanctioned the receiving address. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #22: Ronin's entry point was a person, not code: a Sky Mavis employee was hit by targeted phishing on social channels. In April 2022 the FBI attributed the theft to North Korea's Lazarus Group. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #22: Ronin: spear-phishing compromised a Sky Mavis employee, giving access to IT infrastructure and the validator nodes. The FBI named Lazarus Group (DPRK) in April 2022 and Treasury sanctioned the receiving address.",
+    "simple": "Crypto #Hack Autopsy #22: Ronin's entry point was a person, not code: a Sky Mavis employee was hit by targeted phishing on social channels. In April 2022 the FBI attributed the theft to North Korea's Lazarus Group.",
     "card": {
       "title": "Ronin fell to a phished employee",
       "sub": "The FBI attributed the theft to North Korea's Lazarus Group."
@@ -277,8 +277,8 @@
   {
     "index": 23,
     "long": "Cashio, a Solana stablecoin, March 23, 2022. Its mint path checked that collateral accounts looked right but did not validate the mint field of the Saber LP collateral account, so fake accounts made by the attacker passed the chain of checks. CASH was minted against worthless collateral, an 'infinite mint', and about $48M-52M was drained. Checking shape is not checking authenticity.",
-    "tech": "Crypto #Hack Autopsy #23: Cashio (Solana, Mar 23, 2022): the mint path didn't validate the mint field of the Saber LP collateral account, so attacker-made fake accounts passed the chain of checks. CASH minted from nothing; about $48M-52M drained. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #23: Cashio, March 2022: a stablecoin minted new coins against collateral. It checked the collateral looked right, but not that it was real. Fake collateral in, real coins out: an \"infinite mint\" of about $50M. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #23: Cashio (Solana, Mar 23, 2022): the mint path didn't validate the mint field of the Saber LP collateral account, so attacker-made fake accounts passed the chain of checks. CASH minted from nothing; about $48M-52M drained.",
+    "simple": "Crypto #Hack Autopsy #23: Cashio, March 2022: a stablecoin minted new coins against collateral. It checked the collateral looked right, but not that it was real. Fake collateral in, real coins out: an \"infinite mint\" of about $50M.",
     "card": {
       "big": "$48M-52M",
       "title": "Collateral that only looked right",
@@ -290,8 +290,8 @@
   {
     "index": 24,
     "long": "Beanstalk, April 17, 2022: a governance attack. A flash loan of over $1B bought deposits that counted as voting power within the same transaction, reaching the 2/3 needed. The attacker then used emergencyCommit to execute BIP-18, a proposal submitted a day earlier that sent the treasury to himself. Losses were about $182M. Borrowed votes for a few seconds were enough.",
-    "tech": "Crypto #Hack Autopsy #24: Beanstalk (Apr 17, 2022): a $1B+ flash loan bought deposits that counted as votes in the same transaction, reaching 2/3. emergencyCommit then executed BIP-18, proposed a day earlier, draining about $182M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #24: Beanstalk, April 2022: the attacker borrowed over $1B for a few seconds, used it to win a governance vote, and passed a proposal sending the treasury to himself. Losses: about $182M. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #24: Beanstalk (Apr 17, 2022): a $1B+ flash loan bought deposits that counted as votes in the same transaction, reaching 2/3. emergencyCommit then executed BIP-18, proposed a day earlier, draining about $182M.",
+    "simple": "Crypto #Hack Autopsy #24: Beanstalk, April 2022: the attacker borrowed over $1B for a few seconds, used it to win a governance vote, and passed a proposal sending the treasury to himself. Losses: about $182M.",
     "card": {
       "big": "$182M",
       "title": "Borrowed votes, stolen treasury",
@@ -303,8 +303,8 @@
   {
     "index": 25,
     "long": "Beanstalk's governance had a 1-day delay before emergency execution, but no snapshot of past voting power, so flash-borrowed power counted. The attacker filed two proposals: BIP-18, which drained the protocol, and BIP-19, which sent $250k in BEAN to a Ukraine donation address. He netted about $77M in non-Bean assets; total protocol losses were about $182M.",
-    "tech": "Crypto #Hack Autopsy #25: Beanstalk's governance had a 1-day delay before emergency execution, but no snapshot of past voting power. Flash-borrowed power counted. The attacker netted about $77M in non-Bean assets; total losses about $182M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #25: Beanstalk's attacker filed two proposals: BIP-18, which drained the protocol, and BIP-19, which sent $250k in BEAN to a Ukraine donation address. He kept about $77M. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #25: Beanstalk's governance had a 1-day delay before emergency execution, but no snapshot of past voting power. Flash-borrowed power counted. The attacker netted about $77M in non-Bean assets; total losses about $182M.",
+    "simple": "Crypto #Hack Autopsy #25: Beanstalk's attacker filed two proposals: BIP-18, which drained the protocol, and BIP-19, which sent $250k in BEAN to a Ukraine donation address. He kept about $77M.",
     "card": {
       "title": "A heist with a donation attached",
       "sub": "BIP-19 sent $250k in BEAN to Ukraine while BIP-18 drained Beanstalk."
@@ -315,8 +315,8 @@
   {
     "index": 26,
     "long": "Harmony's Horizon bridge, June 23, 2022. Harmony says the attacker compromised at least 2 of the bridge validators' private keys, likely after phishing a developer into installing malware, and used them to move 14 bridged assets on Ethereum plus BNB on BSC. Having only a couple of keys between attackers and the whole bridge was the weakness.",
-    "tech": "Crypto #Hack Autopsy #26: Horizon bridge (June 23, 2022): Harmony says the attacker compromised at least 2 bridge validator private keys, likely after phishing a developer, and used them to move 14 assets on Ethereum plus BNB on BSC. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #26: Harmony's Horizon bridge, June 23, 2022: per Harmony, the attacker compromised at least 2 of the validator keys that approved withdrawals, and that was enough to empty the bridge. Steal a couple of keys, own the bridge. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #26: Horizon bridge (June 23, 2022): Harmony says the attacker compromised at least 2 bridge validator private keys, likely after phishing a developer, and used them to move 14 assets on Ethereum plus BNB on BSC.",
+    "simple": "Crypto #Hack Autopsy #26: Harmony's Horizon bridge, June 23, 2022: per Harmony, the attacker compromised at least 2 of the validator keys that approved withdrawals, and that was enough to empty the bridge. Steal a couple of keys, own the bridge.",
     "card": {
       "title": "Two keys between attackers and a bridge",
       "sub": "Harmony says the attacker compromised at least 2 validator keys, likely via phishing."
@@ -327,8 +327,8 @@
   {
     "index": 27,
     "long": "Nomad bridge, August 1, 2022. A routine upgrade initialized the zero root (0x00) as a trusted value. Messages that were never proven map to that default, so any withdrawal passed the check in process(): every message counted as valid, even ones never sent. Improper initialization led to about $190M lost.",
-    "tech": "Crypto #Hack Autopsy #27: Nomad (Aug 1, 2022): an upgrade initialized the zero root (0x00) as trusted. Unproven messages map to that default, so any withdrawal passed process(). Improper initialization, about $190M lost. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #27: Nomad bridge, Aug 2022: a routine upgrade accidentally marked \"empty\" as a trusted value. Result: every message counted as valid, even ones never sent. About $190M drained. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #27: Nomad (Aug 1, 2022): an upgrade initialized the zero root (0x00) as trusted. Unproven messages map to that default, so any withdrawal passed process(). Improper initialization, about $190M lost.",
+    "simple": "Crypto #Hack Autopsy #27: Nomad bridge, Aug 2022: a routine upgrade accidentally marked \"empty\" as a trusted value. Result: every message counted as valid, even ones never sent. About $190M drained.",
     "card": {
       "big": "$190M",
       "title": "When empty became a trusted value",
@@ -340,8 +340,8 @@
   {
     "index": 28,
     "long": "Nomad became the first 'crowd-sourced' hack: since any message passed, copying an earlier attack transaction and swapping in one's own address worked, no skill needed. PeckShield counted more than 300 addresses taking funds over about an hour; 41 of them took about $152M, about 80% of the total. At least 6 white hats took about $8.2M intending to return it.",
-    "tech": "Crypto #Hack Autopsy #28: Nomad: since any message passed, a replayed calldata with a swapped recipient worked. PeckShield counted 300+ addresses; 41 took about $152M (about 80%). At least 6 white hats took about $8.2M to return. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #28: Nomad was the first \"crowd-sourced\" hack. No skill needed: people copied the first attack, put in their own address, and resent it. Over 300 addresses joined within about an hour. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #28: Nomad: since any message passed, a replayed calldata with a swapped recipient worked. PeckShield counted 300+ addresses; 41 took about $152M (about 80%). At least 6 white hats took about $8.2M to return.",
+    "simple": "Crypto #Hack Autopsy #28: Nomad was the first \"crowd-sourced\" hack. No skill needed: people copied the first attack, put in their own address, and resent it. Over 300 addresses joined within about an hour.",
     "card": {
       "title": "The first crowd-sourced hack",
       "sub": "Anyone could copy the attack transaction, swap in their own address and resend it."
@@ -352,8 +352,8 @@
   {
     "index": 29,
     "long": "Wintermute, September 20, 2022: about $160M lost. An admin hot wallet used a vanity address starting with 0x0000000, generated with a tool called Profanity. Days earlier, 1inch had shown that Profanity keys can be brute-forced back from the public key. Weak key generation, not a contract bug, exposed the wallet.",
-    "tech": "Crypto #Hack Autopsy #29: Wintermute (Sept 20, 2022): an admin hot wallet with a 0x0000000 vanity address from Profanity. Days earlier, 1inch had shown Profanity keys can be brute-forced back from the public key. About $160M taken. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #29: Wintermute, Sept 2022: about $160M lost. Its admin wallet had a \"vanity\" address made with a tool called Profanity. That tool's randomness was weak, so the private key could be recomputed. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #29: Wintermute (Sept 20, 2022): an admin hot wallet with a 0x0000000 vanity address from Profanity. Days earlier, 1inch had shown Profanity keys can be brute-forced back from the public key. About $160M taken.",
+    "simple": "Crypto #Hack Autopsy #29: Wintermute, Sept 2022: about $160M lost. Its admin wallet had a \"vanity\" address made with a tool called Profanity. That tool's randomness was weak, so the private key could be recomputed.",
     "card": {
       "big": "$160M",
       "title": "A vanity address with a guessable key",
@@ -365,8 +365,8 @@
   {
     "index": 30,
     "long": "Why Profanity keys were recoverable: a private key should come from a number too large to guess, but Profanity seeded its search with only 32 random bits, about 4.3 billion possible seeds, then derived candidates with no one-way step. Small enough for an attacker to precompute every seed and match the result to a known vanity public key, recovering its private key.",
-    "tech": "Crypto #Hack Autopsy #30: Profanity seeded its key search with only 32 random bits (about 4.3B seeds), then stepped with no one-way function. Precompute all 2^32 seed keys, match them against a vanity public key, recover the private key. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #30: A private key should come from a number so big no one can guess it. Profanity started from a seed of only about 4 billion options, small enough for an attacker to precompute every one of them. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #30: Profanity seeded its key search with only 32 random bits (about 4.3B seeds), then stepped with no one-way function. Precompute all 2^32 seed keys, match them against a vanity public key, recover the private key.",
+    "simple": "Crypto #Hack Autopsy #30: A private key should come from a number so big no one can guess it. Profanity started from a seed of only about 4 billion options, small enough for an attacker to precompute every one of them.",
     "card": {
       "big": "32 random bits",
       "title": "Why Profanity keys could be recomputed",
@@ -378,8 +378,8 @@
   {
     "index": 31,
     "long": "BNB Chain's BSC Token Hub bridge, October 6, 2022. A bug in IAVL Merkle proof verification let the attacker forge a proof for a fake cross-chain message and mint 2M BNB. Validators paused the whole chain, so only part of it, about $100M+, left to other chains before it stopped. A flawed proof check minted value from nothing.",
-    "tech": "Crypto #Hack Autopsy #31: BSC Token Hub (Oct 6, 2022): a bug in IAVL Merkle proof verification let the attacker forge a proof for a fake cross-chain message and mint 2M BNB. The chain was paused; about $100M+ left before it stopped. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #31: BNB Chain bridge, Oct 2022: the attacker forged a proof and minted 2M BNB. Validators halted the whole chain, so only a part, about $100M, got out to other chains. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #31: BSC Token Hub (Oct 6, 2022): a bug in IAVL Merkle proof verification let the attacker forge a proof for a fake cross-chain message and mint 2M BNB. The chain was paused; about $100M+ left before it stopped.",
+    "simple": "Crypto #Hack Autopsy #31: BNB Chain bridge, Oct 2022: the attacker forged a proof and minted 2M BNB. Validators halted the whole chain, so only a part, about $100M, got out to other chains.",
     "card": {
       "big": "2M BNB",
       "title": "A forged proof minted value from nothing",
@@ -391,8 +391,8 @@
   {
     "index": 32,
     "long": "Mango Markets, October 11, 2022: price-oracle manipulation, no code bug. The spot price of MNGO, thinly traded, was pushed up sharply, marking a large MNGO-PERP position deep in profit. That unrealized profit was then used as collateral to borrow about $110M. If collateral is priced from thin markets, its value can be manufactured.",
-    "tech": "Crypto #Hack Autopsy #32: Mango Markets (Oct 11, 2022): price-oracle manipulation. Spot MNGO on thin markets was pushed up sharply, marking a large MNGO-PERP position deep in profit; that unrealized PnL backed about $110M of borrows. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #32: Mango Markets, Oct 2022: no code bug at all. The attacker pumped the price of a thinly traded token, used his now \"valuable\" position as collateral, and borrowed about $110M. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #32: Mango Markets (Oct 11, 2022): price-oracle manipulation. Spot MNGO on thin markets was pushed up sharply, marking a large MNGO-PERP position deep in profit; that unrealized PnL backed about $110M of borrows.",
+    "simple": "Crypto #Hack Autopsy #32: Mango Markets, Oct 2022: no code bug at all. The attacker pumped the price of a thinly traded token, used his now \"valuable\" position as collateral, and borrowed about $110M.",
     "card": {
       "title": "Collateral priced from a thin market",
       "sub": "Mango's attacker pumped MNGO, then borrowed about $110M against paper profit."
@@ -403,8 +403,8 @@
   {
     "index": 33,
     "long": "Euler Finance, March 13, 2023. Its donateToReserves() function let users donate funds to the protocol without the checkLiquidity() health check that other actions ran. Combining a flash loan and a leveraged position, the attacker made his own position insolvent on purpose and then liquidated it himself at a discount. About $197M. One function skipped one check.",
-    "tech": "Crypto #Hack Autopsy #33: Euler (Mar 13, 2023): donateToReserves() skipped the checkLiquidity() health check. Flash loan, leveraged position, donate eTokens to go insolvent, self-liquidate at a discount. About $197M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #33: Euler Finance, March 2023: a \"donate\" function let users give funds to the protocol without checking if they still had enough collateral. The attacker made himself insolvent on purpose, then cashed in. About $197M. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #33: Euler (Mar 13, 2023): donateToReserves() skipped the checkLiquidity() health check. Flash loan, leveraged position, donate eTokens to go insolvent, self-liquidate at a discount. About $197M.",
+    "simple": "Crypto #Hack Autopsy #33: Euler Finance, March 2023: a \"donate\" function let users give funds to the protocol without checking if they still had enough collateral. The attacker made himself insolvent on purpose, then cashed in. About $197M.",
     "card": {
       "big": "$197M",
       "title": "One function skipped one check",
@@ -416,8 +416,8 @@
   {
     "index": 34,
     "long": "The Euler story ended unusually. After weeks of on-chain messages with the team, the exploiter returned funds in tranches over March-April 2023; a final $31M in early April marked the return of all 'recoverable funds', and Euler then opened redemptions for users. A rare case where nearly everything came back.",
-    "tech": "Crypto #Hack Autopsy #34: Euler's exploiter returned funds in tranches over March-April 2023; a final $31M in early April marked the end of \"recoverable funds\", and Euler then opened redemptions for users. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #34: The Euler story ended oddly: after weeks of on-chain messages with the team, the attacker returned the recoverable funds. A rare case where nearly everything came back. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #34: Euler's exploiter returned funds in tranches over March-April 2023; a final $31M in early April marked the end of \"recoverable funds\", and Euler then opened redemptions for users.",
+    "simple": "Crypto #Hack Autopsy #34: The Euler story ended oddly: after weeks of on-chain messages with the team, the attacker returned the recoverable funds. A rare case where nearly everything came back.",
     "card": {
       "title": "A rare case where funds came back",
       "sub": "After weeks of on-chain messages, Euler's exploiter returned all recoverable funds."
@@ -428,8 +428,8 @@
   {
     "index": 35,
     "long": "Curve, July 30, 2023. The pools' source code used @nonreentrant locks, but Vyper compiler versions 0.2.15, 0.2.16 and 0.3.0 compiled those locks wrongly. A raw_call sending ETH let attackers re-enter between removing and adding liquidity. Pools hit included pETH, msETH, alETH and CRV/ETH, about $60M+ in total. The bug was in the compiler, not the contract source.",
-    "tech": "Crypto #Hack Autopsy #35: Curve (July 30, 2023): Vyper 0.2.15, 0.2.16 and 0.3.0 compiled @nonreentrant locks wrongly. A raw_call sending ETH let attackers re-enter between remove and add liquidity. Hit: pETH, msETH, alETH and CRV/ETH pools. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #35: Curve, July 2023: the pools' code had a lock against re-entering mid-action. But the compiler that turned it into bytecode had a bug that broke the lock. Several pools drained, about $60M+. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #35: Curve (July 30, 2023): Vyper 0.2.15, 0.2.16 and 0.3.0 compiled @nonreentrant locks wrongly. A raw_call sending ETH let attackers re-enter between remove and add liquidity. Hit: pETH, msETH, alETH and CRV/ETH pools.",
+    "simple": "Crypto #Hack Autopsy #35: Curve, July 2023: the pools' code had a lock against re-entering mid-action. But the compiler that turned it into bytecode had a bug that broke the lock. Several pools drained, about $60M+.",
     "card": {
       "title": "The compiler broke the lock",
       "sub": "Vyper 0.2.15, 0.2.16 and 0.3.0 miscompiled Curve's reentrancy locks. About $60M+."
@@ -440,8 +440,8 @@
   {
     "index": 36,
     "long": "The Curve lesson: audits review source code, not the bytecode a compiler produces. The Vyper reentrancy bug came in through one pull request and was fixed in 0.3.1 almost incidentally, with no advisory issued. Contracts compiled with the 3 affected versions kept shipping a broken lock without anyone knowing. The toolchain is part of the attack surface.",
-    "tech": "Crypto #Hack Autopsy #36: The Vyper reentrancy bug came in via one PR and was fixed in 0.3.1 almost incidentally, with no advisory. Contracts compiled with the 3 bad versions kept shipping a broken lock. Audits review source, not bytecode. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #36: The Curve hack's lesson: you can audit the code and still be wrong, if the tool that compiles it is broken. The bug had even been fixed in a later version, by accident, without anyone flagging it. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #36: The Vyper reentrancy bug came in via one PR and was fixed in 0.3.1 almost incidentally, with no advisory. Contracts compiled with the 3 bad versions kept shipping a broken lock. Audits review source, not bytecode.",
+    "simple": "Crypto #Hack Autopsy #36: The Curve hack's lesson: you can audit the code and still be wrong, if the tool that compiles it is broken. The bug had even been fixed in a later version, by accident, without anyone flagging it.",
     "card": {
       "title": "Audits read source, not bytecode",
       "sub": "The Vyper bug was fixed almost by accident, with no advisory issued."
@@ -452,8 +452,8 @@
   {
     "index": 37,
     "long": "Ledger Connect Kit, December 14, 2023: a supply-chain attack. A former Ledger employee was phished, and the attacker used that npm access to publish malicious versions of a code library used by many crypto apps. Dapps that loaded the kit from a CDN served a wallet drainer to users for a few hours. About $600K was stolen.",
-    "tech": "Crypto #Hack Autopsy #37: Ledger Connect Kit (Dec 14, 2023): a phished ex-employee's npm access was used to publish malicious versions. Dapps that loaded the kit from a CDN served a wallet drainer for a few hours. About $600K stolen. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #37: Ledger, Dec 14, 2023: a former employee was phished, and the attacker used the access to publish a poisoned version of a code library used by many crypto apps. Users saw a drainer. About $600K lost. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #37: Ledger Connect Kit (Dec 14, 2023): a phished ex-employee's npm access was used to publish malicious versions. Dapps that loaded the kit from a CDN served a wallet drainer for a few hours. About $600K stolen.",
+    "simple": "Crypto #Hack Autopsy #37: Ledger, Dec 14, 2023: a former employee was phished, and the attacker used the access to publish a poisoned version of a code library used by many crypto apps. Users saw a drainer. About $600K lost.",
     "card": {
       "big": "$600K",
       "title": "A poisoned library served a drainer",
@@ -465,8 +465,8 @@
   {
     "index": 38,
     "long": "Orbit Bridge, New Year's Eve 2023 (about 21:00 UTC): about $81.5M in ETH, WBTC, USDT, USDC and DAI was withdrawn from its Ethereum vault. Orbit's official statement said it was neither a smart contract vulnerability nor theft of validator keys, and left the cause under investigation. Not every heist comes with a clear root cause.",
-    "tech": "Crypto #Hack Autopsy #38: Orbit Bridge (Dec 31, 2023 ≈21:00 UTC): ≈$81.5M in ETH, WBTC, USDT, USDC and DAI withdrawn from its Ethereum vault. Orbit's statement: not a contract vulnerability, not validator key theft; investigation ongoing. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #38: Orbit Bridge, New Year's Eve 2023: about $81.5M in 5 assets left its Ethereum vault. The odd part: Orbit says it was neither a smart-contract bug nor a stolen validator key, and left the cause under investigation. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #38: Orbit Bridge (Dec 31, 2023 ≈21:00 UTC): ≈$81.5M in ETH, WBTC, USDT, USDC and DAI withdrawn from its Ethereum vault. Orbit's statement: not a contract vulnerability, not validator key theft; investigation ongoing.",
+    "simple": "Crypto #Hack Autopsy #38: Orbit Bridge, New Year's Eve 2023: about $81.5M in 5 assets left its Ethereum vault. The odd part: Orbit says it was neither a smart-contract bug nor a stolen validator key, and left the cause under investigation.",
     "card": {
       "big": "$81.5M",
       "title": "A heist with no clear root cause",
@@ -478,8 +478,8 @@
   {
     "index": 39,
     "long": "DMM Bitcoin, May 31, 2024: 4,502.9 BTC (about $308M) stolen. Per the FBI, TraderTraitor, a North Korean (DPRK) actor, posed as a LinkedIn recruiter and sent an employee of Ginco, DMM's wallet provider, a malicious Python script disguised as a pre-employment coding test, then hijacked a legitimate transaction request. A job offer was the entry point.",
-    "tech": "Crypto #Hack Autopsy #39: DMM Bitcoin (May 31, 2024): FBI says TraderTraitor (DPRK) posed as a recruiter and sent a Ginco employee a malicious Python script as a pre-employment test, then hijacked a legit transaction request. 4,502.9 BTC. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #39: DMM Bitcoin, May 2024: 4,502.9 BTC (about $308M) stolen. Per the FBI, it began with a fake LinkedIn recruiter sending a \"coding test\" to an employee of DMM's wallet provider. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #39: DMM Bitcoin (May 31, 2024): FBI says TraderTraitor (DPRK) posed as a recruiter and sent a Ginco employee a malicious Python script as a pre-employment test, then hijacked a legit transaction request. 4,502.9 BTC.",
+    "simple": "Crypto #Hack Autopsy #39: DMM Bitcoin, May 2024: 4,502.9 BTC (about $308M) stolen. Per the FBI, it began with a fake LinkedIn recruiter sending a \"coding test\" to an employee of DMM's wallet provider.",
     "card": {
       "big": "4,502.9 BTC",
       "title": "A fake job offer was the way in",
@@ -491,8 +491,8 @@
   {
     "index": 40,
     "long": "WazirX, July 18, 2024: over $230M taken from a Gnosis Safe multisig that needed 3 WazirX signers plus 1 from custody partner Liminal. Per WazirX, the signers approved what looked like a normal transaction, but the payload actually signed differed from what Liminal's interface showed and handed control of the wallet to the attacker.",
-    "tech": "Crypto #Hack Autopsy #40: WazirX (July 18, 2024): a Gnosis Safe needing 3 WazirX signers plus 1 from custody partner Liminal. WazirX says the signed payload differed from what Liminal's interface showed and gave control to the attacker. Over $230M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #40: WazirX, July 18, 2024: over $230M taken from a multisig wallet. The signers approved what looked like a normal transaction. Per WazirX, what they really signed handed the wallet's control to the attacker. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #40: WazirX (July 18, 2024): a Gnosis Safe needing 3 WazirX signers plus 1 from custody partner Liminal. WazirX says the signed payload differed from what Liminal's interface showed and gave control to the attacker. Over $230M.",
+    "simple": "Crypto #Hack Autopsy #40: WazirX, July 18, 2024: over $230M taken from a multisig wallet. The signers approved what looked like a normal transaction. Per WazirX, what they really signed handed the wallet's control to the attacker.",
     "card": {
       "title": "The payload signed was not the one shown",
       "sub": "Per WazirX, what its multisig signers approved handed control to the attacker."
@@ -503,8 +503,8 @@
   {
     "index": 41,
     "long": "Radiant Capital, October 16, 2024: a 3-of-11 multisig on Arbitrum. Malware on 3 developers' computers showed normal Safe transaction data on screen while sending a malicious one to their hardware wallets, and faked an error to get them to sign again. 3 blind-signed approvals for transferOwnership of the lending pool provider were enough. About $50M.",
-    "tech": "Crypto #Hack Autopsy #41: Radiant (Oct 16, 2024): 3/11 multisig on Arbitrum. Malware showed benign Safe data, faked an error to get re-signs, and collected 3 blind-signed approvals for transferOwnership of the lending pool provider. About $50M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #41: Radiant Capital, Oct 2024: malware on 3 developers' computers showed a normal transaction on screen while sending a malicious one to their hardware wallets. 3 signatures was all it took. About $50M. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #41: Radiant (Oct 16, 2024): 3/11 multisig on Arbitrum. Malware showed benign Safe data, faked an error to get re-signs, and collected 3 blind-signed approvals for transferOwnership of the lending pool provider. About $50M.",
+    "simple": "Crypto #Hack Autopsy #41: Radiant Capital, Oct 2024: malware on 3 developers' computers showed a normal transaction on screen while sending a malicious one to their hardware wallets. 3 signatures was all it took. About $50M.",
     "card": {
       "big": "3-of-11",
       "title": "Malware swapped what signers saw",
@@ -516,8 +516,8 @@
   {
     "index": 42,
     "long": "Bybit, February 21, 2025: about 401,347 ETH (about $1.5B) drained from a Safe multisig cold wallet, the largest crypto theft on record. The exchange's keys were never stolen: every signature was genuine. The signers were tricked into approving the wrong payload. Multisig and cold storage do not help if signers cannot see what they sign.",
-    "tech": "Crypto #Hack Autopsy #42: Bybit (Feb 21, 2025): about 401,347 ETH drained from a Safe multisig cold wallet, the largest crypto theft on record. Every signature was genuine: the signers were tricked into approving the wrong payload. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #42: Bybit, Feb 21, 2025: about 401,000 ETH (about $1.5B) taken from one cold wallet. The largest crypto theft ever recorded. And the exchange's own keys were never stolen. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #42: Bybit (Feb 21, 2025): about 401,347 ETH drained from a Safe multisig cold wallet, the largest crypto theft on record. Every signature was genuine: the signers were tricked into approving the wrong payload.",
+    "simple": "Crypto #Hack Autopsy #42: Bybit, Feb 21, 2025: about 401,000 ETH (about $1.5B) taken from one cold wallet. The largest crypto theft ever recorded. And the exchange's own keys were never stolen.",
     "card": {
       "big": "$1.5B",
       "title": "The largest crypto theft on record",
@@ -529,8 +529,8 @@
   {
     "index": 43,
     "long": "How Bybit's signers were fooled: a compromised developer machine at Safe{Wallet}, the multisig app Bybit used, led to malicious JavaScript in app.safe.global. It triggered only for Bybit-linked addresses, swapping the transaction data at signing time while the interface still showed the expected routine transfer. A targeted front-end compromise.",
-    "tech": "Crypto #Hack Autopsy #43: Bybit: a compromised Safe{Wallet} developer machine led to malicious JavaScript in app.safe.global. It only triggered for Bybit-linked addresses, swapping tx data at signing while the UI showed the expected transfer. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #43: How Bybit was fooled: attackers hacked a developer of Safe, the wallet app Bybit used, and changed the app's web code. For Bybit only, it showed a routine transfer while preparing a very different one. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #43: Bybit: a compromised Safe{Wallet} developer machine led to malicious JavaScript in app.safe.global. It only triggered for Bybit-linked addresses, swapping tx data at signing while the UI showed the expected transfer.",
+    "simple": "Crypto #Hack Autopsy #43: How Bybit was fooled: attackers hacked a developer of Safe, the wallet app Bybit used, and changed the app's web code. For Bybit only, it showed a routine transfer while preparing a very different one.",
     "card": {
       "title": "A front end rigged for one target",
       "sub": "Malicious code in Safe's web app swapped transaction data only for Bybit addresses."
@@ -541,8 +541,8 @@
   {
     "index": 44,
     "long": "What Bybit's signers really approved: not a transfer but a replacement of the wallet's logic. The payload used operation=1 (delegatecall) to an attacker contract dressed up as an ERC-20 transfer. Running in the proxy's context, it overwrote storage slot 0, which holds the Safe's implementation address, putting the attacker's code in charge. Draining was then one step away.",
-    "tech": "Crypto #Hack Autopsy #44: Bybit payload: operation=1 (delegatecall) to an attacker contract dressed as an ERC-20 transfer. Running in the proxy's context, it overwrote storage slot 0, the Safe's implementation address. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #44: What did Bybit's signers actually approve? Not a transfer, but a swap of the wallet's \"brain\": the code that decides who can move funds was replaced by the attacker's. Draining was then one step away. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #44: Bybit payload: operation=1 (delegatecall) to an attacker contract dressed as an ERC-20 transfer. Running in the proxy's context, it overwrote storage slot 0, the Safe's implementation address.",
+    "simple": "Crypto #Hack Autopsy #44: What did Bybit's signers actually approve? Not a transfer, but a swap of the wallet's \"brain\": the code that decides who can move funds was replaced by the attacker's. Draining was then one step away.",
     "card": {
       "title": "Not a transfer, a new wallet brain",
       "sub": "A delegatecall overwrote storage slot 0, putting the attacker's code in charge."
@@ -553,8 +553,8 @@
   {
     "index": 45,
     "long": "Five days after the Bybit heist, FBI public service announcement I-022625-PSA (February 26, 2025) attributed the about $1.5B theft to North Korea (DPRK), tracked as TraderTraitor. It published attacker addresses and asked node operators, exchanges and bridges to block transactions tied to them.",
-    "tech": "Crypto #Hack Autopsy #45: FBI PSA I-022625-PSA (Feb 26, 2025) attributed the about $1.5B Bybit theft to the DPRK, tracked as TraderTraitor, and published attacker addresses for nodes, exchanges and bridges to block. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #45: Five days after the Bybit heist, the FBI publicly named North Korea as responsible, under the label \"TraderTraitor\", and asked the industry to block addresses tied to the theft. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #45: FBI PSA I-022625-PSA (Feb 26, 2025) attributed the about $1.5B Bybit theft to the DPRK, tracked as TraderTraitor, and published attacker addresses for nodes, exchanges and bridges to block.",
+    "simple": "Crypto #Hack Autopsy #45: Five days after the Bybit heist, the FBI publicly named North Korea as responsible, under the label \"TraderTraitor\", and asked the industry to block addresses tied to the theft.",
     "card": {
       "title": "Five days later, a public attribution",
       "sub": "An FBI announcement attributed Bybit's theft to North Korea, tracked as TraderTraitor."
@@ -565,8 +565,8 @@
   {
     "index": 46,
     "long": "Cetus, a Sui exchange, May 22, 2025. The checked_shlw function in the integer-mate u256 math library guarded a 64-bit left shift with the wrong bound. An oversized value slipped past and its overflowed bits were silently truncated, so a near-zero deposit minted massive CLMM liquidity. About $223M. One wrong limit in an overflow check.",
-    "tech": "Crypto #Hack Autopsy #46: Cetus (May 22, 2025): checked_shlw in the integer-mate u256 library guarded a << 64 shift with a wrong bound. Overflowed bits were silently truncated, so a near-zero deposit minted massive CLMM liquidity. About $223M. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #46: Cetus, May 2025, on Sui: a math library checked for overflow with the wrong limit. A huge number slipped past, the result wrapped around, and tiny deposits bought huge liquidity. About $223M. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #46: Cetus (May 22, 2025): checked_shlw in the integer-mate u256 library guarded a << 64 shift with a wrong bound. Overflowed bits were silently truncated, so a near-zero deposit minted massive CLMM liquidity. About $223M.",
+    "simple": "Crypto #Hack Autopsy #46: Cetus, May 2025, on Sui: a math library checked for overflow with the wrong limit. A huge number slipped past, the result wrapped around, and tiny deposits bought huge liquidity. About $223M.",
     "card": {
       "big": "$223M",
       "title": "One wrong limit in an overflow check",
@@ -578,8 +578,8 @@
   {
     "index": 47,
     "long": "After the Cetus hack, about $60M was quickly bridged to Ethereum, but about $162M of the $223M stayed on Sui, where validators coordinated to ignore transactions from the attacker's addresses. The funds were saved, but it was a live test of validator-level censorship and reopened the debate about who can freeze coins on a chain.",
-    "tech": "Crypto #Hack Autopsy #47: Cetus: about $60M was bridged to Ethereum fast; about $162M stayed on Sui, where validators coordinated to ignore transactions from attacker addresses. Effective, and a live test of validator-level censorship. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #47: After the Cetus hack, Sui validators blocked the attacker's addresses, keeping about $162M of the $223M from leaving. Funds saved, but it reopened an old debate: who can freeze coins on a chain? #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #47: Cetus: about $60M was bridged to Ethereum fast; about $162M stayed on Sui, where validators coordinated to ignore transactions from attacker addresses. Effective, and a live test of validator-level censorship.",
+    "simple": "Crypto #Hack Autopsy #47: After the Cetus hack, Sui validators blocked the attacker's addresses, keeping about $162M of the $223M from leaving. Funds saved, but it reopened an old debate: who can freeze coins on a chain?",
     "card": {
       "big": "$162M",
       "title": "Sui validators blocked the attacker",
@@ -591,8 +591,8 @@
   {
     "index": 48,
     "long": "Balancer V2, November 3, 2025: about $128M drained across several chains through rounding. A rounding error in Composable Stable Pool math, each step rounding slightly the wrong way, was compounded across many operations inside one batchSwap. The accumulated crumbs distorted the pool invariant and the BPT price. Tiny precision errors become large when repeated.",
-    "tech": "Crypto #Hack Autopsy #48: Balancer V2 (Nov 3, 2025): a rounding error in Composable Stable Pool math, compounded across many steps inside one batchSwap, distorted the pool invariant and BPT price. About $128M across several chains. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #48: Balancer, Nov 3, 2025: about $128M drained by rounding. Each swap rounded a tiny bit in the wrong direction; chained many times in one transaction, the crumbs added up to a skewed pool price. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #48: Balancer V2 (Nov 3, 2025): a rounding error in Composable Stable Pool math, compounded across many steps inside one batchSwap, distorted the pool invariant and BPT price. About $128M across several chains.",
+    "simple": "Crypto #Hack Autopsy #48: Balancer, Nov 3, 2025: about $128M drained by rounding. Each swap rounded a tiny bit in the wrong direction; chained many times in one transaction, the crumbs added up to a skewed pool price.",
     "card": {
       "big": "$128M",
       "title": "Rounding crumbs that added up",
@@ -604,8 +604,8 @@
   {
     "index": 49,
     "long": "Ethereum Classic, August 2020: 51% attacks. Attackers with enough mining power mined a longer private chain, then released it, rewriting recent history; one reorg replaced over 7,000 blocks, enabling double spends. There were three such attacks that month. Proof-of-work security depends on no one being able to outmine the honest network.",
-    "tech": "Crypto #Hack Autopsy #49: ETC (Aug 2020): 51% attacks. An attacker mined a longer private chain, then released it; one reorg replaced 7,000+ blocks, enabling double spends. Three attacks that month. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #49: Ethereum Classic, August 2020: attackers gathered enough mining power to rewrite the chain's recent history, over 7,000 blocks in one case, undoing payments. Three such attacks in one month. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #49: ETC (Aug 2020): 51% attacks. An attacker mined a longer private chain, then released it; one reorg replaced 7,000+ blocks, enabling double spends. Three attacks that month.",
+    "simple": "Crypto #Hack Autopsy #49: Ethereum Classic, August 2020: attackers gathered enough mining power to rewrite the chain's recent history, over 7,000 blocks in one case, undoing payments. Three such attacks in one month.",
     "card": {
       "title": "Rewriting Ethereum Classic's history",
       "sub": "Three 51% attacks in August 2020 enabled double spends, one reorg over 7,000 blocks."
@@ -616,8 +616,8 @@
   {
     "index": 50,
     "long": "Pattern across bridges: at Ronin the attacker took 5 of 9 validator keys, at Harmony's Horizon at least 2 of 4. In both, the contracts worked as designed; security collapsed to how a handful of signer keys were stored and who ran them. Bridges holding huge sums guarded by a few keys run by one team are a single point of failure.",
-    "tech": "Crypto #Hack Autopsy #50: Ronin (5 of 9 validator keys taken), Horizon (at least 2 of 4): in both, the contracts worked as designed. Security collapsed to how a few signer keys were stored. Signers run by one team are a single point of failure. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #50: Spot the pattern: at Ronin the attacker got 5 of 9 validator keys, at Harmony at least 2 of 4. Bridges holding huge sums were guarded by a handful of keys. Steal enough of them and the code obeys. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #50: Ronin (5 of 9 validator keys taken), Horizon (at least 2 of 4): in both, the contracts worked as designed. Security collapsed to how a few signer keys were stored. Signers run by one team are a single point of failure.",
+    "simple": "Crypto #Hack Autopsy #50: Spot the pattern: at Ronin the attacker got 5 of 9 validator keys, at Harmony at least 2 of 4. Bridges holding huge sums were guarded by a handful of keys. Steal enough of them and the code obeys.",
     "card": {
       "title": "Bridges guarded by a handful of keys",
       "sub": "Ronin lost 5 of 9 validator keys, Horizon at least 2 of 4. The contracts worked."
@@ -628,8 +628,8 @@
   {
     "index": 51,
     "long": "Pattern across WazirX, Radiant and Bybit: hardware wallets and multisig were all in place, yet each multisig gathered valid signatures over a malicious payload, because the interface was compromised and devices blind-signed raw transaction data. If you cannot read what you sign, you are trusting the screen. Fix: decode and verify the transaction hash on an independent device.",
-    "tech": "Crypto #Hack Autopsy #51: WazirX, Radiant, Bybit: each multisig got valid signatures over a malicious payload, because the UI was compromised and devices blind-signed raw calldata. Fix: decode and verify the tx hash on an independent device. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #51: Another pattern: WazirX, Radiant, Bybit. Hardware wallets, multisig, all in place. Attackers simply changed what signers saw on screen. If you can't read what you sign, you're trusting the screen. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #51: WazirX, Radiant, Bybit: each multisig got valid signatures over a malicious payload, because the UI was compromised and devices blind-signed raw calldata. Fix: decode and verify the tx hash on an independent device.",
+    "simple": "Crypto #Hack Autopsy #51: Another pattern: WazirX, Radiant, Bybit. Hardware wallets, multisig, all in place. Attackers simply changed what signers saw on screen. If you can't read what you sign, you're trusting the screen.",
     "card": {
       "title": "Blind signing defeated every multisig",
       "sub": "WazirX, Radiant and Bybit had hardware wallets, but signers trusted a hacked screen."
@@ -640,8 +640,8 @@
   {
     "index": 52,
     "long": "Series recap. Dozens of heists come down to a few root causes: reentrancy, missing input validation, bad initialization or forgotten permissions, oracle and governance manipulation, rounding errors, toolchain bugs, stolen or weak keys, and tampered user interfaces. The code is rarely broken; the assumptions are. Learn the patterns once, spot them everywhere. Follow for more.",
-    "tech": "Crypto #Hack Autopsy #52: Dozens of heists, a few root causes: reentrancy, missing validation, bad init, oracle/governance games, rounding, toolchain bugs, key theft, UI tampering. Learn them once, spot them everywhere. Follow for more. #CyberSecurity #InfoSec",
-    "simple": "Crypto #Hack Autopsy #52: Recap: a function called twice, an unchecked input, a forgotten permission, a bad compiler, a fake screen. The code is rarely broken, the assumptions are. Follow for more crypto security autopsies. #CyberSecurity #InfoSec",
+    "tech": "Crypto #Hack Autopsy #52: Dozens of heists, a few root causes: reentrancy, missing validation, bad init, oracle/governance games, rounding, toolchain bugs, key theft, UI tampering. Learn them once, spot them everywhere. Follow for more.",
+    "simple": "Crypto #Hack Autopsy #52: Recap: a function called twice, an unchecked input, a forgotten permission, a bad compiler, a fake screen. The code is rarely broken, the assumptions are. Follow for more crypto security autopsies.",
     "card": {
       "title": "The code is rarely broken",
       "sub": "Reentrancy, unchecked inputs, weak keys, fake screens: the assumptions are what fail."

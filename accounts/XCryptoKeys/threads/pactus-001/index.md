@@ -3,7 +3,7 @@
 - Sujet : Pactus (série de lancement du compte)
 - Angle : comment Pactus fonctionne, vérifié dans le code de `main`
 - Préfixe : `Inside #Pactus #N:`
-- Hashtags fixes : #PAC @PactusChain
+- Fin de post : `@PactusChain` (mention, pas un hashtag) ; plus de hashtag fixe : 2 hashtags maximum par post, celui du préfixe et celui de la campagne
 - Hashtag de campagne : `#XCKpac1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (vérifiés contre le code), à publier
 

@@ -2,9 +2,9 @@
   {
     "index": 1,
     "long": "A crypto wallet does not hold coins. Balances are on-chain state; the wallet stores private keys, or a seed that derives them, and uses them to sign transactions. Whoever can sign controls the funds. So wallet security comes down to two things: guarding the key, and knowing exactly what you sign. Losing the keys means losing access; leaking them means losing the coins. Even with your own keys, one bad signature can empty a wallet. The series covers how wallets work and how people get drained.",
-    "tech": "Crypto #Wallet Security #1: A wallet is a key manager: it stores private keys (or a seed that derives them) and signs transactions. Balances are on-chain state. Whoever can sign controls the funds, so security = guarding the key and what you sign. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #1: Your wallet holds no coins. Coins live on the blockchain; your wallet holds the keys that can move them. Lose the keys, lose access. Leak them, lose the coins. Daily: how wallets work and how people get drained. #CryptoSecurity #SelfCustody",
-    "variant": "Crypto #Wallet Security #1: Not your keys, not your coins. But even with your keys, one bad signature can empty a wallet. This series covers what a wallet really does, and every trick used to drain one. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #1: A wallet is a key manager: it stores private keys (or a seed that derives them) and signs transactions. Balances are on-chain state. Whoever can sign controls the funds, so security = guarding the key and what you sign.",
+    "simple": "Crypto #Wallet Security #1: Your wallet holds no coins. Coins live on the blockchain; your wallet holds the keys that can move them. Lose the keys, lose access. Leak them, lose the coins. Daily: how wallets work and how people get drained.",
+    "variant": "Crypto #Wallet Security #1: Not your keys, not your coins. But even with your keys, one bad signature can empty a wallet. This series covers what a wallet really does, and every trick used to drain one.",
     "card": {
       "title": "Your wallet holds keys, not coins",
       "sub": "Whoever can sign controls the funds. Guard the key and read what you sign."
@@ -15,8 +15,8 @@
   {
     "index": 2,
     "long": "A BIP39 recovery phrase is a random number written as words. The spec allows 128 to 256 bits of entropy (ENT). A checksum of ENT/32 bits, taken from the SHA-256 of the entropy, is appended, and the result is cut into 11-bit chunks, each an index into a 2048-word list. 128 bits gives 12 words with a 4-bit checksum; 256 bits gives 24 words with an 8-bit checksum. Knowing this shows why the words must come from real randomness, not from a person.",
-    "tech": "Crypto #Wallet Security #2: BIP39: entropy (128 to 256 bits) + a checksum of ENT/32 bits from its SHA-256, cut into 11-bit chunks mapped to a 2048-word list. 128 bits gives 12 words (4-bit checksum); 256 bits gives 24 words (8-bit checksum). #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #2: A 12-word recovery phrase is just a big random number written in words. Each word comes from a fixed list of 2048 and stores 11 bits. 12 words = 128 bits of randomness plus a small checksum. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #2: BIP39: entropy (128 to 256 bits) + a checksum of ENT/32 bits from its SHA-256, cut into 11-bit chunks mapped to a 2048-word list. 128 bits gives 12 words (4-bit checksum); 256 bits gives 24 words (8-bit checksum).",
+    "simple": "Crypto #Wallet Security #2: A 12-word recovery phrase is just a big random number written in words. Each word comes from a fixed list of 2048 and stores 11 bits. 12 words = 128 bits of randomness plus a small checksum.",
     "card": {
       "big": "2048",
       "title": "A seed phrase is a random number in words",
@@ -28,8 +28,8 @@
   {
     "index": 3,
     "long": "In a 12-word BIP39 phrase, the last word carries 7 entropy bits plus the 4 checksum bits. So only about 1 in 16 random 12-word combinations is valid; with 24 words the checksum is 8 bits, about 1 in 256. BIP39 lists the short checksum as a shortcoming: it misses 1 in 256 errors and can't correct them. Practical lesson: you can't invent a seed from words you like; let a trusted wallet's random generator create it.",
-    "tech": "Crypto #Wallet Security #3: In a 12-word BIP39 phrase the last word holds 7 entropy bits + 4 checksum bits, so about 1/16 of random word combos pass. With 24 words the checksum is 8 bits: about 1/256. BIP39 itself notes it misses 1 in 256 errors. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #3: You can't pick 12 random words as a seed: the last word partly works as a checksum, so only about 1 in 16 random 12-word combos is valid. Let a trusted wallet's random generator create it, never your imagination. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #3: In a 12-word BIP39 phrase the last word holds 7 entropy bits + 4 checksum bits, so about 1/16 of random word combos pass. With 24 words the checksum is 8 bits: about 1/256. BIP39 itself notes it misses 1 in 256 errors.",
+    "simple": "Crypto #Wallet Security #3: You can't pick 12 random words as a seed: the last word partly works as a checksum, so only about 1 in 16 random 12-word combos is valid. Let a trusted wallet's random generator create it, never your imagination.",
     "card": {
       "big": "1 in 16",
       "title": "Most random word lists are not valid seeds",
@@ -41,8 +41,8 @@
   {
     "index": 4,
     "long": "The English BIP39 wordlist was designed so that the first four letters are enough to identify each word unambiguously, and similar words are avoided. Wallet input screens can autocomplete from 4 letters, and handwritten or engraved metal backups can store just 4-letter prefixes. That makes backups shorter and less error-prone, which matters because a backup you can't read back correctly is no backup.",
-    "tech": "Crypto #Wallet Security #4: BIP39's English wordlist is built so the first four letters unambiguously identify each word, and similar-looking words are avoided. Wallet input screens and compact metal backups can rely on 4-letter prefixes. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #4: Handy detail for backups: in the English BIP39 list, the first 4 letters of each word are enough to identify it. That makes a handwritten or engraved backup shorter and less error-prone. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #4: BIP39's English wordlist is built so the first four letters unambiguously identify each word, and similar-looking words are avoided. Wallet input screens and compact metal backups can rely on 4-letter prefixes.",
+    "simple": "Crypto #Wallet Security #4: Handy detail for backups: in the English BIP39 list, the first 4 letters of each word are enough to identify it. That makes a handwritten or engraved backup shorter and less error-prone.",
     "card": {
       "big": "4 letters",
       "title": "Four letters are enough for each word",
@@ -54,8 +54,8 @@
   {
     "index": 5,
     "long": "The 12 or 24 words are not the key itself. BIP39 turns the mnemonic (NFKD-normalized) into a seed with PBKDF2-HMAC-SHA512, salt = \"mnemonic\" + optional passphrase, 2048 iterations, giving 512 bits. That seed is the input to BIP32 master key generation, and every key and address is derived from it. This is why the exact words, and the passphrase if any, are what must be backed up.",
-    "tech": "Crypto #Wallet Security #5: BIP39 seed = PBKDF2-HMAC-SHA512(password = mnemonic in NFKD, salt = \"mnemonic\" + passphrase, 2048 iterations), giving 512 bits. That seed is the input to BIP32 master key generation. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #5: Your 12 or 24 words are not your key directly. The wallet runs them through a hash function 2048 times to make a 512-bit seed, and every key and address is derived from that seed. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #5: BIP39 seed = PBKDF2-HMAC-SHA512(password = mnemonic in NFKD, salt = \"mnemonic\" + passphrase, 2048 iterations), giving 512 bits. That seed is the input to BIP32 master key generation.",
+    "simple": "Crypto #Wallet Security #5: Your 12 or 24 words are not your key directly. The wallet runs them through a hash function 2048 times to make a 512-bit seed, and every key and address is derived from that seed.",
     "card": {
       "big": "512 bits",
       "title": "The words are not the key itself",
@@ -67,9 +67,9 @@
   {
     "index": 6,
     "long": "The BIP39 passphrase (\"25th word\") is part of the PBKDF2 salt, so every passphrase produces a valid, different wallet. BIP39 calls this plausible deniability. The danger: there is no wrong passphrase error. A single typo opens another valid wallet that is simply empty. If the passphrase is lost or misremembered, the funds are unreachable, so it must be backed up as carefully as the words.",
-    "tech": "Crypto #Wallet Security #6: The passphrase is part of the PBKDF2 salt, so every passphrase yields a valid seed. BIP39 calls this plausible deniability: only the right one shows your funds. A typo gives no error, just an empty wallet. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #6: A BIP39 passphrase (the \"25th word\") creates a completely different wallet. There is no \"wrong\" passphrase: a typo just opens another valid, empty wallet. Back it up as carefully as the words. #CryptoSecurity #SelfCustody",
-    "variant": "Crypto #Wallet Security #6: No such thing as a wrong passphrase: type one letter differently and your wallet opens fine, just empty. It's a different wallet. Back up the passphrase too, or the funds are gone. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #6: The passphrase is part of the PBKDF2 salt, so every passphrase yields a valid seed. BIP39 calls this plausible deniability: only the right one shows your funds. A typo gives no error, just an empty wallet.",
+    "simple": "Crypto #Wallet Security #6: A BIP39 passphrase (the \"25th word\") creates a completely different wallet. There is no \"wrong\" passphrase: a typo just opens another valid, empty wallet. Back it up as carefully as the words.",
+    "variant": "Crypto #Wallet Security #6: No such thing as a wrong passphrase: type one letter differently and your wallet opens fine, just empty. It's a different wallet. Back up the passphrase too, or the funds are gone.",
     "card": {
       "title": "The 25th word has no wrong answer",
       "sub": "A typo opens another valid, empty wallet. Back up the passphrase like the words."
@@ -80,8 +80,8 @@
   {
     "index": 7,
     "long": "BIP39 derives the seed from the mnemonic sentence itself, not from the raw entropy. Translating a phrase into another wordlist, for example English to Spanish, therefore gives a completely different seed. BIP39 lists this as a known shortcoming and strongly discourages non-English wordlists since most wallets support only English. Keep the phrase in the language and wordlist it was created with.",
-    "tech": "Crypto #Wallet Security #7: BIP39 derives the seed from the mnemonic sentence, not the raw entropy. Converting a phrase to another wordlist (e.g. English to Spanish) produces a different seed. BIP39 lists this as a known shortcoming. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #7: Same words, other language, different wallet. BIP39 hashes the words themselves, so a phrase \"translated\" into another wordlist gives a totally different seed. Keep it in the language it was made in. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #7: BIP39 derives the seed from the mnemonic sentence, not the raw entropy. Converting a phrase to another wordlist (e.g. English to Spanish) produces a different seed. BIP39 lists this as a known shortcoming.",
+    "simple": "Crypto #Wallet Security #7: Same words, other language, different wallet. BIP39 hashes the words themselves, so a phrase \"translated\" into another wordlist gives a totally different seed. Keep it in the language it was made in.",
     "card": {
       "title": "Translating your seed changes your wallet",
       "sub": "The seed comes from the sentence itself. Keep its original language and wordlist."
@@ -92,8 +92,8 @@
   {
     "index": 8,
     "long": "BIP32 hierarchical deterministic (HD) wallets: I = HMAC-SHA512(key = \"Bitcoin seed\", data = seed). The left 256 bits are the master private key, the right 256 bits the chain code. Child keys are derived by index, building a tree of keys from one root. Result: a single backup of the seed restores every address the wallet has used or will use.",
-    "tech": "Crypto #Wallet Security #8: BIP32: I = HMAC-SHA512(key = \"Bitcoin seed\", data = seed). Left 256 bits = master private key, right 256 bits = chain code. Child keys are derived by index, giving a tree of keys from one backup. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #8: One phrase, unlimited addresses. HD wallets grow a whole tree of keys from a single seed, so one backup restores every address you have used or will use. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #8: BIP32: I = HMAC-SHA512(key = \"Bitcoin seed\", data = seed). Left 256 bits = master private key, right 256 bits = chain code. Child keys are derived by index, giving a tree of keys from one backup.",
+    "simple": "Crypto #Wallet Security #8: One phrase, unlimited addresses. HD wallets grow a whole tree of keys from a single seed, so one backup restores every address you have used or will use.",
     "card": {
       "big": "256 bits",
       "title": "One seed, a whole tree of keys",
@@ -105,8 +105,8 @@
   {
     "index": 9,
     "long": "Under BIP32, an extended public key (xpub) can derive all non-hardened child public keys. It cannot spend, since spending needs private keys, but it reveals every address in that account and its full balance and history. Sharing an xpub is a privacy decision: give it only to tools you trust, such as your own watch-only app.",
-    "tech": "Crypto #Wallet Security #9: An extended public key derives all non-hardened child public keys (BIP32), so it exposes the account's full address set and balance history. Spending needs private keys, but your privacy is gone. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #9: Your \"xpub\" (extended public key) can't spend, but it reveals every address in that account and its whole history. Share it only with tools you trust, like your own watch-only app. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #9: An extended public key derives all non-hardened child public keys (BIP32), so it exposes the account's full address set and balance history. Spending needs private keys, but your privacy is gone.",
+    "simple": "Crypto #Wallet Security #9: Your \"xpub\" (extended public key) can't spend, but it reveals every address in that account and its whole history. Share it only with tools you trust, like your own watch-only app.",
     "card": {
       "title": "An xpub can't spend, but it sees everything",
       "sub": "It reveals every address, balance and history in the account. Share it carefully."
@@ -117,8 +117,8 @@
   {
     "index": 10,
     "long": "A lesser-known BIP32 property: a parent xpub plus any one non-hardened child private key is equivalent to the parent xprv. The child key is k_child = k_parent + IL, and IL can be computed from the xpub and chain code, so subtracting it gives the parent private key, and from it every key below. Treat xpubs as sensitive, especially if any child key could leak.",
-    "tech": "Crypto #Wallet Security #10: BIP32: a parent xpub + any non-hardened child private key is equivalent to the parent xprv. k_child = k_parent + IL, and IL is computable from the xpub, so subtract. Treat xpubs as sensitive data. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #10: Surprising fact: someone with your xpub plus ONE leaked private key from a normal (non-hardened) child key can compute the parent private key, and from it every key below. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #10: BIP32: a parent xpub + any non-hardened child private key is equivalent to the parent xprv. k_child = k_parent + IL, and IL is computable from the xpub, so subtract. Treat xpubs as sensitive data.",
+    "simple": "Crypto #Wallet Security #10: Surprising fact: someone with your xpub plus ONE leaked private key from a normal (non-hardened) child key can compute the parent private key, and from it every key below.",
     "card": {
       "title": "One leaked child key can expose the parent",
       "sub": "With the xpub and chain code, a non-hardened child key gives back the parent key."
@@ -129,8 +129,8 @@
   {
     "index": 11,
     "long": "BIP32 hardened children (index >= 2^31, written i' or iH) are derived from the parent private key rather than the public key, so they can't be computed from an xpub. That blocks the xpub + leaked child key attack at that level. This is why derivation paths like m/84'/0'/0' use hardened steps at the top: one leaked key can't climb back up the tree.",
-    "tech": "Crypto #Wallet Security #11: Hardened children (index ≥ 2^31, written i' or iH) are derived from the parent private key, not the public key. They can't be derived from an xpub, which blocks the xpub + child key attack at that level. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #11: That's why wallets use \"hardened\" steps (the ' in m/84'/0'/0') at the top of the path: those keys can't be computed from public data, so one leaked key can't climb back up the tree. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #11: Hardened children (index ≥ 2^31, written i' or iH) are derived from the parent private key, not the public key. They can't be derived from an xpub, which blocks the xpub + child key attack at that level.",
+    "simple": "Crypto #Wallet Security #11: That's why wallets use \"hardened\" steps (the ' in m/84'/0'/0') at the top of the path: those keys can't be computed from public data, so one leaked key can't climb back up the tree.",
     "card": {
       "big": "2^31",
       "title": "Hardened paths stop keys climbing the tree",
@@ -142,8 +142,8 @@
   {
     "index": 12,
     "long": "BIP44 defines a standard path: m / purpose' / coin_type' / account' / change / address_index. coin_type comes from the SLIP-44 registry (Bitcoin 0, Ethereum 60). change is 0 for receiving addresses and 1 for change addresses. Wallets that follow it find the same keys from the same seed; the same seed on a different path gives different addresses.",
-    "tech": "Crypto #Wallet Security #12: BIP44 path: m / purpose' / coin_type' / account' / change / address_index. coin_type comes from the SLIP-44 registry (Bitcoin 0, Ethereum 60). change is 0 for receiving, 1 for change addresses. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #12: Wallets agree on where your keys are with a path like m/44'/0'/0'/0/0: purpose, coin, account, receive or change, address number. Same seed + different path = different addresses. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #12: BIP44 path: m / purpose' / coin_type' / account' / change / address_index. coin_type comes from the SLIP-44 registry (Bitcoin 0, Ethereum 60). change is 0 for receiving, 1 for change addresses.",
+    "simple": "Crypto #Wallet Security #12: Wallets agree on where your keys are with a path like m/44'/0'/0'/0/0: purpose, coin, account, receive or change, address number. Same seed + different path = different addresses.",
     "card": {
       "title": "A standard map for every key in your seed",
       "sub": "Same seed, same path, same keys. A different path gives different addresses."
@@ -154,8 +154,8 @@
   {
     "index": 13,
     "long": "Bitcoin wallets use different purpose levels for different address types: 44' legacy, 49' nested SegWit, 84' native SegWit (bc1q), 86' Taproot (bc1p). Restoring a seed on the wrong path shows a zero balance even though the funds are safe. Fix: check the path or use an output descriptor. Never type the seed into a website that offers to recover it.",
-    "tech": "Crypto #Wallet Security #13: Same seed, different purpose level: 44' legacy, 49' nested SegWit, 84' native SegWit (bc1q), 86' Taproot (bc1p). A restore on the wrong path shows 0 BTC. Check the path or use an output descriptor. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #13: Restored your seed and see a zero balance? Don't panic: the wallet may be scanning another address type. And never type your seed into a website that offers to \"recover\" it. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #13: Same seed, different purpose level: 44' legacy, 49' nested SegWit, 84' native SegWit (bc1q), 86' Taproot (bc1p). A restore on the wrong path shows 0 BTC. Check the path or use an output descriptor.",
+    "simple": "Crypto #Wallet Security #13: Restored your seed and see a zero balance? Don't panic: the wallet may be scanning another address type. And never type your seed into a website that offers to \"recover\" it.",
     "card": {
       "title": "Zero balance after restore? Check the path",
       "sub": "Legacy, SegWit and Taproot use different purpose levels. Your funds are still safe."
@@ -166,8 +166,8 @@
   {
     "index": 14,
     "long": "BIP44 sets the address gap limit at 20: during recovery, a wallet stops scanning a chain after 20 consecutive unused addresses. Funds received past that gap still belong to the seed, but stay invisible after a restore until the wallet is told to scan further. Relevant if you generated many addresses without using them.",
-    "tech": "Crypto #Wallet Security #14: BIP44 sets the address gap limit at 20: recovery stops scanning a chain after 20 consecutive unused addresses. Payments past that gap are still yours, but invisible until the wallet scans further. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #14: Wallets stop looking after 20 unused addresses in a row. If you created lots of addresses without using them, later funds may not appear after a restore until you widen the scan. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #14: BIP44 sets the address gap limit at 20: recovery stops scanning a chain after 20 consecutive unused addresses. Payments past that gap are still yours, but invisible until the wallet scans further.",
+    "simple": "Crypto #Wallet Security #14: Wallets stop looking after 20 unused addresses in a row. If you created lots of addresses without using them, later funds may not appear after a restore until you widen the scan.",
     "card": {
       "big": "20",
       "title": "Funds past the gap limit stay invisible",
@@ -179,8 +179,8 @@
   {
     "index": 15,
     "long": "Bitcoin spends whole UTXOs: when you pay part of a balance, the remainder goes to a change output. BIP44 keeps change addresses on a separate internal chain (change = 1). The seed covers them, but a tool that scans only the receiving chain (0) will miss those funds, and the balance will look wrong.",
-    "tech": "Crypto #Wallet Security #15: Bitcoin spends whole UTXOs; the remainder goes to a change output. BIP44 keeps these on a separate internal chain (change = 1). A tool that scans only the receive chain (0) misses them. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #15: When you send part of a Bitcoin balance, the rest comes back to you at a new address of yours. That's \"change\". Your seed covers it too, but a tool that ignores change addresses can miss funds. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #15: Bitcoin spends whole UTXOs; the remainder goes to a change output. BIP44 keeps these on a separate internal chain (change = 1). A tool that scans only the receive chain (0) misses them.",
+    "simple": "Crypto #Wallet Security #15: When you send part of a Bitcoin balance, the rest comes back to you at a new address of yours. That's \"change\". Your seed covers it too, but a tool that ignores change addresses can miss funds.",
     "card": {
       "title": "Change addresses hide part of your balance",
       "sub": "Change sits on a separate chain; a tool scanning only receiving addresses misses it."
@@ -191,8 +191,8 @@
   {
     "index": 16,
     "long": "Not every 12-word phrase is BIP39. Electrum 2.0+ seeds mark their type with a version prefix in a hash of the phrase instead of a BIP39 checksum, and derive the seed with the PBKDF2 salt \"electrum\" + passphrase. An Electrum phrase entered in a BIP39-only wallet gives a different, empty wallet. Write down which app created your seed.",
-    "tech": "Crypto #Wallet Security #16: Electrum 2.0+ seeds mark their type with a version prefix in a hash of the phrase, not a BIP39 checksum, and use the PBKDF2 salt \"electrum\" + passphrase. BIP39-only wallets can't restore them correctly. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #16: Not every 12-word phrase is BIP39. Electrum uses its own seed format, so an Electrum phrase typed into a BIP39-only wallet gives a different, empty wallet. Write down which app made your seed. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #16: Electrum 2.0+ seeds mark their type with a version prefix in a hash of the phrase, not a BIP39 checksum, and use the PBKDF2 salt \"electrum\" + passphrase. BIP39-only wallets can't restore them correctly.",
+    "simple": "Crypto #Wallet Security #16: Not every 12-word phrase is BIP39. Electrum uses its own seed format, so an Electrum phrase typed into a BIP39-only wallet gives a different, empty wallet. Write down which app made your seed.",
     "card": {
       "title": "Not every 12-word phrase is BIP39",
       "sub": "An Electrum seed in a BIP39-only wallet opens an empty wallet. Note the app used."
@@ -203,8 +203,8 @@
   {
     "index": 17,
     "long": "BIP85 derives entropy from a BIP32 keychain at hardened paths under m/83696968' and turns it into new mnemonics or keys. One master seed can thus produce many independent child seeds (for a phone wallet, for example) with no new randomness to back up. A leaked child cannot reveal the parent, but the parent seed recreates every child, so the master backup is critical.",
-    "tech": "Crypto #Wallet Security #17: BIP85 derives entropy from a BIP32 keychain at hardened paths under m/83696968' and turns it into a new mnemonic or key. A leaked child can't reveal the parent, but the parent seed recreates every child. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #17: One master backup can make many child seeds. BIP85 lets a wallet derive fresh, independent recovery phrases from your main seed (say, for a phone wallet) with no new randomness to back up. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #17: BIP85 derives entropy from a BIP32 keychain at hardened paths under m/83696968' and turns it into a new mnemonic or key. A leaked child can't reveal the parent, but the parent seed recreates every child.",
+    "simple": "Crypto #Wallet Security #17: One master backup can make many child seeds. BIP85 lets a wallet derive fresh, independent recovery phrases from your main seed (say, for a phone wallet) with no new randomness to back up.",
     "card": {
       "big": "m/83696968'",
       "title": "One master seed, many child seeds",
@@ -216,8 +216,8 @@
   {
     "index": 18,
     "long": "SLIP-39 standardizes Shamir's secret sharing for wallet backups: a master secret is split into N shares, any T of which reconstruct it, with up to 16 shares per group. Knowledge of fewer than T shares leaks no information about the secret. Example: 5 shares, any 3 restore. Lose 2 and you can still recover; a thief who finds 2 learns nothing. Shares should be kept in different places.",
-    "tech": "Crypto #Wallet Security #18: SLIP-39 uses Shamir's secret sharing: a master secret is split into N shares with threshold T (up to 16 per group). Fewer than T shares leak no information about the secret. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #18: Shamir backup splits a wallet secret into shares, e.g. 5 shares where any 3 restore it. Lose 2, still fine. A thief who finds 2 learns nothing. Keep the shares in different places. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #18: SLIP-39 uses Shamir's secret sharing: a master secret is split into N shares with threshold T (up to 16 per group). Fewer than T shares leak no information about the secret.",
+    "simple": "Crypto #Wallet Security #18: Shamir backup splits a wallet secret into shares, e.g. 5 shares where any 3 restore it. Lose 2, still fine. A thief who finds 2 learns nothing. Keep the shares in different places.",
     "card": {
       "title": "Shamir backups: any T of N shares restore",
       "sub": "Fewer shares than the threshold leak nothing, so a thief who finds 2 learns nothing."
@@ -228,8 +228,8 @@
   {
     "index": 19,
     "long": "SLIP-39 supports two levels: a group threshold over up to 16 groups, and a member threshold within each group (up to 16 shares). Example: 2 of 3 groups needed, one group being any 2 of 3 family members. Every share of one set starts with the same first words (random identifier and iteration exponent), so shares from different sets can't be mixed by mistake.",
-    "tech": "Crypto #Wallet Security #19: SLIP-39 has two levels: a group threshold over up to 16 groups, and a member threshold inside each group (up to 16 shares). All shares of one set start with the same words, so sets can't be mixed by mistake. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #19: Shamir backups can be layered: for example you need 2 of 3 groups, and one group is \"any 2 of 3 family members\". SLIP-39 allows up to 16 groups. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #19: SLIP-39 has two levels: a group threshold over up to 16 groups, and a member threshold inside each group (up to 16 shares). All shares of one set start with the same words, so sets can't be mixed by mistake.",
+    "simple": "Crypto #Wallet Security #19: Shamir backups can be layered: for example you need 2 of 3 groups, and one group is \"any 2 of 3 family members\". SLIP-39 allows up to 16 groups.",
     "card": {
       "big": "16 groups",
       "title": "Two levels of thresholds for family backups",
@@ -241,8 +241,8 @@
   {
     "index": 20,
     "long": "SLIP-39 shares are not BIP39 phrases. They use a 1024-word list (10 bits per word), end with a 3-word RS1024 checksum, and are 20 words for a 128-bit secret or 33 words for 256 bits. The spec says it is for the most part not compatible with BIP39. Before relying on a Shamir backup, check that the wallet you would restore with supports SLIP-39.",
-    "tech": "Crypto #Wallet Security #20: SLIP-39 shares encode 10 bits per word from a 1024-word list, end with a 3-word RS1024 checksum, and are 20 words (128-bit secret) or 33 words (256-bit). The spec says it is mostly not compatible with BIP39. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #20: A Shamir share is not a BIP39 phrase: it uses its own 1024-word list and is 20 or 33 words long. Check that the wallet you'd restore with supports SLIP-39 before relying on it. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #20: SLIP-39 shares encode 10 bits per word from a 1024-word list, end with a 3-word RS1024 checksum, and are 20 words (128-bit secret) or 33 words (256-bit). The spec says it is mostly not compatible with BIP39.",
+    "simple": "Crypto #Wallet Security #20: A Shamir share is not a BIP39 phrase: it uses its own 1024-word list and is 20 or 33 words long. Check that the wallet you'd restore with supports SLIP-39 before relying on it.",
     "card": {
       "big": "33 words",
       "title": "Shamir shares are not BIP39 phrases",
@@ -254,8 +254,8 @@
   {
     "index": 21,
     "long": "Cutting a 24-word phrase into 3 piles of 8 is a bad backup. Anyone holding 2 piles faces at most 88 unknown bits instead of 256, and losing a single pile can block recovery. SLIP-39 shares below threshold reveal nothing about the secret, and multisig spreads keys properly. Use a proper scheme instead of splitting the words yourself.",
-    "tech": "Crypto #Wallet Security #21: Naive splitting leaks entropy: cut 24 words into 3x8 and anyone holding 2 pieces faces at most 88 unknown bits instead of 256, while one lost piece can block recovery. SLIP-39 shares below threshold reveal nothing. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #21: Don't cut your 24 words into 3 piles of 8 yourself. Each pile hands a thief part of the secret, and losing one pile can lock you out. Shamir backups or multisig do this job properly. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #21: Naive splitting leaks entropy: cut 24 words into 3x8 and anyone holding 2 pieces faces at most 88 unknown bits instead of 256, while one lost piece can block recovery. SLIP-39 shares below threshold reveal nothing.",
+    "simple": "Crypto #Wallet Security #21: Don't cut your 24 words into 3 piles of 8 yourself. Each pile hands a thief part of the secret, and losing one pile can lock you out. Shamir backups or multisig do this job properly.",
     "card": {
       "big": "3 piles of 8",
       "title": "Cutting your seed into piles is a bad backup",
@@ -267,8 +267,8 @@
   {
     "index": 22,
     "long": "Multisig requires several keys to sign, e.g. 2 of 3, so one stolen or lost key is not fatal. To restore an M-of-N Bitcoin multisig you need M seeds and the wallet's configuration: all N xpubs and the script type, usually stored as an output descriptor. Back up the descriptor with every key, and keep each key on a different device in a different place.",
-    "tech": "Crypto #Wallet Security #22: To restore an M-of-N Bitcoin multisig you need M seeds AND the wallet's setup: all N xpubs and the script type, usually as an output descriptor. Back up the descriptor with every key. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #22: Multisig means several keys must sign, e.g. 2 of 3. One stolen or lost key is not fatal. Keep each key on a different device in a different place, or it's one key with extra steps. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #22: To restore an M-of-N Bitcoin multisig you need M seeds AND the wallet's setup: all N xpubs and the script type, usually as an output descriptor. Back up the descriptor with every key.",
+    "simple": "Crypto #Wallet Security #22: Multisig means several keys must sign, e.g. 2 of 3. One stolen or lost key is not fatal. Keep each key on a different device in a different place, or it's one key with extra steps.",
     "card": {
       "big": "2 of 3",
       "title": "Restoring multisig takes more than seeds",
@@ -280,8 +280,8 @@
   {
     "index": 23,
     "long": "MuSig2 (BIP327) aggregates n public keys into a single Schnorr public key. A Taproot output using that key looks the same on-chain as a single-signer output, so observers can't tell a group signed. Note MuSig2 is n-of-n: other thresholds need Taproot script paths or other schemes.",
-    "tech": "Crypto #Wallet Security #23: MuSig2 (BIP327) aggregates n public keys into one Schnorr key. A Taproot output with that key is indistinguishable from a single-signer output. MuSig2 is n-of-n; other thresholds need script paths or other schemes. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #23: With Taproot and MuSig2, a group wallet can look exactly like a one-person wallet on the blockchain. Observers can't tell several people signed. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #23: MuSig2 (BIP327) aggregates n public keys into one Schnorr key. A Taproot output with that key is indistinguishable from a single-signer output. MuSig2 is n-of-n; other thresholds need script paths or other schemes.",
+    "simple": "Crypto #Wallet Security #23: With Taproot and MuSig2, a group wallet can look exactly like a one-person wallet on the blockchain. Observers can't tell several people signed.",
     "card": {
       "title": "A group signature that looks like one key",
       "sub": "MuSig2 makes n keys look like a single signer on-chain. It is n-of-n only."
@@ -292,8 +292,8 @@
   {
     "index": 24,
     "long": "Taproot (BIP341), activated in November 2021, makes outputs commit to a key plus a hidden tree of scripts. A key-path spend reveals no script at all; a script-path spend reveals only the branch used. Backup, recovery and inheritance conditions therefore stay private unless they are actually used.",
-    "tech": "Crypto #Wallet Security #24: Taproot (BIP341) outputs commit to a key and a hidden script tree. Spending by key reveals no script at all; spending by script reveals only the branch used. Good for recovery and inheritance paths. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #24: Taproot, Bitcoin's November 2021 upgrade, keeps backup spending rules private: when you spend, only the condition you actually used is revealed. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #24: Taproot (BIP341) outputs commit to a key and a hidden script tree. Spending by key reveals no script at all; spending by script reveals only the branch used. Good for recovery and inheritance paths.",
+    "simple": "Crypto #Wallet Security #24: Taproot, Bitcoin's November 2021 upgrade, keeps backup spending rules private: when you spend, only the condition you actually used is revealed.",
     "card": {
       "title": "Recovery rules that stay private until used",
       "sub": "Taproot reveals no script on a key-path spend, and only the used branch otherwise."
@@ -304,8 +304,8 @@
   {
     "index": 25,
     "long": "A hardware signer keeps the private key on the device and only exports signatures. The host computer builds an unsigned transaction (in Bitcoin, a PSBT, BIP174) and the device checks and signs it. Malware on the computer can't simply copy the key. It can still try to get the user to approve a bad transaction, which is why the device screen matters.",
-    "tech": "Crypto #Wallet Security #25: Hardware signers keep the private key on the device and only export signatures. The host builds an unsigned transaction (in Bitcoin, a PSBT, BIP174) and the device checks and signs it. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #25: A hardware wallet keeps your keys on a small device that never hands them to your computer. The computer prepares the transaction, the device signs it. Malware on the PC can't just copy the key. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #25: Hardware signers keep the private key on the device and only export signatures. The host builds an unsigned transaction (in Bitcoin, a PSBT, BIP174) and the device checks and signs it.",
+    "simple": "Crypto #Wallet Security #25: A hardware wallet keeps your keys on a small device that never hands them to your computer. The computer prepares the transaction, the device signs it. Malware on the PC can't just copy the key.",
     "card": {
       "title": "The key stays on the device",
       "sub": "The computer builds the transaction; the hardware signer checks it and signs."
@@ -316,8 +316,8 @@
   {
     "index": 26,
     "long": "If the computer is compromised, the hardware wallet's display is the last honest view of the transaction. NCC Group's analysis of the Bybit hack notes that hardware wallets that clear-sign can expose malicious data even when the laptop is compromised. Rule: check the full address, amount and action on the device itself before confirming.",
-    "tech": "Crypto #Wallet Security #26: If the host is compromised, the device display is the last honest view. NCC Group's Bybit analysis: hardware wallets that clear-sign can expose malicious data even when the laptop is compromised. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #26: Golden rule: trust the hardware wallet's screen, not your computer's. Check the full address, amount and action on the device itself before you confirm. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #26: If the host is compromised, the device display is the last honest view. NCC Group's Bybit analysis: hardware wallets that clear-sign can expose malicious data even when the laptop is compromised.",
+    "simple": "Crypto #Wallet Security #26: Golden rule: trust the hardware wallet's screen, not your computer's. Check the full address, amount and action on the device itself before you confirm.",
     "card": {
       "title": "Trust the device screen, not the laptop",
       "sub": "Check the full address, amount and action on the hardware wallet before confirming."
@@ -328,8 +328,8 @@
   {
     "index": 27,
     "long": "Clipper malware watches the clipboard for crypto addresses and swaps in the attacker's. In February 2019 ESET reported the first clipper found on Google Play, posing as MetaMask and replacing copied BTC and ETH addresses. Defense: always compare the pasted address, ideally on a separate trusted screen such as a hardware wallet, before sending.",
-    "tech": "Crypto #Wallet Security #27: Clippers watch the clipboard for crypto addresses and swap in the attacker's. ESET found one on Google Play in Feb 2019, posing as MetaMask and replacing copied BTC and ETH addresses. Verify on a separate trusted screen. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #27: Clipper malware watches your clipboard. You copy a crypto address, it pastes the attacker's instead. Always compare the pasted address, ideally on a hardware wallet screen, before sending. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #27: Clippers watch the clipboard for crypto addresses and swap in the attacker's. ESET found one on Google Play in Feb 2019, posing as MetaMask and replacing copied BTC and ETH addresses. Verify on a separate trusted screen.",
+    "simple": "Crypto #Wallet Security #27: Clipper malware watches your clipboard. You copy a crypto address, it pastes the attacker's instead. Always compare the pasted address, ideally on a hardware wallet screen, before sending.",
     "card": {
       "title": "Malware that swaps the address you copied",
       "sub": "Clipper malware replaces copied addresses. Compare what you paste before sending."
@@ -340,8 +340,8 @@
   {
     "index": 28,
     "long": "PSBT (BIP174) packages everything an offline signer needs: inputs, UTXO data, derivation paths. This allows air-gapped signing: the device holding the key never goes online, unsigned transactions go in by QR code or memory card and signatures come out the same way. A watch-only online wallet then finalizes and broadcasts.",
-    "tech": "Crypto #Wallet Security #28: PSBT (BIP174) packages what an offline signer needs: inputs, UTXO data, derivation paths. The signer can stay fully offline; a watch-only online wallet finalizes and broadcasts the transaction. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #28: Air-gapped signing: the device with your key never goes online. Unsigned transactions go in by QR code or memory card, signatures come out the same way. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #28: PSBT (BIP174) packages what an offline signer needs: inputs, UTXO data, derivation paths. The signer can stay fully offline; a watch-only online wallet finalizes and broadcasts the transaction.",
+    "simple": "Crypto #Wallet Security #28: Air-gapped signing: the device with your key never goes online. Unsigned transactions go in by QR code or memory card, signatures come out the same way.",
     "card": {
       "title": "Signing without ever going online",
       "sub": "PSBT carries unsigned transactions by QR code or memory card to an offline signer."
@@ -352,8 +352,8 @@
   {
     "index": 29,
     "long": "January 2020: Kraken Security Labs showed it could extract encrypted seeds from Trezor One and Model T devices via voltage glitching, with under 15 minutes of physical access. Because the flaw is in the hardware, it can't be fixed by software. The recommended mitigation was a BIP39 passphrase. Lesson: physical access matters, and a strong passphrase still protects funds.",
-    "tech": "Crypto #Wallet Security #29: Jan 2020: Kraken Security Labs extracted encrypted seeds from Trezor One/Model T by voltage glitching, with under 15 min of physical access. The flaw is in hardware, so no software patch. Fix: a BIP39 passphrase. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #29: Physical access matters. In 2020 researchers showed they could extract the encrypted seed from some hardware wallet models in under 15 minutes with the device in hand. A strong passphrase still protects you. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #29: Jan 2020: Kraken Security Labs extracted encrypted seeds from Trezor One/Model T by voltage glitching, with under 15 min of physical access. The flaw is in hardware, so no software patch. Fix: a BIP39 passphrase.",
+    "simple": "Crypto #Wallet Security #29: Physical access matters. In 2020 researchers showed they could extract the encrypted seed from some hardware wallet models in under 15 minutes with the device in hand. A strong passphrase still protects you.",
     "card": {
       "big": "15 minutes",
       "title": "A hardware flaw no update can fix",
@@ -365,8 +365,8 @@
   {
     "index": 30,
     "long": "Since every BIP39 passphrase opens a valid wallet, one phrase can host a decoy (no passphrase, small balance) and a hidden wallet behind a passphrase. BIP39 calls this plausible deniability. It is a defense against physical coercion: if forced to open a wallet, there is a plausible one to show.",
-    "tech": "Crypto #Wallet Security #30: Every BIP39 passphrase opens a valid wallet, so a decoy (empty passphrase, small balance) and a hidden wallet can share one phrase. BIP39 names this plausible deniability. Defense against physical coercion. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #30: A passphrase can act as a decoy: keep a small amount in the no-passphrase wallet and the rest behind the passphrase. If someone forces you to open your wallet, there is a plausible one to show. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #30: Every BIP39 passphrase opens a valid wallet, so a decoy (empty passphrase, small balance) and a hidden wallet can share one phrase. BIP39 names this plausible deniability. Defense against physical coercion.",
+    "simple": "Crypto #Wallet Security #30: A passphrase can act as a decoy: keep a small amount in the no-passphrase wallet and the rest behind the passphrase. If someone forces you to open your wallet, there is a plausible one to show.",
     "card": {
       "title": "A decoy wallet for a forced unlock",
       "sub": "No passphrase opens a small balance; the real funds hide behind a passphrase."
@@ -377,8 +377,8 @@
   {
     "index": 31,
     "long": "Ledger's 2020 e-commerce data leak: about 1M email addresses, plus 272,852 records with names, postal addresses and phone numbers, dumped online in December 2020. Wallets and funds were not affected, but customers became phishing targets. Buying a wallet can expose your identity and address; real support never asks for your recovery words.",
-    "tech": "Crypto #Wallet Security #31: Ledger's 2020 e-commerce data leak: about 1M email addresses, plus 272,852 records with name, postal address and phone, dumped online in Dec 2020. Wallet security was unaffected, but buyers were exposed to phishing. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #31: Your shipping address can be a risk. A 2020 leak of a wallet maker's customer data exposed ~272,000 names, postal addresses and phones. Leaked buyer lists feed phishing. Real support never asks for your words. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #31: Ledger's 2020 e-commerce data leak: about 1M email addresses, plus 272,852 records with name, postal address and phone, dumped online in Dec 2020. Wallet security was unaffected, but buyers were exposed to phishing.",
+    "simple": "Crypto #Wallet Security #31: Your shipping address can be a risk. A 2020 leak of a wallet maker's customer data exposed ~272,000 names, postal addresses and phones. Leaked buyer lists feed phishing. Real support never asks for your words.",
     "card": {
       "big": "272,852",
       "title": "A wallet order can expose your home address",
@@ -390,8 +390,8 @@
   {
     "index": 32,
     "long": "Connecting a wallet to a site (eth_requestAccounts, EIP-1102) only shares your address. Assets move through what comes next: a transaction, a token approval, or a typed-data signature such as an ERC-2612 permit signed with EIP-712. Before every signature, check what is being allowed and to whom: the spender and the amount.",
-    "tech": "Crypto #Wallet Security #32: Connecting a wallet (eth_requestAccounts) exposes your address only. Assets move through what follows: a transaction, an approval, or a typed-data signature such as a permit. Read the spender and amount every time. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #32: Connecting your wallet to a site only shares your address. The risk starts with what you sign next. Before every signature, ask: what am I allowing, and to whom? #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #32: Connecting a wallet (eth_requestAccounts) exposes your address only. Assets move through what follows: a transaction, an approval, or a typed-data signature such as a permit. Read the spender and amount every time.",
+    "simple": "Crypto #Wallet Security #32: Connecting your wallet to a site only shares your address. The risk starts with what you sign next. Before every signature, ask: what am I allowing, and to whom?",
     "card": {
       "title": "Connecting is harmless, signing is not",
       "sub": "A connection shares your address. Check the spender and amount before each signature."
@@ -402,8 +402,8 @@
   {
     "index": 33,
     "long": "December 14, 2023: Ledger Connect Kit versions 1.1.5 to 1.1.7 were malicious, published through the phished NPMJS account of a former employee. The library is used by many dApps; the bad code was live about 5 hours and funds were drained during a window under 2 hours. Legitimate sites showed drainer prompts, so reading what you sign is the last defense.",
-    "tech": "Crypto #Wallet Security #33: Ledger Connect Kit 1.1.5 to 1.1.7 (Dec 14, 2023) were malicious, published via a phished ex-employee's NPMJS account. Live about 5 h, drains in under 2 h. Legit dApps served the drainer: always read what you sign. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #33: Dec 2023: an attacker phished a former employee's npm account and pushed a malicious version of a wallet-connection library used by many dApps. For about 5 hours, real sites showed drainer prompts. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #33: Ledger Connect Kit 1.1.5 to 1.1.7 (Dec 14, 2023) were malicious, published via a phished ex-employee's NPMJS account. Live about 5 h, drains in under 2 h. Legit dApps served the drainer: always read what you sign.",
+    "simple": "Crypto #Wallet Security #33: Dec 2023: an attacker phished a former employee's npm account and pushed a malicious version of a wallet-connection library used by many dApps. For about 5 hours, real sites showed drainer prompts.",
     "card": {
       "big": "5 hours",
       "title": "Legitimate sites showing drainer prompts",
@@ -415,8 +415,8 @@
   {
     "index": 34,
     "long": "December 24, 2025: Trust Wallet's Chrome extension v2.68 was malicious; the company says about $7M was stolen from 2,596 wallets. Per the CEO, the version was published outside the internal release process, likely via a leaked Chrome Web Store API key; the investigation was ongoing. Updates are a supply-chain path into hot wallets, and an extension shares the browser's risks.",
-    "tech": "Crypto #Wallet Security #34: Trust Wallet's Chrome extension v2.68 (Dec 24, 2025) was malicious: about $7M stolen from 2,596 wallets, per the company. Likely cause: a leaked Chrome Web Store API key. Updates are a supply-chain path into hot wallets. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #34: Dec 2025: a compromised update of a popular browser-extension wallet drained 2,596 wallets for about $7M. A browser extension shares your browser's risks; keep long-term savings elsewhere. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #34: Trust Wallet's Chrome extension v2.68 (Dec 24, 2025) was malicious: about $7M stolen from 2,596 wallets, per the company. Likely cause: a leaked Chrome Web Store API key. Updates are a supply-chain path into hot wallets.",
+    "simple": "Crypto #Wallet Security #34: Dec 2025: a compromised update of a popular browser-extension wallet drained 2,596 wallets for about $7M. A browser extension shares your browser's risks; keep long-term savings elsewhere.",
     "card": {
       "big": "$7M",
       "title": "A malicious update hit a browser wallet",
@@ -428,8 +428,8 @@
   {
     "index": 35,
     "long": "August 2022: researchers found that the Slope mobile wallet sent users' seed phrases in plain text to a third-party monitoring service (Sentry). It was linked to the drain of thousands of Solana wallets. A wallet app is software trusted with everything: one logging mistake can expose every user's recovery phrase.",
-    "tech": "Crypto #Wallet Security #35: Slope wallet (Aug 2022): researchers found the app sent seed phrases in plain text to a third-party monitoring service (Sentry). It was linked to the drain of thousands of Solana wallets. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #35: Aug 2022: a Solana mobile wallet was found sending users' recovery phrases in plain text to a logging server. Thousands of wallets were drained. A wallet app is software you trust with everything. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #35: Slope wallet (Aug 2022): researchers found the app sent seed phrases in plain text to a third-party monitoring service (Sentry). It was linked to the drain of thousands of Solana wallets.",
+    "simple": "Crypto #Wallet Security #35: Aug 2022: a Solana mobile wallet was found sending users' recovery phrases in plain text to a logging server. Thousands of wallets were drained. A wallet app is software you trust with everything.",
     "card": {
       "title": "A wallet app that logged seed phrases",
       "sub": "Slope sent recovery phrases in plain text to a monitoring service."
@@ -440,8 +440,8 @@
   {
     "index": 36,
     "long": "A brainwallet derives the private key as SHA-256 of a passphrase the user thought up. At DEF CON 23 (2015), Ryan Castellucci showed with his brainflayer tool that attackers test huge lists of phrases at high speed and sweep any funded address. Human-chosen phrases are not random enough; never build a wallet from a sentence you made up.",
-    "tech": "Crypto #Wallet Security #36: Brainwallet: private key = SHA-256(passphrase). At DEF CON 23 (2015) Ryan Castellucci showed with his brainflayer tool that attackers test huge lists of phrases at high speed and sweep funded ones. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #36: Never make a wallet from a phrase you thought up. \"Brain wallets\" built from memorable sentences get found and emptied by bots. Humans are terrible random number generators. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #36: Brainwallet: private key = SHA-256(passphrase). At DEF CON 23 (2015) Ryan Castellucci showed with his brainflayer tool that attackers test huge lists of phrases at high speed and sweep funded ones.",
+    "simple": "Crypto #Wallet Security #36: Never make a wallet from a phrase you thought up. \"Brain wallets\" built from memorable sentences get found and emptied by bots. Humans are terrible random number generators.",
     "card": {
       "title": "Never build a wallet from a sentence",
       "sub": "Attackers test huge lists of human-chosen phrases and sweep any funded address."
@@ -452,8 +452,8 @@
   {
     "index": 37,
     "long": "Milk Sad (CVE-2023-39910): Libbitcoin Explorer 3.x's \"bx seed\" command used the Mersenne Twister PRNG seeded with only 32 bits, about 4.3 billion possibilities. Every wallet it ever generated can be enumerated by a computer. Thefts began on July 12, 2023. A seed is only as strong as the randomness behind it.",
-    "tech": "Crypto #Wallet Security #37: Libbitcoin Explorer 3.x \"bx seed\" used the Mersenne Twister PRNG with a 32-bit seed (CVE-2023-39910). Every possible wallet can be enumerated; thefts started on July 12, 2023. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #37: \"Milk Sad\" (2023): a wallet command-line tool made seeds from only 32 bits of randomness, about 4.3 billion options. A computer can try them all. Funds were stolen. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #37: Libbitcoin Explorer 3.x \"bx seed\" used the Mersenne Twister PRNG with a 32-bit seed (CVE-2023-39910). Every possible wallet can be enumerated; thefts started on July 12, 2023.",
+    "simple": "Crypto #Wallet Security #37: \"Milk Sad\" (2023): a wallet command-line tool made seeds from only 32 bits of randomness, about 4.3 billion options. A computer can try them all. Funds were stolen.",
     "card": {
       "big": "32 bits",
       "title": "A seed is only as strong as its randomness",
@@ -465,8 +465,8 @@
   {
     "index": 38,
     "long": "Profanity, a popular vanity address generator, had flawed key generation: 1inch showed its keys could be brute-forced. The warning was published on September 15, 2022. On September 20, Wintermute lost about $160M from a 0x0000000 vanity address that was likely made with Profanity. A nice-looking address is worthless if the key behind it is weak.",
-    "tech": "Crypto #Wallet Security #38: Profanity's key generation was flawed: 1inch showed its private keys could be brute-forced. Disclosed Sept 15, 2022; on Sept 20 Wintermute lost about $160M from a 0x0000000 vanity address, likely made with Profanity. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #38: Vanity addresses (0x0000...) look cool, but keys made by the popular Profanity generator could be brute-forced. In Sept 2022 researchers warned; days later a firm using a vanity address lost about $160M. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #38: Profanity's key generation was flawed: 1inch showed its private keys could be brute-forced. Disclosed Sept 15, 2022; on Sept 20 Wintermute lost about $160M from a 0x0000000 vanity address, likely made with Profanity.",
+    "simple": "Crypto #Wallet Security #38: Vanity addresses (0x0000...) look cool, but keys made by the popular Profanity generator could be brute-forced. In Sept 2022 researchers warned; days later a firm using a vanity address lost about $160M.",
     "card": {
       "big": "$160M",
       "title": "A pretty address with a weak key",
@@ -478,8 +478,8 @@
   {
     "index": 39,
     "long": "Randstorm (Unciphered, November 2023): web wallets built with BitcoinJS-era code between 2011 and 2015 relied on browser randomness that could be weak, so some of their keys may be brute-forceable today. Anyone holding funds on a wallet created that way and in that period should consider moving them to a fresh seed.",
-    "tech": "Crypto #Wallet Security #39: Randstorm (Unciphered, Nov 2023): BitcoinJS-era web wallets (2011 to 2015) relied on browser randomness that could be weak, so some keys may be brute-forceable today. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #39: Old web wallet? 2023 research (\"Randstorm\") found that wallets made with BitcoinJS-based web apps between 2011 and 2015 may have weak randomness. If yours is that old, consider moving to a fresh seed. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #39: Randstorm (Unciphered, Nov 2023): BitcoinJS-era web wallets (2011 to 2015) relied on browser randomness that could be weak, so some keys may be brute-forceable today.",
+    "simple": "Crypto #Wallet Security #39: Old web wallet? 2023 research (\"Randstorm\") found that wallets made with BitcoinJS-based web apps between 2011 and 2015 may have weak randomness. If yours is that old, consider moving to a fresh seed.",
     "card": {
       "title": "Old web wallets may have weak keys",
       "sub": "Randstorm: some keys from BitcoinJS-era web wallets may be brute-forceable today."
@@ -490,8 +490,8 @@
   {
     "index": 40,
     "long": "August 2013: Android's Java SecureRandom could produce repeated values, so some Bitcoin apps reused the ECDSA nonce k. Two signatures with the same k reveal the private key, and attackers stole funds. Wallet apps shipped fixes and moved users to new keys. A flaw in the system random generator broke wallets that were otherwise correct.",
-    "tech": "Crypto #Wallet Security #40: Aug 2013: Android's Java SecureRandom could repeat values, so some Bitcoin apps reused the ECDSA nonce k. Two signatures with the same k reveal the private key. Wallets shipped fixes and rotated keys. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #40: Aug 2013: a flaw in Android's random number generator let attackers steal from Bitcoin wallet apps. Repeated randomness in signatures leaked private keys, and apps had to move users to new keys. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #40: Aug 2013: Android's Java SecureRandom could repeat values, so some Bitcoin apps reused the ECDSA nonce k. Two signatures with the same k reveal the private key. Wallets shipped fixes and rotated keys.",
+    "simple": "Crypto #Wallet Security #40: Aug 2013: a flaw in Android's random number generator let attackers steal from Bitcoin wallet apps. Repeated randomness in signatures leaked private keys, and apps had to move users to new keys.",
     "card": {
       "title": "When the phone's random generator failed",
       "sub": "Repeated ECDSA nonces revealed private keys, and attackers stole funds from apps."
@@ -502,8 +502,8 @@
   {
     "index": 41,
     "long": "ECDSA signing computes s = k^-1(z + r*d) with a one-time secret nonce k. If two signatures share k, anyone can compute k = (z1 - z2)/(s1 - s2) and then the private key d. fail0verflow used this in 2010 to recover Sony's PS3 signing key, since Sony used a static k. RFC 6979 avoids the problem by deriving k deterministically from the key and the message.",
-    "tech": "Crypto #Wallet Security #41: ECDSA: s = k^-1(z + r*d). Two signatures with the same k give k = (z1 - z2)/(s1 - s2), then d. fail0verflow used it on the PS3 in 2010. RFC 6979 avoids it by deriving k from the key and message. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #41: Every ECDSA signature uses a one-time secret number. Reuse it once and anyone can compute the private key. That's how Sony's PS3 signing key was recovered in 2010. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #41: ECDSA: s = k^-1(z + r*d). Two signatures with the same k give k = (z1 - z2)/(s1 - s2), then d. fail0verflow used it on the PS3 in 2010. RFC 6979 avoids it by deriving k from the key and message.",
+    "simple": "Crypto #Wallet Security #41: Every ECDSA signature uses a one-time secret number. Reuse it once and anyone can compute the private key. That's how Sony's PS3 signing key was recovered in 2010.",
     "card": {
       "title": "Reuse a nonce once and the key is gone",
       "sub": "Two signatures with the same k give away the private key. RFC 6979 prevents it."
@@ -514,8 +514,8 @@
   {
     "index": 42,
     "long": "secp256k1 has a group order n of about 1.16 x 10^77, so a properly random 256-bit private key can't be brute-forced. Keys cracked in practice came from weak entropy (brainwallets, Milk Sad, Profanity) or nonce reuse, not from breaking the math. Real attacks target people, random generators and signatures.",
-    "tech": "Crypto #Wallet Security #42: secp256k1 has a group order n of about 1.16 x 10^77, so a random 256-bit key can't be brute-forced. Keys cracked in practice came from weak entropy (brainwallets, Milk Sad, Profanity) or nonce reuse. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #42: Guessing someone's key is hopeless: there are about 10^77 possible private keys. Real thefts target people, weak random generators and bad signatures, not the math. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #42: secp256k1 has a group order n of about 1.16 x 10^77, so a random 256-bit key can't be brute-forced. Keys cracked in practice came from weak entropy (brainwallets, Milk Sad, Profanity) or nonce reuse.",
+    "simple": "Crypto #Wallet Security #42: Guessing someone's key is hopeless: there are about 10^77 possible private keys. Real thefts target people, weak random generators and bad signatures, not the math.",
     "card": {
       "big": "1.16 x 10^77",
       "title": "Nobody breaks the math, they break people",
@@ -527,8 +527,8 @@
   {
     "index": 43,
     "long": "EIP-55 (2016) adds a checksum to Ethereum addresses through letter case, based on the Keccak-256 hash of the lowercase address. That gives about 15 check bits on average; a mistyped address passes by accident only about 0.0247% of the time. It catches typos, but not a scammer's address that is itself valid, such as one pasted from a poisoned history.",
-    "tech": "Crypto #Wallet Security #43: EIP-55 (2016) encodes a checksum in letter case using the Keccak-256 hash of the lowercase address: about 15 check bits on average; a random typo passes only about 0.0247% of the time. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #43: Ever noticed Ethereum addresses mix upper and lower case? That's a checksum (EIP-55). Most typos get flagged. But it can't help if you paste a scammer's address that is valid. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #43: EIP-55 (2016) encodes a checksum in letter case using the Keccak-256 hash of the lowercase address: about 15 check bits on average; a random typo passes only about 0.0247% of the time.",
+    "simple": "Crypto #Wallet Security #43: Ever noticed Ethereum addresses mix upper and lower case? That's a checksum (EIP-55). Most typos get flagged. But it can't help if you paste a scammer's address that is valid.",
     "card": {
       "big": "0.0247%",
       "title": "Capital letters that catch typos",
@@ -540,8 +540,8 @@
   {
     "index": 44,
     "long": "Bech32 (BIP173), used by bc1 Bitcoin addresses, guarantees detection of any error affecting at most 4 characters, and has very low odds of missing larger errors. Taproot addresses (bc1p) use the updated Bech32m (BIP350). Typos are handled; lookalike scam addresses are a different problem the checksum can't solve.",
-    "tech": "Crypto #Wallet Security #44: Bech32 (BIP173) guarantees detection of any error affecting at most 4 characters, with very low odds of missing larger ones. Taproot addresses (bc1p) use the updated Bech32m variant (BIP350). #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #44: Bitcoin bc1 addresses have a strong checksum: any mistake in up to 4 characters is guaranteed to be caught. Typos are handled. Lookalike scam addresses are a different problem. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #44: Bech32 (BIP173) guarantees detection of any error affecting at most 4 characters, with very low odds of missing larger ones. Taproot addresses (bc1p) use the updated Bech32m variant (BIP350).",
+    "simple": "Crypto #Wallet Security #44: Bitcoin bc1 addresses have a strong checksum: any mistake in up to 4 characters is guaranteed to be caught. Typos are handled. Lookalike scam addresses are a different problem.",
     "card": {
       "big": "4 characters",
       "title": "Bech32 catches typos, not lookalikes",
@@ -553,8 +553,8 @@
   {
     "index": 45,
     "long": "Address poisoning: attackers generate an address matching the first and last characters of one you often pay, then plant a lookalike transfer in your history. If you later copy the address from your history, you copy theirs. In May 2024 one victim lost about $68M this way. Defense: use a saved address book and check every character.",
-    "tech": "Crypto #Wallet Security #45: Poisoners create addresses matching the first and last characters of your usual recipient, then mimic a transfer in your history. In May 2024 one victim lost about $68M this way. Use a saved address book. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #45: Address poisoning: a scammer plants a lookalike transfer in your history, from an address that starts and ends like one you use. Next time you copy from your history, you copy theirs. Check every character. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #45: Poisoners create addresses matching the first and last characters of your usual recipient, then mimic a transfer in your history. In May 2024 one victim lost about $68M this way. Use a saved address book.",
+    "simple": "Crypto #Wallet Security #45: Address poisoning: a scammer plants a lookalike transfer in your history, from an address that starts and ends like one you use. Next time you copy from your history, you copy theirs. Check every character.",
     "card": {
       "big": "$68M",
       "title": "Poisoned history, copied scam address",
@@ -566,8 +566,8 @@
   {
     "index": 46,
     "long": "May 2024: after a mimicking 0.05 ETH transfer, a user sent 1,155 WBTC (about $68M) to an address that copied the first and last six characters of the intended one. After negotiations the attacker sent back nearly all the funds, which is very rare. The case shows that checking only the start and end of an address is not enough.",
-    "tech": "Crypto #Wallet Security #46: May 2024: 1,155 WBTC (about $68M) went to an address matching the first and last 6 characters of the intended one, after a mimicking transfer. The attacker later returned the funds after negotiations. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #46: May 2024: one person sent about $68M in wrapped bitcoin to a scammer's lookalike address, copied after a poisoning transfer. The funds were returned after negotiation, which almost never happens. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #46: May 2024: 1,155 WBTC (about $68M) went to an address matching the first and last 6 characters of the intended one, after a mimicking transfer. The attacker later returned the funds after negotiations.",
+    "simple": "Crypto #Wallet Security #46: May 2024: one person sent about $68M in wrapped bitcoin to a scammer's lookalike address, copied after a poisoning transfer. The funds were returned after negotiation, which almost never happens.",
     "card": {
       "big": "1,155 WBTC",
       "title": "Checking start and end is not enough",
@@ -579,8 +579,8 @@
   {
     "index": 47,
     "long": "ERC-20 approve(spender, amount) sets an allowance that the spender can use through transferFrom at any time. Many apps request unlimited approvals (2^256 - 1), which stay active until revoked, even years later. If the approved contract is malicious or gets exploited, the approved balance is exposed. Review and revoke old approvals.",
-    "tech": "Crypto #Wallet Security #47: ERC-20 approve(spender, amount) sets an allowance the spender can use via transferFrom at any time. Unlimited (2^256 - 1) allowances never expire. If that contract is malicious or exploited, your balance is exposed. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #47: When you use a DEX, you \"approve\" it to spend your tokens. Many apps ask for unlimited approval, and it stays active until you revoke it, even years later. Review and revoke old approvals. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #47: ERC-20 approve(spender, amount) sets an allowance the spender can use via transferFrom at any time. Unlimited (2^256 - 1) allowances never expire. If that contract is malicious or exploited, your balance is exposed.",
+    "simple": "Crypto #Wallet Security #47: When you use a DEX, you \"approve\" it to spend your tokens. Many apps ask for unlimited approval, and it stays active until you revoke it, even years later. Review and revoke old approvals.",
     "card": {
       "big": "2^256 - 1",
       "title": "Unlimited approvals stay active for years",
@@ -592,8 +592,8 @@
   {
     "index": 48,
     "long": "ERC-721 setApprovalForAll(operator, true) authorizes an operator to transfer all of the owner's NFTs in that contract, now and later, until revoked. One signature covers the whole collection. A fake mint site asking for it is a classic drainer sign.",
-    "tech": "Crypto #Wallet Security #48: ERC-721 setApprovalForAll(operator, true) authorizes the operator to transfer all of the owner's tokens in that contract until revoked. One signature, whole collection. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #48: NFT version: \"setApprovalForAll\" lets an operator move every NFT you own in that collection, now and later. A fake mint site asking for it is a classic drainer sign. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #48: ERC-721 setApprovalForAll(operator, true) authorizes the operator to transfer all of the owner's tokens in that contract until revoked. One signature, whole collection.",
+    "simple": "Crypto #Wallet Security #48: NFT version: \"setApprovalForAll\" lets an operator move every NFT you own in that collection, now and later. A fake mint site asking for it is a classic drainer sign.",
     "card": {
       "title": "One signature for your whole NFT collection",
       "sub": "setApprovalForAll lets an operator move every NFT in it. Fake mint sites ask for it."
@@ -604,8 +604,8 @@
   {
     "index": 49,
     "long": "EIP-2612 permit(owner, spender, value, deadline, v, r, s) sets a token allowance from an off-chain EIP-712 signature that anyone can submit on-chain. Signing costs no gas and shows nothing on-chain, which makes it feel harmless. Drainers ask for a permit, then call permit and transferFrom themselves. Free to sign does not mean safe to sign.",
-    "tech": "Crypto #Wallet Security #49: EIP-2612 permit(owner, spender, value, deadline, v, r, s) sets an allowance from an off-chain EIP-712 signature that anyone can submit. Drainers ask for it, then call permit + transferFrom themselves. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #49: A \"permit\" is a signature, not a transaction: no gas, nothing on-chain when you sign. But it can let someone spend your tokens. Free to sign does not mean safe to sign. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #49: EIP-2612 permit(owner, spender, value, deadline, v, r, s) sets an allowance from an off-chain EIP-712 signature that anyone can submit. Drainers ask for it, then call permit + transferFrom themselves.",
+    "simple": "Crypto #Wallet Security #49: A \"permit\" is a signature, not a transaction: no gas, nothing on-chain when you sign. But it can let someone spend your tokens. Free to sign does not mean safe to sign.",
     "card": {
       "title": "Free to sign does not mean safe to sign",
       "sub": "A gasless permit signature lets drainers set an allowance and take your tokens."
@@ -616,8 +616,8 @@
   {
     "index": 50,
     "long": "Wallet drainers are phishing kits: a fake site or airdrop gets a wallet to connect, then requests the most valuable approval or permit it can. ScamSniffer's 2024 report (January 2025) counted about $494M stolen by wallet drainers that year, from about 332,000 addresses. A site pushing you to sign quickly is a warning sign.",
-    "tech": "Crypto #Wallet Security #50: Drainer kits request the highest-value approval or permit they can get once a wallet connects to a phishing site. ScamSniffer's 2024 report: about $494M stolen by wallet drainers that year. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #50: Wallet drainers are phishing kits: a fake site, a fake airdrop, a signature request. ScamSniffer counted about $494M stolen this way in 2024. If a site pushes you to sign fast, close it. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #50: Drainer kits request the highest-value approval or permit they can get once a wallet connects to a phishing site. ScamSniffer's 2024 report: about $494M stolen by wallet drainers that year.",
+    "simple": "Crypto #Wallet Security #50: Wallet drainers are phishing kits: a fake site, a fake airdrop, a signature request. ScamSniffer counted about $494M stolen this way in 2024. If a site pushes you to sign fast, close it.",
     "card": {
       "big": "$494M",
       "title": "Phishing kits built to empty wallets",
@@ -629,8 +629,8 @@
   {
     "index": 51,
     "long": "EIP-191 personal_sign hashes \"\\x19Ethereum Signed Message:\\n\" + length + message before signing. RLP-encoded transactions never start with 0x19, so a signed text message can't be valid as a transaction. Signing a raw hash has no such guard, which is why raw hash signing requests are dangerous.",
-    "tech": "Crypto #Wallet Security #51: EIP-191 personal_sign hashes \"\\x19Ethereum Signed Message:\\n\" + length + message. RLP transactions never start with 0x19, so the signature can't validate a tx. Raw hash signing has no such guard. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #51: Why can't a \"sign this message\" request secretly be a transaction? Wallets add a fixed prefix (\"Ethereum Signed Message\") before signing text, so the signature can't be reused as a transaction. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #51: EIP-191 personal_sign hashes \"\\x19Ethereum Signed Message:\\n\" + length + message. RLP transactions never start with 0x19, so the signature can't validate a tx. Raw hash signing has no such guard.",
+    "simple": "Crypto #Wallet Security #51: Why can't a \"sign this message\" request secretly be a transaction? Wallets add a fixed prefix (\"Ethereum Signed Message\") before signing text, so the signature can't be reused as a transaction.",
     "card": {
       "big": "0x19",
       "title": "Signed messages can't pass as transactions",
@@ -642,8 +642,8 @@
   {
     "index": 52,
     "long": "EIP-712 typed data: the wallet signs \"\\x19\\x01\" + domainSeparator + hashStruct(message). The domain (name, version, chainId, verifyingContract) binds the signature to one app and chain so it can't be replayed elsewhere. Wallets can show the fields (token, spender, amount, deadline) in readable form. Read them: the spender is who gets access.",
-    "tech": "Crypto #Wallet Security #52: EIP-712 signs \"\\x19\\x01\" + domainSeparator + hashStruct(message). The domain (name, version, chainId, verifyingContract) binds the signature to one app and chain, so it can't be replayed elsewhere. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #52: EIP-712 lets wallets show what you sign as readable fields (token, spender, amount, deadline) instead of a random-looking hash. Read them: \"spender\" is who gets access. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #52: EIP-712 signs \"\\x19\\x01\" + domainSeparator + hashStruct(message). The domain (name, version, chainId, verifyingContract) binds the signature to one app and chain, so it can't be replayed elsewhere.",
+    "simple": "Crypto #Wallet Security #52: EIP-712 lets wallets show what you sign as readable fields (token, spender, amount, deadline) instead of a random-looking hash. Read them: \"spender\" is who gets access.",
     "card": {
       "title": "Read the spender before you sign typed data",
       "sub": "The domain binds the signature to one app and chain. The spender gets the access."
@@ -654,8 +654,8 @@
   {
     "index": 53,
     "long": "Blind signing: when a hardware wallet can't parse calldata (or nested calls), it shows only a hash or raw hex, and the user approves without knowing what it does. NCC Group's Bybit analysis says blind signing is highly likely to occur. Prefer clear signing and decode calldata independently before approving.",
-    "tech": "Crypto #Wallet Security #53: When a device can't parse calldata (or nested calls), it only shows a hash or hex: blind signing. NCC Group on Bybit: \"blind signing is highly likely to occur\". Prefer clear signing; decode calldata independently. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #53: Blind signing: your hardware wallet shows a hash or raw data it can't decode, and you approve anyway. It's like signing a contract in a language you can't read. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #53: When a device can't parse calldata (or nested calls), it only shows a hash or hex: blind signing. NCC Group on Bybit: \"blind signing is highly likely to occur\". Prefer clear signing; decode calldata independently.",
+    "simple": "Crypto #Wallet Security #53: Blind signing: your hardware wallet shows a hash or raw data it can't decode, and you approve anyway. It's like signing a contract in a language you can't read.",
     "card": {
       "title": "Approving a transaction you can't read",
       "sub": "Blind signing shows only a hash or hex. Prefer clear signing and decode calldata."
@@ -666,8 +666,8 @@
   {
     "index": 54,
     "long": "February 21, 2025: about $1.5B was stolen from Bybit's Ethereum cold wallet, 401,347 ETH. Malicious JavaScript in the Safe{Wallet} web interface swapped the transaction for a delegatecall that replaced the multisig's implementation. Signers saw the original transaction; their devices showed raw data. The FBI attributed the theft to North Korea.",
-    "tech": "Crypto #Wallet Security #54: Bybit: malicious JS in the Safe{Wallet} web UI swapped the tx for a delegatecall that replaced the multisig's implementation. 401,347 ETH drained. Signers saw the original tx; devices showed raw data. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #54: Feb 21, 2025: about $1.5B was stolen from the exchange Bybit's cold wallet. The signers' web interface showed a normal transfer, but they signed something else. The FBI attributed it to North Korea. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #54: Bybit: malicious JS in the Safe{Wallet} web UI swapped the tx for a delegatecall that replaced the multisig's implementation. 401,347 ETH drained. Signers saw the original tx; devices showed raw data.",
+    "simple": "Crypto #Wallet Security #54: Feb 21, 2025: about $1.5B was stolen from the exchange Bybit's cold wallet. The signers' web interface showed a normal transfer, but they signed something else. The FBI attributed it to North Korea.",
     "card": {
       "big": "$1.5B",
       "title": "A tampered interface drained a cold wallet",
@@ -679,8 +679,8 @@
   {
     "index": 55,
     "long": "October 16, 2024: Radiant Capital lost about $50M. Malware on at least 3 developers' machines fed their hardware wallets a malicious ownership transfer, while the Safe interface and Tenderly displayed legitimate data. A fake error led them to sign again. The multisig threshold was 3 of 11, so 3 compromised signers were enough.",
-    "tech": "Crypto #Wallet Security #55: Radiant (Oct 16, 2024): malware on 3+ devs' machines fed hardware wallets a malicious ownership transfer while the Safe UI and Tenderly showed legit data. A fake error prompted re-signing. Threshold: 3 of 11. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #55: Oct 2024: Radiant Capital lost about $50M after malware on developers' computers showed normal transactions while their hardware wallets signed malicious ones. 3 signatures were enough. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #55: Radiant (Oct 16, 2024): malware on 3+ devs' machines fed hardware wallets a malicious ownership transfer while the Safe UI and Tenderly showed legit data. A fake error prompted re-signing. Threshold: 3 of 11.",
+    "simple": "Crypto #Wallet Security #55: Oct 2024: Radiant Capital lost about $50M after malware on developers' computers showed normal transactions while their hardware wallets signed malicious ones. 3 signatures were enough.",
     "card": {
       "big": "3 of 11",
       "title": "Fake data on screen, real theft on-chain",
@@ -692,8 +692,8 @@
   {
     "index": 56,
     "long": "ERC-4337 account abstraction: users send UserOperations to a separate mempool, and bundlers submit them via handleOps to a shared EntryPoint contract, deployed on March 1, 2023. No consensus-layer change was required. A wallet can be a smart contract with its own rules: spending limits, several keys, recovery.",
-    "tech": "Crypto #Wallet Security #56: ERC-4337: users send UserOperations to a separate mempool; bundlers submit them via handleOps to a shared EntryPoint contract, deployed on March 1, 2023. No consensus-layer change required. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #56: Smart accounts: since 2023 (ERC-4337) an Ethereum wallet can be a smart contract with its own rules: spending limits, several keys, recovery. No change to Ethereum itself was needed. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #56: ERC-4337: users send UserOperations to a separate mempool; bundlers submit them via handleOps to a shared EntryPoint contract, deployed on March 1, 2023. No consensus-layer change required.",
+    "simple": "Crypto #Wallet Security #56: Smart accounts: since 2023 (ERC-4337) an Ethereum wallet can be a smart contract with its own rules: spending limits, several keys, recovery. No change to Ethereum itself was needed.",
     "card": {
       "title": "Wallets that run their own rules",
       "sub": "ERC-4337 lets a smart contract wallet set spending limits, several keys and recovery."
@@ -704,8 +704,8 @@
   {
     "index": 57,
     "long": "Social recovery wallets, described by Vitalik Buterin in January 2021: one signing key for daily use, plus 3 or more guardians, a majority of whom can replace that key if it is lost. Guardians don't sign payments, but a colluding majority could take over, so they should be people or devices unlikely to collude.",
-    "tech": "Crypto #Wallet Security #57: Social recovery wallets (Vitalik Buterin, Jan 2021): one signing key for daily use plus 3 or more guardians, a majority of whom can change that key. Guardians don't sign payments, but a colluding majority could. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #57: Social recovery: with a smart account, trusted guardians (friends, family, your other devices) can together replace a lost signing key. Choose guardians who won't collude: a majority of them could take over. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #57: Social recovery wallets (Vitalik Buterin, Jan 2021): one signing key for daily use plus 3 or more guardians, a majority of whom can change that key. Guardians don't sign payments, but a colluding majority could.",
+    "simple": "Crypto #Wallet Security #57: Social recovery: with a smart account, trusted guardians (friends, family, your other devices) can together replace a lost signing key. Choose guardians who won't collude: a majority of them could take over.",
     "card": {
       "title": "Guardians who can replace a lost key",
       "sub": "A majority of guardians can restore access. Pick people unlikely to collude."
@@ -716,8 +716,8 @@
   {
     "index": 58,
     "long": "EIP-7702, live since the Pectra upgrade (May 7, 2025), adds transaction type 0x04 with an authorization list. Each authorization signs [chain_id, address, nonce] and writes a delegation indicator 0xef0100 + address to the account, whose calls then run that code. A normal account gains smart-wallet features while keeping its address.",
-    "tech": "Crypto #Wallet Security #58: EIP-7702 adds tx type 0x04 with an authorization list. Each signed tuple [chain_id, address, nonce] writes a delegation indicator 0xef0100 + address to the account; calls then run that code. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #58: Since the Pectra upgrade (May 7, 2025), a normal Ethereum account can point to smart-contract code and gain smart-wallet features while keeping its address. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #58: EIP-7702 adds tx type 0x04 with an authorization list. Each signed tuple [chain_id, address, nonce] writes a delegation indicator 0xef0100 + address to the account; calls then run that code.",
+    "simple": "Crypto #Wallet Security #58: Since the Pectra upgrade (May 7, 2025), a normal Ethereum account can point to smart-contract code and gain smart-wallet features while keeping its address.",
     "card": {
       "big": "0x04",
       "title": "Smart-wallet features, same old address",
@@ -729,8 +729,8 @@
   {
     "index": 59,
     "long": "EIP-7702 risk: delegated code has unrestricted access to the account. The spec says apps must not ask users to sign authorizations and that there is no safe way to provide this interface; wallets must audit delegate code. An authorization with chain_id 0 is valid on every chain. One signed authorization can hand full control of the account to an attacker.",
-    "tech": "Crypto #Wallet Security #59: EIP-7702: delegated code has unrestricted access to the account, and the spec says \"there is no safe way to provide this interface\" to apps. An authorization with chain_id 0 is valid on every chain. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #59: The flip side of EIP-7702: one signed authorization can give an attacker's contract full control of your account. Websites should never ask you to sign one. If one does, refuse. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #59: EIP-7702: delegated code has unrestricted access to the account, and the spec says \"there is no safe way to provide this interface\" to apps. An authorization with chain_id 0 is valid on every chain.",
+    "simple": "Crypto #Wallet Security #59: The flip side of EIP-7702: one signed authorization can give an attacker's contract full control of your account. Websites should never ask you to sign one. If one does, refuse.",
     "card": {
       "big": "chain_id 0",
       "title": "One authorization can hand over the account",
@@ -742,8 +742,8 @@
   {
     "index": 60,
     "long": "EIP-7702 delegations are reversible with the account key: a new authorization overwrites the previous delegation, and delegating to the zero address clears the account's code, making it a plain account again. Delegations apply to one chain unless chain_id is 0.",
-    "tech": "Crypto #Wallet Security #60: EIP-7702: a new authorization overwrites the delegation. Delegating to the zero address clears the account's code, turning it back into a plain account. Delegations are chain-specific unless chain_id is 0. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #60: Delegated your account with EIP-7702 and regret it? You can replace or remove the delegation by signing a new authorization with your key. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #60: EIP-7702: a new authorization overwrites the delegation. Delegating to the zero address clears the account's code, turning it back into a plain account. Delegations are chain-specific unless chain_id is 0.",
+    "simple": "Crypto #Wallet Security #60: Delegated your account with EIP-7702 and regret it? You can replace or remove the delegation by signing a new authorization with your key.",
     "card": {
       "title": "Delegations can be undone with the key",
       "sub": "A new authorization overwrites the old one; the zero address clears the code."
@@ -754,8 +754,8 @@
   {
     "index": 61,
     "long": "Soon after Pectra, Wintermute reported that the majority of EIP-7702 delegations pointed to copy-pasted sweeper contracts it tracks on a Dune dashboard as \"CrimeEnjoyor\". Attackers install them on accounts whose keys already leaked, so any funds sent there go straight to the attacker. Once a key has leaked, the address is burned.",
-    "tech": "Crypto #Wallet Security #61: Soon after Pectra, most EIP-7702 delegations pointed to one copy-pasted sweeper contract that drains accounts with leaked keys. Wintermute's Dune dashboard tracks it as \"CrimeEnjoyor\". Leaked key = burned address. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #61: After Pectra, attackers used EIP-7702 on accounts whose keys had already leaked, installing \"sweeper\" code that sends their funds straight to the attacker. Wintermute named this contract CrimeEnjoyor. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #61: Soon after Pectra, most EIP-7702 delegations pointed to one copy-pasted sweeper contract that drains accounts with leaked keys. Wintermute's Dune dashboard tracks it as \"CrimeEnjoyor\". Leaked key = burned address.",
+    "simple": "Crypto #Wallet Security #61: After Pectra, attackers used EIP-7702 on accounts whose keys had already leaked, installing \"sweeper\" code that sends their funds straight to the attacker. Wintermute named this contract CrimeEnjoyor.",
     "card": {
       "title": "Once a key leaks, the address is burned",
       "sub": "Sweeper contracts send any funds arriving at leaked accounts straight to attackers."
@@ -766,8 +766,8 @@
   {
     "index": 62,
     "long": "Mt. Gox, once the largest Bitcoin exchange, halted in February 2014 reporting about 850,000 BTC missing (customer and company coins). About 200,000 BTC were later found in old wallets. Creditor repayments began in July 2024, a decade later. Coins left with a custodian depend on that custodian's security: not your keys, not your coins.",
-    "tech": "Crypto #Wallet Security #62: Mt. Gox halted in Feb 2014 reporting about 850,000 BTC missing (customer and company), then found about 200,000 BTC in old wallets. Creditor repayments started in July 2024, a decade later. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #62: Not your keys, not your coins: Mt. Gox, once the biggest Bitcoin exchange, collapsed in Feb 2014 saying about 850,000 BTC were missing. About 200,000 were found later. Repayments began only in 2024. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #62: Mt. Gox halted in Feb 2014 reporting about 850,000 BTC missing (customer and company), then found about 200,000 BTC in old wallets. Creditor repayments started in July 2024, a decade later.",
+    "simple": "Crypto #Wallet Security #62: Not your keys, not your coins: Mt. Gox, once the biggest Bitcoin exchange, collapsed in Feb 2014 saying about 850,000 BTC were missing. About 200,000 were found later. Repayments began only in 2024.",
     "card": {
       "big": "850,000 BTC",
       "title": "Repaid a decade after the exchange fell",
@@ -779,8 +779,8 @@
   {
     "index": 63,
     "long": "Cold storage means spending without the private keys ever being online (Bitcoin Wiki). Hot wallets, such as phone apps and browser extensions, keep keys on networked devices exposed to malware. Like a pocket and a safe: keep online only what you need soon, and keep savings offline.",
-    "tech": "Crypto #Wallet Security #63: Cold storage: spending without the private keys ever being online (Bitcoin Wiki). Hot wallets (phone apps, browser extensions) keep keys on networked devices, exposed to malware. Keep online only what you need soon. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #63: Hot wallet = keys on an internet-connected device, handy for daily spending. Cold storage = keys kept offline. Think pocket and safe: small amounts hot, savings cold. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #63: Cold storage: spending without the private keys ever being online (Bitcoin Wiki). Hot wallets (phone apps, browser extensions) keep keys on networked devices, exposed to malware. Keep online only what you need soon.",
+    "simple": "Crypto #Wallet Security #63: Hot wallet = keys on an internet-connected device, handy for daily spending. Cold storage = keys kept offline. Think pocket and safe: small amounts hot, savings cold.",
     "card": {
       "title": "A pocket and a safe for your coins",
       "sub": "Keep online only what you need soon. Keep savings in cold storage, offline."
@@ -791,8 +791,8 @@
   {
     "index": 64,
     "long": "Section 10 of the Bitcoin whitepaper: \"a new key pair should be used for each transaction to keep them from being linked to a common owner.\" HD wallets (BIP32) make this automatic by deriving a fresh address for each payment. Address reuse is a privacy leak, not a convenience.",
-    "tech": "Crypto #Wallet Security #64: Bitcoin whitepaper, section 10: \"a new key pair should be used for each transaction to keep them from being linked to a common owner.\" HD wallets (BIP32) make this automatic. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #64: Using a fresh address for each payment isn't paranoia, it's in the Bitcoin whitepaper: a new key pair for each transaction keeps payments from being linked to one owner. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #64: Bitcoin whitepaper, section 10: \"a new key pair should be used for each transaction to keep them from being linked to a common owner.\" HD wallets (BIP32) make this automatic.",
+    "simple": "Crypto #Wallet Security #64: Using a fresh address for each payment isn't paranoia, it's in the Bitcoin whitepaper: a new key pair for each transaction keeps payments from being linked to one owner.",
     "card": {
       "title": "A new address for every payment",
       "sub": "Address reuse links your payments. HD wallets derive a fresh address each time."
@@ -803,8 +803,8 @@
   {
     "index": 65,
     "long": "Dusting: someone sends tiny amounts to many addresses, hoping the owner later spends the dust together with other coins. Under the common-input-ownership heuristic (whitepaper section 10, multi-input transactions), that ties the addresses to one owner. Coin control lets you freeze unexpected dust as do-not-spend.",
-    "tech": "Crypto #Wallet Security #65: Dusting links UTXOs via the common-input-ownership heuristic: spending dust alongside your coins ties those addresses together. Coin control lets you mark unexpected dust as do-not-spend. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #65: Dust attack: someone sends tiny amounts to many addresses, hoping you later spend them together with your other coins and reveal which addresses are yours. Freeze unexpected dust. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #65: Dusting links UTXOs via the common-input-ownership heuristic: spending dust alongside your coins ties those addresses together. Coin control lets you mark unexpected dust as do-not-spend.",
+    "simple": "Crypto #Wallet Security #65: Dust attack: someone sends tiny amounts to many addresses, hoping you later spend them together with your other coins and reveal which addresses are yours. Freeze unexpected dust.",
     "card": {
       "title": "Tiny deposits meant to unmask you",
       "sub": "Spending dust with other coins ties addresses together. Freeze it with coin control."
@@ -815,8 +815,8 @@
   {
     "index": 66,
     "long": "Bitcoin timelocks allow inheritance without handing over keys. OP_CHECKLOCKTIMEVERIFY (BIP65, absolute) and OP_CHECKSEQUENCEVERIFY (BIP112, relative) let a script add a recovery key, for example an heir's, usable only after a set time. With Taproot that path stays hidden unless it is used.",
-    "tech": "Crypto #Wallet Security #66: OP_CHECKLOCKTIMEVERIFY (BIP65) and OP_CHECKSEQUENCEVERIFY (BIP112) let a script add a recovery key usable only after an absolute or relative timelock. With Taproot that path stays hidden unless used. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #66: Inheritance without handing over your keys: Bitcoin timelocks can add a backup spending path that only opens after a set date, for example for an heir's key. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #66: OP_CHECKLOCKTIMEVERIFY (BIP65) and OP_CHECKSEQUENCEVERIFY (BIP112) let a script add a recovery key usable only after an absolute or relative timelock. With Taproot that path stays hidden unless used.",
+    "simple": "Crypto #Wallet Security #66: Inheritance without handing over your keys: Bitcoin timelocks can add a backup spending path that only opens after a set date, for example for an heir's key.",
     "card": {
       "title": "Inheritance without handing over keys",
       "sub": "Timelocks add an heir's recovery key usable only after a set time, hidden by Taproot."
@@ -827,8 +827,8 @@
   {
     "index": 67,
     "long": "Series recap: a wallet guards keys, not coins. Topics covered: BIP39/BIP32 seeds and passphrases, hardened paths, Shamir and multisig backups, weak-randomness failures, address poisoning, approvals and permits, blind signing, ERC-4337 and EIP-7702. The thefts came from weak key generation, leaked seeds and keys, and what users signed, not from breaking the cryptography. Back up offline, verify on a trusted screen, read every signature, revoke old approvals.",
-    "tech": "Crypto #Wallet Security #67: Recap: BIP39/32 seeds, hardened paths, Shamir and multisig backups, weak-RNG failures, poisoning, permits, blind signing, 4337 and 7702. Thefts came from weak keys, leaks and bad signatures, not the math. Follow for more. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #67: Summary: a wallet guards keys, not coins. Back up the seed (and passphrase) offline, verify on a trusted screen, read every signature, revoke old approvals. Follow for more crypto security, one post a day. #CryptoSecurity #SelfCustody",
+    "tech": "Crypto #Wallet Security #67: Recap: BIP39/32 seeds, hardened paths, Shamir and multisig backups, weak-RNG failures, poisoning, permits, blind signing, 4337 and 7702. Thefts came from weak keys, leaks and bad signatures, not the math. Follow for more.",
+    "simple": "Crypto #Wallet Security #67: Summary: a wallet guards keys, not coins. Back up the seed (and passphrase) offline, verify on a trusted screen, read every signature, revoke old approvals. Follow for more crypto security, one post a day.",
     "card": {
       "title": "What drained wallets, and what protects them",
       "sub": "Back up offline, verify on a trusted screen, read every signature, revoke approvals."

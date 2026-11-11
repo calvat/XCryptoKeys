@@ -3,7 +3,7 @@
 - Sujet : 4. Les grands hacks, expliqués techniquement
 - Angle : pas le montant volé, mais la ligne de code ou la clé qui a lâché.
 - Préfixe : `Crypto #Hack Autopsy #N:`
-- Hashtags fixes : #CyberSecurity #InfoSec
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKhak1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (52 posts checked, 0 draft)
 

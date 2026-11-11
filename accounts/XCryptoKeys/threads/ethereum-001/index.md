@@ -3,7 +3,7 @@
 - Sujet : 2. Ethereum sous le capot
 - Angle : du modèle de comptes au Merge et aux blobs, les mécanismes concrets.
 - Préfixe : `#Ethereum Deep Dive #N:`
-- Hashtags fixes : #ETH #SmartContracts
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKeth1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (91 posts checked, 0 draft)
 

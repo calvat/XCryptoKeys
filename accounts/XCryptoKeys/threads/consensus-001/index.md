@@ -3,7 +3,7 @@
 - Sujet : 5. Le consensus, comment des inconnus se mettent d'accord
 - Angle : PoW, PoS, BFT et leurs compromis, avec des attaques réelles.
 - Préfixe : `#Blockchain Consensus #N:`
-- Hashtags fixes : #ProofOfStake #ProofOfWork
+- Hashtags fixes : aucun (2 hashtags maximum par post : celui du préfixe et celui de la campagne)
 - Hashtag de campagne : `#XCKcns1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (54 posts checked, 0 draft)
 
