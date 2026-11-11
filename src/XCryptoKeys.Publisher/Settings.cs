@@ -5,7 +5,7 @@ namespace XCryptoKeys.Publisher;
 
 public sealed class Settings
 {
-    /// <summary>Chemin du clone local du dépôt.</summary>
+    /// <summary>Chemin du clone local du dépôt ; vide = trouvé en remontant depuis l'exécutable (voir FindRepo).</summary>
     public string RepoPath { get; set; } = "";
     /// <summary>Dossier des comptes, relatif à RepoPath : un sous-dossier par compte X, avec ses campagnes dans threads/.</summary>
     public string AccountsFolder { get; set; } = "accounts";
@@ -153,7 +153,7 @@ public sealed class Settings
     }
 
     /// <summary>
-    /// Charge appsettings.json, puis appsettings.local.json (secrets, ignoré par git) par-dessus,
+    /// Charge appsettings.json, puis appsettings.local.json (facultatif, ignoré par git) par-dessus,
     /// puis les variables d'environnement XCK__Section__Cle (ex. XCK__Accounts__XCryptoKeys__X__ApiKey).
     /// </summary>
     public static Settings Load(string? explicitPath)
@@ -191,13 +191,30 @@ public sealed class Settings
 
         var settings = merged.Deserialize<Settings>(SerializerOptions) ?? new Settings();
         settings.Raw = merged;
+        if (string.IsNullOrWhiteSpace(settings.RepoPath))
+            settings.RepoPath = FindRepo(AppContext.BaseDirectory, settings.AccountsFolder)
+                ?? FindRepo(Environment.CurrentDirectory, settings.AccountsFolder) ?? "";
         return settings;
+    }
+
+    /// <summary>
+    /// Premier dossier, en partant de <paramref name="start"/> et en remontant, qui est un clone git avec le dossier des comptes :
+    /// l'exécutable construit dans src/publish/ du clone trouve ainsi le dépôt sans RepoPath.
+    /// </summary>
+    public static string? FindRepo(string start, string accountsFolder = "accounts")
+    {
+        for (string? dir = Path.GetFullPath(start); dir is not null; dir = Path.GetDirectoryName(dir))
+        {
+            bool git = Directory.Exists(Path.Combine(dir, ".git")) || File.Exists(Path.Combine(dir, ".git"));
+            if (git && Directory.Exists(Path.Combine(dir, accountsFolder))) return dir;
+        }
+        return null;
     }
 
     /// <summary>Contrôles globaux. Les identifiants X sont vérifiés compte par compte au moment du passage.</summary>
     public IEnumerable<string> Validate()
     {
-        if (string.IsNullOrWhiteSpace(RepoPath)) yield return "RepoPath est vide.";
+        if (string.IsNullOrWhiteSpace(RepoPath)) yield return "Dépôt introuvable : l'exécutable n'est pas dans un clone du dépôt ; le donner avec --repo <dossier> (ou RepoPath).";
         else if (!Directory.Exists(RepoPath)) yield return $"Dépôt introuvable : {RepoPath}";
         // AccountsPath est vérifié après le git pull : un clone resté sur l'ancienne organisation doit pouvoir se mettre à jour.
         if (string.IsNullOrWhiteSpace(DefaultVersion)) yield return "DefaultVersion est vide.";

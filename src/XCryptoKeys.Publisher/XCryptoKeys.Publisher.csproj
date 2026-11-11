@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="appsettings.local.example.json" CopyToOutputDirectory="PreserveNewest" />
     <InternalsVisibleTo Include="XCryptoKeys.Publisher.Tests" />
   </ItemGroup>
 

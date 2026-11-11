@@ -5,6 +5,7 @@ using XCryptoKeys.Publisher;
 // À lancer toutes les 15 minutes (cron ou Planificateur de tâches). Voir src/README.md.
 
 string? settingsPath = null;
+string? repoPath = null;
 string? only = null;
 string? onlyAccount = null;
 bool dryRun = false;
@@ -16,6 +17,7 @@ for (int i = 0; i < args.Length; i++)
     {
         case "--dry-run": dryRun = true; break;
         case "--settings" when i + 1 < args.Length: settingsPath = args[++i]; break;
+        case "--repo" when i + 1 < args.Length: repoPath = args[++i]; break;
         case "--campaign" when i + 1 < args.Length: only = args[++i]; break;
         case "--account" when i + 1 < args.Length: onlyAccount = args[++i]; break;
         case "--now" when i + 1 < args.Length:
@@ -23,13 +25,15 @@ for (int i = 0; i < args.Length; i++)
             break;
         case "-h" or "--help":
             Console.WriteLine("""
-                xck-publisher [--dry-run] [--account <compte>] [--campaign <nom>] [--settings <fichier>] [--now <date ISO>]
+                xck-publisher [--dry-run] [--account <compte>] [--campaign <nom>] [--repo <dossier>] [--settings <fichier>] [--now <date ISO>]
 
                   --dry-run    affiche ce qui serait publié, sans appel à X ni modification du dépôt
                   --account    ne traite qu'un compte (ex. XCryptoKeys, nom du dossier dans accounts/)
                   --campaign   ne traite qu'une campagne (ex. bitcoin-001, ou XCryptoKeys/bitcoin-001)
+                  --repo       clone du dépôt (défaut : RepoPath, sinon trouvé en remontant depuis
+                               l'exécutable puis depuis le dossier courant)
                   --settings   fichier de settings (défaut : appsettings.json à côté de l'exécutable,
-                               puis appsettings.local.json par-dessus)
+                               puis appsettings.local.json, facultatif, par-dessus)
                   --now        simule l'heure courante (UTC), pour tester le calendrier
                 """);
             return 0;
@@ -50,6 +54,7 @@ Settings settings;
 try
 {
     settings = Settings.Load(settingsPath);
+    if (repoPath is not null) settings.RepoPath = Path.GetFullPath(repoPath);
 }
 catch (Exception ex)
 {
