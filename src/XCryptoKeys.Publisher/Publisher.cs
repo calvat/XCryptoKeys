@@ -69,7 +69,8 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
             int next = campaign.LastPostedIndex + 1;
             if (next > campaign.MaxIndex)
             {
-                log.Info($"{Tag(campaign)} tous les posts sont publiés ; campagne passée en inactive.");
+                if (options.DryRun) log.Info($"{Tag(campaign)} tous les posts sont publiés ; la campagne passerait en inactive.");
+                else log.Action($"{Tag(campaign)} tous les posts sont publiés ; campagne passée en inactive.");
                 if (!options.DryRun)
                 {
                     campaign.MarkFinished();
@@ -92,6 +93,7 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
             if (options.Now < due)
             {
                 log.Info($"{Tag(campaign)} prochain post #{next} dû le {due:yyyy-MM-dd HH:mm} UTC.");
+                log.NoteNextDue(due, $"{account.Name}/{campaign.Name} #{next}");
                 continue;
             }
 
@@ -169,7 +171,7 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
             string url = string.IsNullOrWhiteSpace(username)
                 ? $"https://x.com/i/web/status/{tweetId}"
                 : $"https://x.com/{username}/status/{tweetId}";
-            log.Info($"{Tag(campaign)} post #{next} publié : {url}");
+            log.PostPublished($"{Tag(campaign)} post #{next}/{campaign.MaxIndex} publié : {url}");
 
             try
             {

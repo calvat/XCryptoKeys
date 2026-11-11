@@ -136,6 +136,8 @@ public sealed class Settings
         /// <summary>Dossier des logs ; relatif au dossier de l'exécutable s'il n'est pas absolu.</summary>
         public string Directory { get; set; } = "logs";
         public int RetentionDays { get; set; } = 30;
+        /// <summary>true : chaque passage est écrit dans le fichier, même sans rien à faire (pour vérifier la tâche planifiée).</summary>
+        public bool Verbose { get; set; } = false;
     }
 
     public sealed class GitSettings

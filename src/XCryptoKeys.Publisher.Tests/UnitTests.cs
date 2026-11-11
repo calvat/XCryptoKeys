@@ -184,6 +184,9 @@ public class PublisherTests
         int n = await new Publisher(settings, DemoAccount(repo), log, x, null, new RunOptions(false, now, null)).RunAsync(default);
 
         Assert.Equal(1, n);
+        Assert.Equal(1, log.Posted);
+        Assert.True(log.HasActivity);
+        Assert.Equal("1 post(s) publié(s)", log.Result);
         Assert.Equal(["/2/media/upload", "/2/media/metadata", "/2/tweets"], fake.Requests.Select(r => r.Path));
         var tweet = JsonNode.Parse(fake.Requests[2].Body)!;
         Assert.Equal("Demo #1: first #XCKdem1", (string?)tweet["text"]);
@@ -491,5 +494,69 @@ public class AccountTests
             var settings = new Settings();
             settings.LoadAccountFiles(new Account(a.Directory) );
         }
+    }
+}
+
+public class LogTests
+{
+    private static string TempDir() => Path.Combine(Path.GetTempPath(), "xck-log-" + Guid.NewGuid().ToString("N"));
+
+    [Fact]
+    public void Quiet_run_writes_no_log_file_only_last_run()
+    {
+        string dir = TempDir();
+        var log = new Log(dir, 30);
+        log.Info("Début du passage");
+        log.Info("[Demo/demo-001] prochain post #2 dû le 2026-11-13 09:00 UTC.");
+        log.NoteNextDue(new DateTimeOffset(2026, 11, 13, 9, 0, 0, TimeSpan.Zero), "Demo/demo-001 #2");
+        log.NoteWaitingForKeys("Autre");
+        log.Info("Fin du passage");
+        Assert.Null(Directory.Exists(dir) ? Directory.GetFiles(dir, "publisher-*.log").FirstOrDefault() : null);
+        log.Dispose();
+        Assert.Empty(Directory.GetFiles(dir, "publisher-*.log"));
+        string lastRun = File.ReadAllText(Path.Combine(dir, Log.LastRunFile));
+        Assert.Contains("rien à faire ; prochain post dû : Demo/demo-001 #2 le 2026-11-13 09:00 UTC ; en attente des clés X : Autre", lastRun);
+        Directory.Delete(dir, true);
+    }
+
+    [Fact]
+    public void Warning_writes_the_whole_run_and_the_rest_goes_straight_to_the_file()
+    {
+        string dir = TempDir();
+        var log = new Log(dir, 30);
+        log.Info("Début du passage");
+        log.Warn("quelque chose");
+        string file = Directory.GetFiles(dir, "publisher-*.log").Single();
+        Assert.Equal(2, File.ReadAllLines(file).Length);  // écrit tout de suite, sans attendre la fin
+        log.Info("Fin du passage");
+        log.Dispose();
+        var lines = File.ReadAllLines(file);
+        Assert.Contains("INFO  Début du passage", lines[0]);
+        Assert.Contains("WARN  quelque chose", lines[1]);
+        Assert.Contains("INFO  Fin du passage", lines[2]);
+        Assert.Contains("1 avertissement(s), rien publié", File.ReadAllText(Path.Combine(dir, Log.LastRunFile)));
+        Directory.Delete(dir, true);
+    }
+
+    [Fact]
+    public void Verbose_writes_every_run()
+    {
+        string dir = TempDir();
+        var log = new Log(dir, 30, verbose: true);
+        log.Info("Début du passage");
+        log.Info("Fin du passage");
+        log.Dispose();
+        Assert.Equal(2, File.ReadAllLines(Directory.GetFiles(dir, "publisher-*.log").Single()).Count(l => l.Length > 0));
+        Directory.Delete(dir, true);
+    }
+
+    [Fact]
+    public void Dry_run_log_without_directory_writes_nothing() 
+    {
+        var log = new Log(null, 30);
+        log.Error("visible dans la console seulement");
+        log.Dispose();
+        Assert.Null(log.FilePath);
+        Assert.Null(log.LastRunPath);
     }
 }

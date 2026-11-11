@@ -68,6 +68,7 @@ Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, 
 | `DelayBetweenPostsSeconds` | `30` | Pause entre deux posts d'un même passage |
 | `Log.Directory` | `logs` | Dossier des logs, relatif à l'exécutable s'il n'est pas absolu |
 | `Log.RetentionDays` | `30` | Les logs plus vieux sont supprimés |
+| `Log.Verbose` | `false` | `true` : chaque passage est écrit dans le log, même sans rien à faire (pour vérifier la tâche planifiée) ; sinon seulement ceux où il s'est passé quelque chose |
 | `Git.Enabled` | `true` | Pull, commit et push automatiques |
 | `Git.Remote` / `Git.Branch` | `origin` / branche courante | Où pousser |
 | `Git.UserName` / `Git.UserEmail` | | Auteur des commits du serveur |
@@ -201,6 +202,28 @@ Dans `accounts/<Compte>/threads/<campagne>/status.json`, passer `status` à `act
 - `1` : au moins une erreur (post bloqué, échec d'API, git) : voir le log ;
 - `2` : réglages invalides.
 
-Les logs sont dans `logs/publisher-AAAA-MM-JJ.log`, à côté de l'exécutable.
+Les logs sont dans `logs/`, à côté de l'exécutable :
+
+- `publisher-AAAA-MM-JJ.log` : **ce qui a été fait**. Seuls les passages où il s'est passé quelque chose y sont écrits : un post publié, une campagne terminée, un avertissement ou une erreur. Le passage est alors écrit en entier (début, lignes, résumé), suivi d'une ligne vide. Un passage sans rien à faire (rien de dû, comptes en attente de leurs clés, campagnes inactives) n'écrit rien. Avec `Log.Verbose` à `true`, chaque passage est écrit ;
+- `last-run.txt` : **le dernier passage**, réécrit à chaque fois (une ligne : heure UTC, résultat, prochain post dû). Pour vérifier que la tâche planifiée tourne bien, même quand il n'y a rien à faire.
+
+Exemple de `publisher-AAAA-MM-JJ.log` pour un passage qui publie :
+
+```text
+2026-11-12T08:30:04Z INFO  Début du passage, heure de référence 2026-11-12T08:30:04Z, version par défaut « simple ».
+2026-11-12T08:30:06Z INFO  API X POST /2/media/upload -> 200
+2026-11-12T08:30:06Z INFO  API X POST /2/media/metadata -> 200
+2026-11-12T08:30:07Z INFO  API X POST /2/tweets -> 201
+2026-11-12T08:30:07Z DONE  [XCryptoKeys/bitcoin-001] post #1/71 publié : https://x.com/xcryptokeys/status/…
+2026-11-12T08:30:09Z INFO  Fin du passage : 1 post(s) publié(s), 3 appel(s) à l'API X, 0 erreur(s), 0 avertissement(s).
+```
+
+Les lignes d'avant le premier événement (début du passage, campagnes pas encore dues…) sont gardées en mémoire puis écrites avec lui ; ensuite, chaque ligne est écrite tout de suite, et une erreur inattendue est écrite avant l'arrêt du programme. Le `--dry-run` n'écrit que dans la console.
+
+`last-run.txt`, par exemple :
+
+```text
+2026-11-12T08:45:02Z rien à faire ; prochain post dû : XCryptoKeys/ethereum-001 #1 le 2026-11-12 10:00 UTC
+```
 
 Si le log affiche « POST #N PUBLIÉ … MAIS status.json/posts.json NON MIS À JOUR », le post est en ligne mais l'état n'a pas pu être écrit : mets `last_posted_index` à N dans `status.json` avant le passage suivant, sinon le post repartira.

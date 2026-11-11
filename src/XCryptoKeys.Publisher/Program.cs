@@ -57,7 +57,14 @@ catch (Exception ex)
     return 2;
 }
 
-using var log = new Log(settings.Log.Directory, settings.Log.RetentionDays);
+// Le dry-run n'écrit que dans la console : ni fichier de log, ni last-run.txt.
+using var log = new Log(dryRun ? null : settings.Log.Directory, settings.Log.RetentionDays, settings.Log.Verbose);
+// Une erreur inattendue est écrite dans le fichier avec tout le passage avant l'arrêt du programme.
+AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+{
+    log.Error($"Erreur inattendue, passage interrompu : {e.ExceptionObject}");
+    log.Dispose();
+};
 var problems = settings.Validate().ToList();
 if (problems.Count > 0)
 {
@@ -151,6 +158,7 @@ using (lockFile)
                 else
                 {
                     log.Info($"[{account.Name}] clés X non renseignées ({keysFile}) ; compte en attente, rien n'est publié.");
+                    log.NoteWaitingForKeys(account.Name);
                     continue;
                 }
             }

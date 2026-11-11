@@ -29,7 +29,7 @@ Le format de `posts.json` et de `status.json` est décrit dans le README de chaq
 
 Le bot est un programme qui fait un passage puis s'arrête. Une tâche planifiée Windows le lance toutes les 15 minutes : à chaque passage, il publie les posts dus des campagnes `active` de chaque compte, puis commit et pousse les `status.json` sur GitHub.
 
-On peut l'installer **avant d'avoir les clés de l'API X** : tant que `account.local.json` n'existe pas ou n'est pas rempli, le bot ne publie rien pour ce compte (le log indique à chaque passage « clés X non renseignées … compte en attente, rien n'est publié », sans erreur). Il suffit ensuite de remplir ce fichier : le passage suivant publie, sans rien réinstaller.
+On peut l'installer **avant d'avoir les clés de l'API X** : tant que `account.local.json` n'existe pas ou n'est pas rempli, le bot ne publie rien pour ce compte (sans erreur ; rien n'est écrit dans le log, et `C:\xck-publisher\logs\last-run.txt` indique « en attente des clés X : XCryptoKeys »). Il suffit ensuite de remplir ce fichier : le passage suivant publie, sans rien réinstaller.
 
 ### Ce qu'il faut sur le PC
 
@@ -95,7 +95,8 @@ Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en 
 
 | Pour… | Commande (PowerShell administrateur) |
 |---|---|
-| Voir le log | ouvrir `C:\xck-publisher\logs\publisher-AAAA-MM-JJ.log` |
+| Voir ce qui a été fait | ouvrir `C:\xck-publisher\logs\publisher-AAAA-MM-JJ.log` : seuls les passages où il s'est passé quelque chose (post publié, erreur…) y sont écrits |
+| Vérifier que la tâche tourne | ouvrir `C:\xck-publisher\logs\last-run.txt` : heure et résultat du dernier passage, et prochain post dû |
 | Tester ce qui partirait maintenant | `C:\xck-publisher\xck-publisher.exe --dry-run` |
 | Lancer un passage tout de suite | `Start-ScheduledTask -TaskName 'X-Bots Publisher'` |
 | Mettre en pause / reprendre | `Disable-ScheduledTask -TaskName 'X-Bots Publisher'` / `Enable-ScheduledTask -TaskName 'X-Bots Publisher'` |
