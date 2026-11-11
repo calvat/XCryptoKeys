@@ -33,7 +33,7 @@ Un seul dégradé d'accent : cyan `#5cfcfa` → violet `#ad59e9`, de gauche à d
 - **Code, champs, adresses, petits libellés** : JetBrains Mono.
 - **Texte courant** : Inter.
 
-## Composition (1200 × 675, exporté en ×2)
+## Composition (1200 × 675)
 
 1. En haut à gauche : préfixe de série, puis titre (marge 60 px).
 2. Au centre : un seul schéma, lisible sur mobile. 3 à 6 boîtes maximum, texte ≥ 15 px.
