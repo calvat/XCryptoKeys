@@ -1,5 +1,5 @@
-// Usage : node design/render.js threads/pactus-001/src/post_06.html
-// Produit threads/pactus-001/post_06.png (1200×675, exporté en x2 = 2400×1350).
+// Usage : node design/render.js threads/pactus-001/src/post_6.html
+// Produit threads/pactus-001/post_6.png (1200×675, exporté en x2 = 2400×1350).
 const path = require('path');
 const { chromium } = require('playwright');
 (async () => {

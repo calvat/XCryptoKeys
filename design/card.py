@@ -3,9 +3,9 @@
 
 Usage : python3 design/card.py threads/pactus-001 [index ...]
 Lit posts.json, prend le champ "card" de chaque post et écrit la source
-threads/<campagne>/src/post_NN.html. Avec --png, produit aussi l'image
-threads/<campagne>/post_NN.png (via design/render.js).
-Un post qui a déjà un schéma sur mesure (src/post_NN.html sans la marque
+threads/<campagne>/src/post_N.html. Avec --png, produit aussi l'image
+threads/<campagne>/post_N.png (via design/render.js).
+Un post qui a déjà un schéma sur mesure (src/post_N.html sans la marque
 "auto-card") n'est pas écrasé, mais son PNG est régénéré.
 """
 import json, sys, os, html, re, subprocess
@@ -86,7 +86,7 @@ def main():
     for p in posts:
         if want and p['index'] not in want: continue
         if 'card' not in p: continue
-        path = os.path.join(camp, 'src', f"post_{p['index']:02d}.html")
+        path = os.path.join(camp, 'src', f"post_{p['index']}.html")
         if not (os.path.exists(path) and 'auto-card' not in open(path).read()):
             open(path, 'w').write(card_svg(PREFIX[name], p['index'], p['card']))
         out.append(path)
