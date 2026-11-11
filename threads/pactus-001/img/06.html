@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;800&display=block" rel="stylesheet">
+<style>body{margin:0;background:#040823}.t{font-family:'Exo 2',Inter,sans-serif}.m{font-family:'JetBrains Mono',monospace}</style></head><body>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Inter,sans-serif">
+<defs>
+ <radialGradient id="bg" cx="55%" cy="45%" r="80%"><stop offset="0" stop-color="#10235b"/><stop offset=".55" stop-color="#081039"/><stop offset="1" stop-color="#040823"/></radialGradient>
+ <linearGradient id="edge" x1="0" x2="1"><stop offset="0" stop-color="#5cfcfa"/><stop offset="1" stop-color="#ad59e9"/></linearGradient>
+ <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#172667" stop-opacity=".85"/><stop offset="1" stop-color="#0b2053" stop-opacity=".7"/></linearGradient>
+ <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="soft" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="60"/></filter>
+ <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#2169af" stroke-opacity=".12"/></pattern>
+ <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#5cfcfa"/></marker>
+ <marker id="av" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#ad59e9"/></marker>
+</defs>
+<rect width="1200" height="675" fill="url(#bg)"/>
+<rect width="1200" height="675" fill="url(#grid)"/>
+<circle cx="250" cy="420" r="170" fill="#2169af" opacity=".35" filter="url(#soft)"/>
+<circle cx="1000" cy="200" r="160" fill="#8565e4" opacity=".3" filter="url(#soft)"/>
+<!-- circuit traces -->
+<g fill="none" stroke="#46b6e9" stroke-opacity=".35" stroke-width="1.5">
+ <path d="M0 610H120L150 580H330"/><path d="M0 635H200L225 610H420"/><path d="M1200 140H1150L1120 110H1010"/><path d="M1200 600H1100L1070 572H960"/>
+</g>
+<g fill="#5cfcfa" opacity=".6"><circle cx="330" cy="580" r="3"/><circle cx="420" cy="610" r="3"/><circle cx="1010" cy="110" r="3"/><circle cx="960" cy="572" r="3"/></g>
+<g class="m" font-size="13" fill="#46b6e9" opacity=".22"><text x="905" y="40">0x7061637475732d73756273696479</text><text x="960" y="62">01001011 0x00 10110</text><text x="40" y="660">0x 1001 0110 tx[0]</text></g>
+<!-- header -->
+<text class="m" x="60" y="72" fill="#5cfcfa" font-size="20" font-weight="700" letter-spacing="2" filter="url(#glow)">INSIDE #PACTUS #6</text>
+<text class="t" x="60" y="122" fill="#eaf6ff" font-size="44" font-weight="800">Every block opens with one subsidy tx</text>
+<!-- block -->
+<rect x="60" y="170" width="420" height="425" rx="16" fill="url(#glass)" stroke="#2169af" stroke-width="1.5"/>
+<text class="m" x="85" y="208" fill="#488fdb" font-size="16" letter-spacing="3">BLOCK</text>
+<rect x="85" y="225" width="370" height="148" rx="12" fill="#0b2053" stroke="url(#edge)" stroke-width="2.5" filter="url(#glow)"/>
+<text class="t" x="105" y="262" fill="#5cfcfa" font-size="23" font-weight="800">tx #0 · SUBSIDY</text>
+<g class="m" font-size="17" fill="#d6e8ff"><text x="105" y="296">from: treasury</text><text x="105" y="324">fee: 0 · signature: none</text><text x="105" y="352">type: batch transfer</text></g>
+<g fill="#081039" stroke="#2169af" stroke-opacity=".6"><rect x="85" y="390" width="370" height="44" rx="10"/><rect x="85" y="444" width="370" height="44" rx="10"/><rect x="85" y="498" width="370" height="44" rx="10"/></g>
+<g class="m" fill="#7f9cd6" font-size="15"><text x="105" y="418">tx #1 · regular tx (pays a fee)</text><text x="105" y="472">tx #2 · regular tx (pays a fee)</text><text x="105" y="526">…</text></g>
+<text x="85" y="574" fill="#ad59e9" font-size="17" font-weight="600">A 2nd subsidy tx → block rejected</text>
+<!-- flows -->
+<g fill="none" stroke-width="2.5" filter="url(#glow)">
+ <path d="M455,285 C540,285 560,232 635,232" stroke="#5cfcfa" marker-end="url(#a)"/>
+ <path d="M455,300 C560,300 560,330 635,330" stroke="#ad59e9" stroke-dasharray="7 6" marker-end="url(#av)"/>
+ <path d="M455,315 C540,315 560,430 635,430" stroke="#5cfcfa" marker-end="url(#a)"/>
+</g>
+<g fill="url(#glass)" stroke-width="1.5"><rect x="645" y="197" width="495" height="70" rx="12" stroke="#2169af"/><rect x="645" y="295" width="495" height="70" rx="12" stroke="#8565e4" stroke-dasharray="7 6"/><rect x="645" y="395" width="495" height="70" rx="12" stroke="#2169af"/></g>
+<g class="t" font-size="22" fill="#eaf6ff" font-weight="600">
+ <text x="670" y="240">1 · Foundation address</text>
+ <text x="670" y="325">2 · Stake owner share</text><text x="670" y="425">3 · Proposer reward address</text></g>
+<g font-size="15" fill="#8fa8dd"><text x="670" y="349">only for a delegated validator</text><text x="670" y="449">gets the rest</text></g>
+<rect x="645" y="500" width="495" height="95" rx="12" fill="#0b2053" stroke="url(#edge)" stroke-width="2.5" filter="url(#glow)"/>
+<text class="m" x="670" y="534" fill="#5cfcfa" font-size="15" letter-spacing="2">EVERY VALIDATOR CHECKS</text>
+<text class="t" x="670" y="572" fill="#eaf6ff" font-size="27" font-weight="800">total = block reward + fees</text>
+<text class="m" x="1140" y="640" fill="#488fdb" font-size="15" text-anchor="end">@xcryptokeys · #PAC @PactusChain</text>
+</svg></body></html>

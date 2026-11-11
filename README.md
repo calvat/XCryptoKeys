@@ -8,6 +8,8 @@ Posts et threads préparés pour le compte X **@xcryptokeys** : blockchains et c
 |---|---|
 | `SUJETS.md` | Les 10 sujets, leurs préfixes, leurs hashtags fixes et l'ordre de rédaction |
 | `STYLE.md` | Les règles de rédaction de chaque post |
+| `STYLE-GRAPHIQUE.md` | Le style des illustrations (palette, polices, composition) |
+| `design/` | Bannière de référence et script de rendu PNG |
 | `threads/` | Un dossier par campagne, nommé `<nom technique>-<numéro sur 3 chiffres>` : par exemple `threads/pactus-001/` pour la 1re campagne Pactus. Il contient `index.md` (description de la campagne) et `posts.json` (les posts) |
 | `threads/_template/` | Le modèle à copier pour une nouvelle campagne |
 
