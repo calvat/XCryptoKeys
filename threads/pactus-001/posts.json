@@ -4,6 +4,11 @@
     "long": "Pactus has a fixed supply of 42,000,000 PAC, all allocated in the genesis file; there is no minting. Half of it, 21,000,000 PAC, sits in the treasury, which is the all-zero address. Every block reward is paid out of this pre-allocated treasury, and transaction fees are collected back into it before being paid to the proposer. So the total supply never grows: rewards just move coins out of a pot that existed from day one.",
     "tech": "Inside #Pactus #1: Pactus has a fixed supply of 42,000,000 PAC, all allocated in the genesis file. Half (21M) sits in the treasury, the all-zero address, and is paid out as block rewards. No minting: rewards come from this pre-allocated pot. #PAC @PactusChain",
     "simple": "Inside #Pactus #1: Pactus has a fixed supply: 42M PAC, all created at launch. Nothing new is ever minted. Half sits in a treasury that pays out block rewards over time. #PAC @PactusChain",
+    "card": {
+      "big": "42M PAC",
+      "title": "Fixed supply, all minted at launch",
+      "sub": "Nothing new is ever created. Half sits in a treasury that pays block rewards."
+    },
     "source": "pactus code: genesis/mainnet.json, genesis/genesis.go",
     "status": "checked"
   },
@@ -12,6 +17,11 @@
     "long": "The Pactus block interval is 10 seconds (genesis parameter block_interval_in_second). A block is rejected if the seconds field of its timestamp is not a multiple of that interval. With 10 s, every block time lands on :00, :10, :20, :30, :40 or :50 of a minute, so the slots line up the same way every minute and are easy to reason about.",
     "tech": "Inside #Pactus #2: Pactus block time is 10 seconds. A block is rejected unless the seconds field of its timestamp is a multiple of the interval, so blocks always land on the :00, :10, :20… marks of every minute. #PAC @PactusChain",
     "simple": "Inside #Pactus #2: A new Pactus block every 10 seconds, on a steady clock: block times always land on the same 10-second marks of each minute. #PAC @PactusChain",
+    "card": {
+      "big": "10 s",
+      "title": "One block, on a steady clock",
+      "sub": "Block times always land on the same 10-second marks of each minute."
+    },
     "source": "pactus code: genesis/genesis_params.go, state/state.go (validateBlockTime)",
     "status": "checked"
   },
@@ -20,6 +30,11 @@
     "long": "Block reward (PIP-55), as coded: 1 PAC per block up to height 8,000,000, 0.5 PAC up to 24,000,000, then 0.25 PAC. The schedule depends on block height, not on calendar time. Rewards are paid from the 21M PAC treasury: 8M x 1 + 16M x 0.5 = 16M PAC by block 24M, and the remaining 5M at 0.25 per block lasts 20M more blocks, so at these rates the treasury runs out around block 44M.",
     "tech": "Inside #Pactus #3: Pactus block reward (PIP-55), as coded: 1 PAC per block up to height 8M, 0.5 up to 24M, then 0.25. It depends on block height, not calendar time. Rewards come from the 21M PAC treasury, which at these rates runs out around block 44M. #PAC @PactusChain",
     "simple": "Inside #Pactus #3: Block rewards shrink over time: 1 PAC per block at first, then 0.5, then 0.25, in steps tied to block count. They come from the 21M PAC treasury, which at these rates lasts until around block 44M. #PAC @PactusChain",
+    "card": {
+      "big": "1 → 0.5 → 0.25",
+      "title": "Rewards shrink by block count",
+      "sub": "Paid from the 21M PAC treasury, lasting until around block 44M."
+    },
     "source": "pactus code: state/param/param.go (RewardCoefficient, BlockReward)",
     "status": "checked"
   },
@@ -28,6 +43,11 @@
     "long": "The first reward halving is at block 8,000,000. At one block every 10 seconds that is 80M seconds, about 2.5 years after genesis; the second step, at block 24M, is about 7.6 years. Those are lower bounds: when the chain falls behind, the next block takes the current time instead of catching up the missed slots, so the halvings arrive later in real time than this arithmetic says.",
     "tech": "Inside #Pactus #4: First reward halving is at block 8,000,000: about 2.5 years after genesis if every 10 s slot got a block, the second (24M) about 7.6 years. Missed slots are not made up (a late block takes the current time), so real dates come later. #PAC @PactusChain",
     "simple": "Inside #Pactus #4: The first reward halving comes at block 8 million: about 2.5 years after launch in theory, later in practice, because blocks missed during slowdowns are not made up. #PAC @PactusChain",
+    "card": {
+      "big": "8,000,000",
+      "title": "The first halving block",
+      "sub": "About 2.5 years in theory. Later in practice: missed blocks are never made up."
+    },
     "source": "pactus code: state/param/param.go, state/state.go (proposeNextBlockTime)",
     "status": "checked"
   },
@@ -36,6 +56,11 @@
     "long": "Each block's subsidy pays part of the reward to a foundation address. The address is picked as height mod 100 from a list of 100 addresses embedded in the node (one list for mainnet, one for testnet). The base foundation amount is 0.3 PAC per block, and it is multiplied by the same halving coefficient as the block reward, so it drops to 0.15 PAC after block 8M.",
     "tech": "Inside #Pactus #5: Every Pactus block pays a slice of its reward to a foundation address chosen as `height mod 100` from a list of 100 addresses. The base amount is 0.3 PAC and it halves with the block reward. #PAC @PactusChain",
     "simple": "Inside #Pactus #5: Each block sends a small share of its reward to the foundation, rotating across 100 addresses. That share shrinks along with the reward. #PAC @PactusChain",
+    "card": {
+      "big": "100",
+      "title": "Foundation addresses, in rotation",
+      "sub": "Each block pays a small share to one of them. That share halves with the reward."
+    },
     "source": "pactus code: state/param/param.go (FoundationAddress, FoundationReward)",
     "status": "checked"
   },
@@ -44,6 +69,10 @@
     "long": "Every Pactus block must start with exactly one subsidy transaction: a batch transfer signed by no one, sent from the treasury, with a fee of zero. A second subsidy tx in the block is rejected. Validators check it: its total must equal the block reward plus the fees collected in the block, the first recipient must be the right foundation address and amount, and for a delegated validator the stake owner's share must follow the delegation rules.",
     "tech": "Inside #Pactus #6: Every Pactus block starts with exactly one subsidy transaction: a zero-fee batch transfer from the treasury. Validators check it: the total must equal reward + fees, and the foundation payout and any delegation share must match the rules. #PAC @PactusChain",
     "simple": "Inside #Pactus #6: Every block opens with one special transaction that pays the block reward from the treasury. Validators check that the amounts follow the rules before accepting the block. #PAC @PactusChain",
+    "card": {
+      "title": "Every block opens with one subsidy tx",
+      "sub": "Total must equal block reward plus fees."
+    },
     "source": "pactus code: state/execution.go (checkSubsidy, executeBlock), types/tx/factory.go",
     "status": "checked"
   },
@@ -52,6 +81,10 @@
     "long": "Block timestamps are constrained: the seconds must be a multiple of 10, the time must be strictly after the previous block, and it can be at most one interval later than the expected next slot (previous block time + 10 s). When a proposer finds that more than 10 s have passed since that expected slot, it uses the current time rounded down to the interval. So a block can't pick an arbitrary time, and a stalled chain resumes on the clock.",
     "tech": "Inside #Pactus #7: Timestamps aren't free-form: seconds must be a multiple of 10, and the time must follow the previous block and be at most one interval past the expected slot. If the chain is >10 s behind, the proposer uses current time, rounded down. #PAC @PactusChain",
     "simple": "Inside #Pactus #7: Block times can't be faked: a block must come after the previous one and close to its expected slot. If the chain fell behind, the next block simply uses the current time. #PAC @PactusChain",
+    "card": {
+      "title": "Block time can't be picked freely",
+      "sub": "Seconds a multiple of 10, after the previous block, never far past the next slot."
+    },
     "source": "pactus code: state/state.go (validateBlockTime, proposeNextBlockTime)",
     "status": "checked"
   },
@@ -60,6 +93,11 @@
     "long": "The Pactus mainnet genesis time is 2024-01-24 20:24:00 UTC; testnet started on 2024-03-16 00:00:00 UTC. Both genesis files set the same core parameters: a 10-second block interval and a committee of 51 validators. These values come straight from the genesis JSON files shipped with the node.",
     "tech": "Inside #Pactus #8: Pactus mainnet genesis time: 2024-01-24 20:24 UTC (testnet: 2024-03-16 00:00 UTC). Both networks use 10-second blocks and a committee of 51 validators. #PAC @PactusChain",
     "simple": "Inside #Pactus #8: Pactus mainnet launched on January 24, 2024. Since then: a block every 10 seconds, secured by a committee of 51 validators at a time. #PAC @PactusChain",
+    "card": {
+      "big": "51",
+      "title": "Validators in the committee",
+      "sub": "Mainnet genesis: 2024-01-24 20:24 UTC, with 10-second blocks."
+    },
     "source": "pactus code: genesis/mainnet.json, genesis/testnet.json",
     "status": "checked"
   },
@@ -68,6 +106,10 @@
     "long": "The genesis file has no chain ID field. To know which network it is on, a node hashes the genesis document and compares the hash with the built-in mainnet and testnet genesis hashes; anything else is treated as a localnet. That chain type then sets the address prefix (pc or tpc) and the p2p network name (pactus, pactus-testnet, pactus-localnet). The genesis file is effectively the chain's fingerprint.",
     "tech": "Inside #Pactus #9: The genesis file has no chain ID field. A node hashes the genesis document and compares it to the built-in mainnet and testnet hashes; anything else is a localnet. That picks the address prefix and the p2p network name. #PAC @PactusChain",
     "simple": "Inside #Pactus #9: How does a node know which network it's on? It fingerprints the genesis file, the chain's birth certificate, and compares it with the known mainnet and testnet fingerprints. #PAC @PactusChain",
+    "card": {
+      "title": "No chain ID, the genesis is the ID",
+      "sub": "Nodes hash the genesis file to tell mainnet, testnet and localnet apart."
+    },
     "source": "pactus code: genesis/genesis.go (ChainType), cmd/cmd.go (MakeConfig), config/config.go",
     "status": "checked"
   },
@@ -76,6 +118,11 @@
     "long": "A Pactus block header is always 138 bytes: version (1 byte), time (4), previous block hash (32), state root (32), sortition seed (48, a BLS signature) and proposer address (21). Because the layout is fixed, the store can read a saved block's time at a known offset, right after the block hash and the version byte, without decoding the whole block.",
     "tech": "Inside #Pactus #10: A block header is exactly 138 bytes: version (1), time (4), previous hash (32), state root (32), sortition seed (48), proposer address (21). Fixed layout, so a stored block's time is read at a known offset without decoding it. #PAC @PactusChain",
     "simple": "Inside #Pactus #10: Every block starts with a small header of exactly 138 bytes: time, who made it, and fingerprints of the previous block and of the whole chain state. Small and predictable. #PAC @PactusChain",
+    "card": {
+      "big": "138 bytes",
+      "title": "A fixed-size block header",
+      "sub": "Version, time, previous hash, state root, seed, proposer. Always the same layout."
+    },
     "source": "pactus code: types/block/header.go, store/store.go",
     "status": "checked"
   },

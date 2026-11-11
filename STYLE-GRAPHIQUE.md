@@ -1,7 +1,7 @@
 # Style graphique @xcryptokeys
 
 Référence : [design/reference-banner.png](design/reference-banner.png) (la bannière du compte).
-Exemple appliqué : [threads/pactus-001/img/06.png](threads/pactus-001/img/06.png).
+Exemples : [threads/pactus-001/post_06.png](threads/pactus-001/post_06.png) (schéma sur mesure), [threads/pactus-001/post_01.png](threads/pactus-001/post_01.png) (carte simple).
 
 Le but : qu'on reconnaisse un visuel @xcryptokeys au premier coup d'œil dans le fil X.
 Ambiance « réseau la nuit » : fond bleu nuit profond, traits néon cyan → violet, effet verre, pistes de circuit et bribes de code en fond.
@@ -54,6 +54,11 @@ L'image ne doit rien affirmer de plus que le post (`long`, `tech`, `simple`). Un
 
 ## Fichiers
 
-- Une image par post illustré : `threads/<campagne>/img/<NN>.html` (source SVG) et `<NN>.png` (rendu).
-- Rendu : `node design/render.js threads/<campagne>/img/<NN>.html` (Playwright + Chromium).
-- Partir d'une image existante comme gabarit pour garder le même fond et les mêmes styles.
+- Chaque post a une image : `threads/<campagne>/post_NN.png` (NN sur 2 chiffres, 3 au-delà de 99).
+- Sa source : `threads/<campagne>/src/post_NN.html`.
+- **Carte simple** (par défaut) : générée depuis le champ `card` du post (`title`, `sub`, `big` optionnel) :
+  `python3 design/card.py threads/<campagne> [index ...] --png`
+- **Schéma sur mesure** (quand un dessin explique mieux) : écrire `src/post_NN.html` à la main en partant de `threads/pactus-001/src/post_06.html`, puis
+  `node design/render.js threads/<campagne>/src/post_NN.html`.
+  card.py ne l'écrase jamais.
+- Rendu : Playwright + Chromium (`npm i playwright`).
