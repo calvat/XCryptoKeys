@@ -24,3 +24,7 @@ Bot de publication automatique sur X, pour plusieurs comptes. Le code du bot est
 3. Passer une campagne en `active` dans son `status.json`, puis commit et push : le bot la publie au passage suivant.
 
 Le format de `posts.json` et de `status.json` est décrit dans le README de chaque compte (par exemple [celui de XCryptoKeys](accounts/XCryptoKeys/README.md)).
+
+## Installer le bot sur un serveur Windows
+
+Dans un PowerShell administrateur, depuis le clone : `.\src\install.ps1`. Le script construit le programme, le copie dans `C:\xck-publisher` et crée la tâche planifiée qui le lance toutes les 15 minutes ; `.\src\uninstall.ps1` la supprime. Détails dans [`src/README.md`](src/README.md#lancer-toutes-les-15-minutes).

@@ -136,13 +136,36 @@ De ton côté, fais un `git pull` avant de modifier un `status.json` ou un `post
 
 Le programme écrit lui-même son log dans `logs/`.
 
-**Windows (Planificateur de tâches)**, dans une invite de commandes administrateur :
+**Windows : script d'installation.** Le programme fait un passage puis s'arrête : sous Windows, le « service » est une tâche planifiée qui le lance toutes les 15 minutes. `install.ps1` fait tout, dans un PowerShell **administrateur**, depuis le clone du dépôt :
 
-```bat
-schtasks /Create /TN "XCryptoKeys Publisher" /TR "C:\xck-publisher\xck-publisher.exe" /SC MINUTE /MO 15 /RU "%USERNAME%"
+```powershell
+.\src\install.ps1                  # installation ou mise à jour
+.\src\install.ps1 -WhatIf          # montre ce qui serait fait, sans rien changer
+.\src\uninstall.ps1                # supprime la tâche (garde les fichiers)
+.\src\uninstall.ps1 -RemoveFiles   # supprime aussi C:\xck-publisher
 ```
 
-La tâche doit tourner avec un compte qui a les identifiants git. Un verrou empêche deux passages en même temps.
+`install.ps1` :
+
+1. vérifie les droits administrateur, git, et que le dépôt contient `accounts/` ;
+2. construit l'exécutable (comme `publish.ps1` ; `-SkipBuild` pour réutiliser `src/publish/win-x64/`) ;
+3. le copie dans `C:\xck-publisher` (`-InstallDir`), sans jamais écraser `appsettings.local.json` ni `logs/`, et crée `appsettings.local.json` avec `RepoPath` s'il n'existe pas ;
+4. signale chaque compte sans `account.local.json` (ses clés X ne sont jamais créées ni affichées par le script) ;
+5. lance un `--dry-run` et l'affiche ;
+6. liste les campagnes en `active` (leur prochain post partira au premier passage) et demande confirmation (`-Force` pour ne pas demander, `-NoStart` pour créer la tâche désactivée) ;
+7. crée ou met à jour la tâche « X-Bots Publisher » (`-TaskName`) : toutes les 15 minutes (`-IntervalMinutes`), sans fin, que la session soit ouverte ou non, un seul passage à la fois, rattrapage après un arrêt, 10 minutes maximum par passage.
+
+La tâche tourne avec le compte qui a les **identifiants git** permettant de pousser (par défaut l'utilisateur courant, `-User` pour un autre). Windows demande son mot de passe pour lancer la tâche sans session ouverte : il n'est jamais écrit dans un fichier.
+
+Relancer `install.ps1` met à jour l'exécutable et la tâche (par exemple après un `git pull`).
+
+À la main, sans le script, dans une invite de commandes administrateur :
+
+```bat
+schtasks /Create /TN "X-Bots Publisher" /TR "C:\xck-publisher\xck-publisher.exe" /SC MINUTE /MO 15 /RU "%USERNAME%" /RP *
+```
+
+Un verrou empêche deux passages en même temps.
 
 ## Tester avant de publier
 
