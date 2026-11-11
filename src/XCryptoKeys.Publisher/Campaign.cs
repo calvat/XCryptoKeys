@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 
 namespace XCryptoKeys.Publisher;
 
-/// <summary>Une campagne : threads/&lt;nom&gt;-&lt;NNN&gt;/ avec posts.json, status.json et les images post_N.png.</summary>
+/// <summary>Une campagne : accounts/&lt;compte&gt;/threads/&lt;nom&gt;-&lt;NNN&gt;/ avec posts.json, status.json et les images post_N.png.</summary>
 public sealed class Campaign
 {
     public static readonly string[] ImageExtensions = [".png", ".jpg", ".jpeg", ".webp", ".gif"];

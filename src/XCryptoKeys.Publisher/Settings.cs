@@ -5,10 +5,10 @@ namespace XCryptoKeys.Publisher;
 
 public sealed class Settings
 {
-    /// <summary>Chemin du clone local du dépôt XCryptoKeys.</summary>
+    /// <summary>Chemin du clone local du dépôt.</summary>
     public string RepoPath { get; set; } = "";
-    /// <summary>Dossier des campagnes, relatif à RepoPath.</summary>
-    public string ThreadsFolder { get; set; } = "threads";
+    /// <summary>Dossier des comptes, relatif à RepoPath : un sous-dossier par compte X, avec ses campagnes dans threads/.</summary>
+    public string AccountsFolder { get; set; } = "accounts";
     /// <summary>Version de texte utilisée par défaut : simple, tech, variant…</summary>
     public string DefaultVersion { get; set; } = "simple";
     public bool AttachImages { get; set; } = true;
@@ -18,9 +18,52 @@ public sealed class Settings
     public int DelayBetweenPostsSeconds { get; set; } = 30;
     public LogSettings Log { get; set; } = new();
     public GitSettings Git { get; set; } = new();
+    /// <summary>Réglages communs de l'API X (ApiBaseUrl). Les identifiants sont par compte, dans Accounts.</summary>
     public XSettings X { get; set; } = new();
+    /// <summary>Réglages par compte, indexés par le nom du dossier dans accounts/ (ex. « XCryptoKeys »).</summary>
+    public Dictionary<string, AccountSettings> Accounts { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
-    public string ThreadsPath => Path.Combine(RepoPath, ThreadsFolder);
+    public string AccountsPath => Path.Combine(RepoPath, AccountsFolder);
+
+    public sealed class AccountSettings
+    {
+        /// <summary>false : le compte est ignoré (rien n'est publié, pas d'erreur).</summary>
+        public bool Enabled { get; set; } = true;
+        /// <summary>Username et identifiants OAuth du compte. ApiBaseUrl est pris dans la section X commune.</summary>
+        public XSettings X { get; set; } = new();
+    }
+
+    /// <summary>Réglages du compte (nom insensible à la casse) ; des réglages vides s'il n'est pas configuré.</summary>
+    public AccountSettings AccountSettingsFor(string account) =>
+        Accounts.FirstOrDefault(kv => string.Equals(kv.Key, account, StringComparison.OrdinalIgnoreCase)).Value ?? new AccountSettings();
+
+    /// <summary>
+    /// Réglages X d'un compte : ses identifiants à lui (jamais ceux d'un autre compte), l'ApiBaseUrl commun,
+    /// et le nom du dossier comme Username s'il n'est pas renseigné.
+    /// </summary>
+    public XSettings XFor(string account)
+    {
+        var a = AccountSettingsFor(account).X;
+        return new XSettings
+        {
+            ApiBaseUrl = X.ApiBaseUrl,
+            Username = string.IsNullOrWhiteSpace(a.Username) ? account : a.Username,
+            ApiKey = a.ApiKey,
+            ApiKeySecret = a.ApiKeySecret,
+            AccessToken = a.AccessToken,
+            AccessTokenSecret = a.AccessTokenSecret,
+        };
+    }
+
+    /// <summary>Identifiants X manquants pour un compte (vide si tout est là).</summary>
+    public IEnumerable<string> MissingCredentials(string account)
+    {
+        var x = XFor(account);
+        if (string.IsNullOrWhiteSpace(x.ApiKey)) yield return "ApiKey";
+        if (string.IsNullOrWhiteSpace(x.ApiKeySecret)) yield return "ApiKeySecret";
+        if (string.IsNullOrWhiteSpace(x.AccessToken)) yield return "AccessToken";
+        if (string.IsNullOrWhiteSpace(x.AccessTokenSecret)) yield return "AccessTokenSecret";
+    }
 
     public sealed class LogSettings
     {
@@ -52,7 +95,7 @@ public sealed class Settings
 
     /// <summary>
     /// Charge appsettings.json, puis appsettings.local.json (secrets, ignoré par git) par-dessus,
-    /// puis les variables d'environnement XCK__Section__Cle (ex. XCK__X__ApiKey).
+    /// puis les variables d'environnement XCK__Section__Cle (ex. XCK__Accounts__XCryptoKeys__X__ApiKey).
     /// </summary>
     public static Settings Load(string? explicitPath)
     {
@@ -96,18 +139,15 @@ public sealed class Settings
         return settings;
     }
 
-    public IEnumerable<string> Validate(bool dryRun)
+    /// <summary>Contrôles globaux. Les identifiants X sont vérifiés compte par compte au moment du passage.</summary>
+    public IEnumerable<string> Validate()
     {
         if (string.IsNullOrWhiteSpace(RepoPath)) yield return "RepoPath est vide.";
-        else if (!Directory.Exists(ThreadsPath)) yield return $"Dossier des campagnes introuvable : {ThreadsPath}";
+        else if (!Directory.Exists(RepoPath)) yield return $"Dépôt introuvable : {RepoPath}";
+        // AccountsPath est vérifié après le git pull : un clone resté sur l'ancienne organisation doit pouvoir se mettre à jour.
         if (string.IsNullOrWhiteSpace(DefaultVersion)) yield return "DefaultVersion est vide.";
-        if (!dryRun)
-        {
-            if (string.IsNullOrWhiteSpace(X.ApiKey)) yield return "X.ApiKey est vide.";
-            if (string.IsNullOrWhiteSpace(X.ApiKeySecret)) yield return "X.ApiKeySecret est vide.";
-            if (string.IsNullOrWhiteSpace(X.AccessToken)) yield return "X.AccessToken est vide.";
-            if (string.IsNullOrWhiteSpace(X.AccessTokenSecret)) yield return "X.AccessTokenSecret est vide.";
-        }
+        if (!string.IsNullOrWhiteSpace(X.ApiKey) || !string.IsNullOrWhiteSpace(X.AccessToken))
+            yield return "Les identifiants X ne vont plus dans la section X mais dans Accounts.<compte>.X (voir src/README.md).";
     }
 
     private static void Merge(JsonObject target, JsonObject source)

@@ -1,25 +1,27 @@
 # xck-publisher : publication automatique sur X
 
-Programme C# (.NET 10) qui publie sur X les posts préparés dans `threads/`. Il tourne sur un serveur, lancé toutes les 15 minutes. Pour ajouter une campagne, il suffit de la pousser dans le dépôt et de la passer en `active` : le serveur la récupère au passage suivant.
+Programme C# (.NET 10) qui publie sur X les posts préparés dans `accounts/<Compte>/threads/`, pour tous les comptes du dépôt. Il tourne sur un serveur, lancé toutes les 15 minutes. Pour ajouter une campagne, il suffit de la pousser dans le dépôt et de la passer en `active` : le serveur la récupère au passage suivant. Pour ajouter un compte, voir [Ajouter un compte](#ajouter-un-compte).
 
 ## Ce que fait un passage
 
 1. `git pull --rebase` du dépôt. Si le pull échoue, rien n'est publié (sinon on risquerait de republier un post).
-2. Pour chaque campagne de `threads/` (sauf `_template`) dont `status.json` est en `active` :
+2. Pour chaque compte de `accounts/` (un dossier qui contient `threads/`, sauf ceux qui commencent par `_`), avec ses propres clés X, et pour chaque campagne de son `threads/` (sauf `_template`) dont `status.json` est en `active` :
    - le prochain post est `last_posted_index + 1` ;
    - il est dû le jour `last_posted_at + interval_days` à `post_time` (UTC). Pour le premier post, il est dû le jour même à `post_time` ;
    - s'il est dû : texte de la version `simple` (ou de la version indiquée par le champ `"use"` du post), avec le hashtag de campagne ajouté à la fin, et l'image `post_N.png` s'il y en a une ;
-   - au plus **un post par campagne et par passage**. Après une coupure de plusieurs jours, seul le post suivant part, puis le rythme normal reprend.
+   - au plus **un post par campagne et par passage**, quel que soit le nombre de comptes. Après une coupure de plusieurs jours, seul le post suivant part, puis le rythme normal reprend.
 3. Après chaque post : mise à jour de `status.json` (`last_posted_index`, `last_posted_at`) et de `posts.json` (`status: posted`, `posted_at`, `tweet_id`, `url`), puis un commit. Après le dernier post d'une campagne, elle repasse en `inactive`.
 4. `git push` à la fin du passage (avec rebase et nouvel essai si le dépôt a bougé entre-temps).
 
 Un post est **bloqué** (erreur dans le log, la campagne attend) s'il n'est pas `checked`, si la version demandée n'existe pas, ou s'il dépasse 280 caractères tels que X les compte, hashtag de campagne compris. Les autres campagnes continuent.
 
+Un compte sans clés X est **ignoré** (erreur dans le log s'il a une campagne active) ; les autres comptes continuent. Les lignes du log sont préfixées par `[Compte/campagne]`.
+
 ## Hashtag de campagne
 
-Chaque campagne a un hashtag unique, `#XCK` + 3 lettres du sujet + numéro de campagne (par exemple `#XCKbtc1`). Il est défini dans `index.md` et dans le champ `hashtag` de `status.json`. Le programme lit `status.json` et l'ajoute à la fin de chaque post s'il n'y est pas déjà. Cliquer dessus sur X affiche les posts de la campagne (onglet « Latest ») ; `from:xcryptokeys #XCKbtc1` dans la recherche est la requête la plus fiable.
+Chaque campagne a un hashtag unique, défini par le compte ; pour XCryptoKeys, `#XCK` + 3 lettres du sujet + numéro de campagne (par exemple `#XCKbtc1`). Il est défini dans `index.md` et dans le champ `hashtag` de `status.json`. Le programme lit `status.json` et l'ajoute à la fin de chaque post s'il n'y est pas déjà. Cliquer dessus sur X affiche les posts de la campagne (onglet « Latest ») ; `from:xcryptokeys #XCKbtc1` dans la recherche est la requête la plus fiable.
 
-Le test `Real_campaigns_all_fit_in_280_with_their_hashtag` vérifie que toutes les versions `simple` du dépôt tiennent dans 280 caractères avec leur hashtag. À lancer après avoir écrit une nouvelle campagne.
+Le test `Real_campaigns_all_fit_in_280_with_their_hashtag` vérifie que toutes les versions `simple` du dépôt, tous comptes confondus, tiennent dans 280 caractères avec leur hashtag. À lancer après avoir écrit une nouvelle campagne.
 
 ## Compiler
 
@@ -41,12 +43,12 @@ L'exécutable est autonome (un seul fichier, .NET inclus). Copier le dossier `pu
 - `appsettings.json` : les réglages par défaut (fourni) ;
 - `appsettings.local.json` : les réglages du serveur et les **secrets**, à créer à partir de `appsettings.local.example.json`. Il est ignoré par git ; ne jamais le committer.
 
-Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, par exemple `XCK__X__ApiKey` ou `XCK__RepoPath`.
+Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, par exemple `XCK__Accounts__XCryptoKeys__X__ApiKey` ou `XCK__RepoPath`.
 
 | Clé | Défaut | Rôle |
 |---|---|---|
 | `RepoPath` | | Chemin du clone du dépôt sur le serveur |
-| `ThreadsFolder` | `threads` | Dossier des campagnes dans le dépôt |
+| `AccountsFolder` | `accounts` | Dossier des comptes dans le dépôt (un sous-dossier par compte, ses campagnes dans `threads/`) |
 | `DefaultVersion` | `simple` | Version publiée par défaut (`simple`, `tech`, `variant`) ; un post peut la changer avec `"use": "tech"` |
 | `AttachImages` | `true` | Joint `post_N.png` (ou .jpg, .webp, .gif) s'il existe |
 | `AltText` | `true` | Texte alternatif de l'image, tiré de `card` (big, title, sub). Un appel API de plus par image |
@@ -57,14 +59,38 @@ Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, 
 | `Git.Enabled` | `true` | Pull, commit et push automatiques |
 | `Git.Remote` / `Git.Branch` | `origin` / branche courante | Où pousser |
 | `Git.UserName` / `Git.UserEmail` | | Auteur des commits du serveur |
-| `X.Username` | `xcryptokeys` | Sert à construire l'URL des posts |
-| `X.ApiKey`, `X.ApiKeySecret`, `X.AccessToken`, `X.AccessTokenSecret` | | Clés OAuth 1.0a (voir plus bas) |
+| `X.ApiBaseUrl` | `https://api.x.com` | Adresse de l'API X, commune à tous les comptes |
+| `Accounts.<Compte>.Enabled` | `true` | `false` : le compte est ignoré, sans erreur |
+| `Accounts.<Compte>.X.Username` | nom du dossier | Nom du compte sur X, sert à construire l'URL des posts (`xcryptokeys` pour XCryptoKeys) |
+| `Accounts.<Compte>.X.ApiKey`, `.ApiKeySecret`, `.AccessToken`, `.AccessTokenSecret` | | Clés OAuth 1.0a du compte (voir plus bas). Chaque compte a les siennes ; elles ne sont jamais prises d'un autre compte |
+
+`<Compte>` est le nom du dossier dans `accounts/`, par exemple `XCryptoKeys` (majuscules indifférentes). Exemple d'`appsettings.local.json` :
+
+```json
+{
+  "RepoPath": "/srv/x-bots",
+  "Accounts": {
+    "XCryptoKeys": {
+      "X": { "ApiKey": "…", "ApiKeySecret": "…", "AccessToken": "…", "AccessTokenSecret": "…" }
+    },
+    "AutreCompte": {
+      "X": { "Username": "autrecompte", "ApiKey": "…", "ApiKeySecret": "…", "AccessToken": "…", "AccessTokenSecret": "…" }
+    }
+  }
+}
+```
+
+### Passage depuis l'ancienne configuration (un seul compte)
+
+Avant, les clés étaient dans la section `X` et les campagnes dans `threads/`. Le programme refuse maintenant de démarrer (code 2) si des clés sont encore dans `X` : les déplacer dans `Accounts.XCryptoKeys.X` (et `XCK__X__ApiKey` devient `XCK__Accounts__XCryptoKeys__X__ApiKey`). Supprimer aussi `ThreadsFolder` s'il était réglé.
 
 ## Clés de l'API X
 
-1. Sur [developer.x.com](https://developer.x.com), dans le projet et l'app du compte @xcryptokeys : **User authentication settings** → activer OAuth 1.0a, permissions **Read and write**.
-2. Dans **Keys and tokens** : copier l'**API Key** et l'**API Key Secret**, puis **générer** l'**Access Token** et l'**Access Token Secret**, connecté en tant que @xcryptokeys. Si les tokens ont été générés avant le passage en Read and write, il faut les régénérer, sinon X refuse les posts (403).
-3. Mettre les 4 valeurs dans `appsettings.local.json`.
+À faire pour chaque compte.
+
+1. Sur [developer.x.com](https://developer.x.com), dans le projet et l'app du compte (par exemple @xcryptokeys) : **User authentication settings** → activer OAuth 1.0a, permissions **Read and write**.
+2. Dans **Keys and tokens** : copier l'**API Key** et l'**API Key Secret**, puis **générer** l'**Access Token** et l'**Access Token Secret**, connecté en tant que ce compte. Si les tokens ont été générés avant le passage en Read and write, il faut les régénérer, sinon X refuse les posts (403).
+3. Mettre les 4 valeurs dans `appsettings.local.json`, section `Accounts.<Compte>.X`.
 
 Appels utilisés : `POST /2/media/upload` (image), `POST /2/media/metadata` (texte alternatif), `POST /2/tweets`. En pay-per-use, chaque passage écrit dans le log le nombre d'appels envoyés : 3 par post avec image, 2 avec `AltText: false`, 1 sans image.
 
@@ -101,7 +127,8 @@ La tâche doit tourner avec un compte qui a les identifiants git. Un verrou emp�
 
 ```sh
 xck-publisher --dry-run                          # ce qui partirait maintenant, sans rien envoyer ni modifier
-xck-publisher --dry-run --campaign bitcoin-001   # une seule campagne
+xck-publisher --dry-run --account XCryptoKeys    # un seul compte
+xck-publisher --dry-run --campaign bitcoin-001   # une seule campagne (ou --campaign XCryptoKeys/bitcoin-001)
 xck-publisher --dry-run --now 2026-11-20T09:00Z  # simule une autre heure
 ```
 
@@ -109,7 +136,13 @@ Le dry-run ne fait ni pull, ni appel à X, ni écriture dans le dépôt. Il affi
 
 ## Démarrer une campagne
 
-Dans `threads/<campagne>/status.json`, passer `status` à `active`, régler `post_time` (UTC) et `interval_days`, puis commit et push. Le premier post part au premier passage après `post_time`, le jour même si l'heure est déjà passée. Pour une pause, repasser en `inactive`.
+Dans `accounts/<Compte>/threads/<campagne>/status.json`, passer `status` à `active`, régler `post_time` (UTC) et `interval_days`, puis commit et push. Le premier post part au premier passage après `post_time`, le jour même si l'heure est déjà passée. Pour une pause, repasser en `inactive`.
+
+## Ajouter un compte
+
+1. Créer `accounts/<Compte>/threads/` dans le dépôt, avec ses campagnes (partir de `accounts/XCryptoKeys/threads/_template/`).
+2. Générer les clés X du compte (voir [Clés de l'API X](#clés-de-lapi-x)) et les mettre dans `appsettings.local.json` du serveur, section `Accounts.<Compte>.X`, avec `Username` si le nom sur X diffère du nom du dossier.
+3. Vérifier avec `xck-publisher --dry-run --account <Compte>`, puis passer une campagne en `active`.
 
 ## Codes de sortie et logs
 

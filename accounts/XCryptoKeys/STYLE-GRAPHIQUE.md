@@ -1,6 +1,6 @@
 # Style graphique @xcryptokeys
 
-Référence : [design/reference-banner.png](design/reference-banner.png) (la bannière du compte).
+Référence : [reference-banner.png](reference-banner.png) (la bannière du compte).
 Exemples : [threads/pactus-001/post_6.png](threads/pactus-001/post_6.png) (schéma sur mesure), [threads/pactus-001/post_1.png](threads/pactus-001/post_1.png) (carte simple).
 
 Le but : qu'on reconnaisse un visuel @xcryptokeys au premier coup d'œil dans le fil X.
@@ -54,11 +54,11 @@ L'image ne doit rien affirmer de plus que le post (`long`, `tech`, `simple`). Un
 
 ## Fichiers
 
-- Chaque post a une image : `threads/<campagne>/post_N.png` (numéro sans zéro devant : post_1, post_12, post_105).
+- Chaque post a une image : `threads/<campagne>/post_N.png` (dans `accounts/XCryptoKeys/`) (numéro sans zéro devant : post_1, post_12, post_105).
 - Sa source : `threads/<campagne>/src/post_N.html`.
 - **Carte simple** (par défaut) : générée depuis le champ `card` du post (`title`, `sub`, `big` optionnel) :
-  `python3 design/card.py threads/<campagne> [index ...] --png`
+  `python3 design/card.py accounts/XCryptoKeys/threads/<campagne> [index ...] --png` (depuis la racine du dépôt ; la signature `@xcryptokeys` et les préfixes viennent de [`card.json`](card.json))
 - **Schéma sur mesure** (quand un dessin explique mieux) : écrire `src/post_N.html` à la main en partant de `threads/pactus-001/src/post_6.html`, puis
-  `node design/render.js threads/<campagne>/src/post_N.html`.
+  `node design/render.js accounts/XCryptoKeys/threads/<campagne>/src/post_N.html`.
   card.py ne l'écrase jamais.
 - Rendu : Playwright + Chromium (`npm i playwright`).

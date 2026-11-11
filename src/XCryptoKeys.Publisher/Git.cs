@@ -50,15 +50,15 @@ public sealed class Git(string repoPath, Settings.GitSettings settings, Log log)
     /// Met le dépôt à jour. Si un run précédent s'est arrêté après avoir écrit status.json/posts.json
     /// sans commit, on commit d'abord ces fichiers pour ne jamais perdre la trace d'un post publié.
     /// </summary>
-    public bool Pull(string threadsFolder)
+    public bool Pull(string stateFolder)
     {
-        CommitPendingState(threadsFolder, "Publication : récupération d'un état non commité");
+        CommitPendingState(stateFolder, "Publication : récupération d'un état non commité");
         return Run(["pull", "--rebase", "--autostash", .. RemoteBranch]).Ok;
     }
 
-    public bool CommitPendingState(string threadsFolder, string message)
+    public bool CommitPendingState(string stateFolder, string message)
     {
-        var status = Run("status", "--porcelain", "--", threadsFolder);
+        var status = Run("status", "--porcelain", "--", stateFolder);
         if (!status.Ok || status.Output.Length == 0) return true;
         var files = status.Output.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Where(l => l.StartsWith("M ") || l.StartsWith(" M") || l.StartsWith("MM"))

@@ -119,10 +119,11 @@ public class PublisherTests
     private static string MakeRepo(string status)
     {
         string repo = Path.Combine(Path.GetTempPath(), "xck-test-" + Guid.NewGuid().ToString("N"));
-        string c = Path.Combine(repo, "threads", "demo-001");
+        string threads = Path.Combine(repo, "accounts", "Demo", "threads");
+        string c = Path.Combine(threads, "demo-001");
         Directory.CreateDirectory(c);
-        Directory.CreateDirectory(Path.Combine(repo, "threads", "_template"));
-        File.WriteAllText(Path.Combine(repo, "threads", "_template", "status.json"), "{\"status\": \"active\"}");
+        Directory.CreateDirectory(Path.Combine(threads, "_template"));
+        File.WriteAllText(Path.Combine(threads, "_template", "status.json"), "{\"status\": \"active\"}");
         File.WriteAllText(Path.Combine(c, "status.json"), status);
         File.WriteAllText(Path.Combine(c, "posts.json"), """
             [
@@ -158,8 +159,17 @@ public class PublisherTests
         RepoPath = repo,
         DelayBetweenPostsSeconds = 0,
         Git = new Settings.GitSettings { Enabled = false },
-        X = new Settings.XSettings { ApiBaseUrl = "https://api.example", Username = "xcryptokeys", ApiKey = "k", ApiKeySecret = "s", AccessToken = "t", AccessTokenSecret = "ts" },
+        X = new Settings.XSettings { ApiBaseUrl = "https://api.example" },
+        Accounts = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Demo"] = new Settings.AccountSettings
+            {
+                X = new Settings.XSettings { Username = "demoaccount", ApiKey = "k", ApiKeySecret = "s", AccessToken = "t", AccessTokenSecret = "ts" },
+            },
+        },
     };
+
+    private static Account DemoAccount(string repo) => new(Path.Combine(repo, "accounts", "Demo"));
 
     [Fact]
     public async Task Publishes_due_post_with_image_and_updates_state()
@@ -168,10 +178,10 @@ public class PublisherTests
         var settings = MakeSettings(repo);
         using var log = new Log(null, 0);
         var fake = new FakeX();
-        using var x = new XClient(settings.X, log, fake);
+        using var x = new XClient(settings.XFor("Demo"), log, fake);
         var now = new DateTimeOffset(2026, 11, 12, 9, 5, 0, TimeSpan.Zero);
 
-        int n = await new Publisher(settings, log, x, null, new RunOptions(false, now, null)).RunAsync(default);
+        int n = await new Publisher(settings, DemoAccount(repo), log, x, null, new RunOptions(false, now, null)).RunAsync(default);
 
         Assert.Equal(1, n);
         Assert.Equal(["/2/media/upload", "/2/media/metadata", "/2/tweets"], fake.Requests.Select(r => r.Path));
@@ -179,16 +189,16 @@ public class PublisherTests
         Assert.Equal("Demo #1: first #XCKdem1", (string?)tweet["text"]);
         Assert.Equal("777", (string?)tweet["media"]!["media_ids"]![0]);
 
-        string dir = Path.Combine(repo, "threads", "demo-001");
+        string dir = Path.Combine(repo, "accounts", "Demo", "threads", "demo-001");
         var status = JsonNode.Parse(File.ReadAllText(Path.Combine(dir, "status.json")))!;
         Assert.Equal(1, (int)status["last_posted_index"]!);
         Assert.Equal("active", (string?)status["status"]);
         var post = JsonNode.Parse(File.ReadAllText(Path.Combine(dir, "posts.json")))![0]!;
         Assert.Equal("posted", (string?)post["status"]);
-        Assert.Equal("https://x.com/xcryptokeys/status/123456", (string?)post["url"]);
+        Assert.Equal("https://x.com/demoaccount/status/123456", (string?)post["url"]);
 
         // Même passage relancé dans la foulée : rien n'est dû.
-        int again = await new Publisher(settings, log, x, null, new RunOptions(false, now.AddMinutes(15), null)).RunAsync(default);
+        int again = await new Publisher(settings, DemoAccount(repo), log, x, null, new RunOptions(false, now.AddMinutes(15), null)).RunAsync(default);
         Assert.Equal(0, again);
         Assert.Equal(3, fake.Requests.Count);
         Directory.Delete(repo, true);
@@ -201,13 +211,13 @@ public class PublisherTests
         var settings = MakeSettings(repo);
         using var log = new Log(null, 0);
         var fake = new FakeX();
-        using var x = new XClient(settings.X, log, fake);
+        using var x = new XClient(settings.XFor("Demo"), log, fake);
 
-        int n = await new Publisher(settings, log, x, null, new RunOptions(false, new DateTimeOffset(2026, 11, 20, 12, 0, 0, TimeSpan.Zero), null)).RunAsync(default);
+        int n = await new Publisher(settings, DemoAccount(repo), log, x, null, new RunOptions(false, new DateTimeOffset(2026, 11, 20, 12, 0, 0, TimeSpan.Zero), null)).RunAsync(default);
 
         Assert.Equal(1, n);
         Assert.Equal(["/2/tweets"], fake.Requests.Select(r => r.Path));
-        var status = JsonNode.Parse(File.ReadAllText(Path.Combine(repo, "threads", "demo-001", "status.json")))!;
+        var status = JsonNode.Parse(File.ReadAllText(Path.Combine(repo, "accounts", "Demo", "threads", "demo-001", "status.json")))!;
         Assert.Equal("inactive", (string?)status["status"]);
         Assert.Equal(2, (int)status["last_posted_index"]!);
         Directory.Delete(repo, true);
@@ -219,7 +229,7 @@ public class PublisherTests
         string repo = MakeRepo("""{"status": "inactive", "last_posted_index": 0, "last_posted_at": null, "interval_days": 1, "post_time": "09:00"}""");
         var settings = MakeSettings(repo);
         using var log = new Log(null, 0);
-        int n = await new Publisher(settings, log, null, null, new RunOptions(true, DateTimeOffset.UtcNow, null)).RunAsync(default);
+        int n = await new Publisher(settings, DemoAccount(repo), log, null, null, new RunOptions(true, DateTimeOffset.UtcNow, null)).RunAsync(default);
         Assert.Equal(0, n);
         Directory.Delete(repo, true);
     }
@@ -229,19 +239,82 @@ public class PublisherTests
     {
         // Vérifie le vrai dépôt quand le test tourne depuis src/ du dépôt.
         string? dir = AppContext.BaseDirectory;
-        while (dir is not null && !Directory.Exists(Path.Combine(dir, "threads"))) dir = Path.GetDirectoryName(dir);
+        while (dir is not null && !Directory.Exists(Path.Combine(dir, "accounts"))) dir = Path.GetDirectoryName(dir);
         if (dir is null) return;
         var problems = new List<string>();
-        foreach (var c in Campaign.Discover(Path.Combine(dir, "threads")))
+        foreach (var a in Account.Discover(Path.Combine(dir, "accounts")))
+        foreach (var c in a.Campaigns())
         {
             c.Load();
-            if (string.IsNullOrWhiteSpace(c.Hashtag)) problems.Add($"{c.Name}: pas de hashtag");
+            if (string.IsNullOrWhiteSpace(c.Hashtag)) problems.Add($"{a.Name}/{c.Name}: pas de hashtag");
             foreach (var post in c.Posts.OfType<JsonObject>())
             {
                 var (text, error) = Publisher.BuildText(post, "simple", c.Hashtag, 280);
-                if (text is null) problems.Add($"{c.Name} #{post["index"]}: {error}");
+                if (text is null) problems.Add($"{a.Name}/{c.Name} #{post["index"]}: {error}");
             }
         }
         Assert.Empty(problems);
+    }
+}
+
+public class AccountTests
+{
+    [Fact]
+    public void Discovers_account_folders_with_threads_only()
+    {
+        string root = Path.Combine(Path.GetTempPath(), "xck-acc-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(root, "Beta", "threads"));
+        Directory.CreateDirectory(Path.Combine(root, "Alpha", "threads", "x-001"));
+        File.WriteAllText(Path.Combine(root, "Alpha", "threads", "x-001", "status.json"), "{\"status\": \"active\"}");
+        Directory.CreateDirectory(Path.Combine(root, "_template", "threads"));
+        Directory.CreateDirectory(Path.Combine(root, "NoThreads"));
+
+        var accounts = Account.Discover(root).ToList();
+
+        Assert.Equal(["Alpha", "Beta"], accounts.Select(a => a.Name));
+        Assert.True(accounts[0].HasCampaign("X-001"));
+        Assert.True(accounts[0].HasActiveCampaign());
+        Assert.False(accounts[1].HasActiveCampaign());
+        Directory.Delete(root, true);
+    }
+
+    [Fact]
+    public void Credentials_are_per_account_and_never_shared()
+    {
+        var settings = new Settings
+        {
+            X = new Settings.XSettings { ApiBaseUrl = "https://api.example" },
+            Accounts = new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Alpha"] = new Settings.AccountSettings { X = new Settings.XSettings { ApiKey = "k", ApiKeySecret = "s", AccessToken = "t", AccessTokenSecret = "ts" } },
+            },
+        };
+
+        var alpha = settings.XFor("alpha");
+        Assert.Equal("k", alpha.ApiKey);
+        Assert.Equal("https://api.example", alpha.ApiBaseUrl);
+        Assert.Equal("alpha", alpha.Username);
+        Assert.Empty(settings.MissingCredentials("Alpha"));
+        Assert.Equal(["ApiKey", "ApiKeySecret", "AccessToken", "AccessTokenSecret"], settings.MissingCredentials("Beta"));
+        Assert.True(settings.AccountSettingsFor("Beta").Enabled);
+    }
+
+    [Fact]
+    public void Account_credentials_load_from_environment()
+    {
+        string file = Path.Combine(Path.GetTempPath(), "xck-settings-" + Guid.NewGuid().ToString("N") + ".json");
+        File.WriteAllText(file, """{"RepoPath": "/tmp", "Accounts": {"XCryptoKeys": {"X": {"Username": "xcryptokeys"}}}}""");
+        Environment.SetEnvironmentVariable("XCK__Accounts__XCryptoKeys__X__ApiKey", "from-env");
+        try
+        {
+            var settings = Settings.Load(file);
+            Assert.Equal("from-env", settings.XFor("XCryptoKeys").ApiKey);
+            Assert.Equal("xcryptokeys", settings.XFor("XCryptoKeys").Username);
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("XCK__Accounts__XCryptoKeys__X__ApiKey", null);
+            File.Delete(file);
+        }
     }
 }

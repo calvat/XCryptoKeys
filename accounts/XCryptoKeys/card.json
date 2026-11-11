@@ -1,0 +1,16 @@
+{
+  "handle": "@xcryptokeys",
+  "prefixes": {
+    "pactus": "Inside #Pactus",
+    "bitcoin": "#Bitcoin Internals",
+    "ethereum": "#Ethereum Deep Dive",
+    "crypto-math": "#Crypto Math",
+    "hacks": "Crypto #Hack Autopsy",
+    "consensus": "#Blockchain Consensus",
+    "layer2": "Crypto #Layer2 Unlocked",
+    "mev": "Crypto #MEV Dark Forest",
+    "defi": "#DeFi Mechanics",
+    "wallets": "Crypto #Wallet Security",
+    "anonymity": "Crypto #Anonymity Myths"
+  }
+}

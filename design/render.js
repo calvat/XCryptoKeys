@@ -1,5 +1,5 @@
-// Usage : node design/render.js threads/pactus-001/src/post_6.html
-// Produit threads/pactus-001/post_6.png (1200×675, exporté en x1).
+// Usage : node design/render.js accounts/XCryptoKeys/threads/pactus-001/src/post_6.html
+// Produit accounts/XCryptoKeys/threads/pactus-001/post_6.png (1200×675, exporté en x1).
 const path = require('path');
 const { chromium } = require('playwright');
 (async () => {

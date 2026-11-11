@@ -4,8 +4,8 @@ namespace XCryptoKeys.Publisher;
 
 public sealed record RunOptions(bool DryRun, DateTimeOffset Now, string? OnlyCampaign);
 
-/// <summary>Un passage : pour chaque campagne active, publie au plus un post s'il est dû.</summary>
-public sealed class Publisher(Settings settings, Log log, XClient? x, Git? git, RunOptions options)
+/// <summary>Un passage pour un compte : pour chaque campagne active du compte, publie au plus un post s'il est dû.</summary>
+public sealed class Publisher(Settings settings, Account account, Log log, XClient? x, Git? git, RunOptions options)
 {
     private readonly System.Diagnostics.Stopwatch _clock = System.Diagnostics.Stopwatch.StartNew();
 
@@ -39,14 +39,11 @@ public sealed class Publisher(Settings settings, Log log, XClient? x, Git? git, 
 
     public async Task<int> RunAsync(CancellationToken ct)
     {
-        var campaigns = Campaign.Discover(settings.ThreadsPath)
+        // Le filtre --campaign est vérifié par Program sur l'ensemble des comptes : ici, un compte sans cette campagne ne fait rien.
+        var campaigns = account.Campaigns()
             .Where(c => options.OnlyCampaign is null || string.Equals(c.Name, options.OnlyCampaign, StringComparison.OrdinalIgnoreCase))
             .ToList();
-        if (options.OnlyCampaign is not null && campaigns.Count == 0)
-        {
-            log.Error($"Campagne introuvable : {options.OnlyCampaign}");
-            return 0;
-        }
+        string username = settings.XFor(account.Name).Username;
 
         int published = 0;
         bool needDelay = false;
@@ -59,24 +56,24 @@ public sealed class Publisher(Settings settings, Log log, XClient? x, Git? git, 
             }
             catch (Exception ex)
             {
-                log.Error($"[{campaign.Name}] lecture impossible : {ex.Message}");
+                log.Error($"{Tag(campaign)} lecture impossible : {ex.Message}");
                 continue;
             }
 
             if (!campaign.IsActive)
             {
-                if (options.DryRun) log.Info($"[{campaign.Name}] inactive (dernier post publié : {campaign.LastPostedIndex}/{campaign.MaxIndex}).");
+                if (options.DryRun) log.Info($"{Tag(campaign)} inactive (dernier post publié : {campaign.LastPostedIndex}/{campaign.MaxIndex}).");
                 continue;
             }
 
             int next = campaign.LastPostedIndex + 1;
             if (next > campaign.MaxIndex)
             {
-                log.Info($"[{campaign.Name}] tous les posts sont publiés ; campagne passée en inactive.");
+                log.Info($"{Tag(campaign)} tous les posts sont publiés ; campagne passée en inactive.");
                 if (!options.DryRun)
                 {
                     campaign.MarkFinished();
-                    CommitCampaign(campaign, $"Publication : {campaign.Name} terminée");
+                    CommitCampaign(campaign, $"Publication : {account.Name}/{campaign.Name} terminée");
                 }
                 continue;
             }
@@ -88,55 +85,55 @@ public sealed class Publisher(Settings settings, Log log, XClient? x, Git? git, 
             }
             catch (FormatException ex)
             {
-                log.Error($"[{campaign.Name}] status.json : {ex.Message}");
+                log.Error($"{Tag(campaign)} status.json : {ex.Message}");
                 continue;
             }
 
             if (options.Now < due)
             {
-                log.Info($"[{campaign.Name}] prochain post #{next} dû le {due:yyyy-MM-dd HH:mm} UTC.");
+                log.Info($"{Tag(campaign)} prochain post #{next} dû le {due:yyyy-MM-dd HH:mm} UTC.");
                 continue;
             }
 
             var post = campaign.FindPost(next);
             if (post is null)
             {
-                log.Error($"[{campaign.Name}] post #{next} absent de posts.json ; campagne bloquée.");
+                log.Error($"{Tag(campaign)} post #{next} absent de posts.json ; campagne bloquée.");
                 continue;
             }
 
             string postStatus = (string?)post["status"] ?? "";
             if (postStatus == "posted")
             {
-                log.Warn($"[{campaign.Name}] post #{next} déjà marqué posted ; status.json avancé sans republier.");
+                log.Warn($"{Tag(campaign)} post #{next} déjà marqué posted ; status.json avancé sans republier.");
                 if (!options.DryRun)
                 {
                     campaign.RepairLastPosted(next, (string?)post["posted_at"]);
-                    CommitCampaign(campaign, $"Publication : {campaign.Name} état réparé (#{next})");
+                    CommitCampaign(campaign, $"Publication : {account.Name}/{campaign.Name} état réparé (#{next})");
                 }
                 continue;
             }
             if (postStatus != "checked")
             {
-                log.Error($"[{campaign.Name}] post #{next} en statut « {postStatus} », pas « checked » ; campagne bloquée.");
+                log.Error($"{Tag(campaign)} post #{next} en statut « {postStatus} », pas « checked » ; campagne bloquée.");
                 continue;
             }
 
             var (text, error) = BuildText(post, settings.DefaultVersion, campaign.Hashtag, settings.MaxWeightedLength);
             if (text is null)
             {
-                log.Error($"[{campaign.Name}] post #{next} : {error} ; campagne bloquée.");
+                log.Error($"{Tag(campaign)} post #{next} : {error} ; campagne bloquée.");
                 continue;
             }
             if (string.IsNullOrWhiteSpace(campaign.Hashtag))
-                log.Warn($"[{campaign.Name}] pas de « hashtag » dans status.json.");
+                log.Warn($"{Tag(campaign)} pas de « hashtag » dans status.json.");
 
             string? image = settings.AttachImages ? campaign.FindImage(next) : null;
             string? alt = settings.AltText ? BuildAltText(post) : null;
 
             if (options.DryRun)
             {
-                log.Info($"[{campaign.Name}] DRY-RUN post #{next} ({TweetText.WeightedLength(text)} car.)" +
+                log.Info($"{Tag(campaign)} DRY-RUN post #{next} ({TweetText.WeightedLength(text)} car.)" +
                          (image is null ? " sans image" : $" avec {Path.GetFileName(image)}") + $" :\n{text}" +
                          (alt is null ? "" : $"\n  alt : {alt}"));
                 published++;
@@ -157,7 +154,7 @@ public sealed class Publisher(Settings settings, Log log, XClient? x, Git? git, 
                     if (alt is not null)
                     {
                         try { await x.SetAltTextAsync(mediaId, alt, ct); }
-                        catch (XApiException ex) { log.Warn($"[{campaign.Name}] texte alternatif non posé : {ex.Message}"); }
+                        catch (XApiException ex) { log.Warn($"{Tag(campaign)} texte alternatif non posé : {ex.Message}"); }
                     }
                     media.Add(mediaId);
                 }
@@ -165,14 +162,14 @@ public sealed class Publisher(Settings settings, Log log, XClient? x, Git? git, 
             }
             catch (Exception ex) when (ex is XApiException or HttpRequestException or TaskCanceledException or IOException or InvalidOperationException)
             {
-                log.Error($"[{campaign.Name}] échec de publication du post #{next} : {ex.Message}");
+                log.Error($"{Tag(campaign)} échec de publication du post #{next} : {ex.Message}");
                 continue;
             }
 
-            string url = string.IsNullOrWhiteSpace(settings.X.Username)
+            string url = string.IsNullOrWhiteSpace(username)
                 ? $"https://x.com/i/web/status/{tweetId}"
-                : $"https://x.com/{settings.X.Username}/status/{tweetId}";
-            log.Info($"[{campaign.Name}] post #{next} publié : {url}");
+                : $"https://x.com/{username}/status/{tweetId}";
+            log.Info($"{Tag(campaign)} post #{next} publié : {url}");
 
             try
             {
@@ -181,21 +178,23 @@ public sealed class Publisher(Settings settings, Log log, XClient? x, Git? git, 
             catch (Exception ex)
             {
                 // Le post est en ligne mais l'état n'a pas pu être écrit : il faut corriger à la main pour éviter un doublon.
-                log.Error($"[{campaign.Name}] POST #{next} PUBLIÉ ({url}) MAIS status.json/posts.json NON MIS À JOUR : {ex.Message}");
+                log.Error($"{Tag(campaign)} POST #{next} PUBLIÉ ({url}) MAIS status.json/posts.json NON MIS À JOUR : {ex.Message}");
                 throw;
             }
-            CommitCampaign(campaign, $"Publication : {campaign.Name} #{next}\n\n{url}");
+            CommitCampaign(campaign, $"Publication : {account.Name}/{campaign.Name} #{next}\n\n{url}");
             published++;
         }
 
         return published;
     }
 
+    private string Tag(Campaign campaign) => $"[{account.Name}/{campaign.Name}]";
+
     private void CommitCampaign(Campaign campaign, string message)
     {
         if (git is null) return;
         string rel(string p) => Path.GetRelativePath(settings.RepoPath, p).Replace('\\', '/');
         if (!git.Commit([rel(campaign.StatusPath), rel(campaign.PostsPath)], message))
-            log.Error($"[{campaign.Name}] commit impossible ; il sera refait au prochain passage.");
+            log.Error($"{Tag(campaign)} commit impossible ; il sera refait au prochain passage.");
     }
 }

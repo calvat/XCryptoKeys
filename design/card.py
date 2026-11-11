@@ -1,21 +1,17 @@
 #!/usr/bin/env python3
 """Carte simple pour un post, dans le style STYLE-GRAPHIQUE.md.
 
-Usage : python3 design/card.py threads/pactus-001 [index ...]
+Usage : python3 design/card.py accounts/XCryptoKeys/threads/pactus-001 [index ...]
 Lit posts.json, prend le champ "card" de chaque post et écrit la source
-threads/<campagne>/src/post_N.html. Avec --png, produit aussi l'image
-threads/<campagne>/post_N.png (via design/render.js).
+<campagne>/src/post_N.html. Avec --png, produit aussi l'image
+<campagne>/post_N.png (via design/render.js).
+La signature et les préfixes viennent de accounts/<compte>/card.json :
+{"handle": "@moncompte", "prefixes": {"<nom technique>": "<préfixe>"}}.
 Un post qui a déjà un schéma sur mesure (src/post_N.html sans la marque
 "auto-card") n'est pas écrasé, mais son PNG est régénéré.
 """
 import json, sys, os, html, re, subprocess
 
-PREFIX = {
-    'pactus': 'Inside #Pactus', 'bitcoin': '#Bitcoin Internals', 'ethereum': '#Ethereum Deep Dive',
-    'crypto-math': '#Crypto Math', 'hacks': 'Crypto #Hack Autopsy', 'consensus': '#Blockchain Consensus',
-    'layer2': 'Crypto #Layer2 Unlocked', 'mev': 'Crypto #MEV Dark Forest', 'defi': '#DeFi Mechanics',
-    'wallets': 'Crypto #Wallet Security', 'anonymity': 'Crypto #Anonymity Myths',
-}
 
 def wrap(text, width):
     words, lines, cur = text.split(), [], ''
@@ -27,7 +23,7 @@ def wrap(text, width):
     if cur: lines.append(cur)
     return lines
 
-def card_svg(prefix, n, card):
+def card_svg(prefix, n, card, handle):
     e = html.escape
     title = wrap(card['title'], 22)
     sub = wrap(card.get('sub', ''), 44)
@@ -72,13 +68,16 @@ def card_svg(prefix, n, card):
 <g class="m" font-size="12" fill="#5cfcfa" opacity=".55" text-anchor="middle"><text x="726" y="420">0x{n:02x}</text><text x="886" y="330">1011</text><text x="1046" y="240">0x{n*7%256:02x}</text></g>
 <text class="m" x="60" y="92" fill="#5cfcfa" font-size="22" font-weight="700" letter-spacing="2" filter="url(#glow)">{e(prefix.upper())} #{n}</text>
 {body}
-<text class="m" x="1140" y="640" fill="#488fdb" font-size="16" text-anchor="end">@xcryptokeys</text>
+<text class="m" x="1140" y="640" fill="#488fdb" font-size="16" text-anchor="end">{e(handle)}</text>
 </svg></body></html>'''
 
 def main():
     camp = sys.argv[1].rstrip('/')
     args = [a for a in sys.argv[2:] if a != '--png']
     name = re.sub(r'-\d{3}$', '', os.path.basename(camp))
+    # accounts/<compte>/threads/<campagne> -> accounts/<compte>/card.json
+    account = os.path.dirname(os.path.dirname(os.path.abspath(camp)))
+    conf = json.load(open(os.path.join(account, 'card.json'), encoding='utf-8'))
     posts = json.load(open(os.path.join(camp, 'posts.json')))
     os.makedirs(os.path.join(camp, 'src'), exist_ok=True)
     want = set(int(a) for a in args)
@@ -88,7 +87,7 @@ def main():
         if 'card' not in p: continue
         path = os.path.join(camp, 'src', f"post_{p['index']}.html")
         if not (os.path.exists(path) and 'auto-card' not in open(path).read()):
-            open(path, 'w').write(card_svg(PREFIX[name], p['index'], p['card']))
+            open(path, 'w').write(card_svg(conf['prefixes'][name], p['index'], p['card'], conf['handle']))
         out.append(path)
     if '--png' in sys.argv:
         here = os.path.dirname(os.path.abspath(__file__))
