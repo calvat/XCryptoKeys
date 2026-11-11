@@ -1,0 +1,373 @@
+[
+  {
+    "index": 1,
+    "simple": "#DeFi Mechanics #1: A decentralized exchange has no order book and no market maker. A short formula sets every price, and anyone can check it on-chain. This series opens those formulas one by one. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #1: Uniswap v2 prices every swap with one invariant, x · y = k, run by a smart contract. Lending, stablecoins and vaults work the same way: public formulas, no trader in the middle. One formula per post, starting now. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 2,
+    "simple": "#DeFi Mechanics #2: Uniswap's rule is x · y = k. A pool holds two tokens, and after every trade the amounts multiplied together must stay the same (before fees). Take some of one token out, and you must put more of the other in. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #2: Constant product AMM: reserves x and y must satisfy x · y = k. A swap of Δx in returns Δy = y · Δx / (x + Δx), fees aside. The curve is a hyperbola: you can never empty either side, only make it ever more expensive. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 3,
+    "simple": "#DeFi Mechanics #3: In a Uniswap-style pool, the price is just a ratio: 100 ETH and 300,000 USDC in the pool means 1 ETH ≈ 3,000 USDC. Every trade changes the amounts, so every trade moves the price. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #3: In a constant product pool, the marginal (spot) price of x in terms of y is y / x, the slope of the curve x · y = k. There is no price feed inside the pool: the price is whatever the reserves say after the last swap. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 4,
+    "simple": "#DeFi Mechanics #4: Big trades pay more. On a pool with x · y = k, buying 10% of one token's reserve costs you on average about 11% more per token than the price shown before the trade. That gap is \"price impact\". #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #4: Price impact on x · y = k: taking Δx out of reserve x costs y · Δx / (x − Δx), an average price of spot × x / (x − Δx). Buy 10% of the reserve and you pay ≈ 11.1% over spot, before the fee. Deeper pools, smaller impact. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 5,
+    "simple": "#DeFi Mechanics #5: Each Uniswap v2 swap pays a 0.3% fee. It stays in the pool, so the pool slowly grows and the people who supplied the tokens (liquidity providers) earn it in proportion to their share. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #5: Uniswap v2 charges 30 bps on the input amount. The fee is left in the reserves, so k grows with every swap, and LP shares redeem for more tokens over time. No claim step: fees compound inside the pool. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 6,
+    "simple": "#DeFi Mechanics #6: Uniswap v2 has a switch for a protocol fee, off by default. If turned on, 1/6 of the 0.3% swap fee goes to the protocol, and liquidity providers keep 0.25%. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #6: The v2 \"fee switch\": when the feeTo address is set, 1/6 of the 30 bps fee (0.05% of volume) goes to it and LPs keep 0.25%. It is collected lazily, minted as LP shares when liquidity is added or removed. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 7,
+    "simple": "#DeFi Mechanics #7: When you add tokens to a pool you get \"LP shares\", a receipt for your slice. The very first depositor gets shares based on the geometric mean of both amounts, so the share value does not depend on the starting price. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #7: A new Uniswap v2 pool mints √(x · y) shares to the first LP, then shares in proportion to what each later LP adds. The first 1,000 units (1e-15 shares) are burned to the zero address to make share-price manipulation costly. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 8,
+    "simple": "#DeFi Mechanics #8: Uniswap v2 \"flash swaps\": take tokens out of a pool first, use them, and pay at the end. If the payment isn't there before the transaction ends, everything is undone as if it never happened. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #8: v2 flash swaps send the output tokens first, call your contract, then check that x · y ≥ k (fees included) at the end. Repay in either token or the whole transaction reverts. Atomicity is the collateral. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 9,
+    "simple": "#DeFi Mechanics #9: Why do DEX prices follow the market? Arbitrage. If a pool sells ETH cheaper than elsewhere, traders buy it there until the pool's price catches up. The pool never looks at the outside price itself. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #9: An AMM is price-blind. Arbitrageurs trade against it until y / x matches the external price, net of fees and gas. So the pool's price lags the market by at least the fee band, and LPs pay for each correction. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 10,
+    "simple": "#DeFi Mechanics #10: \"Impermanent loss\": if prices move, a pool position ends up worth less than just holding the two tokens. It has a formula: it depends only on how much the price ratio changed, not on which way. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #10: Impermanent loss of a 50/50 x · y = k position vs holding, for a price ratio change r: IL = 2√r / (1 + r) − 1. It is symmetric in r and 1/r: ×2 and ÷2 give the same loss. Fees not included. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf (formule dérivée de x · y = k, calcul direct)",
+    "status": "checked"
+  },
+  {
+    "index": 11,
+    "simple": "#DeFi Mechanics #11: Impermanent loss in numbers: if one token's price doubles against the other, the pool position is worth about 5.7% less than holding. ×4: about 20% less. ×5: about 25% less. Fees can offset it, or not. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #11: IL = 2√r / (1 + r) − 1 gives: r = 1.5 → −2.0%, r = 2 → −5.7%, r = 3 → −13.4%, r = 4 → −20%, r = 10 → −42.5%. \"Impermanent\" only means it vanishes if the price returns to where you entered. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf (calcul direct à partir de la formule du post 10)",
+    "status": "checked"
+  },
+  {
+    "index": 12,
+    "simple": "#DeFi Mechanics #12: Researchers found a sharper way to measure what liquidity providers lose: compare them not to holding, but to a trader who rebalances at market prices. The gap, \"LVR\", is the cost of being picked off by arbitrage. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #12: Loss-versus-rebalancing (LVR, Milionis, Moallemi, Roughgarden, Zhang, 2022) compares an LP to a portfolio rebalancing at CEX prices. Unlike IL, it does not reset when price returns: it grows with volatility. #Stablecoins #Web3 #DEX",
+    "source": "https://arxiv.org/pdf/2208.06046 (rebalancing \"at CEX prices\" ; ℓ = σ²P²/2·|x*′(P)| ; LVR \"monotonically non-decreasing\", LVH path-independent)",
+    "status": "checked"
+  },
+  {
+    "index": 13,
+    "simple": "#DeFi Mechanics #13: Uniswap v3 (2021) let liquidity providers pick a price range. Their tokens only work, and only earn fees, while the price stays in that range. Same money, far more depth where trading happens. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #13: Uniswap v3 \"concentrated liquidity\": a position is active only in [pa, pb]. Uniswap Labs claimed up to 4000x capital efficiency vs v2, for liquidity placed in a single 0.10% range. Tighter range, more efficiency, more risk. #Stablecoins #Web3 #DEX",
+    "source": "https://blog.uniswap.org/uniswap-v3",
+    "status": "checked"
+  },
+  {
+    "index": 14,
+    "simple": "#DeFi Mechanics #14: In Uniswap v3, prices move on a ladder of \"ticks\". Each step up is 0.01% higher than the one below. Liquidity providers pick the two steps where their range starts and ends. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #14: Uniswap v3 places a tick at every price p = 1.0001^i, i an integer: each tick is ≈ 1 basis point from its neighbor. Doubling the price takes ≈ 6,932 ticks, since ln 2 / ln 1.0001 ≈ 6,931.8. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper-v3.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 15,
+    "simple": "#DeFi Mechanics #15: In Uniswap v3 not every tick can be a range edge. Low-fee pools use a finer grid, high-fee pools a coarser one, which keeps swaps cheaper to run. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #15: Uniswap v3 tick spacing at launch: 10 for the 0.05% fee tier (≈ 0.10% between usable ticks), 60 for 0.30%, 200 for 1%. Fewer initializable ticks means fewer tick crossings, so less gas per swap. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper-v3.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 16,
+    "simple": "#DeFi Mechanics #16: Uniswap v3 doesn't store the price itself. It stores the square root of the price, because the swap math gets simpler and cheaper with it. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #16: Uniswap v3 keeps sqrtPriceX96, √P as a fixed-point uint160 with 96 fractional bits. With liquidity L, virtual reserves are x = L / √P and y = L · √P, so a swap moves √P linearly in Δy: no square roots on-chain. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper-v3.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 17,
+    "simple": "#DeFi Mechanics #17: A Uniswap v3 position that the price leaves earns nothing and ends up 100% in one token: the one that went down in price. That's also how \"range orders\" work, a bit like a limit order. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #17: Out of range, a v3 position holds a single asset and earns no fees. Put one token in a range above or below the price and it converts as the price crosses it: a \"range order\", filled at the geometric mean of the range bounds. #Stablecoins #Web3 #DEX",
+    "source": "https://blog.uniswap.org/uniswap-v3",
+    "status": "checked"
+  },
+  {
+    "index": 18,
+    "simple": "#DeFi Mechanics #18: In Uniswap v2 every liquidity share is the same, like a coin. In v3, each position has its own range, so each one is a unique token: an NFT. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #18: v3 positions are not fungible: each has its own [pa, pb] and fee history. The core protocol tracks them per position, and the periphery wraps them as ERC-721 NFTs. Fungible LP tokens need a separate wrapper contract. #Stablecoins #Web3 #DEX",
+    "source": "https://blog.uniswap.org/uniswap-v3",
+    "status": "checked"
+  },
+  {
+    "index": 19,
+    "simple": "#DeFi Mechanics #19: Other apps need prices too. Uniswap v2 records a running total of the price over time, so anyone can compute an average price over the last hour or day, which is much harder to fake than one moment. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #19: Uniswap v2 TWAP: each pair accumulates price × seconds, recorded at the start of each block, before the first trade. Sample the accumulator twice, divide by the time elapsed: time-weighted average. Prices are UQ112.112. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 20,
+    "simple": "#DeFi Mechanics #20: Uniswap v3 upgraded its built-in price feed: any app can ask for an average price over a past window in one call, and the pool can keep a long history of checkpoints. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #20: v3 accumulates the tick (log₁.₀₀₀₁ P) per second, so a TWAP is a geometric mean: 1.0001^(Δacc / Δt). The pool can store up to 65,536 checkpoints, about 9 days of history on Ethereum at launch. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper-v3.pdf ; https://blog.uniswap.org/uniswap-v3",
+    "status": "checked"
+  },
+  {
+    "index": 21,
+    "simple": "#DeFi Mechanics #21: Never use a DEX's current price as a trusted price. Someone with enough money can push it, use it, and put it back, all within a single transaction. That's why serious protocols use averages or outside price feeds. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #21: A spot price y / x read mid-transaction can be moved by one swap and restored by the next, in the same tx. A TWAP forces an attacker to hold the distorted price across blocks, paying arbitrage losses every block. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 22,
+    "simple": "#DeFi Mechanics #22: February 15, 2020: one of the first famous DeFi attacks. The attacker borrowed 10,000 ETH for a few seconds, pushed up a price on Uniswap, and profited from a lending protocol (bZx) that trusted it. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #22: bZx, Feb 15 2020: a 10k ETH flash loan from dYdX funded a 5x short on bZx whose large ETH→WBTC swap was routed to Uniswap, pumping WBTC. The attacker sold 112 WBTC for ≈ 6.8k ETH. One transaction. #Stablecoins #Web3 #DEX",
+    "source": "https://mudit.blog/bzx-hack-analysis-defi-legos/",
+    "status": "checked"
+  },
+  {
+    "index": 23,
+    "simple": "#DeFi Mechanics #23: October 11, 2022: a trader on Mango Markets pushed the price of the thin MNGO token up more than 20x, used the inflated position as collateral, and borrowed out about $116M. The price feed told the truth. The market was too thin. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #23: Mango Markets, Oct 11 2022: 483M MNGO perps bought at $0.0382 between two accounts, then MNGO spot pumped to $0.91. The unrealized PnL counted as collateral and ≈ $116M was borrowed. Oracle correct, liquidity too thin. #Stablecoins #Web3 #DEX",
+    "source": "https://www.certik.com/blog/mango-market",
+    "status": "checked"
+  },
+  {
+    "index": 24,
+    "simple": "#DeFi Mechanics #24: Uniswap v4 went live on January 31, 2025 on 10 networks. Big change: every pool now lives in one single contract instead of one contract per pool. Creating a pool got about 99.9% cheaper than in v3. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #24: Uniswap v4 (Jan 31 2025) uses a singleton: one PoolManager holds all pools. A new pool is a state update, not a contract deploy: ≈ 99.9% cheaper to create than in v3. Multi-hop swaps no longer move tokens between pool contracts. #Stablecoins #Web3 #DEX",
+    "source": "https://forklog.com/en/uniswap-labs-launches-uniswap-v4/",
+    "status": "checked"
+  },
+  {
+    "index": 25,
+    "simple": "#DeFi Mechanics #25: Uniswap v4 \"hooks\" let a pool's creator plug in their own code that runs at set moments, like before or after a swap. That allows dynamic fees, custom pricing curves or liquidity rewards without forking Uniswap. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #25: v4 hooks are external contracts called at points like beforeSwap / afterSwap and before/after add and remove liquidity. Which hooks are active is encoded in the hook's address bits, so the pool knows what to call. #Stablecoins #Web3 #DEX",
+    "source": "https://developers.uniswap.org/docs/protocols/v4/concepts/hooks",
+    "status": "checked"
+  },
+  {
+    "index": 26,
+    "simple": "#DeFi Mechanics #26: In Uniswap v4, a multi-step trade doesn't move tokens at every step. The contract just keeps a running tab, and only the final balance must be settled before the transaction ends. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #26: v4 \"flash accounting\": PoolManager tracks per-caller token deltas during an unlock, and every delta must be zero before it returns. The deltas live in transient storage (EIP-1153), cleared at the end of the tx. #Stablecoins #Web3 #DEX",
+    "source": "https://developers.uniswap.org/docs/protocols/v4/concepts/flash-accounting ; https://raw.githubusercontent.com/Uniswap/v4-core/main/src/PoolManager.sol ; https://raw.githubusercontent.com/Uniswap/v4-core/main/src/libraries/CurrencyDelta.sol ; https://raw.githubusercontent.com/ethereum/EIPs/master/EIPS/eip-1153.md",
+    "status": "checked"
+  },
+  {
+    "index": 27,
+    "simple": "#DeFi Mechanics #27: Why not use \"x + y = k\" instead of x · y = k? Price would never move, which sounds great, until arbitrage drains one token completely the moment its outside price drifts. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #27: Constant sum (x + y = k) gives zero slippage at a fixed price of 1, but any external depeg lets arbitrage empty one side. Constant product never empties, but slippage is high even near 1:1. Curve blends the two. #Stablecoins #Web3 #DEX",
+    "source": "https://classic.curve.finance/files/stableswap-paper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 28,
+    "simple": "#DeFi Mechanics #28: Curve's StableSwap (paper by Michael Egorov, November 2019) is built for tokens that should be worth the same, like two dollar stablecoins: very flat prices near 1:1, but the pool still can't be fully emptied. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #28: Curve StableSwap invariant: A·nⁿ·Σxᵢ + D = A·D·nⁿ + Dⁿ⁺¹ / (nⁿ·Πxᵢ). D is the total value when all coins are at par. Near balance it acts like constant sum, far from it like constant product. #Stablecoins #Web3 #DEX",
+    "source": "https://classic.curve.finance/files/stableswap-paper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 29,
+    "simple": "#DeFi Mechanics #29: Curve pools have a dial called \"A\". Turn it up and prices stay flatter around 1:1, good for coins that really hold their peg. Turn it down and the pool behaves more like Uniswap. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #29: In StableSwap, the amplification coefficient A is the leverage on the constant-sum part when the pool is balanced; it fades toward 0 as the pool tilts. A → 0 gives constant product. The paper's examples use A = 100. #Stablecoins #Web3 #DEX",
+    "source": "https://classic.curve.finance/files/stableswap-paper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 30,
+    "simple": "#DeFi Mechanics #30: Balancer generalizes Uniswap: a pool can hold several tokens with any weights, like 80% of one and 20% of another. Trades and arbitrage keep the pool's value split along those weights. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #30: Balancer weighted pools keep Π Bᵢ^wᵢ = constant, with weights summing to 1. Spot price of token o, in units of token i, is (Bᵢ / wᵢ) / (Bₒ / wₒ). With two tokens at 50/50 it is Uniswap's x · y = k. #Stablecoins #Web3 #DEX",
+    "source": "https://docs.balancer.fi/whitepaper.pdf",
+    "status": "checked"
+  },
+  {
+    "index": 31,
+    "simple": "#DeFi Mechanics #31: DeFi lending has no credit check, so every loan is backed by more collateral than it borrows. Lock $10,000 of ETH and you can borrow less than $10,000 of stablecoins, never more. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #31: On Aave, each collateral asset has a max loan-to-value (how much you can borrow) and a liquidation threshold, never lower, that sets when you can be liquidated. The gap between the two is your safety margin at opening. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/aave/aave-v3-core/master/contracts/protocol/pool/PoolConfigurator.sol",
+    "status": "checked"
+  },
+  {
+    "index": 32,
+    "simple": "#DeFi Mechanics #32: Aave sums up a loan's safety in one number, the \"health factor\". Above 1 you're fine. Below 1, anyone can repay part or all of your loan and take some of your collateral at a discount. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #32: Aave health factor = Σ(collateral value × liquidation threshold) / total debt. Example: $10,000 of collateral at an 80% threshold with $7,000 of debt gives HF ≈ 1.14. A 12.5% collateral drop puts it at 1. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/aave/aave-v3-core/master/contracts/protocol/libraries/logic/GenericLogic.sol ; https://raw.githubusercontent.com/aave/aave-v3-core/master/contracts/protocol/libraries/logic/LiquidationLogic.sol",
+    "status": "checked"
+  },
+  {
+    "index": 33,
+    "simple": "#DeFi Mechanics #33: On Aave, a liquidation usually doesn't wipe the whole loan at once. A liquidator can repay up to half of it, unless the position is very unhealthy or small, in which case all of it can go. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #33: Aave v3.3 close factor: if 0.95 < HF < 1 and both collateral and debt are ≥ $2,000, up to 50% of the debt can be repaid in one liquidation. If HF ≤ 0.95, or either side is under $2,000, up to 100%. #Stablecoins #Web3 #DEX",
+    "source": "https://help.defisaver.com/protocols/aave-v3/liquidations-on-aave",
+    "status": "checked"
+  },
+  {
+    "index": 34,
+    "simple": "#DeFi Mechanics #34: Why would anyone liquidate you? Because it pays: the liquidator repays some of your debt and receives your collateral worth a bit more than what they paid. That bonus is the cost you pay for letting your loan go bad. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #34: Aave's liquidation bonus is set per collateral asset: the liquidator repays debt D and receives collateral worth D × (1 + bonus). Bots compete for it, which is what keeps the protocol solvent when prices fall. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/aave/aave-v3-core/master/contracts/protocol/libraries/logic/LiquidationLogic.sol",
+    "status": "checked"
+  },
+  {
+    "index": 35,
+    "simple": "#DeFi Mechanics #35: Interest rates in DeFi lending aren't set by a banker. They follow a formula based on how much of the pool is already lent out. The more it's borrowed, the more borrowing costs. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #35: Utilization U = borrows / (cash + borrows − reserves). Compound's jump rate model raises the borrow rate slowly with U up to a \"kink\", then steeply above it, to push borrowers to repay and keep cash for withdrawals. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/compound-finance/compound-protocol/master/contracts/BaseJumpRateModelV2.sol",
+    "status": "checked"
+  },
+  {
+    "index": 36,
+    "simple": "#DeFi Mechanics #36: Lenders earn less than borrowers pay. Part of the pool sits unlent, so its interest is spread over everyone, and the protocol keeps a cut for its reserves. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #36: In Compound v2, supply rate = borrow rate × utilization × (1 − reserve factor). At 80% utilization, a 5% borrow rate and a 10% reserve factor, lenders get ≈ 3.6%. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/compound-finance/compound-protocol/master/contracts/BaseJumpRateModelV2.sol",
+    "status": "checked"
+  },
+  {
+    "index": 37,
+    "simple": "#DeFi Mechanics #37: Your deposit receipt can grow in two ways. On Aave, the number of receipt tokens in your wallet goes up. On Compound v2, the number stays the same but each one is worth more. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #37: Aave aTokens rebase: balanceOf() = scaled balance × liquidity index, so your balance rises every block. Compound v2 cTokens don't rebase: the exchange rate cToken → underlying rises instead. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/aave/aave-v3-core/master/contracts/protocol/tokenization/AToken.sol ; https://raw.githubusercontent.com/compound-finance/compound-protocol/master/contracts/CToken.sol",
+    "status": "checked"
+  },
+  {
+    "index": 38,
+    "simple": "#DeFi Mechanics #38: A flash loan lends you millions with no collateral, for one transaction only. If the money isn't back, plus a fee, by the end of that transaction, the blockchain cancels everything, as if the loan never happened. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #38: Aave v3 flashLoan(): funds are sent, your executeOperation() runs, then the pool pulls amount + premium. Default premium at deployment: 0.05%, changeable by governance. If repayment fails, the tx reverts. #Stablecoins #Web3 #DEX",
+    "source": "https://aave.com/docs/aave-v3/guides/flash-loans",
+    "status": "checked"
+  },
+  {
+    "index": 39,
+    "simple": "#DeFi Mechanics #39: Flash loans don't create bugs, they scale them. A flaw that needs $100M to exploit used to need a whale. With a flash loan, anyone who can pay the gas and the fee can try it. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #39: Euler Finance, March 13 2023: ≈ $197M taken, flash loans supplying the capital to exploit a flaw in a recently added function. The loan was repaid within the same tx; the protocol's lenders were not. #Stablecoins #Web3 #DEX",
+    "source": "https://www.web3isgoinggreat.com/single/euler-finance-exploited-for-almost-200-million",
+    "status": "checked"
+  },
+  {
+    "index": 40,
+    "simple": "#DeFi Mechanics #40: DAI started as a loan: you lock ETH in a Maker vault and mint new DAI against it. Pay the DAI back plus a fee and you get your ETH. If ETH falls too far, the vault is auctioned. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #40: Maker vaults mint DAI against collateral above a minimum collateral ratio per vault type. Debt accrues a stability fee; repaying burns DAI. Below the ratio, the vault is liquidated and its collateral auctioned to cover the debt. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/makerdao/dss/master/src/spot.sol ; https://raw.githubusercontent.com/makerdao/dss/master/src/jug.sol ; https://raw.githubusercontent.com/makerdao/dss/master/src/dog.sol",
+    "status": "checked"
+  },
+  {
+    "index": 41,
+    "simple": "#DeFi Mechanics #41: March 12, 2020, \"Black Thursday\": ETH crashed, Ethereum got congested, and few bots could bid in Maker's liquidation auctions. Some auctions were won for 0 DAI: about $8.3M of ETH taken for free. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #41: Black Thursday (Mar 12-13 2020): gas spikes delayed Maker's oracle and broke keeper bots. Zero-DAI bids won auctions: ≈ 62,893 ETH, ≈ $8.32M, to four addresses. The flaw: auctions assumed bidders could always get a tx in. #Stablecoins #Web3 #DEX",
+    "source": "https://medium.com/@whiterabbit_hq/black-thursday-for-makerdao-8-32-million-was-liquidated-for-0-dai-36b83cac56b6",
+    "status": "checked"
+  },
+  {
+    "index": 42,
+    "simple": "#DeFi Mechanics #42: Liquity lets you borrow its LUSD stablecoin against ETH with only 110% collateral. The trick: anyone can always swap 1 LUSD for $1 worth of ETH from the riskiest loans, which holds the price near $1. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #42: Liquity v1: minimum collateral ratio 110%, minimum debt 2,000 LUSD, one-off borrowing fee of 0.5% to 5%. Redemptions swap LUSD for ETH at face value, taken from the lowest-ratio Troves first: a hard price floor. #Stablecoins #Web3 #DEX",
+    "source": "https://docs.liquity.org/liquity-v1/faq/borrowing ; https://docs.liquity.org/liquity-v1/faq/lusd-redemptions",
+    "status": "checked"
+  },
+  {
+    "index": 43,
+    "simple": "#DeFi Mechanics #43: Not all stablecoins work the same way. Some hold dollars in a bank (USDC), some are backed by crypto locked on-chain (DAI, LUSD), and some tried to hold the peg with code alone. Each fails in a different way. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #43: Three stablecoin designs: fiat-backed (issuer redeems for cash, custody risk), crypto-collateralized (overcollateralized vaults, liquidation risk), algorithmic (mint/burn against a volatile token, reflexivity risk). #Stablecoins #Web3 #DEX",
+    "source": "https://docs.liquity.org/liquity-v1/faq/borrowing ; https://cointelegraph.com/news/usdc-depegs-as-circle-confirms-3-3b-stuck-with-silicon-valley-bank",
+    "status": "checked"
+  },
+  {
+    "index": 44,
+    "simple": "#DeFi Mechanics #44: Even a fully cash-backed stablecoin can wobble. In March 2023, Circle said $3.3B of USDC's reserves were stuck at the failing Silicon Valley Bank. USDC traded around $0.88 for a while. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #44: USDC, Mar 11 2023: $3.3B of ≈ $40B reserves (≈ 8%) sat at SVB. USDC traded ≈ $0.877, and DAI, heavily backed by USDC at the time, followed it down. Custody risk passes through to everything built on top. #Stablecoins #Web3 #DEX",
+    "source": "https://cointelegraph.com/news/usdc-depegs-as-circle-confirms-3-3b-stuck-with-silicon-valley-bank ; https://www.theblock.co/post/218993/usdc-and-dai-remain-at-about-0-90-following-circles-disclosure-of-funds-at-svb",
+    "status": "checked"
+  },
+  {
+    "index": 45,
+    "simple": "#DeFi Mechanics #45: Terra's UST had no cash behind it. The promise: 1 UST could be swapped for about $1 worth of the LUNA token. When people rushed to exit in May 2022, LUNA was printed so fast it lost almost all its value. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #45: UST/LUNA: burn 1 UST to mint ≈ $1 of LUNA (minus a spread), and the reverse. Peg defense dilutes LUNA, so a run turns into a death spiral: more redemptions, more LUNA, lower LUNA price. It collapsed in May 2022. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/terra-money/classic-core/main/x/market/spec/01_concepts.md (mécanisme de swap UST↔LUNA, spread) ; https://corpgov.law.harvard.edu/2023/05/22/anatomy-of-a-run-the-terra-luna-crash/ (Liu, Makarov, Schoar : run à partir du 7 mai 2022, dilution, LUNA de 1 Md à 6 000 Md d'unités, de $80 à presque 0 en trois jours)",
+    "status": "checked"
+  },
+  {
+    "index": 46,
+    "simple": "#DeFi Mechanics #46: How a stablecoin peg is held in practice: if it trades under $1, someone buys it cheap and redeems it for $1 of backing. If it trades above $1, someone mints new coins and sells them. Arbitrage does the work. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #46: A peg is only as tight as its redemption path. Maker's PSM swaps USDC ↔ DAI 1:1 (plus a set fee), so DAI is boxed between the fees. No cheap redemption means no hard floor, just a soft market price. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/makerdao/dss-psm/master/src/psm.sol",
+    "status": "checked"
+  },
+  {
+    "index": 47,
+    "simple": "#DeFi Mechanics #47: A DeFi \"vault\" works like a fund: you deposit tokens and get shares. Your shares are worth your slice of everything the vault holds, so when the vault earns, every share is worth a bit more. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #47: ERC-4626, the tokenized vault standard. Deposit: shares = assets × totalSupply / totalAssets. Redeem: assets = shares × totalAssets / totalSupply. The spec says rounding should favor the vault, not the user. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/ethereum/ERCs/master/ERCS/erc-4626.md ; https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/master/docs/modules/ROOT/pages/erc4626.adoc",
+    "status": "checked"
+  },
+  {
+    "index": 48,
+    "simple": "#DeFi Mechanics #48: A new, empty vault can be a trap. The first depositor can buy one tiny share, then send tokens straight in to inflate its value. The next person's deposit then rounds down to zero shares, and the first one takes it. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #48: ERC-4626 inflation attack: deposit 1 wei, donate D to the vault, so 1 share = D + 1. A victim depositing less than that gets 0 shares by rounding. Fix: virtual shares and assets (OpenZeppelin's offset). #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/master/docs/modules/ROOT/pages/erc4626.adoc",
+    "status": "checked"
+  },
+  {
+    "index": 49,
+    "simple": "#DeFi Mechanics #49: Perpetual futures never expire. To keep their price close to the real one, traders on the crowded side pay the other side a small fee at regular intervals: the \"funding rate\". #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #49: Perp funding: when the perp trades above the index, longs pay shorts, and the reverse below it. The rate mostly tracks the perp's premium over the index. On dYdX v4 it is computed and paid every hour. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/dydxprotocol/v4-documentation/main/docs/pages/concepts/trading/funding.mdx",
+    "status": "checked"
+  },
+  {
+    "index": 50,
+    "simple": "#DeFi Mechanics #50: Some \"synthetic dollars\" are built from trades, not cash. Ethena's USDe holds mostly crypto and opens an equal short position against it, so a price drop on one side is offset by a gain on the other. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #50: Ethena USDe: mostly crypto collateral hedged with matching short futures, so net delta ≈ 0 (plus some stablecoins). Part of its yield comes from funding on that basis trade. Not a fiat-backed coin: its risks are different. #Stablecoins #Web3 #DEX",
+    "source": "https://docs.ethena.fi/overview/how-usde-works (short futures \"in approximately the same notional size\") ; https://docs.ethena.fi/protocol-overview/risks/funding-risk (revenu du funding et de la base)",
+    "status": "checked"
+  },
+  {
+    "index": 51,
+    "simple": "#DeFi Mechanics #51: Lending apps don't read prices from one exchange. Oracle networks like Chainlink combine prices from many sources and post them on-chain, but only when the price moves enough or after a set time. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #51: Chainlink Data Feeds update on a deviation threshold (price moved by more than X%) or a heartbeat (max time since the last update), whichever comes first. Between updates, contracts read the last posted value. #Stablecoins #Web3 #DEX",
+    "source": "https://raw.githubusercontent.com/smartcontractkit/documentation/main/src/content/architecture-overview/architecture-decentralized-model.mdx",
+    "status": "checked"
+  },
+  {
+    "index": 52,
+    "simple": "#DeFi Mechanics #52: Your DEX swap is public before it's confirmed. A bot can buy just before you, let your trade push the price, then sell right after: a \"sandwich\". Your slippage setting is the most it can take. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #52: Sandwich attack: front-run a pending swap to move y / x, let the victim fill at a worse price, back-run to capture the move. amountOutMin (slippage tolerance) caps the loss; commit-reveal or fair-ordering schemes can prevent it. #Stablecoins #Web3 #DEX",
+    "source": "https://arxiv.org/pdf/2009.14021 (Zhou et al., sandwich : front-run + back-run d'une tx vue sur le réseau P2P, limité par la slippage protection de la victime ; défenses commit-reveal / fair ordering)",
+    "status": "checked"
+  },
+  {
+    "index": 53,
+    "simple": "#DeFi Mechanics #53: The recap: DEXs price with curves, lenders with collateral ratios, stablecoins with redemption paths, vaults with share math. Most famous DeFi failures were one of these formulas meeting an edge case. Follow for more. #Stablecoins #Web3 #DEX",
+    "tech": "#DeFi Mechanics #53: Recap: x · y = k, 1.0001^i ticks, StableSwap's A, health factor < 1, flash loans, TWAPs, ERC-4626 rounding. Each formula has an edge case, and most DeFi incidents lived there. Follow @xcryptokeys for the next series. #Stablecoins #Web3 #DEX",
+    "source": "https://app.uniswap.org/whitepaper.pdf",
+    "status": "checked"
+  }
+]

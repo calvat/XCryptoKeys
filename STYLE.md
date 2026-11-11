@@ -11,12 +11,12 @@ Un sujet n'est retenu que s'il :
 
 - En **anglais**, **moins de 280 caractères**, idéalement 150 à 220.
 - **Une seule info technique par post**, compréhensible seule (un post peut être partagé hors du thread).
-- Chaque post est proposé en **au moins 2 versions**, parfois 3 :
-  - `a` (simple) : pour tout le monde, sans jargon ou avec le jargon expliqué ;
-  - `b` (tech) : plus précis, avec les chiffres et les termes exacts ;
-  - `c` (optionnel) : une variante, par exemple plus accrocheuse ou avec un autre angle.
+- Chaque post est proposé en **au moins 2 versions** (`simple` et `tech` dans `posts.json`), parfois 3 :
+  - `simple` : pour tout le monde, sans jargon ou avec le jargon expliqué ;
+  - `tech` : plus précis, avec les chiffres et les termes exacts ;
+  - `variant` (optionnel) : une variante, par exemple plus accrocheuse ou avec un autre angle.
 - Johan choisit une version par post au moment de publier.
-- **Affirmations vérifiées** : chaque chiffre, date ou nom a une source notée sous le post (lien, BIP, EIP, rapport post-mortem). Toutes les versions d'un post doivent être vraies, la version simple aussi.
+- **Affirmations vérifiées** : chaque chiffre, date ou nom a une source notée dans le champ `source` du post (lien, BIP, EIP, rapport post-mortem). Toutes les versions d'un post doivent être vraies, la version simple aussi.
 - Un chiffre approximatif s'écrit avec "about" ou "≈".
 - Pas de conseil financier, pas de prédiction de prix.
 - Le post 1 accroche, le dernier résume et invite à suivre.

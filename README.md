@@ -8,8 +8,8 @@ Posts et threads préparés pour le compte X **@xcryptokeys** : blockchains et c
 |---|---|
 | `SUJETS.md` | Les 10 sujets, leurs préfixes, leurs hashtags fixes et l'ordre de rédaction |
 | `STYLE.md` | Les règles de rédaction de chaque post |
-| `threads/` | Un fichier par thread, nommé par numéro de sujet, par exemple `threads/04-hacks.md` |
-| `threads/_TEMPLATE.md` | Le modèle à copier pour un nouveau thread |
+| `threads/` | Un dossier par campagne, nommé `<nom technique>-<numéro sur 3 chiffres>` : par exemple `threads/pactus-001/` pour la 1re campagne Pactus. Il contient `index.md` (description de la campagne) et `posts.json` (les posts) |
+| `threads/_template/` | Le modèle à copier pour une nouvelle campagne |
 
 ## Règles clés (détails dans `STYLE.md`)
 
@@ -19,9 +19,25 @@ Posts et threads préparés pour le compte X **@xcryptokeys** : blockchains et c
 - Un **préfixe par thread**, identique sur tous ses posts, qui montre qu'on parle de crypto et contient un hashtag très utilisé.
 - **1 à 3 hashtags fixes par série**, très utilisés, dans tous ses posts.
 
+## Format de `posts.json`
+
+Un tableau, dans l'ordre de publication. Chaque entrée :
+
+```json
+{
+  "index": 1,
+  "simple": "version simple, préfixe et hashtags compris",
+  "tech": "version technique",
+  "source": "URL lue pour vérifier",
+  "status": "checked"
+}
+```
+
+Quelques posts ont aussi `variant`, une 3e version.
+
 ## Statut d'un post
 
-Chaque post a un statut dans sa ligne d'en-tête :
+Champ `status` de chaque post :
 
 - `draft` : rédigé, pas encore vérifié
 - `checked` : chaque affirmation a été vérifiée sur une source
@@ -31,16 +47,16 @@ Un thread ne se publie que quand tous ses posts sont `checked`. Les notes en tê
 
 ## Threads
 
-| # | Thread | Posts | Statut |
+| Campagne | Thème | Posts | Statut |
 |---|---|---|---|
-| 00 | [Inside Pactus](threads/00-pactus.md) | 90 (versions simple et tech) | checked |
-| 01 | [Bitcoin sous le capot](threads/01-bitcoin.md) · `#Bitcoin Internals` | 71 | checked |
-| 02 | [Ethereum sous le capot](threads/02-ethereum.md) · `#Ethereum Deep Dive` | 91 | checked |
-| 03 | [La cryptographie des cryptos](threads/03-crypto-math.md) · `#Crypto Math` | 76 | checked |
-| 04 | [Les grands hacks](threads/04-hacks.md) · `Crypto #Hack Autopsy` | 52 | checked |
-| 05 | [Le consensus](threads/05-consensus.md) · `#Blockchain Consensus` | 54 | checked |
-| 06 | [Le scaling, L2](threads/06-layer2.md) · `Crypto #Layer2 Unlocked` | 67 | checked |
-| 07 | [MEV et mempool](threads/07-mev.md) · `Crypto #MEV Dark Forest` | 52 | checked |
-| 08 | [La mécanique de la DeFi](threads/08-defi.md) · `#DeFi Mechanics` | 53 | checked |
-| 09 | [Wallets et self-custody](threads/09-wallets.md) · `Crypto #Wallet Security` | 67 | checked |
-| 10 | [L'anonymat dans la crypto](threads/10-anonymity.md) · `Crypto #Anonymity Myths` | 67 | checked |
+| pactus-001 | [Inside Pactus](threads/pactus-001/index.md) | 90 (versions simple et tech) | checked |
+| bitcoin-001 | [Bitcoin sous le capot](threads/bitcoin-001/index.md) · `#Bitcoin Internals` | 71 | checked |
+| ethereum-001 | [Ethereum sous le capot](threads/ethereum-001/index.md) · `#Ethereum Deep Dive` | 91 | checked |
+| crypto-math-001 | [La cryptographie des cryptos](threads/crypto-math-001/index.md) · `#Crypto Math` | 76 | checked |
+| hacks-001 | [Les grands hacks](threads/hacks-001/index.md) · `Crypto #Hack Autopsy` | 52 | checked |
+| consensus-001 | [Le consensus](threads/consensus-001/index.md) · `#Blockchain Consensus` | 54 | checked |
+| layer2-001 | [Le scaling, L2](threads/layer2-001/index.md) · `Crypto #Layer2 Unlocked` | 67 | checked |
+| mev-001 | [MEV et mempool](threads/mev-001/index.md) · `Crypto #MEV Dark Forest` | 52 | checked |
+| defi-001 | [La mécanique de la DeFi](threads/defi-001/index.md) · `#DeFi Mechanics` | 53 | checked |
+| wallets-001 | [Wallets et self-custody](threads/wallets-001/index.md) · `Crypto #Wallet Security` | 67 | checked |
+| anonymity-001 | [L'anonymat dans la crypto](threads/anonymity-001/index.md) · `Crypto #Anonymity Myths` | 67 | checked |

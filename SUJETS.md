@@ -1,6 +1,6 @@
 # Les 10 sujets de threads X (crypto en général)
 
-Objectif : rédiger les 10 threads, chacun avec au moins 30 posts selon les règles de `STYLE.md` : en anglais, moins de 280 caractères, une info technique par post, au moins 2 versions par post (simple et tech), un préfixe propre au thread, affirmations vérifiées. La série Pactus (`threads/00-pactus.md`) sert de référence.
+Objectif : rédiger les 10 campagnes, chacune avec au moins 30 posts selon les règles de `STYLE.md` : en anglais, moins de 280 caractères, une info technique par post, au moins 2 versions par post (simple et tech), un préfixe propre au thread, affirmations vérifiées. La campagne Pactus (`threads/pactus-001/`) sert de référence.
 
 Statut : les **10 sujets sont retenus**, sujets et préfixes validés. Rédaction à venir.
 
