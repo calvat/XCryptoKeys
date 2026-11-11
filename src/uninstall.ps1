@@ -12,7 +12,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $admin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-if (-not $admin) { Write-Host "ERREUR : lancer ce script dans un PowerShell administrateur." -ForegroundColor Red; exit 1 }
+if (-not $admin -and -not $WhatIfPreference) { Write-Host "ERREUR : lancer ce script dans un PowerShell administrateur." -ForegroundColor Red; exit 1 }
 
 $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
 if ($task) {

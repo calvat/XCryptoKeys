@@ -32,6 +32,7 @@ function Step([string]$message) { Write-Host ""; Write-Host "== $message" -Foreg
 Step "Vérifications"
 $admin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $admin -and -not $WhatIfPreference) { Fail "lancer ce script dans un PowerShell administrateur (clic droit > Exécuter en tant qu'administrateur)." }
+if (-not $admin) { Write-Warning "simulation (-WhatIf) sans droits administrateur : l'installation réelle devra être lancée dans un PowerShell administrateur." }
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) { Fail "git est introuvable dans le PATH. Installer Git for Windows, puis relancer." }
 $RepoPath = (Resolve-Path $RepoPath).Path
 if (-not (Test-Path (Join-Path $RepoPath ".git"))) { Fail "$RepoPath n'est pas un clone git du dépôt (option -RepoPath)." }
@@ -59,7 +60,11 @@ foreach ($a in $accounts) {
 
 # 2. Construction
 $publishDir = Join-Path $scriptDir "publish\$Rid"
-if (-not $SkipBuild) {
+if ($WhatIfPreference -and -not $SkipBuild) {
+    Step "Construction ($Rid)"
+    Write-Host "WhatIf : construction de l'exécutable avec dotnet publish (non lancée)."
+}
+elseif (-not $SkipBuild) {
     Step "Construction ($Rid)"
     if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { Fail "SDK .NET 10 introuvable (dotnet). L'installer, ou construire ailleurs et utiliser -SkipBuild." }
     Push-Location $scriptDir
@@ -70,7 +75,7 @@ if (-not $SkipBuild) {
     finally { Pop-Location }
 }
 $exeSource = Join-Path $publishDir "xck-publisher.exe"
-if (-not (Test-Path $exeSource)) { Fail "exécutable introuvable : $exeSource (lancer sans -SkipBuild)." }
+if (-not $WhatIfPreference -and -not (Test-Path $exeSource)) { Fail "exécutable introuvable : $exeSource (lancer sans -SkipBuild)." }
 
 # 3. Copie (appsettings.local.json et logs\ ne sont jamais écrasés)
 Step "Copie dans $InstallDir"
