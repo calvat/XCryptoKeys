@@ -4,7 +4,7 @@
 - Angle : les formules derrière les DEX, les prêts, les stablecoins, les oracles et les vaults, avec leurs cas limites et les incidents qui les ont révélées.
 - Préfixe : `#DeFi Mechanics #N:`
 - Hashtags fixes : #Stablecoins #Web3 #DEX
-- Statut : draft
+- Statut : checked (53 posts checked, 0 draft)
 
 Notes avant publication :
 - "checked" = vérifié contre la source indiquée (whitepaper, doc officielle, post-mortem) ou calcul direct à partir de la formule citée. "draft" = fait connu mais non revérifié pendant la rédaction (budget de recherche épuisé) : à recontrôler avant de publier.

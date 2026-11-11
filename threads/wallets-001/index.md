@@ -4,7 +4,7 @@
 - Angle : ce que fait réellement un wallet, et comment les gens se font vider.
 - Préfixe : `Crypto #Wallet Security #N:`
 - Hashtags fixes : #CryptoSecurity #SelfCustody
-- Statut : draft (voir le statut de chaque post)
+- Statut : checked (67 posts checked, 0 draft)
 
 Notes avant publication :
 - Comptage X : chaque version fait moins de 280 caractères, préfixe et hashtags compris (pondération X appliquée).

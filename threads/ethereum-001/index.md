@@ -4,7 +4,7 @@
 - Angle : du modèle de comptes au Merge et aux blobs, les mécanismes concrets.
 - Préfixe : `#Ethereum Deep Dive #N:`
 - Hashtags fixes : #ETH #SmartContracts
-- Statut : draft
+- Statut : checked (91 posts checked, 0 draft)
 
 Posts en anglais, une version a (simple) et b (tech) par post, parfois c. Chaque post se lit seul (1 post par jour). Longueurs comptées comme X (≈ et les symboles hors latin comptent 2). « checked » : vérifié contre la source pendant la rédaction. « draft » : source primaire indiquée (EIP, spec, docs), chiffres issus de ces textes mais non relus en ligne cette fois : à relire avant publication.
 

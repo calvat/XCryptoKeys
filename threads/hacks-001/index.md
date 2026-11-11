@@ -4,7 +4,7 @@
 - Angle : pas le montant volé, mais la ligne de code ou la clé qui a lâché.
 - Préfixe : `Crypto #Hack Autopsy #N:`
 - Hashtags fixes : #CyberSecurity #InfoSec
-- Statut : draft
+- Statut : checked (52 posts checked, 0 draft)
 
 Notes : montants en dollars = valeur au moment du hack. Les attributions (Lazarus, TraderTraitor) ne sont citées que lorsque le FBI l'a fait. Aucun mode opératoire détaillé, seulement le principe. Statut "checked" = chiffres vérifiés contre la source notée ; "draft" = à revérifier avant publication.
 

@@ -11,4 +11,4 @@ Notes avant publication :
 
 ## Fichiers
 
-- `posts.json` : les posts de la campagne, dans l'ordre de publication. Chaque entrée a `index`, `simple`, `tech`, `source` et `status`, et parfois `variant` (une 3e version).
+- `posts.json` : les posts de la campagne, dans l'ordre de publication. Chaque entrée a `index`, `long`, `tech`, `simple`, `source` et `status`, et parfois `variant` (une 3e version).

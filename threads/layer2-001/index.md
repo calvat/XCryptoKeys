@@ -4,7 +4,7 @@
 - Angle : ce que garantit vraiment un L2 et ce qu'il ne garantit pas.
 - Préfixe : `Crypto #Layer2 Unlocked #N:`
 - Hashtags fixes : #Rollups #Lightning
-- Statut : tous les posts vérifiés (revérification des chiffres sensibles au temps : 10 nov. 2026)
+- Statut : checked (67 posts checked, 0 draft)
 
 Notes avant publication :
 - Comptage X : chaque version fait moins de 280 caractères, préfixe et hashtags compris (pondération X appliquée : « ≈ » et « → » comptent 2 ; ils sont évités ici).

@@ -4,7 +4,7 @@
 - Angle : les règles précises (et les bizarreries) du protocole que la plupart des holders ignorent.
 - Préfixe : `#Bitcoin Internals #N:`
 - Hashtags fixes : #BTC #Crypto
-- Statut : draft (posts vérifiés un par un, voir le statut de chaque post)
+- Statut : checked (71 posts checked, 0 draft)
 
 Notes avant publication :
 - Comptage X : chaque version fait moins de 280 caractères, préfixe et hashtags compris (« ≈ », « → » et « ² » comptent 2 sur X, déjà pris en compte).

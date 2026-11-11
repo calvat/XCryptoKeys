@@ -4,7 +4,7 @@
 - Angle : ce qui arrive à ta transaction entre "Envoyer" et l'inclusion dans un bloc.
 - Préfixe : `Crypto #MEV Dark Forest #N:`
 - Hashtags fixes : #DeFi #CryptoTrading
-- Statut : draft (posts "checked" vérifiés contre la source indiquée ; posts "draft" à revérifier avant publication)
+- Statut : checked (52 posts checked, 0 draft)
 
 Notes avant publication :
 - Post 43 (ePBS) : revérifié le 10/11/2026 : Glamsterdam pas encore sur le mainnet (fork Hoodi du 26/10 reporté), ePBS (EIP-7732) reste le headliner CL ; FOCIL (post 44) a été déplacé vers Hegota. Vérifier le statut le jour de la publication.

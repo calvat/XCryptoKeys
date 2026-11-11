@@ -4,7 +4,7 @@
 - Angle : PoW, PoS, BFT et leurs compromis, avec des attaques réelles.
 - Préfixe : `#Blockchain Consensus #N:`
 - Hashtags fixes : #ProofOfStake #ProofOfWork
-- Statut : draft
+- Statut : checked (54 posts checked, 0 draft)
 
 Notes : longueurs comptées au poids X (« ≈ » compte 2). Les posts « draft » s'appuient sur des sources primaires connues mais n'ont pas pu être relus en ligne pendant la rédaction (quota de recherche épuisé) : à revérifier avant publication.
 

@@ -1,471 +1,538 @@
 [
   {
     "index": 1,
-    "simple": "Crypto #Layer2 Unlocked #1: Layer 2s promise cheap, fast transactions on top of Bitcoin and Ethereum. But what do they really guarantee, and what don't they? One fact a day on Lightning, rollups and sidechains. #Rollups #Lightning",
+    "long": "Layer 2s promise cheap, fast transactions on top of Bitcoin and Ethereum, but \"Layer 2\" is a label, not a guarantee. Lightning channels, optimistic rollups and ZK rollups each move activity off L1 while leaning on L1 for security in a different way; sidechains don't. Some let you exit with your funds even if the operator vanishes, others don't. This series explains, one fact a day, who you trust, for what, and how you get out.",
     "tech": "Crypto #Layer2 Unlocked #1: Lightning channels, optimistic rollups, ZK rollups: each moves activity off L1 but leans on L1 for security in its own way. This series breaks down who you trust, for what, and how you exit. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #1: Layer 2s promise cheap, fast transactions on top of Bitcoin and Ethereum. But what do they really guarantee, and what don't they? One fact a day on Lightning, rollups and sidechains. #Rollups #Lightning",
     "variant": "Crypto #Layer2 Unlocked #1: \"Layer 2\" is a label, not a guarantee. Some L2s let you exit with your funds even if the operator vanishes. Others don't. Learn to tell them apart, one post a day. #Rollups #Lightning",
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52 ; https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 2,
-    "simple": "Crypto #Layer2 Unlocked #2: Every node of a blockchain checks every transaction, so block space is limited on purpose. Layer 2s move most activity elsewhere and use the base chain to settle or resolve disputes. #Rollups #Lightning",
+    "long": "Every node checks every transaction, so block space is limited on purpose: Bitcoin caps blocks at 4,000,000 weight units (BIP141) so ordinary computers can keep verifying everything. Layer 2s don't raise that cap. They move most transactions off-chain and touch the base chain only to settle, publish data or resolve disputes. That is the trade: more throughput without asking every node to do more work.",
     "tech": "Crypto #Layer2 Unlocked #2: Bitcoin caps blocks at 4,000,000 weight units (BIP141) so ordinary nodes can verify everything. L2s keep that cap and move transactions off-chain, touching L1 only for settlement, data or disputes. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #2: Every node of a blockchain checks every transaction, so block space is limited on purpose. Layer 2s move most activity elsewhere and use the base chain to settle or resolve disputes. #Rollups #Lightning",
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki",
     "status": "checked"
   },
   {
     "index": 3,
-    "simple": "Crypto #Layer2 Unlocked #3: A Lightning channel starts with one Bitcoin transaction that locks coins in a shared vault. Moving them out needs both parties' signatures, so neither side can walk off alone with the money. #Rollups #Lightning",
+    "long": "A Lightning channel starts with one on-chain funding transaction. Its output is a P2WSH 2-of-2 multisig, script 2 <pubkey1> <pubkey2> 2 OP_CHECKMULTISIG (BOLT 3). Spending it needs both peers' signatures, so neither side can move the coins alone. This shared lock is the root of channel security: every later payment is just a new agreed way to split it.",
     "tech": "Crypto #Layer2 Unlocked #3: A Lightning channel is funded by an on-chain P2WSH output with the script 2 <pubkey1> <pubkey2> 2 OP_CHECKMULTISIG (BOLT 3): a 2-of-2 multisig. Spending it needs both peers' signatures. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #3: A Lightning channel starts with one Bitcoin transaction that locks coins in a shared vault. Moving them out needs both parties' signatures, so neither side can walk off alone with the money. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 4,
-    "simple": "Crypto #Layer2 Unlocked #4: Inside a Lightning channel, each payment just swaps a new signed \"who owns what\" transaction between the two partners. Nothing hits the blockchain until the channel closes. #Rollups #Lightning",
+    "long": "A channel payment doesn't touch the blockchain. The peers replace the commitment transaction: a fully signed tx spending the funding output to the latest balances. Each peer holds its own version and can broadcast it to close the channel alone; until a close, nothing hits the chain (BOLT 2, BOLT 3). That is why Lightning payments are instant and cheap.",
     "tech": "Crypto #Layer2 Unlocked #4: Each channel update replaces the commitment transaction: a fully signed tx spending the funding output to the latest balances. Each peer holds its own version and broadcasts it only to close alone. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #4: Inside a Lightning channel, each payment just swaps a new signed \"who owns what\" transaction between the two partners. Nothing hits the blockchain until the channel closes. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/02-peer-protocol.md ; https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 5,
-    "simple": "Crypto #Layer2 Unlocked #5: Lightning punishes cheating hard. If someone publishes an old channel state that gave them more money, the other side can claim the whole channel balance as a penalty. #Rollups #Lightning",
+    "long": "When a channel updates, each peer revokes its previous commitment by revealing that state's per-commitment secret. If a peer later broadcasts a revoked (old) state that paid it more, the victim can use the revocation key to sweep every output of that commitment in a penalty transaction (BOLT 3). Cheating with an old state therefore risks losing the whole channel balance, which is what deters it.",
     "tech": "Crypto #Layer2 Unlocked #5: Each update revokes the previous commitment by revealing its per-commitment secret. If a peer broadcasts a revoked state, the victim uses the revocation key to sweep every output in a penalty tx. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #5: Lightning punishes cheating hard. If someone publishes an old channel state that gave them more money, the other side can claim the whole channel balance as a penalty. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 6,
-    "simple": "Crypto #Layer2 Unlocked #6: When you close a Lightning channel on your own, your coins stay locked for a while. That wait gives your partner time to prove you published an outdated state and punish you. #Rollups #Lightning",
+    "long": "In a unilateral close, outputs paying the broadcaster are locked by to_self_delay blocks, a relative timelock enforced with nSequence/CSV (BOLT 3). During that window the counterparty can use the revocation path if the published state is revoked. The delay is what gives an honest peer time to spot and punish a cheater before the cheater can spend.",
     "tech": "Crypto #Layer2 Unlocked #6: In a unilateral close, outputs paying the broadcaster are delayed by to_self_delay blocks, a relative timelock (nSequence/CSV). During that window the counterparty can use the revocation path. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #6: When you close a Lightning channel on your own, your coins stay locked for a while. That wait gives your partner time to prove you published an outdated state and punish you. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 7,
-    "simple": "Crypto #Layer2 Unlocked #7: Each side of a Lightning channel keeps a small deposit it can't spend, about 1% of the channel. That way a would-be cheater always has something to lose. #Rollups #Lightning",
+    "long": "BOLT 2 suggests channel_reserve_satoshis of 1% of the channel total: a balance each peer must keep and can't spend. The goal is that each side always has something to lose if it broadcasts an old, revoked commitment. Without a reserve, a peer who had spent its whole balance could try cheating at no cost.",
     "tech": "Crypto #Layer2 Unlocked #7: BOLT 2 suggests channel_reserve_satoshis of 1% of the channel total: a balance each peer can't spend, so broadcasting a revoked commitment always risks real funds. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #7: Each side of a Lightning channel keeps a small deposit it can't spend, about 1% of the channel. That way a would-be cheater always has something to lose. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/02-peer-protocol.md",
     "status": "checked"
   },
   {
     "index": 8,
-    "simple": "Crypto #Layer2 Unlocked #8: Lightning assumes you watch the chain for cheating. If you're offline, a watchtower can do it for you: it holds encrypted penalty transactions and publishes one only if your partner cheats. #Rollups #Lightning",
+    "long": "Lightning assumes you watch the chain for cheating. If you go offline, an lnd watchtower can do it for you: it stores encrypted justice (penalty) transactions and can only decrypt and broadcast one after the matching revoked commitment appears on-chain, so it learns nothing about your channel before. Altruist towers return all funds to the victim minus on-chain fees.",
     "tech": "Crypto #Layer2 Unlocked #8: An lnd watchtower stores encrypted justice transactions and can only decrypt and broadcast one after the matching revoked commitment appears on-chain. Altruist towers return all funds minus fees. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #8: Lightning assumes you watch the chain for cheating. If you're offline, a watchtower can do it for you: it holds encrypted penalty transactions and publishes one only if your partner cheats. #Rollups #Lightning",
     "source": "https://github.com/lightningnetwork/lnd/blob/master/docs/watchtower.md",
     "status": "checked"
   },
   {
     "index": 9,
-    "simple": "Crypto #Layer2 Unlocked #9: Lightning lets you pay people you have no channel with, by passing the payment through others. A cryptographic lock makes sure each middleman is paid only if the final recipient is. #Rollups #Lightning",
+    "long": "Lightning lets you pay someone you have no channel with, through intermediaries, using HTLCs. Every hop locks funds to the same payment_hash = SHA256(preimage). The payee reveals the preimage to claim its HTLC, and the preimage flows back hop by hop, settling each one (BOLT 2). Each middleman is paid only if the final recipient is, so no one can take the money in transit.",
     "tech": "Crypto #Layer2 Unlocked #9: Multi-hop payments use HTLCs: every hop locks funds to the same payment_hash = SHA256(preimage). The payee reveals the preimage to claim, and it flows back hop by hop, settling each HTLC. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #9: Lightning lets you pay people you have no channel with, by passing the payment through others. A cryptographic lock makes sure each middleman is paid only if the final recipient is. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/02-peer-protocol.md",
     "status": "checked"
   },
   {
     "index": 10,
-    "simple": "Crypto #Layer2 Unlocked #10: Each hop of a Lightning payment has a deadline, and deadlines get shorter toward the recipient. If a payment fails, money is refunded hop by hop and no middleman is left out of pocket. #Rollups #Lightning",
+    "long": "Each hop sets the outgoing HTLC's cltv_expiry lower than the incoming one by its cltv_expiry_delta, so deadlines shrink toward the recipient (BOLT 2, BOLT 7). That margin means a node that learns the preimage downstream still has time to claim upstream before its own incoming HTLC expires. If a payment fails, HTLCs time out and refund hop by hop, and no middleman is left out of pocket.",
     "tech": "Crypto #Layer2 Unlocked #10: Each hop sets the outgoing HTLC's cltv_expiry below the incoming one by its cltv_expiry_delta. That margin lets a node learn the preimage downstream and claim upstream before its own HTLC expires. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #10: Each hop of a Lightning payment has a deadline, and deadlines get shorter toward the recipient. If a payment fails, money is refunded hop by hop and no middleman is left out of pocket. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/02-peer-protocol.md ; https://github.com/lightning/bolts/blob/master/07-routing-gossip.md",
     "status": "checked"
   },
   {
     "index": 11,
-    "simple": "Crypto #Layer2 Unlocked #11: Lightning routes payments in layers, like Tor. Each node on the path only knows who handed it the payment and who to pass it to next, not who sent it or who receives it in the end. #Rollups #Lightning",
+    "long": "Lightning routes payments through a Sphinx-based onion (BOLT 4), like Tor. Each hop peels one layer encrypted to its key and learns only the previous and next hop. It doesn't learn the route length or its own position, so a routing node can't tell who sent the payment or who receives it in the end.",
     "tech": "Crypto #Layer2 Unlocked #11: Lightning uses a Sphinx-based onion (BOLT 4). Each hop peels one layer encrypted to its key and learns only the previous and next hop, not the route length or its own position in it. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #11: Lightning routes payments in layers, like Tor. Each node on the path only knows who handed it the payment and who to pass it to next, not who sent it or who receives it in the end. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/04-onion-routing.md",
     "status": "checked"
   },
   {
     "index": 12,
-    "simple": "Crypto #Layer2 Unlocked #12: Every Lightning onion packet has the same size, however many hops are left. A node in the middle can't tell if it's the first hop, the last one, or somewhere in between. #Rollups #Lightning",
+    "long": "A BOLT 4 onion packet is always 1366 bytes, with 1300 bytes of hop_payloads, however many hops remain. Each hop removes its own data and refills the end with pseudo-random bytes, so the packet never shrinks. A node in the middle therefore can't tell if it's the first hop, the last one, or somewhere in between. Fixed size is a privacy feature.",
     "tech": "Crypto #Layer2 Unlocked #12: A BOLT 4 onion packet is always 1366 bytes, with 1300 bytes of hop_payloads. Each hop removes its own data and refills the end with pseudo-random bytes, so the packet never shrinks. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #12: Every Lightning onion packet has the same size, however many hops are left. A node in the middle can't tell if it's the first hop, the last one, or somewhere in between. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/04-onion-routing.md",
     "status": "checked"
   },
   {
     "index": 13,
-    "simple": "Crypto #Layer2 Unlocked #13: In Lightning, the sender picks the whole route. Nodes share a public map of channels, and your wallet chooses a path with enough capacity and low fees. #Rollups #Lightning",
+    "long": "Lightning uses source routing: the sender picks the whole path. Nodes gossip a public map of channels with BOLT 7 channel_announcement and channel_update messages, and the wallet chooses a route with enough capacity and low fees. Each announced channel points to a real on-chain funding transaction through its short_channel_id, so the map can't be filled with fake channels.",
     "tech": "Crypto #Layer2 Unlocked #13: Lightning uses source routing: the sender builds the path from the gossip graph (BOLT 7 channel_announcement and channel_update). Each announced channel points to a real on-chain funding tx via short_channel_id. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #13: In Lightning, the sender picks the whole route. Nodes share a public map of channels, and your wallet chooses a path with enough capacity and low fees. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/07-routing-gossip.md",
     "status": "checked"
   },
   {
     "index": 14,
-    "simple": "Crypto #Layer2 Unlocked #14: Lightning routing nodes charge small fees to forward payments: a fixed part plus a part that grows with the amount. Each node sets them per channel and announces them to the network. #Rollups #Lightning",
+    "long": "Routing nodes charge fees to forward payments. Each channel_update announces fee_base_msat and fee_proportional_millionths, and the forwarding fee = base + amount x proportional / 1,000,000, all in millisatoshi (BOLT 7). So a fee has a fixed part and a part that grows with the amount, set by each node per channel and published to the network.",
     "tech": "Crypto #Layer2 Unlocked #14: Each channel_update carries fee_base_msat and fee_proportional_millionths. Forwarding fee = base + amount x proportional / 1,000,000, all in millisatoshi (BOLT 7). #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #14: Lightning routing nodes charge small fees to forward payments: a fixed part plus a part that grows with the amount. Each node sets them per channel and announces them to the network. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/07-routing-gossip.md",
     "status": "checked"
   },
   {
     "index": 15,
-    "simple": "Crypto #Layer2 Unlocked #15: Lightning counts in thousandths of a satoshi, smaller than anything Bitcoin itself can record. If a channel closes on-chain, those tiny fractions are rounded away. #Rollups #Lightning",
+    "long": "Lightning amounts are counted in millisatoshi: 1 sat = 1,000 msat, finer than anything Bitcoin can record. Bitcoin outputs can't hold fractions of a satoshi, so when a commitment transaction is built, BOLT 3 rounds each output down to whole satoshis. If a channel closes on-chain, those tiny fractions are simply rounded away.",
     "tech": "Crypto #Layer2 Unlocked #15: Lightning amounts are in millisatoshi (1 sat = 1,000 msat). Bitcoin outputs can't hold fractions of a sat, so BOLT 3 rounds each commitment output down to whole satoshis. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #15: Lightning counts in thousandths of a satoshi, smaller than anything Bitcoin itself can record. If a channel closes on-chain, those tiny fractions are rounded away. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 16,
-    "simple": "Crypto #Layer2 Unlocked #16: Very small Lightning payments in flight can't be enforced on Bitcoin: an output for them would cost more than it's worth. If the channel force-closes, their value goes to miner fees. #Rollups #Lightning",
+    "long": "An HTLC below the dust limit is \"trimmed\" (BOLT 3): it gets no output in the commitment transaction, because an output that small would cost more than it is worth, and its value goes to fees instead. So very small in-flight payments are protected by peer behaviour, not by Bitcoin script. If the channel force-closes, their value ends up as miner fees.",
     "tech": "Crypto #Layer2 Unlocked #16: HTLCs below the dust limit are \"trimmed\" (BOLT 3): no output in the commitment tx, their value goes to fees. Tiny in-flight payments are protected by peer behaviour, not by Bitcoin script. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #16: Very small Lightning payments in flight can't be enforced on Bitcoin: an output for them would cost more than it's worth. If the channel force-closes, their value goes to miner fees. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 17,
-    "simple": "Crypto #Layer2 Unlocked #17: A Lightning invoice is a coded payment request: amount, destination, a lock and an expiry. \"lnbc\" at the start means Bitcoin mainnet. By default it expires after one hour. #Rollups #Lightning",
+    "long": "A Lightning invoice (BOLT 11) is a bech32 string encoding a payment request. Its prefix gives the network: lnbc for mainnet, lntb for testnet, lnbcrt for regtest. Then come the amount, a timestamp, tagged fields such as the payment_hash, and a signature. If no expiry is set, it expires after 3600 seconds, one hour.",
     "tech": "Crypto #Layer2 Unlocked #17: BOLT 11 invoices are bech32 strings: prefix lnbc (mainnet), lntb (testnet), lnbcrt (regtest), then amount, timestamp, tagged fields (payment_hash...) and a signature. Default expiry: 3600 s. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #17: A Lightning invoice is a coded payment request: amount, destination, a lock and an expiry. \"lnbc\" at the start means Bitcoin mainnet. By default it expires after one hour. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/11-payment-encoding.md",
     "status": "checked"
   },
   {
     "index": 18,
-    "simple": "Crypto #Layer2 Unlocked #18: To receive a Lightning payment, your wallet normally has to be online: it must reveal the secret that completes the payment. If it isn't, the payment just fails and the sender keeps the money. #Rollups #Lightning",
+    "long": "Settling an HTLC requires the payee to reveal the preimage, so the receiving node normally has to be online when the payment arrives (BOLT 2). If it isn't, nothing is claimed: upstream HTLCs time out and the funds go back to the sender. A failed Lightning payment doesn't lose money, it just doesn't happen.",
     "tech": "Crypto #Layer2 Unlocked #18: Settling an HTLC requires the payee to release the preimage, so the receiving node must be online when the payment arrives. If it isn't, upstream HTLCs time out and the funds go back. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #18: To receive a Lightning payment, your wallet normally has to be online: it must reveal the secret that completes the payment. If it isn't, the payment just fails and the sender keeps the money. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/02-peer-protocol.md",
     "status": "checked"
   },
   {
     "index": 19,
-    "simple": "Crypto #Layer2 Unlocked #19: A Lightning channel works like an abacus: coins slide between two sides. You can only receive as much as your partner holds on their side, so a new wallet may need \"inbound liquidity\". #Rollups #Lightning",
+    "long": "Channel capacity is fixed by the funding output; payments only move balance from one side to the other, like beads on an abacus. You can send up to your local balance minus the reserve, and receive only up to what your peer holds on its side (BOLT 2). That is why inbound liquidity is a hard limit and a new wallet may need it before it can be paid.",
     "tech": "Crypto #Layer2 Unlocked #19: Channel capacity is fixed by the funding output; payments only move balance between sides. You send up to your local balance minus reserve and receive up to the remote one: inbound liquidity is a hard limit. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #19: A Lightning channel works like an abacus: coins slide between two sides. You can only receive as much as your partner holds on their side, so a new wallet may need \"inbound liquidity\". #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/02-peer-protocol.md",
     "status": "checked"
   },
   {
     "index": 20,
-    "simple": "Crypto #Layer2 Unlocked #20: A big Lightning payment can be split into smaller pieces sent along different paths. The recipient waits until all pieces arrive before claiming any of them. #Rollups #Lightning",
+    "long": "Multi-path payments split one large payment into several HTLCs sent along different routes. All parts share the same payment_hash and carry a total_msat field in the onion (BOLT 4). The payee holds the parts until the total is reached, then releases the preimage, so it claims all of them or none.",
     "tech": "Crypto #Layer2 Unlocked #20: Multi-path payments send several HTLCs with the same payment_hash and a total_msat field in the onion (BOLT 4). The payee holds them until the total is reached, then releases the preimage. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #20: A big Lightning payment can be split into smaller pieces sent along different paths. The recipient waits until all pieces arrive before claiming any of them. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/04-onion-routing.md",
     "status": "checked"
   },
   {
     "index": 21,
-    "simple": "Crypto #Layer2 Unlocked #21: Lightning started with a safety cap of about 0.168 BTC per channel. Nodes can now opt in to much bigger channels. #Rollups #Lightning",
+    "long": "BOLT 2 requires funding_satoshis below 2^24 satoshi (16,777,216 sat, about 0.168 BTC) unless the peer supports option_support_large_channel. The spec says this was a temporary self-imposed limit while implementations were not yet considered stable, and it can be lifted by advertising that feature. So the old per-channel cap now only applies to nodes that don't opt in.",
     "tech": "Crypto #Layer2 Unlocked #21: BOLT 2 keeps funding_satoshis below 2^24 sat (16,777,216 sat, about 0.168 BTC) unless the peer supports option_support_large_channel. The spec calls it a temporary, self-imposed limit. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #21: Lightning started with a safety cap of about 0.168 BTC per channel. Nodes can now opt in to much bigger channels. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/02-peer-protocol.md",
     "status": "checked"
   },
   {
     "index": 22,
-    "simple": "Crypto #Layer2 Unlocked #22: A channel's closing transaction is signed in advance, so its fee may be too low when you need it. Anchor outputs add two tiny 330-sat outputs that let either side boost the fee later. #Rollups #Lightning",
+    "long": "A commitment transaction is signed in advance, so its fee rate may be too low when it must confirm. With option_anchors, each commitment carries two 330-sat anchor outputs, one per peer, so either side can bump it with CPFP at broadcast time instead of guessing a fee rate when signing (BOLT 3). This matters most during fee spikes.",
     "tech": "Crypto #Layer2 Unlocked #22: With option_anchors, each commitment tx carries two 330-sat anchor outputs, one per peer, so either side can CPFP it at broadcast time instead of guessing a fee rate when signing (BOLT 3). #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #22: A channel's closing transaction is signed in advance, so its fee may be too low when you need it. Anchor outputs add two tiny 330-sat outputs that let either side boost the fee later. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 23,
-    "simple": "Crypto #Layer2 Unlocked #23: Closing a Lightning channel together is quick: one transaction, coins free right away. Closing alone (force close) works without your partner, but your coins wait out a timelock. #Rollups #Lightning",
+    "long": "A mutual close starts with shutdown, then closing_complete/closing_sig (BOLT 2) build one transaction paying both sides, with no timelock: coins are free once it confirms. A unilateral (force) close broadcasts the latest commitment and works without the partner, but the broadcaster's own output waits out to_self_delay (BOLT 3).",
     "tech": "Crypto #Layer2 Unlocked #23: Mutual close: shutdown, then closing_complete/closing_sig (BOLT 2) build one tx paying both sides, no timelock. Unilateral close broadcasts the latest commitment; the broadcaster waits to_self_delay. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #23: Closing a Lightning channel together is quick: one transaction, coins free right away. Closing alone (force close) works without your partner, but your coins wait out a timelock. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/02-peer-protocol.md ; https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 24,
-    "simple": "Crypto #Layer2 Unlocked #24: You can resize a Lightning channel without closing it. \"Splicing\" adds or removes coins with one on-chain transaction, and the channel keeps working while it confirms. #Rollups #Lightning",
+    "long": "Splicing (BOLT 2) replaces a channel's funding transaction with a new one that adds or removes funds, using splice_init, splice_ack and splice_locked messages. Operation returns to normal once the splice transaction is signed, while it waits to confirm, and the splice ends when both sides send splice_locked. You resize a channel without closing it.",
     "tech": "Crypto #Layer2 Unlocked #24: Splicing (BOLT 2: splice_init, splice_ack, splice_locked) replaces the funding tx with a new one that adds or removes funds. Normal operation resumes once the splice tx is signed, before it confirms. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #24: You can resize a Lightning channel without closing it. \"Splicing\" adds or removes coins with one on-chain transaction, and the channel keeps working while it confirms. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/02-peer-protocol.md",
     "status": "checked"
   },
   {
     "index": 25,
-    "simple": "Crypto #Layer2 Unlocked #25: Not every Lightning channel is public. Private channels stay off the shared map, and an invoice can include hints telling the payer how to reach you. #Rollups #Lightning",
+    "long": "Not every channel is public. Unannounced channels never send channel_announcement, so they stay off the gossip map (BOLT 7). To stay reachable, the payee adds r fields (route hints) to its BOLT 11 invoice: extra routing information describing a private route to its node, which the payer uses for the last hops.",
     "tech": "Crypto #Layer2 Unlocked #25: Unannounced channels never send channel_announcement. To stay reachable, the payee adds r fields (route hints) to its BOLT 11 invoice: extra routing info for a private route to its node. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #25: Not every Lightning channel is public. Private channels stay off the shared map, and an invoice can include hints telling the payer how to reach you. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/07-routing-gossip.md ; https://github.com/lightning/bolts/blob/master/11-payment-encoding.md",
     "status": "checked"
   },
   {
     "index": 26,
-    "simple": "Crypto #Layer2 Unlocked #26: Lightning recipients can hide where they sit in the network. With \"blinded paths\", the payer only sees the route up to an entry node; the rest is encrypted by the recipient. #Rollups #Lightning",
+    "long": "Route blinding (BOLT 4) lets the payee build the last part of the route itself and encrypt those hops. The sender learns only the introduction point where the blinded path starts, not the payee's node or channels. It gives recipients privacy that ordinary source routing, where the sender sees the whole path, cannot.",
     "tech": "Crypto #Layer2 Unlocked #26: Route blinding (BOLT 4) lets the payee build the last part of the route and encrypt its hops, so the sender learns only the introduction point, not the payee's node or channels. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #26: Lightning recipients can hide where they sit in the network. With \"blinded paths\", the payer only sees the route up to an entry node; the rest is encrypted by the recipient. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/04-onion-routing.md",
     "status": "checked"
   },
   {
     "index": 27,
-    "simple": "Crypto #Layer2 Unlocked #27: Lightning's promise: your partner can't take your coins and can't stop you from leaving. The catch: your closing transaction must confirm in time, even when Bitcoin fees spike. #Rollups #Lightning",
+    "long": "Lightning's security rests on the latest commitment, revocation of old states and timelocks: your partner can't take your coins and can't stop you leaving. It holds only if your transactions confirm before the relevant timelocks expire (BOLT 3). That is the catch during Bitcoin fee spikes, and why anchor outputs and watchtowers matter.",
     "tech": "Crypto #Layer2 Unlocked #27: Lightning security = latest commitment + revocation + timelocks. It holds only if your txs confirm before the relevant timelocks expire, which is why anchors and watchtowers matter in fee spikes. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #27: Lightning's promise: your partner can't take your coins and can't stop you from leaving. The catch: your closing transaction must confirm in time, even when Bitcoin fees spike. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/03-transactions.md",
     "status": "checked"
   },
   {
     "index": 28,
-    "simple": "Crypto #Layer2 Unlocked #28: Lightning and rollups scale in opposite ways. Lightning keeps payments between channel partners and settles on Bitcoin. Rollups publish their data on Ethereum so anyone can verify. #Rollups #Lightning",
+    "long": "Lightning and rollups scale in opposite ways. In Lightning, off-chain state is known only to the channel peers and is enforced on Bitcoin only in a dispute. A rollup posts all its transaction data or state diffs on L1 so anyone can rebuild and check its state, verified by fraud or validity proofs. Different trust models, and very different privacy.",
     "tech": "Crypto #Layer2 Unlocked #28: Lightning: off-chain state known only to channel peers, enforced on-chain only in disputes. Rollups: all tx data or state diffs posted on L1, state checked by proofs. Different trust and privacy. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #28: Lightning and rollups scale in opposite ways. Lightning keeps payments between channel partners and settles on Bitcoin. Rollups publish their data on Ethereum so anyone can verify. #Rollups #Lightning",
     "source": "https://github.com/lightning/bolts/blob/master/03-transactions.md ; https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52",
     "status": "checked"
   },
   {
     "index": 29,
-    "simple": "Crypto #Layer2 Unlocked #29: A rollup runs transactions on its own chain, then posts them in batches to Ethereum. Your funds sit in a contract on Ethereum, which is the final judge of who owns what. #Rollups #Lightning",
+    "long": "A rollup executes transactions off-chain on its own chain, then posts the transaction data in batches to L1. An L1 contract accepts a new state only through a fraud proof game or a validity proof, and the L1 bridge contract escrows the assets. Your funds sit in that Ethereum contract, which acts as the final judge of who owns what.",
     "tech": "Crypto #Layer2 Unlocked #29: A rollup executes off-chain, posts its tx data to L1, and has an L1 contract accept new state only through a fraud proof game or a validity proof. The L1 bridge contract escrows the assets. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #29: A rollup runs transactions on its own chain, then posts them in batches to Ethereum. Your funds sit in a contract on Ethereum, which is the final judge of who owns what. #Rollups #Lightning",
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52 ; https://docs.arbitrum.io/how-arbitrum-works/bold/gentle-introduction",
     "status": "checked"
   },
   {
     "index": 30,
-    "simple": "Crypto #Layer2 Unlocked #30: The key rule of a rollup: all the data needed to rebuild its state is published on Ethereum. If the operator disappears, anyone can rebuild the balances from that data. #Rollups #Lightning",
+    "long": "The defining rule of a rollup is that the data needed to rebuild its state is published on L1. Even L2BEAT's lowest level, Stage 0, requires open-source software that can reconstruct the state from L1-posted data and compare its state roots with the proposed ones. If the operator disappears, anyone can rebuild balances from that data.",
     "tech": "Crypto #Layer2 Unlocked #30: Even L2BEAT's Stage 0 requires that open-source software can reconstruct the state from L1-posted data and compare its state roots with the proposed ones. Data on L1 is what makes it a rollup. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #30: The key rule of a rollup: all the data needed to rebuild its state is published on Ethereum. If the operator disappears, anyone can rebuild the balances from that data. #Rollups #Lightning",
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52",
     "status": "checked"
   },
   {
     "index": 31,
-    "simple": "Crypto #Layer2 Unlocked #31: If a chain keeps its data off Ethereum, with a committee promising to share it, it's a validium or optimium, not a rollup. If that data is withheld, users may be unable to prove their balances. #Rollups #Lightning",
+    "long": "Validiums (validity proofs) and optimiums (fraud proofs) settle on L1 but keep transaction data off it, with a Data Availability Committee or an external DA layer. That is what makes them not rollups. If the data is withheld, users may be unable to prove their balances and exits can freeze, so you trust the committee to share the data.",
     "tech": "Crypto #Layer2 Unlocked #31: Validiums (validity proofs) and optimiums (fraud proofs) settle on L1 but keep tx data with a Data Availability Committee or an external DA layer. If the data is withheld, exits can freeze. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #31: If a chain keeps its data off Ethereum, with a committee promising to share it, it's a validium or optimium, not a rollup. If that data is withheld, users may be unable to prove their balances. #Rollups #Lightning",
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/scaling/validium/index.md ; https://ethbeat.org/glossary",
     "status": "checked"
   },
   {
     "index": 32,
-    "simple": "Crypto #Layer2 Unlocked #32: A sidechain has its own validators, and its security comes from them, not from Bitcoin or Ethereum. If enough of them collude or get hacked, the main chain can't protect your funds. #Rollups #Lightning",
+    "long": "A sidechain runs its own consensus and doesn't post its state or transaction data back to L1, so it doesn't inherit L1 security. Its bridge trusts the sidechain's validators: if a malicious quorum of them colludes or is hacked, it can commit fraud, and Bitcoin or Ethereum can't protect your funds.",
     "tech": "Crypto #Layer2 Unlocked #32: Sidechains run their own consensus and don't post state or tx data back to L1, so they don't inherit its security. Their bridge trusts the sidechain's validators: a malicious quorum of them can commit fraud. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #32: A sidechain has its own validators, and its security comes from them, not from Bitcoin or Ethereum. If enough of them collude or get hacked, the main chain can't protect your funds. #Rollups #Lightning",
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/scaling/sidechains/index.md",
     "status": "checked"
   },
   {
     "index": 33,
-    "simple": "Crypto #Layer2 Unlocked #33: In March 2022, about $625M was stolen from the Ronin bridge, the chain behind Axie Infinity. The attacker controlled 5 of its 9 validator keys, enough to approve withdrawals. #Rollups #Lightning",
+    "long": "In March 2022, about $625M in ETH and USDC was drained from the Ronin bridge, the chain behind Axie Infinity. The attacker controlled 5 of its 9 validator keys, enough to sign withdrawals. It shows the sidechain bridge risk: a quorum of keys was enough, whereas a rollup bridge would also need a state proof checked on L1.",
     "tech": "Crypto #Layer2 Unlocked #33: Ronin bridge, March 2022: about $625M in ETH and USDC drained with withdrawals signed by 5 of 9 validator keys. A rollup bridge would also need a state proof checked on L1, not just a quorum of keys. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #33: In March 2022, about $625M was stolen from the Ronin bridge, the chain behind Axie Infinity. The attacker controlled 5 of its 9 validator keys, enough to approve withdrawals. #Rollups #Lightning",
     "source": "https://halborn.com/explained-the-ronin-hack-march-2022/",
     "status": "checked"
   },
   {
     "index": 34,
-    "simple": "Crypto #Layer2 Unlocked #34: Optimistic rollups post results to Ethereum and assume they're correct. During a waiting window, anyone watching can challenge a wrong result; if it's proven wrong, it's thrown out. #Rollups #Lightning",
+    "long": "Optimistic rollups post state claims to L1, backed by a bond, and assume they are correct. During the challenge period anyone watching can challenge a wrong claim. If no challenge succeeds within that period, the claim is confirmed; a successful fraud proof rejects it and the bond is lost. Correctness relies on someone checking in time.",
     "tech": "Crypto #Layer2 Unlocked #34: Optimistic rollups post state claims backed by a bond. If no one wins a challenge within the challenge period, the claim is confirmed; a successful fraud proof rejects it and the bond is lost. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #34: Optimistic rollups post results to Ethereum and assume they're correct. During a waiting window, anyone watching can challenge a wrong result; if it's proven wrong, it's thrown out. #Rollups #Lightning",
     "source": "https://docs.arbitrum.io/how-arbitrum-works/bold/gentle-introduction",
     "status": "checked"
   },
   {
     "index": 35,
-    "simple": "Crypto #Layer2 Unlocked #35: Withdrawing from an OP Stack rollup through its official bridge takes about a week. That delay is the window anyone has to challenge a fake withdrawal. #Rollups #Lightning",
+    "long": "An OP Stack withdrawal has three steps: initiate it on L2, prove it on L1 in the OptimismPortal against a dispute game, then finalize after a 7-day proof maturity delay. That delay, about a week through the official bridge, is the window to challenge a fake withdrawal. With fault proofs, users may re-prove a withdrawal at any time.",
     "tech": "Crypto #Layer2 Unlocked #35: OP Stack withdrawal: initiate on L2, prove it on L1 in OptimismPortal against a dispute game, then finalize after a 7-day proof maturity delay. With fault proofs, users may re-prove a withdrawal at any time. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #35: Withdrawing from an OP Stack rollup through its official bridge takes about a week. That delay is the window anyone has to challenge a fake withdrawal. #Rollups #Lightning",
     "source": "https://github.com/ethereum-optimism/specs/blob/main/specs/protocol/withdrawals.md ; https://github.com/ethereum-optimism/specs/blob/main/specs/fault-proof/stage-one/optimism-portal.md (\"Users may re-prove a withdrawal at any time\")",
     "status": "checked"
   },
   {
     "index": 36,
-    "simple": "Crypto #Layer2 Unlocked #36: On Arbitrum One, a new state claim can be challenged for about 6.4 days before it's confirmed. That's why native withdrawals to Ethereum take about a week. #Rollups #Lightning",
+    "long": "On Arbitrum One, a new state assertion can be challenged for 45,818 L1 blocks, about 6.4 days, before it is confirmed, and proposing an assertion requires a minimum bond of 3,600 ETH, per Arbitrum's chain parameters (governance can change them; rechecked Nov 10, 2026). This challenge window is why native withdrawals to Ethereum take about a week.",
     "tech": "Crypto #Layer2 Unlocked #36: Arbitrum One's dispute window is 45,818 L1 blocks, about 6.4 days. Proposing an assertion requires a minimum bond of 3,600 ETH, per Arbitrum's chain parameters. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #36: On Arbitrum One, a new state claim can be challenged for about 6.4 days before it's confirmed. That's why native withdrawals to Ethereum take about a week. #Rollups #Lightning",
     "source": "https://docs.arbitrum.io/for-devs/chain-params",
     "status": "checked"
   },
   {
     "index": 37,
-    "simple": "Crypto #Layer2 Unlocked #37: Don't want to wait a week to leave an optimistic rollup? A liquidity provider can pay you on Ethereum for a fee and take over your pending withdrawal. The provider waits out the week, not you. #Rollups #Lightning",
+    "long": "Fast exits from optimistic rollups are liquidity, not protocol. A liquidity provider takes over your pending withdrawal and pays you on L1 right away, for a fee. The 7-day challenge period still runs, but the provider waits it out instead of you, and it can check the withdrawal is valid by running the chain itself.",
     "tech": "Crypto #Layer2 Unlocked #37: Fast exits are liquidity, not protocol: a liquidity provider takes over your pending withdrawal and pays you on L1 for a fee. The 7-day challenge period still runs; the provider can verify it by running the chain itself. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #37: Don't want to wait a week to leave an optimistic rollup? A liquidity provider can pay you on Ethereum for a fee and take over your pending withdrawal. The provider waits out the week, not you. #Rollups #Lightning",
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/scaling/optimistic-rollups/index.md ; https://github.com/ethereum-optimism/specs/blob/main/specs/protocol/withdrawals.md",
     "status": "checked"
   },
   {
     "index": 38,
-    "simple": "Crypto #Layer2 Unlocked #38: When two parties disagree on Arbitrum, Ethereum doesn't re-run everything. They split the disputed work in half again and again until one single step remains. Ethereum checks only that step. #Rollups #Lightning",
+    "long": "Arbitrum (BoLD) doesn't make Ethereum re-run a disputed batch. The parties bisect history commitments: first down to one block, then to a range of 2^23 WASM steps, then to a single instruction. Both submit a one-step proof to the L1 OneStepProof contract, which executes that step, and the honest side wins. Ethereum checks only one step.",
     "tech": "Crypto #Layer2 Unlocked #38: Arbitrum disputes bisect history commitments: first blocks, then ranges of 2^23 WASM steps, down to one instruction. The L1 OneStepProof contract executes that step and the honest side wins. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #38: When two parties disagree on Arbitrum, Ethereum doesn't re-run everything. They split the disputed work in half again and again until one single step remains. Ethereum checks only that step. #Rollups #Lightning",
     "source": "https://docs.arbitrum.io/how-arbitrum-works/bold/gentle-introduction",
     "status": "checked"
   },
   {
     "index": 39,
-    "simple": "Crypto #Layer2 Unlocked #39: Arbitrum runs the core of Geth, Ethereum's most widely used client. For a dispute, that same code is compiled to WebAssembly so a single step can be checked on Ethereum. #Rollups #Lightning",
+    "long": "Nitro compiles the core of Geth, the most widely used Ethereum client, into Arbitrum. Validators and nodes run it as native code and switch to its WASM build only when a fraud proof is needed, so one disputed step can be checked on Ethereum. Arbitrum One migrated to Nitro on Aug 31, 2022.",
     "tech": "Crypto #Layer2 Unlocked #39: Nitro compiles Geth's core into Arbitrum. Validators run it as native code and switch to the WASM build only when a fraud proof is needed. Arbitrum One moved to Nitro on Aug 31, 2022. #Rollups #Lightning",
-    "source": "https://github.com/OffchainLabs/nitro/blob/master/README.md",
+    "simple": "Crypto #Layer2 Unlocked #39: Arbitrum runs the core of Geth, Ethereum's most widely used client. For a dispute, that same code is compiled to WebAssembly so a single step can be checked on Ethereum. #Rollups #Lightning",
+    "source": "https://github.com/OffchainLabs/nitro/blob/master/README.md ; https://www.theblock.co/post/166670/arbitrum-announces-its-largest-scaling-upgrade-by-migrating-arbitrum-one-to-nitro",
     "status": "checked"
   },
   {
     "index": 40,
-    "simple": "Crypto #Layer2 Unlocked #40: Since February 2025, anyone can defend Arbitrum One against a bad state claim, not only a whitelist of validators. One honest validator is enough to win. #Rollups #Lightning",
+    "long": "BoLD went live on Arbitrum One and Nova in February 2025, replacing allow-listed validators with permissionless validation. Bonds attach to assertions, not to parties, so any number of honest parties can defend the correct state, and disputes are time-bound so delay attacks can't stall confirmation. A single honest party is enough to win.",
     "tech": "Crypto #Layer2 Unlocked #40: BoLD went live on Arbitrum One and Nova in Feb 2025, replacing allow-listed validators. Bonds attach to assertions, not parties, and disputes are time-bound, so delay attacks can't stall confirmation. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #40: Since February 2025, anyone can defend Arbitrum One against a bad state claim, not only a whitelist of validators. One honest validator is enough to win. #Rollups #Lightning",
     "source": "https://www.theblock.co/post/340278/offchain-labs-releases-arbitrum-bold-on-mainnet-for-permissionless-validation ; https://docs.arbitrum.io/how-arbitrum-works/bold/gentle-introduction",
     "status": "checked"
   },
   {
     "index": 41,
-    "simple": "Crypto #Layer2 Unlocked #41: Since June 2024, anyone can challenge invalid withdrawals on OP Mainnet, with no trusted party needed. An emergency council can still pause the system if the proofs break. #Rollups #Lightning",
+    "long": "Permissionless fault proofs (Cannon) went live on OP Mainnet on June 10, 2024: anyone can challenge invalid withdrawals, with no trusted party needed. The Security Council can still revert to a permissioned mode if the proof system fails. That kept OP Mainnet at L2BEAT (now ETHBEAT) Stage 1, not Stage 2.",
     "tech": "Crypto #Layer2 Unlocked #41: Permissionless fault proofs (Cannon) went live on OP Mainnet on June 10, 2024. The Security Council can revert to a permissioned mode if the proof system fails: L2BEAT Stage 1, not Stage 2. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #41: Since June 2024, anyone can challenge invalid withdrawals on OP Mainnet, with no trusted party needed. An emergency council can still pause the system if the proofs break. #Rollups #Lightning",
     "source": "https://www.optimism.io/blog/permissionless-fault-proofs-and-stage-1-arrive-to-the-op-stack",
     "status": "checked"
   },
   {
     "index": 42,
-    "simple": "Crypto #Layer2 Unlocked #42: Optimistic rollups need just one honest watcher. If one party checks the chain and can challenge in time, a false claim can't be confirmed, however many others lie. #Rollups #Lightning",
+    "long": "Fraud-proof security is 1-of-N: one honest validator with the data, a bond and access to L1 during the window can defeat an invalid assertion, however many others lie (BoLD). So the attack to worry about is not outvoting the honest party but censoring it on L1 until the window closes.",
     "tech": "Crypto #Layer2 Unlocked #42: Fraud-proof security is 1-of-N: one honest validator with the data, a bond and L1 access during the window can defeat an invalid assertion. Censoring that party on L1 is the attack to worry about. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #42: Optimistic rollups need just one honest watcher. If one party checks the chain and can challenge in time, a false claim can't be confirmed, however many others lie. #Rollups #Lightning",
     "source": "https://docs.arbitrum.io/how-arbitrum-works/bold/gentle-introduction",
     "status": "checked"
   },
   {
     "index": 43,
-    "simple": "Crypto #Layer2 Unlocked #43: ZK rollups attach a mathematical proof to their batches showing the new state is correct. Ethereum checks the proof, so there's no week-long challenge window. #Rollups #Lightning",
+    "long": "ZK rollups post a validity proof, a SNARK or a STARK, with each state update. The L1 verifier contract accepts the new state root only if the proof checks out, so the state is shown correct up front rather than assumed correct. Withdrawals therefore don't wait for a week-long fraud-proof challenge window.",
     "tech": "Crypto #Layer2 Unlocked #43: ZK rollups post a validity proof (SNARK or STARK) with each state update; the L1 verifier accepts the new state root only if the proof checks out. Exits don't wait for a fraud-proof window. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #43: ZK rollups attach a mathematical proof to their batches showing the new state is correct. Ethereum checks the proof, so there's no week-long challenge window. #Rollups #Lightning",
     "source": "https://github.com/starknet-io/starknet-docs/blob/main/learn/protocol/sharp.mdx",
     "status": "checked"
   },
   {
     "index": 44,
-    "simple": "Crypto #Layer2 Unlocked #44: With ZK proofs, making the proof takes heavy computing, but checking it is cheap. That gap is what lets Ethereum confirm many transactions at low cost. #Rollups #Lightning",
+    "long": "Making a ZK proof takes heavy computing, but checking it is cheap. Starknet's SHARP (SHARed Prover) aggregates many Cairo programs into one STARK proof verified on Ethereum, using the \"exponential asymmetry\" of STARKs between proving and verifying. Applications share the on-chain verification cost, which is what makes confirming many transactions cheap.",
     "tech": "Crypto #Layer2 Unlocked #44: Starknet's SHARP aggregates many Cairo programs into one STARK proof verified on Ethereum, using the \"exponential asymmetry\" between proving and verifying so apps share the on-chain cost. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #44: With ZK proofs, making the proof takes heavy computing, but checking it is cheap. That gap is what lets Ethereum confirm many transactions at low cost. #Rollups #Lightning",
     "source": "https://github.com/starknet-io/starknet-docs/blob/main/learn/protocol/sharp.mdx",
     "status": "checked"
   },
   {
     "index": 45,
-    "simple": "Crypto #Layer2 Unlocked #45: ZK proofs come in families. STARKs rely only on hash functions and need no secret setup ceremony; the trade-off is bigger proofs than most SNARKs. #Rollups #Lightning",
+    "long": "ZK proofs come in families with trade-offs. STARKs are transparent (no trusted setup), rely only on collision-resistant hashes, are seen as post-quantum secure, but have larger proofs. SNARKs like Groth16 give tiny proofs of 3 group elements but need a trusted setup ceremony.",
     "tech": "Crypto #Layer2 Unlocked #45: STARKs: transparent (no trusted setup), secured by collision-resistant hashes, seen as post-quantum, larger proofs. SNARKs like Groth16 give tiny proofs (3 group elements) but need a trusted setup. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #45: ZK proofs come in families. STARKs rely only on hash functions and need no secret setup ceremony; the trade-off is bigger proofs than most SNARKs. #Rollups #Lightning",
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/zero-knowledge-proofs/index.md ; https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/scaling/zk-rollups/index.md ; https://eprint.iacr.org/2016/260",
     "status": "checked"
   },
   {
     "index": 46,
-    "simple": "Crypto #Layer2 Unlocked #46: Not all \"zkEVMs\" are equal. Vitalik Buterin sorted them into types 1 to 4: type 1 matches Ethereum exactly but is slow to prove; type 4 is fast to prove but less compatible. #Rollups #Lightning",
+    "long": "In Aug 2022, Vitalik Buterin sorted zkEVMs into types: Type 1 fully Ethereum-equivalent, Type 2 fully EVM-equivalent, Type 2.5 the same except gas costs, Type 3 almost EVM-equivalent, Type 4 high-level-language equivalent. Lower types are more compatible but slower to prove; Type 4 is fast to prove but less compatible.",
     "tech": "Crypto #Layer2 Unlocked #46: Vitalik's Aug 2022 zkEVM taxonomy: Type 1 fully Ethereum-equivalent, Type 2 fully EVM-equivalent, Type 2.5 same except gas costs, Type 3 almost EVM-equivalent, Type 4 high-level-language equivalent. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #46: Not all \"zkEVMs\" are equal. Vitalik Buterin sorted them into types 1 to 4: type 1 matches Ethereum exactly but is slow to prove; type 4 is fast to prove but less compatible. #Rollups #Lightning",
     "source": "https://vitalik.eth.limo/general/2022/08/04/zkevm.html",
     "status": "checked"
   },
   {
     "index": 47,
-    "simple": "Crypto #Layer2 Unlocked #47: Most rollups have a single \"sequencer\" that orders transactions. It can't steal your funds, but it can delay or ignore your transaction for a while. #Rollups #Lightning",
+    "long": "Most rollups run a single sequencer that orders transactions and posts batches to L1. Proofs stop it from forging state or stealing funds, but it can still reorder, delay or censor transactions for a while. That is why rollups offer forced inclusion through L1 as an escape hatch.",
     "tech": "Crypto #Layer2 Unlocked #47: Most rollups run one sequencer that orders txs and posts batches. Proofs stop it from forging state, but it can reorder, delay or censor, which is why forced inclusion through L1 exists. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #47: Most rollups have a single \"sequencer\" that orders transactions. It can't steal your funds, but it can delay or ignore your transaction for a while. #Rollups #Lightning",
     "source": "https://docs.arbitrum.io/sequencer",
     "status": "checked"
   },
   {
     "index": 48,
-    "simple": "Crypto #Layer2 Unlocked #48: The instant \"confirmed\" you see on a rollup is the sequencer's promise. The real guarantee comes later, once the batch is posted on Ethereum and finalized there. #Rollups #Lightning",
+    "long": "Arbitrum's sequencer feed gives \"soft finality\" in under a second: the instant confirmation you see is the sequencer's promise and relies on it behaving honestly. The stronger guarantee comes later, once the batch is posted on Ethereum and that L1 block finalizes.",
     "tech": "Crypto #Layer2 Unlocked #48: Arbitrum's sequencer feed gives \"soft finality\" in under a second, which relies on the sequencer behaving honestly. The stronger guarantee comes once the batch lands on L1 and that block finalizes. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #48: The instant \"confirmed\" you see on a rollup is the sequencer's promise. The real guarantee comes later, once the batch is posted on Ethereum and finalized there. #Rollups #Lightning",
     "source": "https://docs.arbitrum.io/sequencer",
     "status": "checked"
   },
   {
     "index": 49,
-    "simple": "Crypto #Layer2 Unlocked #49: If Arbitrum's sequencer ignores you, you can send your transaction through Ethereum instead. After at most 24 hours, it can be forced into the chain without the sequencer. #Rollups #Lightning",
+    "long": "If Arbitrum One's sequencer ignores your transaction, you can send it as a message to the L1 delayed inbox. If the sequencer still hasn't included it after the force-include period, 7,200 L1 blocks or 24 hours, anyone can force it into the chain without the sequencer (chain parameter, rechecked Nov 10, 2026).",
     "tech": "Crypto #Layer2 Unlocked #49: Arbitrum One: send a message to the L1 delayed inbox. If the sequencer hasn't included it after the force-include period (7,200 L1 blocks, 24 h), anyone can force it in. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #49: If Arbitrum's sequencer ignores you, you can send your transaction through Ethereum instead. After at most 24 hours, it can be forced into the chain without the sequencer. #Rollups #Lightning",
     "source": "https://docs.arbitrum.io/for-devs/chain-params ; https://docs.arbitrum.io/sequencer",
     "status": "checked"
   },
   {
     "index": 50,
-    "simple": "Crypto #Layer2 Unlocked #50: On OP Stack chains you can send a transaction straight to a contract on Ethereum, and the chain must include it. If the sequencer stalls, it gets in within at most about 12 hours. #Rollups #Lightning",
+    "long": "On OP Stack chains, a forced transaction is a deposit sent to the OptimismPortal contract on L1, and the chain must include it within the sequencing window, about 12 hours (3,600 L1 blocks). Past that window, nodes derive blocks containing only the forced deposits, so a stalled or censoring sequencer can't keep you out.",
     "tech": "Crypto #Layer2 Unlocked #50: OP Stack forced txs are deposits sent to OptimismPortal on L1, which must be included within the 12-hour sequencing window. Past that, nodes derive blocks with only the forced deposits. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #50: On OP Stack chains you can send a transaction straight to a contract on Ethereum, and the chain must include it. If the sequencer stalls, it gets in within at most about 12 hours. #Rollups #Lightning",
     "source": "https://docs.optimism.io/stack/transactions/forced-transaction",
     "status": "checked"
   },
   {
     "index": 51,
-    "simple": "Crypto #Layer2 Unlocked #51: Some rollups drop the central sequencer and let Ethereum's own block proposers order their transactions. They're called \"based\" rollups; Taiko calls itself the first one. #Rollups #Lightning",
+    "long": "Based rollups drop the central sequencer: Ethereum's own block proposers include rollup batches, so ordering and censorship resistance come from L1 rather than a single operator. Taiko Alethia is one, and Taiko calls itself the first based rollup.",
     "tech": "Crypto #Layer2 Unlocked #51: Based rollups are sequenced by L1: Ethereum block proposers include rollup batches, so ordering and censorship resistance come from L1, not from a single operator. Taiko Alethia is one. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #51: Some rollups drop the central sequencer and let Ethereum's own block proposers order their transactions. They're called \"based\" rollups; Taiko calls itself the first one. #Rollups #Lightning",
     "source": "https://github.com/taikoxyz/taiko-mono/blob/main/README.md",
     "status": "checked"
   },
   {
     "index": 52,
-    "simple": "Crypto #Layer2 Unlocked #52: Rollup contracts on Ethereum can often be upgraded. Whoever holds the upgrade keys could change the rules, so \"who can upgrade, and how fast?\" matters as much as the proofs. #Rollups #Lightning",
+    "long": "Most rollup bridges sit behind upgradeable L1 contracts. An instant upgrade by an admin multisig could swap the verifier or bridge logic and bypass proofs entirely. So who holds the upgrade keys, and how fast they can act, matters as much as the proof system. Exit windows exist to counter that risk.",
     "tech": "Crypto #Layer2 Unlocked #52: Most rollup bridges sit behind upgradeable contracts. An instant upgrade by an admin multisig can swap the verifier or bridge logic and bypass proofs entirely. Exit windows exist to counter that. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #52: Rollup contracts on Ethereum can often be upgraded. Whoever holds the upgrade keys could change the rules, so \"who can upgrade, and how fast?\" matters as much as the proofs. #Rollups #Lightning",
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52",
     "status": "checked"
   },
   {
     "index": 53,
-    "simple": "Crypto #Layer2 Unlocked #53: L2BEAT (now ETHBEAT) ranks rollups in \"stages\": Stage 0 still leans heavily on its operators, Stage 1 has limited \"training wheels\", Stage 2 has none. It measures how much power admins keep. #Rollups #Lightning",
+    "long": "L2BEAT, now renamed ETHBEAT, ranks rollups in Stages: Stage 0 = full training wheels, Stage 1 = limited training wheels, Stage 2 = no training wheels. The framework was inspired by Vitalik's proposed milestones for rollups taking off training wheels. It measures how much power operators and admins keep over users' funds.",
     "tech": "Crypto #Layer2 Unlocked #53: L2BEAT Stages: 0 = full training wheels, 1 = limited training wheels, 2 = no training wheels. The framework was inspired by Vitalik's proposed milestones for rollups taking off training wheels. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #53: L2BEAT (now ETHBEAT) ranks rollups in \"stages\": Stage 0 still leans heavily on its operators, Stage 1 has limited \"training wheels\", Stage 2 has none. It measures how much power admins keep. #Rollups #Lightning",
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52 ; https://docs.arbitrum.io/how-arbitrum-works/bold/gentle-introduction ; https://ethbeat.org/l2beat-is-now-ethbeat",
     "status": "checked"
   },
   {
     "index": 54,
-    "simple": "Crypto #Layer2 Unlocked #54: To reach L2BEAT Stage 1, a rollup's emergency council needs at least 8 public members, at least half from outside the team, and a 75% vote to act. #Rollups #Lightning",
+    "long": "To reach L2BEAT Stage 1, a rollup's Security Council needs at least 8 members, at least 50% outside the core organization, and a 75% threshold to act. Upgrades that don't go through the Council must leave users at least 7 days to exit, and the proof system must be fully functional.",
     "tech": "Crypto #Layer2 Unlocked #54: L2BEAT Stage 1: Security Council with 8+ members, 50%+ outside the core org, 75% threshold. Other upgrades must leave users at least 7 days to exit, and the proof system must be fully functional. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #54: To reach L2BEAT Stage 1, a rollup's emergency council needs at least 8 public members, at least half from outside the team, and a 75% vote to act. #Rollups #Lightning",
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52",
     "status": "checked"
   },
   {
     "index": 55,
-    "simple": "Crypto #Layer2 Unlocked #55: L2BEAT Stage 2 means \"no training wheels\": anyone can submit fraud proofs, and the emergency council can only act on bugs that can be proven on-chain. #Rollups #Lightning",
+    "long": "L2BEAT Stage 2 means no training wheels: the proof system is permissionless, the Security Council can only act on soundness errors that can be adjudicated on-chain, and users get at least 30 days to exit before any unwanted upgrade takes effect.",
     "tech": "Crypto #Layer2 Unlocked #55: L2BEAT Stage 2: permissionless proof system, Security Council limited to soundness errors adjudicable on-chain, and at least 30 days for users to exit before any unwanted upgrade. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #55: L2BEAT Stage 2 means \"no training wheels\": anyone can submit fraud proofs, and the emergency council can only act on bugs that can be proven on-chain. #Rollups #Lightning",
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52 ; https://ethbeat.org/stages",
     "status": "checked"
   },
   {
     "index": 56,
-    "simple": "Crypto #Layer2 Unlocked #56: An \"exit window\" is the time you get to withdraw after an upgrade is announced, before it takes effect. If you dislike the change, you leave first. No window means you simply have to trust the admins. #Rollups #Lightning",
+    "long": "An exit window is the time users get to withdraw after an upgrade is announced and before it takes effect: exit window = upgrade delay minus withdrawal time. In L2BEAT's example, a 13-day upgrade delay on a rollup where withdrawals take about a week leaves about 6 days to exit. With no window, users simply have to trust the admins.",
     "tech": "Crypto #Layer2 Unlocked #56: Exit window = upgrade delay minus withdrawal time. In L2BEAT's worked example, a 13-day upgrade delay on a rollup where withdrawals take about a week leaves about 6 days to exit. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #56: An \"exit window\" is the time you get to withdraw after an upgrade is announced, before it takes effect. If you dislike the change, you leave first. No window means you simply have to trust the admins. #Rollups #Lightning",
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52",
     "status": "checked"
   },
   {
     "index": 57,
-    "simple": "Crypto #Layer2 Unlocked #57: Since Ethereum's Dencun upgrade on March 13, 2024, rollups can post their data in \"blobs\": cheap, temporary data attachments made for them. #Rollups #Lightning",
+    "long": "EIP-4844, shipped in Dencun on March 13, 2024, added type-3 blob transactions: cheap, temporary data attachments made for rollups. A blob is 4096 field elements x 32 bytes = 128 KiB. At launch, blocks targeted 3 blobs, with a maximum of 6.",
     "tech": "Crypto #Layer2 Unlocked #57: EIP-4844 (Dencun, March 13, 2024) added type-3 blob transactions. A blob is 4096 field elements x 32 bytes = 128 KiB. At launch: target 3, max 6 blobs per block. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #57: Since Ethereum's Dencun upgrade on March 13, 2024, rollups can post their data in \"blobs\": cheap, temporary data attachments made for them. #Rollups #Lightning",
     "source": "https://eips.ethereum.org/EIPS/eip-4844 ; https://eips.ethereum.org/EIPS/eip-7569",
     "status": "checked"
   },
   {
     "index": 58,
-    "simple": "Crypto #Layer2 Unlocked #58: Blob data doesn't stay on Ethereum forever: nodes keep it for about 18 days. That's long enough for anyone to download it and check, or challenge, a rollup. #Rollups #Lightning",
+    "long": "Blob data doesn't stay on Ethereum forever. Consensus nodes serve blob sidecars for MIN_EPOCHS_FOR_BLOB_SIDECARS_REQUESTS = 4096 epochs, about 18 days (EIP-4844). What stays on-chain is the blob's KZG commitment, referenced by a versioned hash. 18 days is enough for anyone to download the data and check, or challenge, a rollup.",
     "tech": "Crypto #Layer2 Unlocked #58: Consensus nodes serve blob sidecars for MIN_EPOCHS_FOR_BLOB_SIDECARS_REQUESTS = 4096 epochs, about 18 days. What stays on-chain is the KZG commitment, referenced by a versioned hash. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #58: Blob data doesn't stay on Ethereum forever: nodes keep it for about 18 days. That's long enough for anyone to download it and check, or challenge, a rollup. #Rollups #Lightning",
     "source": "https://eips.ethereum.org/EIPS/eip-4844",
     "status": "checked"
   },
   {
     "index": 59,
-    "simple": "Crypto #Layer2 Unlocked #59: Smart contracts can't read blob contents. They only see a short fingerprint of each blob, plus a tool to check that a given piece of data really belongs to it. #Rollups #Lightning",
+    "long": "Blob data isn't accessible to the EVM. A contract only gets each blob's versioned hash through the BLOBHASH opcode, and can check a KZG proof that a given value is part of the blob with the point evaluation precompile at address 0x0A (EIP-4844). Contracts see a fingerprint, not the contents.",
     "tech": "Crypto #Layer2 Unlocked #59: Blob data isn't accessible to the EVM. Contracts get its versioned hash via the BLOBHASH opcode and can verify KZG proofs of single points with the point evaluation precompile at address 0x0A. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #59: Smart contracts can't read blob contents. They only see a short fingerprint of each blob, plus a tool to check that a given piece of data really belongs to it. #Rollups #Lightning",
     "source": "https://eips.ethereum.org/EIPS/eip-4844",
     "status": "checked"
   },
   {
     "index": 60,
-    "simple": "Crypto #Layer2 Unlocked #60: Blobs have their own fee market, separate from normal Ethereum gas. Rollup data no longer competes head-on with swaps and NFT mints for block space. #Rollups #Lightning",
+    "long": "EIP-4844 gave blobs their own fee market: blob gas with its own EIP-1559-style base fee, driven by blob usage versus the target. Each blob uses GAS_PER_BLOB = 131,072 blob gas, priced separately from execution gas. Rollup data no longer competes head-on with swaps and NFT mints for block space.",
     "tech": "Crypto #Layer2 Unlocked #60: EIP-4844 adds blob gas with its own EIP-1559-style base fee, driven by blob usage versus target. Each blob uses GAS_PER_BLOB = 131,072 blob gas, priced separately from execution gas. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #60: Blobs have their own fee market, separate from normal Ethereum gas. Rollup data no longer competes head-on with swaps and NFT mints for block space. #Rollups #Lightning",
     "source": "https://eips.ethereum.org/EIPS/eip-4844",
     "status": "checked"
   },
   {
     "index": 61,
-    "simple": "Crypto #Layer2 Unlocked #61: Right after Dencun, fees on several L2s fell sharply. On Base, the median fee went from about $0.50 to about $0.0012, The Block reported. #Rollups #Lightning",
+    "long": "Right after Dencun (March 2024), rollups moved their data to blobs and L2 fees fell sharply. The Block reported Base's median fee dropping from about $0.5 to about $0.0012, and Starknet swap fees from over $6.8 to about $0.04.",
     "tech": "Crypto #Layer2 Unlocked #61: Post-Dencun (March 2024), The Block reported Base median fees falling from about $0.5 to about $0.0012, and Starknet swap fees from over $6.8 to about $0.04, as rollups moved data to blobs. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #61: Right after Dencun, fees on several L2s fell sharply. On Base, the median fee went from about $0.50 to about $0.0012, The Block reported. #Rollups #Lightning",
     "source": "https://www.theblock.co/news/ecosystems/2024-03-14-ethereum-layer-2s-show-dramatic-drop-in-transaction-fees-after-dencun-282417",
     "status": "checked"
   },
   {
     "index": 62,
-    "simple": "Crypto #Layer2 Unlocked #62: Ethereum's Pectra upgrade (May 7, 2025) raised blob capacity to a target of 6 and a max of 9 blobs per block, up from 3 and 6. More room for rollup data. #Rollups #Lightning",
+    "long": "EIP-7691, shipped in Ethereum's Pectra upgrade on May 7, 2025, raised the blob target/max per block from 3/6 to 6/9. That doubled the target data capacity available to rollups.",
     "tech": "Crypto #Layer2 Unlocked #62: EIP-7691, shipped in Pectra on May 7, 2025, moved blob target/max per block from 3/6 to 6/9, doubling the target data capacity available to rollups. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #62: Ethereum's Pectra upgrade (May 7, 2025) raised blob capacity to a target of 6 and a max of 9 blobs per block, up from 3 and 6. More room for rollup data. #Rollups #Lightning",
     "source": "https://eips.ethereum.org/EIPS/eip-7691 ; https://eips.ethereum.org/EIPS/eip-7600",
     "status": "checked"
   },
   {
     "index": 63,
-    "simple": "Crypto #Layer2 Unlocked #63: Since Fusaka (Dec 3, 2025), Ethereum nodes no longer have to download every blob in full. They check samples, so the network can carry more blobs without more bandwidth per node. #Rollups #Lightning",
+    "long": "Fusaka, activated on Dec 3, 2025, brought PeerDAS (EIP-7594): nodes verify blob availability by sampling parts of blobs instead of downloading every blob in full. This lets the network carry more blobs without a matching rise in bandwidth per node.",
     "tech": "Crypto #Layer2 Unlocked #63: Fusaka (Dec 3, 2025) activated PeerDAS (EIP-7594): nodes verify blob availability by sampling parts of blobs instead of downloading them whole, so blob limits can rise without matching bandwidth. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #63: Since Fusaka (Dec 3, 2025), Ethereum nodes no longer have to download every blob in full. They check samples, so the network can carry more blobs without more bandwidth per node. #Rollups #Lightning",
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement",
     "status": "checked"
   },
   {
     "index": 64,
-    "simple": "Crypto #Layer2 Unlocked #64: After Fusaka, Ethereum raised blob limits through small \"blob-only\" upgrades: target 10 and max 15 in December 2025, then 14 and 21 in January 2026. #Rollups #Lightning",
+    "long": "After Fusaka, Ethereum raised blob limits through Blob Parameter Only (BPO) forks that change just blob settings, with no other protocol change: BPO1 (Dec 9, 2025) set target/max to 10/15, BPO2 (Jan 7, 2026) to 14/21. As of Nov 10, 2026, BPO2 is the latest limit in force.",
     "tech": "Crypto #Layer2 Unlocked #64: Blob Parameter Only (BPO) forks change just blob settings: BPO1 (Dec 9, 2025) set target/max to 10/15, BPO2 (Jan 7, 2026) to 14/21. No other protocol change rides along. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #64: After Fusaka, Ethereum raised blob limits through small \"blob-only\" upgrades: target 10 and max 15 in December 2025, then 14 and 21 in January 2026. #Rollups #Lightning",
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement ; https://eips.ethereum.org/EIPS/eip-8135",
     "status": "checked"
   },
   {
     "index": 65,
-    "simple": "Crypto #Layer2 Unlocked #65: Your L2 fee mainly pays for two things: running your transaction on the L2, and publishing its data on Ethereum. On chains using blobs, the Ethereum part depends mostly on the blob fee. #Rollups #Lightning",
+    "long": "On OP Stack chains, the fee = execution gas x (base fee + priority fee), plus an L1 data fee for posting the transaction's compressed data to Ethereum, plus an operator fee since the Isthmus upgrade. On chains posting to blobs, the blob base fee largely sets the L1 data part.",
     "tech": "Crypto #Layer2 Unlocked #65: OP Stack fee = execution gas x (base + priority fee) + an L1 data fee for posting the tx's compressed data to Ethereum, plus an operator fee since Isthmus. Blob base fee largely sets the L1 part. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #65: Your L2 fee mainly pays for two things: running your transaction on the L2, and publishing its data on Ethereum. On chains using blobs, the Ethereum part depends mostly on the blob fee. #Rollups #Lightning",
     "source": "https://docs.optimism.io/stack/transactions/fees",
     "status": "checked"
   },
   {
     "index": 66,
-    "simple": "Crypto #Layer2 Unlocked #66: Rollups compress transactions before posting them to Ethereum, because every byte published costs money. Smaller data, smaller fees. #Rollups #Lightning",
+    "long": "Every byte a rollup publishes on Ethereum costs money, so rollups compress data before posting it. Arbitrum Nitro's ArbOS includes a batching and compression system built to minimize L1 costs: transactions reach Ethereum as compressed batches, not one by one. Smaller data means smaller fees.",
     "tech": "Crypto #Layer2 Unlocked #66: Arbitrum Nitro's ArbOS includes a batching and compression system built to minimize L1 costs: transactions reach Ethereum as compressed batches, not one by one. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #66: Rollups compress transactions before posting them to Ethereum, because every byte published costs money. Smaller data, smaller fees. #Rollups #Lightning",
     "source": "https://github.com/OffchainLabs/nitro/blob/master/README.md",
     "status": "checked"
   },
   {
     "index": 67,
-    "simple": "Crypto #Layer2 Unlocked #67: L2s in one line: Lightning = coins locked with your partner, safe if you watch the chain. Rollups = data on Ethereum, safe if proofs and upgrade rules hold. Sidechains = trust their validators. Follow for more. #Rollups #Lightning",
+    "long": "Recap: Lightning relies on timelocks and penalties, and you must watch the chain or use a watchtower. Optimistic rollups rely on one honest challenger, ZK rollups on validity proofs, and both on data posted to L1 and safe upgrade rules. Sidechains rely on their own validators. Knowing which assumption you accept is what an L2 really means.",
     "tech": "Crypto #Layer2 Unlocked #67: Recap: Lightning relies on timelocks and penalties, optimistic rollups on 1 honest challenger, ZK rollups on validity proofs, all on L1 data and safe upgrade keys. Sidechains rely on validators. Follow for more. #Rollups #Lightning",
+    "simple": "Crypto #Layer2 Unlocked #67: L2s in one line: Lightning = coins locked with your partner, safe if you watch the chain. Rollups = data on Ethereum, safe if proofs and upgrade rules hold. Sidechains = trust their validators. Follow for more. #Rollups #Lightning",
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52 ; https://github.com/lightning/bolts/blob/master/03-transactions.md ; https://docs.arbitrum.io/how-arbitrum-works/bold/gentle-introduction",
     "status": "checked"
   }

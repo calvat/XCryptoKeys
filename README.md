@@ -26,8 +26,9 @@ Un tableau, dans l'ordre de publication. Chaque entrée :
 ```json
 {
   "index": 1,
-  "simple": "version simple, préfixe et hashtags compris",
-  "tech": "version technique",
+  "long": "ce qu'on veut dire, 500 caractères max (écrit en premier)",
+  "tech": "version technique, tirée de long (écrite en 2e)",
+  "simple": "version simple, préfixe et hashtags compris (écrite en dernier)",
   "source": "URL lue pour vérifier",
   "status": "checked"
 }

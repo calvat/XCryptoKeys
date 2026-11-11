@@ -11,6 +11,10 @@ Un sujet n'est retenu que s'il :
 
 - En **anglais**, **moins de 280 caractères**, idéalement 150 à 220.
 - **Une seule info technique par post**, compréhensible seule (un post peut être partagé hors du thread).
+- **Ordre de rédaction, pour chaque post.** L'idée est d'utiliser le fonctionnement des LLM : un modèle écrit dans l'ordre, et ce qu'il a déjà écrit guide la suite. On le force donc à réfléchir d'abord, puis à reformuler. Les champs de `posts.json` sont dans cet ordre, et un générateur doit les remplir dans cet ordre, jamais `simple` avant `long` :
+  1. `long` : on résume d'abord, en 500 caractères maximum, tout ce qu'on cherche à dire (le fait, le chiffre, le contexte, pourquoi c'est intéressant). C'est la référence du post : les autres versions en sont tirées.
+  2. `tech` : ensuite seulement, la version technique, tirée de `long`.
+  3. `simple` : en dernier, la version simple, tirée de `long` et de `tech`.
 - Chaque post est proposé en **au moins 2 versions** (`simple` et `tech` dans `posts.json`), parfois 3 :
   - `simple` : pour tout le monde, sans jargon ou avec le jargon expliqué ;
   - `tech` : plus précis, avec les chiffres et les termes exacts ;

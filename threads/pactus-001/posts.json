@@ -1,632 +1,722 @@
 [
   {
     "index": 1,
-    "simple": "Inside #Pactus #1: Pactus has a fixed supply: 42M PAC, all created at launch. Nothing new is ever minted. Half sits in a treasury that pays out block rewards over time. #PAC @PactusChain",
+    "long": "Pactus has a fixed supply of 42,000,000 PAC, all allocated in the genesis file; there is no minting. Half of it, 21,000,000 PAC, sits in the treasury, which is the all-zero address. Every block reward is paid out of this pre-allocated treasury, and transaction fees are collected back into it before being paid to the proposer. So the total supply never grows: rewards just move coins out of a pot that existed from day one.",
     "tech": "Inside #Pactus #1: Pactus has a fixed supply of 42,000,000 PAC, all allocated in the genesis file. Half (21M) sits in the treasury, the all-zero address, and is paid out as block rewards. No minting: rewards come from this pre-allocated pot. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #1: Pactus has a fixed supply: 42M PAC, all created at launch. Nothing new is ever minted. Half sits in a treasury that pays out block rewards over time. #PAC @PactusChain",
+    "source": "pactus code: genesis/mainnet.json, genesis/genesis.go",
     "status": "checked"
   },
   {
     "index": 2,
+    "long": "The Pactus block interval is 10 seconds (genesis parameter block_interval_in_second). A block is rejected if the seconds field of its timestamp is not a multiple of that interval. With 10 s, every block time lands on :00, :10, :20, :30, :40 or :50 of a minute, so the slots line up the same way every minute and are easy to reason about.",
+    "tech": "Inside #Pactus #2: Pactus block time is 10 seconds. A block is rejected unless the seconds field of its timestamp is a multiple of the interval, so blocks always land on the :00, :10, :20… marks of every minute. #PAC @PactusChain",
     "simple": "Inside #Pactus #2: A new Pactus block every 10 seconds, on a steady clock: block times always land on the same 10-second marks of each minute. #PAC @PactusChain",
-    "tech": "Inside #Pactus #2: Pactus block time is 10 seconds. A custom genesis is rejected if its interval doesn't divide 60, and block times must have a seconds field that's a multiple of the interval, so the 10 s slots line up the same way every minute. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "source": "pactus code: genesis/genesis_params.go, state/state.go (validateBlockTime)",
     "status": "checked"
   },
   {
     "index": 3,
-    "simple": "Inside #Pactus #3: Block rewards shrink over time: 1 PAC per block at first, then 0.5, then 0.25, in steps tied to block count. They come from the 21M PAC treasury, which at these rates lasts until around block 44M. #PAC @PactusChain",
+    "long": "Block reward (PIP-55), as coded: 1 PAC per block up to height 8,000,000, 0.5 PAC up to 24,000,000, then 0.25 PAC. The schedule depends on block height, not on calendar time. Rewards are paid from the 21M PAC treasury: 8M x 1 + 16M x 0.5 = 16M PAC by block 24M, and the remaining 5M at 0.25 per block lasts 20M more blocks, so at these rates the treasury runs out around block 44M.",
     "tech": "Inside #Pactus #3: Pactus block reward (PIP-55), as coded: 1 PAC per block up to height 8M, 0.5 up to 24M, then 0.25. It depends on block height, not calendar time. Rewards come from the 21M PAC treasury, which at these rates runs out around block 44M. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #3: Block rewards shrink over time: 1 PAC per block at first, then 0.5, then 0.25, in steps tied to block count. They come from the 21M PAC treasury, which at these rates lasts until around block 44M. #PAC @PactusChain",
+    "source": "pactus code: state/param/param.go (RewardCoefficient, BlockReward)",
     "status": "checked"
   },
   {
     "index": 4,
-    "simple": "Inside #Pactus #4: The first reward halving comes at block 8 million: about 2.5 years after launch in theory, later in practice, because blocks missed during slowdowns are not made up. #PAC @PactusChain",
+    "long": "The first reward halving is at block 8,000,000. At one block every 10 seconds that is 80M seconds, about 2.5 years after genesis; the second step, at block 24M, is about 7.6 years. Those are lower bounds: when the chain falls behind, the next block takes the current time instead of catching up the missed slots, so the halvings arrive later in real time than this arithmetic says.",
     "tech": "Inside #Pactus #4: First reward halving is at block 8,000,000: about 2.5 years after genesis if every 10 s slot got a block, the second (24M) about 7.6 years. Missed slots are not made up (a late block takes the current time), so real dates come later. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #4: The first reward halving comes at block 8 million: about 2.5 years after launch in theory, later in practice, because blocks missed during slowdowns are not made up. #PAC @PactusChain",
+    "source": "pactus code: state/param/param.go, state/state.go (proposeNextBlockTime)",
     "status": "checked"
   },
   {
     "index": 5,
-    "simple": "Inside #Pactus #5: Each block sends a small share of its reward to the foundation, rotating across 100 addresses. That share shrinks along with the reward. #PAC @PactusChain",
+    "long": "Each block's subsidy pays part of the reward to a foundation address. The address is picked as height mod 100 from a list of 100 addresses embedded in the node (one list for mainnet, one for testnet). The base foundation amount is 0.3 PAC per block, and it is multiplied by the same halving coefficient as the block reward, so it drops to 0.15 PAC after block 8M.",
     "tech": "Inside #Pactus #5: Every Pactus block pays a slice of its reward to a foundation address chosen as `height mod 100` from a list of 100 addresses. The base amount is 0.3 PAC and it halves with the block reward. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #5: Each block sends a small share of its reward to the foundation, rotating across 100 addresses. That share shrinks along with the reward. #PAC @PactusChain",
+    "source": "pactus code: state/param/param.go (FoundationAddress, FoundationReward)",
     "status": "checked"
   },
   {
     "index": 6,
-    "simple": "Inside #Pactus #6: Every block opens with one special transaction that pays the block reward from the treasury. Validators check that the amounts follow the rules before accepting the block. #PAC @PactusChain",
+    "long": "Every Pactus block must start with exactly one subsidy transaction: a batch transfer signed by no one, sent from the treasury, with a fee of zero. A second subsidy tx in the block is rejected. Validators check it: its total must equal the block reward plus the fees collected in the block, the first recipient must be the right foundation address and amount, and for a delegated validator the stake owner's share must follow the delegation rules.",
     "tech": "Inside #Pactus #6: Every Pactus block starts with exactly one subsidy transaction: a zero-fee batch transfer from the treasury. Validators check it: the total must equal reward + fees, and the foundation payout and any delegation share must match the rules. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #6: Every block opens with one special transaction that pays the block reward from the treasury. Validators check that the amounts follow the rules before accepting the block. #PAC @PactusChain",
+    "source": "pactus code: state/execution.go (checkSubsidy, executeBlock), types/tx/factory.go",
     "status": "checked"
   },
   {
     "index": 7,
-    "simple": "Inside #Pactus #7: Block times can't be faked: a block must come after the previous one and close to its expected slot. If the chain fell behind, the next block simply uses the current time. #PAC @PactusChain",
+    "long": "Block timestamps are constrained: the seconds must be a multiple of 10, the time must be strictly after the previous block, and it can be at most one interval later than the expected next slot (previous block time + 10 s). When a proposer finds that more than 10 s have passed since that expected slot, it uses the current time rounded down to the interval. So a block can't pick an arbitrary time, and a stalled chain resumes on the clock.",
     "tech": "Inside #Pactus #7: Timestamps aren't free-form: seconds must be a multiple of 10, and the time must follow the previous block and be at most one interval past the expected slot. If the chain is >10 s behind, the proposer uses current time, rounded down. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #7: Block times can't be faked: a block must come after the previous one and close to its expected slot. If the chain fell behind, the next block simply uses the current time. #PAC @PactusChain",
+    "source": "pactus code: state/state.go (validateBlockTime, proposeNextBlockTime)",
     "status": "checked"
   },
   {
     "index": 8,
-    "simple": "Inside #Pactus #8: Pactus mainnet launched on January 24, 2024. Since then: a block every 10 seconds, secured by a committee of 51 validators at a time. #PAC @PactusChain",
+    "long": "The Pactus mainnet genesis time is 2024-01-24 20:24:00 UTC; testnet started on 2024-03-16 00:00:00 UTC. Both genesis files set the same core parameters: a 10-second block interval and a committee of 51 validators. These values come straight from the genesis JSON files shipped with the node.",
     "tech": "Inside #Pactus #8: Pactus mainnet genesis time: 2024-01-24 20:24 UTC (testnet: 2024-03-16 00:00 UTC). Both networks use 10-second blocks and a committee of 51 validators. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #8: Pactus mainnet launched on January 24, 2024. Since then: a block every 10 seconds, secured by a committee of 51 validators at a time. #PAC @PactusChain",
+    "source": "pactus code: genesis/mainnet.json, genesis/testnet.json",
     "status": "checked"
   },
   {
     "index": 9,
-    "simple": "Inside #Pactus #9: How does a node know which network it's on? It fingerprints the genesis file, the chain's birth certificate, and compares it with the known mainnet and testnet fingerprints. #PAC @PactusChain",
+    "long": "The genesis file has no chain ID field. To know which network it is on, a node hashes the genesis document and compares the hash with the built-in mainnet and testnet genesis hashes; anything else is treated as a localnet. That chain type then sets the address prefix (pc or tpc) and the p2p network name (pactus, pactus-testnet, pactus-localnet). The genesis file is effectively the chain's fingerprint.",
     "tech": "Inside #Pactus #9: The genesis file has no chain ID field. A node hashes the genesis document and compares it to the built-in mainnet and testnet hashes; anything else is a localnet. That picks the address prefix and the p2p network name. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #9: How does a node know which network it's on? It fingerprints the genesis file, the chain's birth certificate, and compares it with the known mainnet and testnet fingerprints. #PAC @PactusChain",
+    "source": "pactus code: genesis/genesis.go (ChainType), cmd/cmd.go (MakeConfig), config/config.go",
     "status": "checked"
   },
   {
     "index": 10,
-    "simple": "Inside #Pactus #10: Every block starts with a small header of exactly 138 bytes: time, who made it, and fingerprints of the previous block and of the whole chain state. Small and predictable. #PAC @PactusChain",
+    "long": "A Pactus block header is always 138 bytes: version (1 byte), time (4), previous block hash (32), state root (32), sortition seed (48, a BLS signature) and proposer address (21). Because the layout is fixed, the store can read a saved block's time at a known offset, right after the block hash and the version byte, without decoding the whole block.",
     "tech": "Inside #Pactus #10: A block header is exactly 138 bytes: version (1), time (4), previous hash (32), state root (32), sortition seed (48), proposer address (21). Fixed layout, so a stored block's time is read at a known offset without decoding it. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #10: Every block starts with a small header of exactly 138 bytes: time, who made it, and fingerprints of the previous block and of the whole chain state. Small and predictable. #PAC @PactusChain",
+    "source": "pactus code: types/block/header.go, store/store.go",
     "status": "checked"
   },
   {
     "index": 11,
-    "simple": "Inside #Pactus #11: A block's ID covers its header, its parent's proof and a fingerprint of all its transactions. Change a single transaction and the block ID changes. #PAC @PactusChain",
+    "long": "A Pactus block hash is the hash of: the encoded header, the hash of the previous block's certificate (absent for the genesis block), the Merkle root of the transactions and the number of transactions. Transactions only enter the block hash through their Merkle root, so changing any transaction changes the root and therefore the block ID.",
     "tech": "Inside #Pactus #11: A Pactus block hash covers the header, the previous certificate's hash, the transaction Merkle root and the tx count. Transactions enter the hash only through their root. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #11: A block's ID covers its header, its parent's proof and a fingerprint of all its transactions. Change a single transaction and the block ID changes. #PAC @PactusChain",
+    "source": "pactus code: types/block/block.go (Hash)",
     "status": "checked"
   },
   {
     "index": 12,
-    "simple": "Inside #Pactus #12: Transactions are folded into one fingerprint (a Merkle root). Pactus also adds their count to the block ID, closing a known corner case of this kind of tree. #PAC @PactusChain",
+    "long": "Pactus folds a block's transactions into a Merkle root. When a level has an odd number of nodes, the last node is hashed with itself, so a root alone doesn't pin down how many leaves the tree had: duplicating the last item can give the same root. The block hash also includes the transaction count, which closes that known corner case of this kind of Merkle tree.",
     "tech": "Inside #Pactus #12: Pactus's tx Merkle tree hashes an odd node with itself, so the root alone doesn't commit to the leaf count. The block hash adds the count separately to close that gap. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #12: Transactions are folded into one fingerprint (a Merkle root). Pactus also adds their count to the block ID, closing a known corner case of this kind of tree. #PAC @PactusChain",
+    "source": "pactus code: util/simplemerkle/merkle.go, types/block/block.go (Hash)",
     "status": "checked"
   },
   {
     "index": 13,
-    "simple": "Inside #Pactus #13: A Pactus block holds at most 1,000 transactions, and nodes reject anything bigger while reading it, before even validating it. #PAC @PactusChain",
+    "long": "A Pactus block holds at most 1,000 transactions. The limit appears twice: the block's basic check rejects more than 1,000, and the decoder rejects a transaction-count prefix above 1,000 before it allocates the list. So an oversized block is refused while it is being read, not only later during validation.",
     "tech": "Inside #Pactus #13: A Pactus block holds at most 1,000 transactions. The decoder rejects a length prefix above that before it allocates the transaction list, so the limit holds at parse time, not only during validation. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #13: A Pactus block holds at most 1,000 transactions, and nodes reject anything bigger while reading it, before even validating it. #PAC @PactusChain",
+    "source": "pactus code: types/block/block.go (BasicCheck, Decode), state/param/param.go",
     "status": "checked"
   },
   {
     "index": 14,
-    "simple": "Inside #Pactus #14: Every block is approved by the committee, but the proof stays tiny: a list of who took part and one combined signature instead of dozens. #PAC @PactusChain",
+    "long": "A Pactus block certificate holds the height, the round, the list of committers (committee members, by validator number), the list of absentees and one aggregated BLS signature. There are no per-validator signatures on chain: the signers are the committers minus the absentees, and their signatures are merged into a single one.",
     "tech": "Inside #Pactus #14: A Pactus block certificate = height, round, committers (validator numbers), absentees and ONE aggregated BLS signature. No per-validator signatures on chain; the signers are \"committers minus absentees\". #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #14: Every block is approved by the committee, but the proof stays tiny: a list of who took part and one combined signature instead of dozens. #PAC @PactusChain",
+    "source": "pactus code: types/certificate/certificate.go",
     "status": "checked"
   },
   {
     "index": 15,
-    "simple": "Inside #Pactus #15: Checking that a block was approved takes a single signature check, however many validators signed. That keeps nodes fast and light. #PAC @PactusChain",
+    "long": "Verifying a certificate takes one BLS check. The node walks the committee, sums the power of the committers that are not absent, requires at least 2f+1 of the committee power (f = (n-1)/3), aggregates the signers' public keys and verifies the single aggregated signature against them. There is no loop verifying individual signatures, whatever the committee size.",
     "tech": "Inside #Pactus #15: Verifying a Pactus certificate takes one BLS check: sum the power of the signers, require 2f+1, aggregate their public keys, verify the single signature. No loop over individual signatures. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #15: Checking that a block was approved takes a single signature check, however many validators signed. That keeps nodes fast and light. #PAC @PactusChain",
+    "source": "pactus code: types/certificate/certificate.go (validate), types/certificate/power.go",
     "status": "checked"
   },
   {
     "index": 16,
-    "simple": "Inside #Pactus #16: Each block carries the proof that its parent was approved, so the chain links itself together, block after block, back to the first one. #PAC @PactusChain",
+    "long": "Each Pactus block embeds the certificate that finalised its parent block. When a block is validated, that certificate is checked against the committee of the previous height and must point at the chain's current tip. Only the genesis block has no previous certificate. Block after block, this chains the proofs of approval back to the start.",
     "tech": "Inside #Pactus #16: Each Pactus block embeds the aggregated certificate that finalised its parent, checked against the previous height's committee. Only the genesis block has none. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #16: Each block carries the proof that its parent was approved, so the chain links itself together, block after block, back to the first one. #PAC @PactusChain",
+    "source": "pactus code: types/block/block.go, state/validation.go (validatePrevCertificate)",
     "status": "checked"
   },
   {
     "index": 17,
-    "simple": "Inside #Pactus #17: Validators are referred to by a short number instead of a full address, so block proofs stay small even with a full committee. #PAC @PactusChain",
+    "long": "Certificates name validators by a compact number (an int32, written as a varint), not by their 21-byte address. Numbers are sequential: genesis validators get the first ones, and a new validator gets the next number when its first bond transaction creates it. Small numbers encode in one or two bytes, which keeps certificates small even with a full 51-member committee.",
     "tech": "Inside #Pactus #17: Certificates list validators by a compact number (int32, varint), not their 21-byte address. Numbers are sequential: genesis validators first, then each new validator when its first bond creates it. Small index, small certificate. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #17: Validators are referred to by a short number instead of a full address, so block proofs stay small even with a full committee. #PAC @PactusChain",
+    "source": "pactus code: types/certificate/certificate.go, genesis/genesis.go, execution/executor/bond.go",
     "status": "checked"
   },
   {
     "index": 18,
-    "simple": "Inside #Pactus #18: Each kind of consensus vote signs a different message, so a vote cast for one step can never be reused for another. #PAC @PactusChain",
+    "long": "Every consensus vote signs block hash + height + round, plus a type tag: PREPARE, PRE-VOTE, MAIN-VOTE or DECIDED (PRECOMMIT has no tag). Change-proposer votes also sign their CP round and value. Because each type signs a different message, a signature made for one vote type can never be replayed as another.",
     "tech": "Inside #Pactus #18: Every consensus vote signs block hash ‖ height ‖ round plus a type tag (PREPARE, PRE-VOTE, MAIN-VOTE, DECIDED; PRECOMMIT has none), and change-proposer votes add the CP round and value. No vote type can pass as another. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #18: Each kind of consensus vote signs a different message, so a vote cast for one step can never be reused for another. #PAC @PactusChain",
+    "source": "pactus code: types/vote/vote.go (SignBytes), types/certificate/certificate.go",
     "status": "checked"
   },
   {
     "index": 19,
-    "simple": "Inside #Pactus #19: Amounts and fees in a transaction have exactly one valid encoding, so every node reads, hashes and signs the very same bytes. #PAC @PactusChain",
+    "long": "Pactus votes are encoded as CBOR maps with fixed integer keys 1 to 7. In transactions, amounts and fees are LEB128 varints, and the decoder rejects non-canonical varints (a zero continuation byte). So each integer has exactly one byte encoding, and every node reads, hashes and signs the very same bytes for the same transaction.",
     "tech": "Inside #Pactus #19: Pactus votes are CBOR maps with fixed integer keys (1-7). Transaction amounts and fees are LEB128 varints, and the decoder rejects non-minimal varints, so each integer has exactly one byte encoding in a transaction. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #19: Amounts and fees in a transaction have exactly one valid encoding, so every node reads, hashes and signs the very same bytes. #PAC @PactusChain",
+    "source": "pactus code: types/vote/vote.go, types/amount/amount.go, util/encoding/encoding.go (ReadVarInt)",
     "status": "checked"
   },
   {
     "index": 20,
-    "simple": "Inside #Pactus #20: A transaction's ID depends only on what it says (amount, fee, memo…), not on its signature. #PAC @PactusChain",
+    "long": "A Pactus transaction ID is the hash of its sign bytes: version, lock time, fee, memo, payload type and payload. The signature and public key are not included. So the ID depends only on what the transaction says, not on how it was signed.",
     "tech": "Inside #Pactus #20: A Pactus transaction ID is the hash of its signing bytes (version, lock time, fee, memo, payload) and excludes the signature. The ID depends only on what the transaction says. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #20: A transaction's ID depends only on what it says (amount, fee, memo…), not on its signature. #PAC @PactusChain",
+    "source": "pactus code: types/tx/tx.go (SignBytes, ID)",
     "status": "checked"
   },
   {
     "index": 21,
-    "simple": "Inside #Pactus #21: Pactus doesn't elect its validators by vote. After each block, every validator runs a private lottery, and the winners can claim a seat on the committee. #PAC @PactusChain",
+    "long": "Pactus does not vote validators into its committee. After every block, each validator runs a private lottery using its BLS key and the chain's sortition seed. Winners broadcast a sortition transaction to take a seat in the committee. The default committee size, also used on mainnet, is 51 validators.",
     "tech": "Inside #Pactus #21: Pactus doesn't vote its committee in. After every block each validator runs a private lottery with the chain seed. Winners broadcast a sortition tx to take a seat. Default committee size: 51. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #21: Pactus doesn't elect its validators by vote. After each block, every validator runs a private lottery, and the winners can claim a seat on the committee. #PAC @PactusChain",
+    "source": "pactus code: state/state.go (sortition evaluation), genesis/genesis_params.go",
     "status": "checked"
   },
   {
     "index": 22,
-    "simple": "Inside #Pactus #22: The committee lottery can't be rigged: each validator's ticket comes from its own key and the chain's randomness, and anyone can check it. One draw per validator per block. #PAC @PactusChain",
+    "long": "The sortition proof is a BLS signature over the seed concatenated with the validator's public key. The proof is hashed with BLAKE2b-256 and scaled into the range [0, total power). With one seed per block, each key gets exactly one deterministic output, and anyone can verify it with the public key, so nobody can rig or repeat their draw.",
     "tech": "Inside #Pactus #22: Pactus sortition proof = a BLS signature over (seed ‖ public key), hashed with BLAKE2b-256 and scaled into [0, total power). One seed, one deterministic output per key. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #22: The committee lottery can't be rigged: each validator's ticket comes from its own key and the chain's randomness, and anyone can check it. One draw per validator per block. #PAC @PactusChain",
+    "source": "pactus code: sortition/vrf.go (Evaluate, Verify, GetIndex), crypto/hash/hash.go",
     "status": "checked"
   },
   {
     "index": 23,
-    "simple": "Inside #Pactus #23: More stake means better odds, but fairly: a validator with 10% of the stake wins about 10% of the lottery draws. #PAC @PactusChain",
+    "long": "A validator wins sortition when its index, drawn in the range [0, total network power), is below its own power. So the chance to win is power divided by total power: a validator with 10% of the stake wins about 10% of the draws. More stake gives better odds, in direct proportion.",
     "tech": "Inside #Pactus #23: In Pactus a validator wins sortition when its index is below its own power, with the range set to total network power. So a validator with 10% of the stake wins about 10% of the draws. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #23: More stake means better odds, but fairly: a validator with 10% of the stake wins about 10% of the lottery draws. #PAC @PactusChain",
+    "source": "pactus code: sortition/sortition.go, state/state.go",
     "status": "checked"
   },
   {
     "index": 24,
-    "simple": "Inside #Pactus #24: Where does the randomness come from? Each block's proposer signs the previous random value to make the next one, and every node checks it. No one gets to choose it. #PAC @PactusChain",
+    "long": "Pactus randomness is a chain of BLS signatures. Each block's sortition seed is the proposer's signature over the hash of the previous seed. Before accepting a block, every node verifies that seed against the proposer's public key and the previous seed. Since a BLS signature is deterministic, the proposer can't choose the value.",
     "tech": "Inside #Pactus #24: Pactus randomness is a chain of BLS signatures: each block's sortition seed is the proposer's signature over the hash of the previous seed, and every node verifies it against the proposer's key before accepting the block. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #24: Where does the randomness come from? Each block's proposer signs the previous random value to make the next one, and every node checks it. No one gets to choose it. #PAC @PactusChain",
+    "source": "pactus code: sortition/seed.go (GenerateNext, Verify), state/validation.go",
     "status": "checked"
   },
   {
     "index": 25,
-    "simple": "Inside #Pactus #25: A lottery win must be claimed fast: the ticket expires after 17 blocks, about 3 minutes. Normal transactions stay valid for about a day. #PAC @PactusChain",
+    "long": "A sortition transaction is only valid for a short window: its lock time must be within 17 blocks of the current height, about 3 minutes at 10 s per block. Ordinary transactions get 8,640 blocks, about one day. A lottery win has to be claimed quickly.",
     "tech": "Inside #Pactus #25: A Pactus sortition tx is only valid for a short window: 17 blocks (≈3 minutes). Other transactions get 8,640 blocks (≈1 day). #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #25: A lottery win must be claimed fast: the ticket expires after 17 blocks, about 3 minutes. Normal transactions stay valid for about a day. #PAC @PactusChain",
+    "source": "pactus code: execution/execution.go (CheckLockTime), genesis/genesis_params.go",
     "status": "checked"
   },
   {
     "index": 26,
-    "simple": "Inside #Pactus #26: New validators wait about one hour after staking before they can enter the committee lottery. #PAC @PactusChain",
+    "long": "A validator must wait 360 blocks after its last bond, about one hour at 10 s per block, before its sortition transactions are accepted. That is the bond_interval genesis parameter, the same on mainnet.",
     "tech": "Inside #Pactus #26: New Pactus validators wait 360 blocks (≈1 hour) after bonding before their sortition txs are accepted. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #26: New validators wait about one hour after staking before they can enter the committee lottery. #PAC @PactusChain",
+    "source": "pactus code: execution/executor/sortition.go (Check), genesis/genesis_params.go",
     "status": "checked"
   },
   {
     "index": 27,
-    "simple": "Inside #Pactus #27: The committee changes gradually: at each step, less than a third of its power can be replaced, and the members who leave are the longest-seated ones. #PAC @PactusChain",
+    "long": "When the committee is full, a sortition tx is only accepted if the power joining in that block stays under one third of committee power, and the power of the members who would leave also stays under one third. The members who leave are those with the oldest sortition height. So at each step less than a third of the committee's power can be replaced, and the longest-seated members rotate out first.",
     "tech": "Inside #Pactus #27: Pactus bounds committee churn: when the committee is full, the power joining in one step must stay under one third of committee power, and the members who leave are the ones with the oldest sortition. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #27: The committee changes gradually: at each step, less than a third of its power can be replaced, and the members who leave are the longest-seated ones. #PAC @PactusChain",
+    "source": "pactus code: execution/executor/sortition.go (canJoinCommittee), committee/committee.go",
     "status": "checked"
   },
   {
     "index": 28,
-    "simple": "Inside #Pactus #28: While a validator sits on the committee, its stake is frozen: it can't add to it or unstake until it leaves. #PAC @PactusChain",
+    "long": "While a validator sits in the committee, or is joining it in the current block, bond and unbond transactions for it are rejected in strict checks (block proposal and validation). Its stake is frozen until it leaves the committee: it can't be topped up or unbonded.",
     "tech": "Inside #Pactus #28: In Pactus your stake is frozen while you sit on the committee: bond and unbond txs for a member are rejected in block validation until the validator leaves. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #28: While a validator sits on the committee, its stake is frozen: it can't add to it or unstake until it leaves. #PAC @PactusChain",
+    "source": "pactus code: execution/executor/bond.go, execution/executor/unbond.go (Check, strict)",
     "status": "checked"
   },
   {
     "index": 29,
-    "simple": "Inside #Pactus #29: Validators take turns proposing blocks, round-robin. A newcomer joins at the back of the line. #PAC @PactusChain",
+    "long": "Proposer order is a round-robin walk over a linked list of committee members. Each new member is inserted just before the current proposer position, which puts it at the back of the queue: it gets its first turn after the rest of the committee has had one.",
     "tech": "Inside #Pactus #29: Proposer order is a round-robin walk over a linked list of committee members. New members are inserted just behind the current proposer, so they wait at the back of the queue until the rest of the committee has had a turn. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #29: Validators take turns proposing blocks, round-robin. A newcomer joins at the back of the line. #PAC @PactusChain",
+    "source": "pactus code: committee/committee.go (Update, proposer)",
     "status": "checked"
   },
   {
     "index": 30,
-    "simple": "Inside #Pactus #30: A node that restarts doesn't need a saved copy of the committee: it rebuilds it from the latest blocks. #PAC @PactusChain",
+    "long": "Pactus does not store a committee snapshot. On restart the node reads the last certificate and the last block, rebuilds the committee from the certificate's committers and the sortition transactions in that block, then applies the rotation. The committee is derived from chain data alone.",
     "tech": "Inside #Pactus #30: Pactus restarts without a committee snapshot. The node rebuilds the committee from the last certificate and the sortition txs of the last block, then replays the rotation. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #30: A node that restarts doesn't need a saved copy of the committee: it rebuilds it from the latest blocks. #PAC @PactusChain",
+    "source": "pactus code: state/lastinfo/last_info.go (restoreCommittee)",
     "status": "checked"
   },
   {
     "index": 31,
-    "simple": "Inside #Pactus #31: A validator can stake up to 1,000 PAC. Each stake transaction must be at least 1 PAC, unless it tops the validator up to exactly 1,000. #PAC @PactusChain",
+    "long": "Stake limits (defaults, same in the mainnet genesis): each bond must be at least 1 PAC, and a validator's total stake can't exceed 1,000 PAC. One exception: a bond below 1 PAC is accepted if it brings the validator to exactly 1,000 PAC, so a validator can always be filled up to the maximum.",
     "tech": "Inside #Pactus #31: Pactus stake limits (defaults, same on mainnet): each bond must be at least 1 PAC and a validator's total stake can't exceed 1,000 PAC. A bond under 1 PAC is only accepted if it tops the validator up to exactly 1,000 PAC. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #31: A validator can stake up to 1,000 PAC. Each stake transaction must be at least 1 PAC, unless it tops the validator up to exactly 1,000. #PAC @PactusChain",
+    "source": "pactus code: execution/executor/bond.go (Check), genesis/genesis_params.go",
     "status": "checked"
   },
   {
     "index": 32,
-    "simple": "Inside #Pactus #32: In Pactus, voting weight = stake. Unstake and your validator's weight drops to zero right away. #PAC @PactusChain",
+    "long": "Voting power equals stake in nanoPAC (1 PAC = 10^9 nanoPAC). The exception is genesis bootstrap validators, which have no stake and a power of 1. When an unbond transaction is executed, the validator's power drops to zero in that same block.",
     "tech": "Inside #Pactus #32: In Pactus, voting power = stake in nanoPAC (1 PAC = 10⁹), except genesis bootstrap validators, which have no stake and power 1. A validator that unbonds drops to zero power in the same block the unbond is executed. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #32: In Pactus, voting weight = stake. Unstake and your validator's weight drops to zero right away. #PAC @PactusChain",
+    "source": "pactus code: types/validator/validator.go (Power), execution/executor/unbond.go",
     "status": "checked"
   },
   {
     "index": 33,
-    "simple": "Inside #Pactus #33: Unstaking takes 21 days: voting weight goes away at once, and the funds can be withdrawn three weeks later. #PAC @PactusChain",
+    "long": "Unbonding removes a validator's power immediately, in the block where the unbond is executed. The stake itself can only be withdrawn after 181,440 more blocks: at 10 s per block that is 21 days. The funds stay locked for three weeks after the voting weight is gone.",
     "tech": "Inside #Pactus #33: Unbonding a Pactus validator removes its power immediately. The stake can be withdrawn after 181,440 blocks, i.e. 21 days. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #33: Unstaking takes 21 days: voting weight goes away at once, and the funds can be withdrawn three weeks later. #PAC @PactusChain",
+    "source": "pactus code: execution/executor/unbond.go, execution/executor/withdraw.go, genesis/genesis_params.go",
     "status": "checked"
   },
   {
     "index": 34,
-    "simple": "Inside #Pactus #34: Unstaking and claiming a committee seat cost no fee at all. That's a protocol rule. #PAC @PactusChain",
+    "long": "Unbond and sortition transactions must carry a fee of exactly zero (the subsidy tx too). This is a protocol rule enforced in the transaction's basic check, so a block containing a paid unbond or sortition tx is invalid. It is not just a mempool preference.",
     "tech": "Inside #Pactus #34: Pactus unbond and sortition transactions carry a fee of exactly zero. It's a protocol rule enforced in basic validation, not only a mempool policy. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #34: Unstaking and claiming a committee seat cost no fee at all. That's a protocol rule. #PAC @PactusChain",
+    "source": "pactus code: types/tx/tx.go (IsFreeTx, checkFee)",
     "status": "checked"
   },
   {
     "index": 35,
-    "simple": "Inside #Pactus #35: Delegation (PIP-49): a stake owner can let an operator run the validator. The owner gets a capped share of the rewards, and only the owner can unstake, once the agreed period ends. #PAC @PactusChain",
+    "long": "PIP-49 delegation: a delegated bond must be exactly the maximum stake (1,000 PAC) and set a future expiry height. The stake owner's reward share is capped at 0.7 PAC per block before halving. Unbond and withdraw for a delegated validator are signed by the owner, not the operator, and unbond is only accepted after the expiry.",
     "tech": "Inside #Pactus #35: PIP-49 delegation: a delegated bond is exactly the max stake (1,000 PAC) with a future expiry. Owner reward share is capped at 0.7 PAC/block (before halving). The owner, not the operator, signs unbond and withdraw; unbond only after expiry. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #35: Delegation (PIP-49): a stake owner can let an operator run the validator. The owner gets a capped share of the rewards, and only the owner can unstake, once the agreed period ends. #PAC @PactusChain",
+    "source": "pactus code: execution/executor/bond.go, unbond.go, withdraw.go, types/tx/payload/bond.go, state/param/param.go",
     "status": "checked"
   },
   {
     "index": 36,
+    "long": "Protocol upgrades (PIP-51) are signalled by stake. A proposer raises the block version only when validators holding more than 75% of committee power run a node that supports the new version. There is no activation height, with one guard: blocks after height 8,000,000 (the first PIP-55 halving) must be version 4 or higher.",
+    "tech": "Inside #Pactus #36: Protocol upgrades (PIP-51) are signalled by stake: a proposer moves to the new block version only once >75% of committee power runs a node that supports it. No activation height, with one guard: past block 8M, blocks below v4 are rejected. #PAC @PactusChain",
     "simple": "Inside #Pactus #36: How does Pactus upgrade? Validators signal by running the new version. Once more than 75% of committee stake supports it, blocks switch to the new version. #PAC @PactusChain",
-    "tech": "Inside #Pactus #36: Protocol upgrades (PIP-51) are signalled by stake: a proposer moves to the new block version only once >75% of committee power runs a node that supports it. No scheduled activation height (the PIP-55 halving is height-based). #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "source": "pactus code: state/state.go (proposeBlockVersion), committee/committee.go, state/validation.go",
     "status": "checked"
   },
   {
     "index": 37,
-    "simple": "Inside #Pactus #37: Pactus upgrades so far: split rewards, delegation, reward halving and on-chain anchoring, each one a numbered protocol version. #PAC @PactusChain",
+    "long": "Protocol versions in the code: v1 initial, v2 split reward (PIP-43), v3 validator delegation (PIP-49), v4 block reward halving (PIP-55), v5 native state anchoring (PIP-50). Each upgrade is one enum value, and v5 is the latest the code knows.",
     "tech": "Inside #Pactus #37: Pactus protocol versions so far: v2 split reward (PIP-43), v3 delegation (PIP-49), v4 halving (PIP-55), v5 native state anchoring (PIP-50). One enum value per upgrade. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #37: Pactus upgrades so far: split rewards, delegation, reward halving and on-chain anchoring, each one a numbered protocol version. #PAC @PactusChain",
+    "source": "pactus code: types/protocol/protocol.go",
     "status": "checked"
   },
   {
     "index": 38,
-    "simple": "Inside #Pactus #38: Pactus consensus counts stake, not heads: a block needs approval from validators holding a supermajority, about two thirds, of committee stake. #PAC @PactusChain",
+    "long": "Pactus counts BFT quorums in voting power (stake), not in number of validators. With n = total committee power, f = (n-1)/3. The v2 consensus code checks thresholds of f+1, 2f+1 and 3f+1, and block certificates require 2f+1, about two thirds of committee power.",
     "tech": "Inside #Pactus #38: Pactus counts BFT quorums in voting power (stake), not head count. With n = total power, f = (n-1)/3. The v2 consensus code checks f+1, 2f+1 and 3f+1 of it; block certificates need 2f+1. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #38: Pactus consensus counts stake, not heads: a block needs approval from validators holding a supermajority, about two thirds, of committee stake. #PAC @PactusChain",
+    "source": "pactus code: types/certificate/power.go, consensusv2/voteset",
     "status": "checked"
   },
   {
     "index": 39,
-    "simple": "Inside #Pactus #39: The next version of Pactus consensus (v2 code) removes one voting step, so a block gets approved with one round of votes fewer. #PAC @PactusChain",
+    "long": "The repository has two consensus implementations, and the node picks between them. The newer one, consensusv2, has no prepare phase: a block goes from proposal straight to precommit. That removes one round of voting compared with the original consensus, where the prepare vote is still defined (marked deprecated in the vote types).",
     "tech": "Inside #Pactus #39: Pactus's v2 consensus code (consensusv2) drops the prepare phase: a block goes straight from proposal to precommit. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #39: The next version of Pactus consensus (v2 code) removes one voting step, so a block gets approved with one round of votes fewer. #PAC @PactusChain",
+    "source": "pactus code: consensusv2/ (no prepare state), consensus/manager/manager.go",
     "status": "checked"
   },
   {
     "index": 40,
-    "simple": "Inside #Pactus #40: If a block proposer is slow, validators vote to replace it. They wait 5 seconds, then 10, then 15 in later rounds, or start sooner if enough of them already agree. #PAC @PactusChain",
+    "long": "The change-proposer timeout grows linearly: 5 s plus 5 s per round (round 0: 5 s, round 1: 10 s, round 2: 15 s), counted from the start of the round. A validator doesn't have to wait for its own timer: if it already sees f+1 change-proposer pre-votes for Yes, it starts changing the proposer right away, so it doesn't join too late.",
     "tech": "Inside #Pactus #40: Pactus's change-proposer timeout grows linearly: 5 s + 5 s per round (round 0: 5 s, round 1: 10 s, round 2: 15 s), counted from the start of the round. A validator can start earlier if it already sees f+1 change-proposer pre-votes. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #40: If a block proposer is slow, validators vote to replace it. They wait 5 seconds, then 10, then 15 in later rounds, or start sooner if enough of them already agree. #PAC @PactusChain",
+    "source": "pactus code: consensus/config.go, consensusv2/config.go, consensusv2/precommit.go",
     "status": "checked"
   },
   {
     "index": 41,
-    "simple": "Inside #Pactus #41: Replacing a slow proposer is a vote of its own, in up to three steps. Each vote must carry a proof of why it was cast, which the other validators check. #PAC @PactusChain",
+    "long": "Changing the proposer is a vote of its own, with three vote types: pre-vote, main-vote and decided. Each vote carries a justification that the other validators check. Values are Yes (change the proposer) or No (keep it); only main-votes can be Abstain. If no decision is reached, it repeats in further change-proposer rounds.",
     "tech": "Inside #Pactus #41: The change-proposer phase has three vote types: pre-vote, main-vote, decided, each with a justification others check. Values are Yes (change proposer) or No (keep it); only main-votes can be Abstain. It repeats in CP rounds until decided. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #41: Replacing a slow proposer is a vote of its own, in up to three steps. Each vote must carry a proof of why it was cast, which the other validators check. #PAC @PactusChain",
+    "source": "pactus code: consensusv2/cp.go, types/vote/cp_vote.go",
     "status": "checked"
   },
   {
     "index": 42,
-    "simple": "Inside #Pactus #42: In the v2 code, if almost the whole committee (by stake) approves a block, it is committed right away, with no extra voting round. #PAC @PactusChain",
+    "long": "Fast path in the v2 consensus code: when a validator holds the proposal and sees precommits for it from 3f+1 of committee power, it commits immediately, with no change-proposer round. With only 2f+1 precommits, the change-proposer phase must first decide No (keep the proposer) before the block is committed.",
     "tech": "Inside #Pactus #42: v2 fast path: once a validator holds the proposal and sees precommits for it from 3f+1 of total voting power, it commits with no change-proposer round. With only 2f+1 precommits, the change-proposer phase must decide \"No\" first. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #42: In the v2 code, if almost the whole committee (by stake) approves a block, it is committed right away, with no extra voting round. #PAC @PactusChain",
+    "source": "pactus code: consensusv2/consensus.go (absoluteCommit), consensusv2/precommit.go",
     "status": "checked"
   },
   {
     "index": 43,
-    "simple": "Inside #Pactus #43: Validators that are often offline lose their turn: if a proposer's availability score is below two thirds, the committee moves straight to replacing it. #PAC @PactusChain",
+    "long": "Before a round's proposal, validators check the scheduled proposer's availability score. If it is below 0.666667 (PIP-19), they skip the proposal and start changing the proposer for that round straight away. A validator that is often absent effectively loses its turn.",
     "tech": "Inside #Pactus #43: In Pactus, if the scheduled proposer's availability score is below 0.666667 (PIP-19), validators skip the proposal and go straight to changing the proposer for that round. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #43: Validators that are often offline lose their turn: if a proposer's availability score is below two thirds, the committee moves straight to replacing it. #PAC @PactusChain",
+    "source": "pactus code: consensus/propose.go, consensusv2/propose.go, consensusv2/config.go",
     "status": "checked"
   },
   {
     "index": 44,
-    "simple": "Inside #Pactus #44: Each validator has an availability score: how often it showed up while on the committee, over roughly the last week. Computed from the chain, not self-reported. #PAC @PactusChain",
+    "long": "A validator's availability score = 1 - (certificates it was absent from / certificates where it was in the committee), counted over the last 60,000 certificates, about 6.9 days at 10 s per block. It is computed from on-chain certificates, not self-reported, and a validator with no record scores 1.",
     "tech": "Inside #Pactus #44: A validator's availability score = 1 − (certificates it was absent from ÷ certificates it was in the committee for), over the last 60,000 certificates (≈6.9 days at 10 s). Derived from on-chain data, not self-reported. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #44: Each validator has an availability score: how often it showed up while on the committee, over roughly the last week. Computed from the chain, not self-reported. #PAC @PactusChain",
+    "source": "pactus code: state/score/score.go, state/state.go",
     "status": "checked"
   },
   {
     "index": 45,
-    "simple": "Inside #Pactus #45: Consensus timers are tied to a specific block and round. An old timer that fires late is simply ignored. #PAC @PactusChain",
+    "long": "Every timer in the v2 consensus code is tagged with the height and round it was scheduled for. When it fires, the node compares that with its current height and round; if they differ, the timer is stale and is simply ignored.",
     "tech": "Inside #Pactus #45: Every timer in Pactus's v2 consensus is tagged with its height and round. A timer that fires after the node has moved on is simply dropped. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #45: Consensus timers are tied to a specific block and round. An old timer that fires late is simply ignored. #PAC @PactusChain",
+    "source": "pactus code: consensusv2/consensus.go (handleTimeout), consensusv2/ticker.go",
     "status": "checked"
   },
   {
     "index": 46,
-    "simple": "Inside #Pactus #46: Consensus follows the clock: a new block every 10 seconds. In the v2 code, a node whose clock runs a bit late catches up when it sees the others already voting. #PAC @PactusChain",
+    "long": "Consensus is paced by the wall clock: a new height starts at the last block time plus the block interval (10 s by default). If a node's clock lags, the v2 code doesn't wait for its timer: when it already sees precommits from 2f+1 of committee power for round 0, it moves to the propose step right away and catches up.",
     "tech": "Inside #Pactus #46: Consensus is paced on wall-clock time: the next height starts at last block time + the block interval (10 s by default). The v2 code skips the rest of the wait if it already sees 2f+1 precommit power for round 0, for nodes whose clock lags. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #46: Consensus follows the clock: a new block every 10 seconds. In the v2 code, a node whose clock runs a bit late catches up when it sees the others already voting. #PAC @PactusChain",
+    "source": "pactus code: consensusv2/height.go",
     "status": "checked"
   },
   {
     "index": 47,
-    "simple": "Inside #Pactus #47: One node can run several validators. They talk to each other inside the node instead of over the network. #PAC @PactusChain",
+    "long": "A node can run several validator keys, one consensus instance each. They are connected by an in-process mediator: every proposal and vote published by one instance is passed to the others, and when one announces a block, the others move to the next height. Local validators talk to each other inside the node, not over the network.",
     "tech": "Inside #Pactus #47: A Pactus node running several validator keys uses an in-process mediator: each proposal and vote is forwarded to its other local instances, and a block announcement moves them all to the next height. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #47: One node can run several validators. They talk to each other inside the node instead of over the network. #PAC @PactusChain",
+    "source": "pactus code: consensus/mediator.go, consensus/manager/manager.go",
     "status": "checked"
   },
   {
     "index": 48,
-    "simple": "Inside #Pactus #48: Pactus validators sign with BLS, a scheme where many signatures can be merged into one. That's why block proofs stay so small. #PAC @PactusChain",
+    "long": "Pactus validators sign with BLS12-381: 48-byte signatures on G1, 96-byte public keys on G2, and hash-to-curve with the ciphersuite BLS_SIG_BLS12381G1_XMD:SHA-256_SSWU_RO_NUL_ from the IRTF BLS draft. BLS signatures can be aggregated, which is what makes one-signature block certificates possible.",
     "tech": "Inside #Pactus #48: Pactus validators sign with BLS12-381: 48-byte signatures (G1), 96-byte public keys (G2), hash-to-curve per the IRTF BLS draft with SHA-256. Signatures add up, which is what makes one-signature certificates possible. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #48: Pactus validators sign with BLS, a scheme where many signatures can be merged into one. That's why block proofs stay so small. #PAC @PactusChain",
+    "source": "pactus code: crypto/bls/bls.go, signature.go, public_key.go",
     "status": "checked"
   },
   {
     "index": 49,
-    "simple": "Inside #Pactus #49: Pactus accounts support three signature types: BLS, Ed25519 and secp256k1 (Bitcoin's curve). The address tells which one is used. #PAC @PactusChain",
+    "long": "Pactus accounts can use three signature schemes: BLS12-381, Ed25519 and secp256k1 (the curve used by Bitcoin). The address type of the transaction's signer decides which scheme its signature and public key are decoded and verified with.",
     "tech": "Inside #Pactus #49: Pactus accounts can use three signature schemes: BLS12-381, Ed25519 and secp256k1. The signer's address type decides which one a transaction uses. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #49: Pactus accounts support three signature types: BLS, Ed25519 and secp256k1 (Bitcoin's curve). The address tells which one is used. #PAC @PactusChain",
+    "source": "pactus code: crypto/address_type.go, types/tx/tx.go (decodeSignature)",
     "status": "checked"
   },
   {
     "index": 50,
-    "simple": "Inside #Pactus #50: Pactus addresses start with \"pc1\" on mainnet and \"tpc1\" on testnet, in bech32m, the same format Bitcoin uses for its newest addresses. #PAC @PactusChain",
+    "long": "A Pactus address is RIPEMD-160(BLAKE2b-256(public key)), 20 bytes, preceded by a 1-byte address type: 21 bytes in all. It is encoded as bech32m, the same format as Bitcoin's newest addresses, with the human-readable part \"pc\" on mainnet and \"tpc\" on testnet.",
     "tech": "Inside #Pactus #50: Pactus addresses = RIPEMD-160(BLAKE2b-256(pubkey)) plus a 1-byte type, encoded as bech32m. HRP \"pc\" on mainnet, \"tpc\" on testnet. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #50: Pactus addresses start with \"pc1\" on mainnet and \"tpc1\" on testnet, in bech32m, the same format Bitcoin uses for its newest addresses. #PAC @PactusChain",
+    "source": "pactus code: crypto/address.go, crypto/crypto.go, crypto/hash/hash.go, crypto/bls/public_key.go",
     "status": "checked"
   },
   {
     "index": 51,
-    "simple": "Inside #Pactus #51: You can tell an address type at a glance: pc1p… is a validator, pc1z… a BLS account, pc1r… Ed25519, pc1y… secp256k1. #PAC @PactusChain",
+    "long": "The address type is the first data character after \"pc1\": type 1 (validator) gives pc1p..., type 2 (BLS account) pc1z..., type 3 (Ed25519 account) pc1r..., type 4 (secp256k1 account) pc1y.... So the kind of account is visible at a glance from the address.",
     "tech": "Inside #Pactus #51: The first character after \"pc1\" tells the account type in Pactus: pc1p… is a validator, pc1z… a BLS account, pc1r… Ed25519, pc1y… secp256k1. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #51: You can tell an address type at a glance: pc1p… is a validator, pc1z… a BLS account, pc1r… Ed25519, pc1y… secp256k1. #PAC @PactusChain",
+    "source": "pactus code: crypto/address_type.go, crypto/address.go",
     "status": "checked"
   },
   {
     "index": 52,
-    "simple": "Inside #Pactus #52: The treasury has a special address: all zeros. It can't sign transactions, so its funds only move through protocol rules, like block rewards. #PAC @PactusChain",
+    "long": "The treasury address is the all-zero address (type 0). It is special-cased: encoding and decoding map it to a fixed string instead of a bech32m one. No key controls it; its funds move only through the subsidy transaction, which by rule has no signature. That is how block rewards leave the treasury.",
     "tech": "Inside #Pactus #52: The Pactus treasury address isn't a bech32m string at all: it's the all-zero address, special-cased in encoding and decoding. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #52: The treasury has a special address: all zeros. It can't sign transactions, so its funds only move through protocol rules, like block rewards. #PAC @PactusChain",
+    "source": "pactus code: crypto/address.go (TreasuryAddress, String, AddressFromString), types/tx/tx.go",
     "status": "checked"
   },
   {
     "index": 53,
-    "simple": "Inside #Pactus #53: Pactus wallets are HD wallets: one seed phrase recovers all your keys, organised by key type, with separate coin numbers for mainnet and testnet. #PAC @PactusChain",
+    "long": "Pactus HD paths are m/purpose'/coin'/type'/index. Purpose is 12381 for BLS keys, 44 (BIP-44) for Ed25519 and secp256k1, and 65535 for imported private keys. Coin type is 21888 on mainnet and 21777 on testnet, and type is the address type (1-4). The index is hardened except for BLS. One seed phrase recovers every derived key; imported keys use their own purpose.",
     "tech": "Inside #Pactus #53: Pactus HD paths: m/purpose'/coin'/type'/index. Purpose 12381 for BLS, 44 (BIP-44) for Ed25519 and secp256k1, 65535 for imported keys. Coin 21888 mainnet, 21777 testnet. Type = address type (1-4). Index is hardened except for BLS. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #53: Pactus wallets are HD wallets: one seed phrase recovers every key the wallet derived, organised by key type, with separate coin numbers for mainnet and testnet. #PAC @PactusChain",
+    "source": "pactus code: wallet/addresspath/path.go, wallet/addresses.go",
     "status": "checked"
   },
   {
     "index": 54,
-    "simple": "Inside #Pactus #54: A watch-only Pactus wallet, with no private keys at all, can still create new BLS addresses to receive funds. #PAC @PactusChain",
+    "long": "BLS HD keys (PIP-11): the master key is HMAC-SHA512 of the seed keyed with \"BLS12381 seed\"; the left half goes through BLS KeyGen and the right half becomes the chain code. Non-hardened children can be derived from the extended public key, so a watch-only wallet, with no private keys, can still create new BLS addresses to receive funds.",
     "tech": "Inside #Pactus #54: BLS HD keys (PIP-11): HMAC-SHA512 keyed with \"BLS12381 seed\"; the left half goes through BLS KeyGen, the right half is the chain code. Non-hardened children derive from the public key, so a watch-only wallet can create BLS addresses. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #54: A watch-only Pactus wallet, with no private keys at all, can still create new BLS addresses to receive funds. #PAC @PactusChain",
+    "source": "pactus code: crypto/bls/hdkeychain/extendedkey.go",
     "status": "checked"
   },
   {
     "index": 55,
-    "simple": "Inside #Pactus #55: Wallets are encrypted with Argon2id, a scheme built to resist password guessing. You can also make a watch-only copy that holds no private keys. #PAC @PactusChain",
+    "long": "Wallet encryption uses Argon2id (3 iterations, 64 MiB memory, 4 lanes) to derive a key from the password, then AES-256-CTR, with a 4-byte MAC to detect a wrong password. New wallets use SQLite; old JSON wallets can be migrated with pactus-wallet migrate. pactus-wallet neuter makes a watch-only copy with no private keys.",
     "tech": "Inside #Pactus #55: Wallets encrypt with Argon2id (3 iterations, 64 MiB, 4 lanes), then AES-256-CTR with a 4-byte MAC. New wallets use SQLite (old JSON ones can be migrated), and `pactus-wallet neuter` makes a watch-only copy with no private keys. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #55: Wallets are encrypted with Argon2id, a scheme built to resist password guessing. You can also make a watch-only copy that holds no private keys. #PAC @PactusChain",
+    "source": "pactus code: wallet/encrypter/encrypter.go, cmd/wallet/neuter.go, cmd/wallet/migrate.go",
     "status": "checked"
   },
   {
     "index": 56,
+    "long": "PIP-50 (protocol v5) lets an account carry an anchor: a root hash of 32 to 64 bytes plus a manifest URI of up to 128 bytes. Creating an anchor locks a deposit of at least 1 PAC. Anchor transactions are only valid in v5 blocks, which require more than 75% of committee power to run a v5 node.",
+    "tech": "Inside #Pactus #56: With PIP-50 (protocol v5), a Pactus account can carry an anchor: a 32–64 byte root hash plus a URI of up to 128 bytes. Creating one locks a deposit of at least 1 PAC. Native state anchoring, live once >75% of committee power runs v5. #PAC @PactusChain",
     "simple": "Inside #Pactus #56: With PIP-50, an account can anchor data on chain: a fingerprint of the data plus a link to it, backed by a deposit of at least 1 PAC. Live once the network upgrades to protocol v5. #PAC @PactusChain",
-    "tech": "Inside #Pactus #56: With PIP-50 (protocol v5), a Pactus account can carry an anchor: a 32–64 byte root hash plus a URI of up to 128 bytes. Creating one locks a deposit of at least 1 PAC. Native on-chain state anchoring, live once >75% of committee power runs v5. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "source": "pactus code: types/tx/payload/anchor.go, execution/executor/anchor.go, executor.go",
     "status": "checked"
   },
   {
     "index": 57,
-    "simple": "Inside #Pactus #57: Pactus has 7 built-in transaction types: transfer, stake, unstake, withdraw, committee claim, batch transfer and anchor. Each one is handled natively by the protocol. #PAC @PactusChain",
+    "long": "Pactus has seven transaction types built into the protocol: transfer, bond, unbond, withdraw, sortition, batch transfer and anchor, each with its own executor. Anchor (type 7) is refused as an invalid payload type until blocks reach protocol version 5 (PIP-50).",
     "tech": "Inside #Pactus #57: Pactus has 7 transaction types built into the protocol: transfer, bond, unbond, withdraw, sortition, batch transfer and anchor. Each has its own executor. Anchor only becomes valid once blocks reach protocol version 5 (PIP-50). #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #57: Pactus has 7 built-in transaction types: transfer, stake, unstake, withdraw, committee claim, batch transfer and anchor. Each one is handled natively by the protocol. #PAC @PactusChain",
+    "source": "pactus code: types/tx/payload/payload.go, execution/executor/executor.go",
     "status": "checked"
   },
   {
     "index": 58,
-    "simple": "Inside #Pactus #58: Fees are simple: a fixed 0.01 PAC by default, and unstaking is free. No bidding war to get your transaction in. #PAC @PactusChain",
+    "long": "The default minimum fee is a fixed 0.01 PAC for transfers, bonds, withdrawals, batch transfers and anchors; unbond and sortition pay nothing. The fixed fee is node mempool policy (txpool config), not a consensus rule. The mempool is first-in first-out within each transaction type, so there is no fee auction.",
     "tech": "Inside #Pactus #58: Fees: the default minimum is a fixed 0.01 PAC for transfers, bonds, withdrawals, batch transfers and anchors; unbond and sortition are free. It's node mempool policy, not a consensus rule. Mempool is FIFO per type: no fee auction. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #58: Fees are simple: a fixed 0.01 PAC by default, and unstaking is free. No bidding war to get your transaction in. #PAC @PactusChain",
+    "source": "pactus code: txpool/config.go, txpool/txpool.go, txpool/pool.go",
     "status": "checked"
   },
   {
     "index": 59,
-    "simple": "Inside #Pactus #59: An optional extra fee can kick in for accounts that send a lot of data in a day. It's off by default. #PAC @PactusChain",
+    "long": "On top of the fixed fee, the mempool can add a consumption-based fee, driven by how many bytes an account sent over the last 8,640 blocks (about a day). The fee is floor(consumption / 360) x consumption x unit price, so it is zero below the 360-byte daily limit and grows faster than linearly above it. The unit price defaults to 0, so it is off by default.",
     "tech": "Inside #Pactus #59: Pactus has an optional consumption-based fee on top of the fixed one, driven by the bytes an account sent over the last 8,640 blocks. Past the 360-byte daily limit it grows faster than linearly. Unit price defaults to 0, so it's off. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #59: An optional extra fee can kick in for accounts that send a lot of data in a day. It's off by default. #PAC @PactusChain",
+    "source": "pactus code: txpool/config.go, txpool/txpool.go (consumptionalFee)",
     "status": "checked"
   },
   {
     "index": 60,
-    "simple": "Inside #Pactus #60: A transaction stays valid for about one day. Not included by then? It expires. Memos can be up to 64 bytes. #PAC @PactusChain",
+    "long": "A transaction's lock time is also its expiry: it stays valid for 8,640 blocks after its lock time, about one day at 10 s per block (sortition txs get only 17 blocks). In strict checks a lock time in the future is refused. Memos are capped at 64 bytes.",
     "tech": "Inside #Pactus #60: In Pactus a transaction's lock time is also its expiry: it stays valid for 8,640 blocks (about 1 day at 10 s blocks; sortition txs get only 17). Memos are capped at 64 bytes. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #60: A transaction stays valid for about one day. Not included by then? It expires. Memos can be up to 64 bytes. #PAC @PactusChain",
+    "source": "pactus code: execution/execution.go (CheckLockTime), types/tx/tx.go",
     "status": "checked"
   },
   {
     "index": 61,
-    "simple": "Inside #Pactus #61: A batch transfer pays 2 to 8 people in one transaction, for a single fee. #PAC @PactusChain",
+    "long": "A batch transfer pays between 2 and 8 recipients in one signed transaction, and recipient addresses must be distinct. The sender pays the sum of all amounts plus a single fee.",
     "tech": "Inside #Pactus #61: A Pactus batch transfer pays 2 to 8 distinct recipients in one signed transaction. The sender pays the total plus a single fee. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #61: A batch transfer pays 2 to 8 people in one transaction, for a single fee. #PAC @PactusChain",
+    "source": "pactus code: types/tx/payload/batch_transfer.go, execution/executor/batch_transfer.go",
     "status": "checked"
   },
   {
     "index": 62,
-    "simple": "Inside #Pactus #62: The waiting room for transactions (the mempool) has a separate lane per type, so a flood of transfers can't crowd out staking or other transactions. #PAC @PactusChain",
+    "long": "The mempool has one bounded sub-pool per transaction type. With the default max_size of 1,000, transfers get 50% (500 slots) and each of the six other types 10% (100 slots), so the pool holds up to 1,100 transactions. When a sub-pool is full, its oldest entry is dropped. A flood of one type can't crowd out the others.",
     "tech": "Inside #Pactus #62: Pactus's mempool has one bounded sub-pool per transaction type. With the default max_size of 1,000, transfers get 500 slots and each of the other six types 100, so the pool holds up to 1,100 txs. A full sub-pool drops its oldest entry. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #62: The waiting room for transactions (the mempool) has a separate lane per type, so a flood of transfers can't crowd out staking or other transactions. #PAC @PactusChain",
+    "source": "pactus code: txpool/config.go, txpool/txpool.go, util/linkedmap",
     "status": "checked"
   },
   {
     "index": 63,
-    "simple": "Inside #Pactus #63: Block proposers pick waiting transactions in a fixed order by type, then first come, first served. No fee auction. #PAC @PactusChain",
+    "long": "The proposer takes mempool transactions in a fixed type order: sortition, bond, unbond, withdraw, transfer, batch transfer, anchor, first in first out within each type. It re-checks each one strictly and drops invalid ones, trims the list to 999 and puts the subsidy tx first, for at most 1,000 transactions per block.",
     "tech": "Inside #Pactus #63: Pactus's proposer takes mempool txs in a fixed type order: sortition, bond, unbond, withdraw, transfer, batch, anchor; first in, first out within a type. It re-checks them, caps the block at 1,000 txs and puts the subsidy tx first. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #63: Block proposers pick waiting transactions in a fixed order by type, then first come, first served. No fee auction. #PAC @PactusChain",
+    "source": "pactus code: txpool/txpool.go (PrepareBlockTransactions), state/state.go (ProposeBlock)",
     "status": "checked"
   },
   {
     "index": 64,
-    "simple": "Inside #Pactus #64: The whole chain state, all accounts and validators, is summed up in one fingerprint stored in every block. Updating it only reworks the parts that changed. #PAC @PactusChain",
+    "long": "The state root in each block header combines two Merkle trees, one over accounts and one over validators, hashed with BLAKE2b-256. The trees are persistent and updated incrementally: after a block, only the leaves that changed are set again, so only their paths are rehashed.",
     "tech": "Inside #Pactus #64: Pactus's state root combines two incremental Merkle trees, one for accounts and one for validators, hashed with BLAKE2b-256. A block only rehashes the paths of the leaves it changed. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #64: The whole chain state, all accounts and validators, is summed up in one fingerprint stored in every block. Updating it only reworks the parts that changed. #PAC @PactusChain",
+    "source": "pactus code: state/state.go (stateRoot), util/persistentmerkle",
     "status": "checked"
   },
   {
     "index": 65,
-    "simple": "Inside #Pactus #65: Every account and validator gets a sequential number when it's created, which is also its place in that state fingerprint. #PAC @PactusChain",
+    "long": "Every account and validator gets a sequential number when it is created (genesis entries first). That number is also its leaf position in the account or validator Merkle tree of the state root.",
     "tech": "Inside #Pactus #65: Every Pactus account and validator gets a sequential number at creation. That number is also its leaf position in the Merkle state tree. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #65: Every account and validator gets a sequential number when it's created, which is also its place in that state fingerprint. #PAC @PactusChain",
+    "source": "pactus code: state/state.go, genesis/genesis.go, sandbox",
     "status": "checked"
   },
   {
     "index": 66,
-    "simple": "Inside #Pactus #66: Each block is saved in one atomic write: if a node crashes mid-save, it never ends up half-updated. #PAC @PactusChain",
+    "long": "Pactus writes each committed block in a single LevelDB batch: the block bytes, the tx index, account and validator updates, new public keys and the last-info record with the last certificate. The batch is written atomically, so a crash can't leave these out of sync with each other.",
     "tech": "Inside #Pactus #66: Pactus commits each block in a single LevelDB batch: block bytes, tx index, account and validator updates, public keys, last certificate. A crash can't leave them out of sync. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #66: Each block is saved in one atomic write: if a node crashes mid-save, it never ends up half-updated. #PAC @PactusChain",
+    "source": "pactus code: store/store.go (WriteBatch), store/block.go, store/tx.go",
     "status": "checked"
   },
   {
     "index": 67,
-    "simple": "Inside #Pactus #67: Looking up a transaction is quick: the node knows exactly where it sits inside its block. #PAC @PactusChain",
+    "long": "The transaction index stores (height, offset, length) for each transaction ID. To read a transaction, the node fetches the stored block bytes for that height and slices out the region directly, without decoding the whole block.",
     "tech": "Inside #Pactus #67: Pactus's tx index stores (height, offset, length) per transaction ID. Reading a transaction slices the stored block bytes directly, without decoding the whole block. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #67: Looking up a transaction is quick: the node knows exactly where it sits inside its block. #PAC @PactusChain",
+    "source": "pactus code: store/tx.go, store/block.go",
     "status": "checked"
   },
   {
     "index": 68,
-    "simple": "Inside #Pactus #68: Public keys are stored once per account instead of in every transaction, which saves disk space. #PAC @PactusChain",
+    "long": "Each signer's public key is stored once, in a separate index. Once the key is known, the signer's later transactions are saved in the block bytes with the public key stripped, and the key is restored from the index when the block or transaction is read. That saves disk space on every repeat sender.",
     "tech": "Inside #Pactus #68: Each signer's public key lives in a separate index. After a signer's first appearance, its txs are stored without the public key in the block bytes, and the key is restored from the index when you read the block or tx. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #68: Public keys are stored once per account instead of in every transaction, which saves disk space. #PAC @PactusChain",
+    "source": "pactus code: store/block.go (saveBlock, publicKey), sync/sync.go",
     "status": "checked"
   },
   {
     "index": 69,
-    "simple": "Inside #Pactus #69: Short on disk space? A node can be pruned to keep only the last 30 days of blocks (10 days minimum). Nodes keep full history unless you choose to prune. #PAC @PactusChain",
+    "long": "In prune mode a node keeps by default the last 30 days of blocks (30 x 8,640 = 259,200 blocks at 10 s), and the retention can't be set below 10 days. The pactus-daemon prune command converts an existing full node to prune mode. Otherwise a node syncing from genesis keeps the full history.",
     "tech": "Inside #Pactus #69: Prune mode: default retention is 30 days of blocks (259,200 at 10 s), minimum 10 days. `pactus-daemon prune` converts an existing full node to prune mode. A node syncing from genesis keeps full history unless you prune it. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #69: Short on disk space? A node can be pruned to keep only the last 30 days of blocks (10 days minimum). Nodes keep full history unless you choose to prune. #PAC @PactusChain",
+    "source": "pactus code: store/config.go, cmd/daemon/prune.go",
     "status": "checked"
   },
   {
     "index": 70,
-    "simple": "Inside #Pactus #70: Catching up is pull-based: a node that falls behind asks peers for the blocks it misses. Gossip is only for fresh news: new blocks, transactions and votes. #PAC @PactusChain",
+    "long": "Pactus sync is pull-based: a node that falls behind asks peers for blocks over direct streams, in download sessions, instead of having blocks pushed to it. Gossip is only used for fresh data: new-block announcements, transactions and consensus messages.",
     "tech": "Inside #Pactus #70: Pactus sync is pull-based by design: a node that falls behind asks peers for blocks over direct streams instead of being sent them. Gossip is for fresh data only: new-block announcements, transactions and consensus messages. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #70: Catching up is pull-based: a node that falls behind asks peers for the blocks it misses. Gossip is only for fresh news: new blocks, transactions and votes. #PAC @PactusChain",
+    "source": "pactus code: sync/sync.go, sync/handler_blocks_request.go, network/gossip.go",
     "status": "checked"
   },
   {
     "index": 71,
-    "simple": "Inside #Pactus #71: Pactus nodes gossip on three channels: blocks, transactions and consensus. Each network has its own channel names, so mainnet and testnet never mix. #PAC @PactusChain",
+    "long": "Pactus gossip uses three libp2p gossipsub topics: block, transaction and consensus. Topic names include the network name (pactus, pactus-testnet or pactus-localnet), so mainnet, testnet and local networks never share a gossip channel.",
     "tech": "Inside #Pactus #71: Pactus gossip runs on three libp2p gossipsub topics: block, transaction, consensus. Topic names carry the network name, so networks stay separated at the libp2p level. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #71: Pactus nodes gossip on three channels: blocks, transactions and consensus. Each network has its own channel names, so mainnet and testnet never mix. #PAC @PactusChain",
+    "source": "pactus code: network/gossip.go (TopicName, JoinTopic), config/config.go",
     "status": "checked"
   },
   {
     "index": 72,
-    "simple": "Inside #Pactus #72: All Pactus network messages share one envelope format, and each message type knows whether it's broadcast or sent to a single peer. #PAC @PactusChain",
+    "long": "Every Pactus P2P message travels in the same CBOR envelope (a bundle) with four fields: flags, message type, payload and consensus height. Each message type declares whether it is gossiped on a topic or sent point to point to one peer.",
     "tech": "Inside #Pactus #72: Every Pactus P2P message travels in the same CBOR envelope: flags, message type, payload, consensus height. Each message type declares whether it's gossiped or sent point to point. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #72: All Pactus network messages share one envelope format, and each message type knows whether it's broadcast or sent to a single peer. #PAC @PactusChain",
+    "source": "pactus code: sync/bundle/bundle.go, sync/bundle/message",
     "status": "checked"
   },
   {
     "index": 73,
-    "simple": "Inside #Pactus #73: A node catching up downloads from several peers at once: up to 8 parallel batches of 720 blocks. #PAC @PactusChain",
+    "long": "A node catching up opens up to 8 parallel download sessions, each asking for 720 blocks, and the serving peer answers in messages of 60 blocks. It never opens two sessions with the same peer, so downloads are spread across peers.",
     "tech": "Inside #Pactus #73: A Pactus node catching up opens up to 8 parallel download sessions of 720 blocks each; the serving peer answers in 60-block messages. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #73: A node catching up downloads from several peers at once: up to 8 parallel batches of 720 blocks. #PAC @PactusChain",
+    "source": "pactus code: sync/config.go, sync/sync.go (downloadBlocks)",
     "status": "checked"
   },
   {
     "index": 74,
-    "simple": "Inside #Pactus #74: Blocks may arrive out of order, but they are always added to the chain in order, each with its proof. #PAC @PactusChain",
+    "long": "Blocks are downloaded in parallel but committed in strict order. Received blocks and certificates wait in LRU caches keyed by height, and the node commits the next height only when both the block and its certificate are in the cache, then moves on to the following one.",
     "tech": "Inside #Pactus #74: Pactus syncs in parallel but commits in strict order: downloaded blocks wait in an LRU cache keyed by height, and are committed only when the next height and its certificate are present. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #74: Blocks may arrive out of order, but they are always added to the chain in order, each with its proof. #PAC @PactusChain",
+    "source": "pactus code: sync/cache/cache.go, sync/sync.go (tryCommitBlocks)",
     "status": "checked"
   },
   {
     "index": 75,
-    "simple": "Inside #Pactus #75: For downloads, nodes favour peers that delivered reliably, while still giving the others a chance. #PAC @PactusChain",
-    "tech": "Inside #Pactus #75: Block-download peers are picked at random, weighted by track record: score = (completed+1)/(total+1) sessions, never below 1%. New peers start at the top; failing peers rarely get picked but stay selectable. Only handshaken peers qualify. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "long": "Download peers are picked at random, weighted by their download score: (completed sessions + 1) x 100 / (total sessions + 1), an integer percent. A new peer starts at 100. A peer that keeps failing sinks toward 0 and is picked less and less. A request is only sent to a peer that completed the handshake.",
+    "tech": "Inside #Pactus #75: Block-download peers are picked at random, weighted by track record: score = (completed+1)*100/(total+1) sessions, an integer percent. New peers start at 100; a peer that keeps failing sinks toward 0. Only handshaken peers get requests. #PAC @PactusChain",
+    "simple": "Inside #Pactus #75: For downloads, nodes favour peers that delivered reliably. Newcomers start with full credit; peers that keep failing get picked less and less. #PAC @PactusChain",
+    "source": "pactus code: sync/peerset/peer/peer.go (DownloadScore), sync/peerset/peer_set.go (GetRandomPeer), sync/sync.go",
     "status": "checked"
   },
   {
     "index": 76,
-    "simple": "Inside #Pactus #76: Very far behind, about 10 days or more? A node then downloads only from peers that keep the full history. #PAC @PactusChain",
+    "long": "Nodes advertise a FULL flag when they keep the whole chain history (not pruned). A node more than 86,400 blocks behind, about 10 days at 10 s, downloads only from FULL peers, because pruned nodes may not have those blocks. Within that window, any handshaken peer, pruned or full, can serve it.",
     "tech": "Inside #Pactus #76: Pactus nodes advertise a FULL flag if they keep the whole chain history. A node more than 86,400 blocks (about 10 days) behind downloads only from FULL peers; within that window any handshaken peer, pruned or full, can serve it. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #76: Very far behind, about 10 days or more? A node then downloads only from peers that keep the full history. #PAC @PactusChain",
+    "source": "pactus code: sync/config.go, sync/sync.go, sync/peerset/peer/service/services.go",
     "status": "checked"
   },
   {
     "index": 77,
-    "simple": "Inside #Pactus #77: Before exchanging blocks, two nodes say hello and acknowledge each other. Only peers that complete this handshake are used for syncing. #PAC @PactusChain",
+    "long": "Handshake: the outbound peer sends Hello; the inbound peer replies with a HelloAck and sends its own Hello; the outbound peer acks it. A peer only becomes known once the Hellos are accepted, and only known peers are used to request or serve blocks.",
     "tech": "Inside #Pactus #77: Handshake: the outbound peer sends Hello; the inbound peer replies with a HelloAck and its own Hello; the outbound peer acks it. A peer is \"known\" only after both Hellos are accepted, and only known peers request or serve blocks. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #77: Before exchanging blocks, two nodes say hello and acknowledge each other. Only peers that complete this handshake are used for syncing. #PAC @PactusChain",
+    "source": "pactus code: sync/handler_hello.go, sync/handler_hello_ack.go",
     "status": "checked"
   },
   {
     "index": 78,
-    "simple": "Inside #Pactus #78: Behind a home router? Pactus nodes detect it and use relays and hole punching to stay reachable. #PAC @PactusChain",
+    "long": "For NAT, a Pactus node by default enables libp2p AutoNAT v2 to detect whether it is reachable, and relay support is on by default, with auto-relay and hole punching, so a node behind a home router can still be reached. UPnP port mapping exists but is opt-in (off by default).",
     "tech": "Inside #Pactus #78: Pactus nodes behind NAT use libp2p AutoNAT v2 to detect reachability, then fall back to relays with hole punching. UPnP is opt-in. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #78: Behind a home router? Pactus nodes detect it and use relays and hole punching to stay reachable. #PAC @PactusChain",
+    "source": "pactus code: network/network.go, network/config.go",
     "status": "checked"
   },
   {
     "index": 79,
-    "simple": "Inside #Pactus #79: Nodes cap their connections (64 by default, fewer outgoing) and reconnect automatically if they drop below a minimum. #PAC @PactusChain",
+    "long": "Connection limits by default: up to 64 inbound connections (max_connections), and outbound dials up to a quarter of that, 16. Every 60 seconds the node checks connectivity; if fewer than 14 peers (64/4 - 2) are connected, it redials its saved and bootstrap peers in the background.",
     "tech": "Inside #Pactus #79: Pactus caps connections by direction: inbound up to 64 by default (max_connections), outbound a quarter of that (16). Every 60s, if fewer than 14 peers (64/4 - 2) are connected, it redials its saved and bootstrap peers in the background. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #79: Nodes cap their connections (64 by default, fewer outgoing) and reconnect automatically if they drop below a minimum. #PAC @PactusChain",
+    "source": "pactus code: network/config.go (MinConns), network/gater.go, network/peermgr.go",
     "status": "checked"
   },
   {
     "index": 80,
-    "simple": "Inside #Pactus #80: A node remembers its peers when it shuts down cleanly and reconnects to them at the next start. The mainnet bootstrap list is built in. #PAC @PactusChain",
+    "long": "A node keeps a peer store in peers.json: on clean shutdown it saves the peers it connected to, plus the bootstrap entries, and at startup it loads them along with the bootstrap list. The mainnet bootstrap list (bootstrap.json) is embedded in the binary with go:embed.",
     "tech": "Inside #Pactus #80: A Pactus node saves the peers it has connected to, plus bootstrap entries, to peers.json on clean shutdown and reloads them next to the bootstrap list at startup. Mainnet's bootstrap list is embedded in the binary. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #80: A node remembers its peers when it shuts down cleanly and reconnects to them at the next start. The mainnet bootstrap list is built in. #PAC @PactusChain",
+    "source": "pactus code: network/peermgr.go, network/config.go, config/config.go",
     "status": "checked"
   },
   {
     "index": 81,
-    "simple": "Inside #Pactus #81: The node's API is defined once, and gRPC, REST, JSON-RPC and the docs are all generated from that single definition. One source, always in sync. #PAC @PactusChain",
+    "long": "The node API is defined once, in .proto files. A single buf generate run produces the gRPC stubs, the REST gateway, JSON-RPC bindings, OpenAPI and OpenRPC specs and the docs. So all the API surfaces come from one definition and stay in sync.",
     "tech": "Inside #Pactus #81: The Pactus node API is defined once in `.proto` files. One `buf generate` emits gRPC stubs, a REST gateway, JSON-RPC bindings, OpenAPI, OpenRPC and docs. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #81: The node's API is defined once, and gRPC, REST, JSON-RPC and the docs are all generated from that single definition. One source, always in sync. #PAC @PactusChain",
+    "source": "pactus code: Makefile, www/grpc (buf generate)",
     "status": "checked"
   },
   {
     "index": 82,
-    "simple": "Inside #Pactus #82: Out of the box, a mainnet node only opens its main API to the local machine. Everything else is opt-in. #PAC @PactusChain",
+    "long": "The node's gRPC API has 5 services (blockchain, network, transaction, wallet, utils) and 54 RPCs. The wallet service is opt-in (enable_wallet = false). With mainnet defaults only gRPC is enabled, bound to 127.0.0.1:50051 (local machine only); REST, JSON-RPC and ZeroMQ are off. Testnet defaults differ.",
     "tech": "Inside #Pactus #82: Pactus's node gRPC API: 5 services, 54 RPCs. The wallet service is opt-in (enable_wallet=false). With mainnet defaults only gRPC is on, bound to 127.0.0.1:50051; REST, JSON-RPC and ZeroMQ are off. (Testnet defaults differ.) #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #82: Out of the box, a mainnet node only opens its main API to the local machine. Everything else is opt-in. #PAC @PactusChain",
+    "source": "pactus code: config/config.go, www/grpc/proto",
     "status": "checked"
   },
   {
     "index": 83,
-    "simple": "Inside #Pactus #83: Developers also get JSON-RPC and REST, with an interactive Swagger page built into the node. #PAC @PactusChain",
+    "long": "Pactus also exposes JSON-RPC and REST. The JSON-RPC server is a thin layer over the node's own gRPC server, and the REST gateway ships with a Swagger UI embedded in the binary via go:embed, giving developers an interactive API page served by the node itself.",
     "tech": "Inside #Pactus #83: Pactus's JSON-RPC server is a thin layer over the node's own gRPC server, and the REST gateway ships with a Swagger UI embedded in the binary via `go:embed`. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #83: Developers also get JSON-RPC and REST, with an interactive Swagger page built into the node. #PAC @PactusChain",
+    "source": "pactus code: node/node.go, www/jsonrpc, www/http",
     "status": "checked"
   },
   {
     "index": 84,
-    "simple": "Inside #Pactus #84: Apps can subscribe to a live feed of new blocks and transactions over ZeroMQ. Off by default. #PAC @PactusChain",
+    "long": "Nodes can publish committed blocks and their transactions over ZeroMQ, on 5 feeds: block info, transaction info, raw block, raw transaction and anchor info, each tagged with a 2-byte topic ID. It is off by default. The implementation uses the pure-Go zmq4 library, with no libzmq dependency. The raw-block feed carries the header only.",
     "tech": "Inside #Pactus #84: Nodes can publish committed blocks and their txs on ZeroMQ: 5 feeds (block info, tx info, raw block, raw tx, anchor info), each tagged with a 2-byte topic ID. Off by default. Pure-Go zmq4, no libzmq. Raw block = header only. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #84: Apps can subscribe to a live feed of new blocks and transactions over ZeroMQ. Off by default. #PAC @PactusChain",
+    "source": "pactus code: www/zmq/topic.go, node/node.go, go.mod",
     "status": "checked"
   },
   {
     "index": 85,
-    "simple": "Inside #Pactus #85: pactus-shell lets you query a node from the command line, with an interactive mode. #PAC @PactusChain",
+    "long": "pactus-shell is a command-line gRPC client with an interactive prompt mode. Its commands are generated from the same .proto services as the gRPC API, so once the code is regenerated and rebuilt, the shell follows the API.",
     "tech": "Inside #Pactus #85: `pactus-shell` is a gRPC CLI with an interactive prompt mode. Its commands are generated from the same `.proto` services as the gRPC API, so it follows the API once the code is regenerated and rebuilt. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #85: pactus-shell lets you query a node from the command line, with an interactive mode. #PAC @PactusChain",
+    "source": "pactus code: cmd/shell, www/grpc",
     "status": "checked"
   },
   {
     "index": 86,
-    "simple": "Inside #Pactus #86: The wallet can talk to your own node, to public servers, or work fully offline. #PAC @PactusChain",
+    "long": "The wallet reaches the chain through a provider. There are three: a local node, a remote provider using a list of gRPC servers, and an offline provider that makes no network calls at all.",
     "tech": "Inside #Pactus #86: The Pactus wallet talks to the chain through a provider: a local node, a remote gRPC server list, or offline mode with no network calls at all. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #86: The wallet can talk to your own node, to public servers, or work fully offline. #PAC @PactusChain",
+    "source": "pactus code: wallet/provider/ (local, remote, offline)",
     "status": "checked"
   },
   {
     "index": 87,
-    "simple": "Inside #Pactus #87: Two nodes can't accidentally run on the same data folder: the second one refuses to start. #PAC @PactusChain",
+    "long": "Before starting (and also before pruning or importing), pactus-daemon takes an exclusive file lock on .pactus.lock in its working directory. If a second instance tries to use the same data, the lock fails: it prints a warning that another instance may be running and exits.",
     "tech": "Inside #Pactus #87: `pactus-daemon` takes an exclusive file lock on its working directory before starting or pruning. A second instance on the same data prints a warning and exits. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #87: Two nodes can't accidentally run on the same data folder: the second one refuses to start. #PAC @PactusChain",
+    "source": "pactus code: cmd/daemon/start.go, prune.go, import.go",
     "status": "checked"
   },
   {
     "index": 88,
-    "simple": "Inside #Pactus #88: The official Docker image is small: static binaries on plain Alpine Linux. #PAC @PactusChain",
+    "long": "The Pactus Docker image is a two-stage build: a golang Alpine builder compiles pactus-daemon, pactus-wallet and pactus-shell as static binaries (CGO disabled, -trimpath, stripped with -s -w), then copies them into a plain alpine image.",
     "tech": "Inside #Pactus #88: The Pactus Docker image is a two-stage build: static binaries (CGO off, `-trimpath`, stripped) copied into plain Alpine. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #88: The official Docker image is small: static binaries on plain Alpine Linux. #PAC @PactusChain",
+    "source": "pactus code: Dockerfile",
     "status": "checked"
   },
   {
     "index": 89,
-    "simple": "Inside #Pactus #89: Pactus tests are reproducible: random test data comes from a logged seed, and integration tests spin up a small 4-node network. #PAC @PactusChain",
+    "long": "Test helpers generate random values (keys, heights, amounts, blocks) from a seed that each test logs. To reproduce a failure, build the test suite with NewTestSuiteFromSeed and that seed. Integration tests start four in-process nodes with fixed keys, a small local network.",
     "tech": "Inside #Pactus #89: Test helpers draw random values (keys, heights, amounts, blocks) from a seed each test logs. To reproduce a failure, build the suite with NewTestSuiteFromSeed and that seed. Integration tests boot four in-process nodes with fixed keys. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "simple": "Inside #Pactus #89: Pactus tests are reproducible: random test data comes from a logged seed, and integration tests spin up a small 4-node network. #PAC @PactusChain",
+    "source": "pactus code: util/testsuite/testsuite.go, tests/integration/main_test.go",
     "status": "checked"
   },
   {
     "index": 90,
+    "long": "Pactus compares versions on major.minor.patch only and ignores the meta tag: 1.18.0-beta compares equal to 1.18.0. In SemVer a pre-release ranks below the release, so this differs. The node version comes from version.json, embedded in the binary at build time.",
+    "tech": "Inside #Pactus #90: Pactus compares versions by major.minor.patch only: \"1.18.0-beta\" ranks the same as 1.18.0. Unlike SemVer, where a pre-release ranks lower. The version comes from a version.json embedded at build time. #PAC @PactusChain",
     "simple": "Inside #Pactus #90: Version checks ignore tags like \"beta\": 1.18.0-beta counts as 1.18.0. #PAC @PactusChain",
-    "tech": "Inside #Pactus #90: Pactus compares versions by major.minor.patch only: \"1.18.0-beta\" ranks the same as 1.18.0. A deliberate departure from SemVer, with the version baked in at build time. #PAC @PactusChain",
-    "source": "code de Pactus (main)",
+    "source": "pactus code: version/version.go (Compare), version/version.json",
     "status": "checked"
   }
 ]

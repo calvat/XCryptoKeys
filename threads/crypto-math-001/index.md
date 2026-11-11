@@ -4,7 +4,7 @@
 - Angle : signatures, hash et seed phrases expliqués par leurs détails, avec les échecs célèbres.
 - Préfixe : `#Crypto Math #N:`
 - Hashtags fixes : #Cryptography #Blockchain
-- Statut : draft (76 posts : 76 checked, 0 draft)
+- Statut : checked (76 posts checked, 0 draft)
 
 Notes :
 - Longueurs comptées comme X (caractères hors latin comptés 2). Toutes les versions font moins de 280.
