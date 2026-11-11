@@ -5,6 +5,10 @@
     "tech": "Crypto #MEV Dark Forest #1: Between signing and inclusion, an Ethereum tx usually sits in the public mempool. Searcher bots simulate it and bid to place their own txs around it. The value they capture is MEV, and it shapes how blocks get built. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #1: You click \"Send\". Before your transaction lands in a block, it waits in a public room where bots read it and look for a way to profit from it. That profit is called MEV. Welcome to the dark forest. #DeFi #CryptoTrading",
     "variant": "Crypto #MEV Dark Forest #1: Your DeFi trade is public before it is final. Bots see it, copy it, or trade around it, all in the few seconds before the next block. This series explains how, and how to protect yourself. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Your transaction is public before it lands",
+      "sub": "Bots read the mempool, simulate your trade and bid to place their own around it."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -13,6 +17,10 @@
     "long": "Definition from ethereum.org: maximal extractable value (MEV) is the maximum value that can be extracted from block production in excess of the standard block reward and gas fees, by including, excluding and changing the order of transactions in a block. The block producer controls those three levers, and bots can pay the producer to use them on their behalf. Everything else in the series is a variation on these three actions.",
     "tech": "Crypto #MEV Dark Forest #2: MEV = the maximum value extractable from block production beyond the standard block reward and gas fees, by including, excluding or reordering transactions in a block. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #2: MEV is the extra money a block producer (or a bot paying them) can make by choosing which transactions go in a block, which stay out, and in what order. #DeFi #CryptoTrading",
+    "card": {
+      "title": "What MEV actually means",
+      "sub": "Value taken by including, excluding or reordering transactions, beyond rewards and fees."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -21,6 +29,11 @@
     "long": "Origin of the term: \"miner extractable value\" was introduced in the paper \"Flash Boys 2.0\" (arXiv 1904.05234, April 2019) by Daian, Goldfeder, Kell, Li, Zhao, Bentov, Breidenbach and Juels. The paper studied frontrunning bots on decentralized exchanges and gave a name and a measurable framework to value that block producers can take by ordering transactions.",
     "tech": "Crypto #MEV Dark Forest #3: \"Miner extractable value\" was coined in \"Flash Boys 2.0\" by Daian, Goldfeder, Kell, Li, Zhao, Bentov, Breidenbach and Juels (arXiv 1904.05234, April 2019), a study of frontrunning bots on DEXes. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #3: The term MEV comes from a 2019 research paper called \"Flash Boys 2.0\", named after Michael Lewis's book about high-speed traders on Wall Street. #DeFi #CryptoTrading",
+    "card": {
+      "big": "2019",
+      "title": "Where the term MEV was born",
+      "sub": "The paper Flash Boys 2.0 named the value producers can take by ordering transactions."
+    },
     "source": "https://arxiv.org/abs/1904.05234",
     "status": "checked"
   },
@@ -29,6 +42,10 @@
     "long": "The M changed meaning. MEV was first applied to proof-of-work and called \"miner extractable value\", because miners controlled inclusion, exclusion and ordering. Since The Merge moved Ethereum to proof-of-stake, validators hold that role and mining is gone, but the extraction methods still exist, so the term became \"maximal extractable value\". The mechanics apply to any block producer, on any chain.",
     "tech": "Crypto #MEV Dark Forest #4: MEV was first \"miner extractable value\". With proof-of-stake, validators order blocks, so the community renamed it \"maximal extractable value\". The mechanics apply to any block producer. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #4: The \"M\" in MEV used to mean \"miner\". Ethereum has no miners since it moved to proof-of-stake, so it now means \"maximal\". The idea stayed the same. #DeFi #CryptoTrading",
+    "card": {
+      "title": "From miner to maximal extractable value",
+      "sub": "The Merge replaced miners with validators, but the extraction methods stayed."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -37,6 +54,10 @@
     "long": "The mempool is the set of transactions that have been sent but are not yet in a block. Ethereum nodes gossip pending transactions to their peers and each keeps them locally until inclusion. On Ethereum this pool is public: anyone running a node can subscribe to the stream, read calldata, amounts and fees, and simulate the result of a pending trade before it is final. This openness is what makes MEV extraction from other users' transactions possible.",
     "tech": "Crypto #MEV Dark Forest #5: Ethereum nodes gossip pending txs to peers and keep them in a local mempool until inclusion. Anyone can subscribe to that stream, see calldata, amounts and fees, and simulate the result before it is final. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #5: The mempool is the waiting room of a blockchain: transactions sent but not yet in a block. On Ethereum it is public, so anyone running a node can read your pending trade. #DeFi #CryptoTrading",
+    "card": {
+      "title": "The mempool is a public waiting room",
+      "sub": "Anyone running a node can read pending trades and simulate them before they are final."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -45,6 +66,11 @@
     "long": "Timing. Ethereum proof-of-stake divides time into 12-second slots, and each slot has one chosen block proposer. MEV competition happens inside that window: a bot must spot an opportunity, simulate it, place its bid and get its transaction into the block before the slot ends. For a user, this means a pending transaction is exposed for seconds, which is enough for automated bots.",
     "tech": "Crypto #MEV Dark Forest #6: Ethereum proof-of-stake runs on 12-second slots, each with one chosen proposer. MEV competition is a race inside that slot: find an opportunity, simulate, bid, and get into the block before the slot ends. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #6: On Ethereum, a new block slot comes every 12 seconds. That short window is when bots spot your transaction and race to act on it. #DeFi #CryptoTrading",
+    "card": {
+      "big": "12 s",
+      "title": "Seconds of exposure are enough for bots",
+      "sub": "In each slot, bots spot, simulate and bid on a pending transaction before it closes."
+    },
     "source": "https://ethereum.org/en/developers/docs/blocks/",
     "status": "checked"
   },
@@ -53,6 +79,11 @@
     "long": "Searchers are the hunters: independent participants who run algorithms over mempool and chain data to detect profitable MEV, with bots that submit the transactions automatically. They pay high gas fees or direct bids to block producers to get included. Because many searchers chase the same opportunities, competition pushes most of the profit to the producer: per ethereum.org, for DEX arbitrage searchers may pay 90% or more of their MEV revenue in gas fees.",
     "tech": "Crypto #MEV Dark Forest #7: Searchers run algorithms over mempool and chain state to find MEV, then pay high fees or direct bids to get their txs placed. Competition pushes most of the profit to the block producer. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #7: The hunters in the dark forest are called \"searchers\": bots that scan the chain all day for profitable moves and pay block producers to include their transactions. #DeFi #CryptoTrading",
+    "card": {
+      "big": "90%",
+      "title": "Searchers hunt MEV, producers keep most",
+      "sub": "On DEX arbitrage, searchers may pay 90% or more of their MEV revenue in gas fees."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -61,6 +92,10 @@
     "long": "Front-running: a searcher sees a known pending transaction and places its own transaction right before it in the same block, usually by paying a higher priority fee, to profit from the price move or state change the victim's transaction will cause. For the victim, the result is a worse price: the bot traded first on the same opportunity.",
     "tech": "Crypto #MEV Dark Forest #8: Front-running = placing a tx right before a known pending tx in the same block, usually by outbidding its priority fee, to profit from the price move or state change it will cause. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #8: Front-running: a bot sees your pending trade, sends the same kind of trade first with a higher fee, and gets the better price before you. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Front-running: the bot trades first",
+      "sub": "It pays a higher priority fee to land right before your transaction and take the move."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -69,6 +104,10 @@
     "long": "A sandwich is the best-known attack on DEX users: front-run + victim + back-run in one block. The searcher buys the token just before a large pending swap, the victim's swap then executes at a worse price on the AMM curve, and the searcher sells right after into the higher price the victim created. The victim faces more slippage and worse execution; the bot keeps the difference. Per ethereum.org, sandwiching is riskier than arbitrage because it is not atomic.",
     "tech": "Crypto #MEV Dark Forest #9: Sandwich = front-run + victim + back-run in one block. The searcher buys the token, the victim's swap executes at a worse price on the AMM curve, and the searcher sells into the higher price. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #9: A sandwich attack: a bot buys just before you, your buy pushes the price up, the bot sells right after you. You pay more, the bot keeps the difference. #DeFi #CryptoTrading",
+    "card": {
+      "title": "How a sandwich attack squeezes a swap",
+      "sub": "Buy just before a large swap, let it push the price, then sell right after into it."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -77,6 +116,10 @@
     "long": "Slippage tolerance limits a sandwich. A swap carries a minimum output (amountOutMin): the worst price the user accepts. The attacker sizes its front-run so that the victim's trade still clears that floor and does not revert. So the slippage setting is also the attacker's budget: the wider it is, the bigger the gap a bot can extract while the trade still goes through.",
     "tech": "Crypto #MEV Dark Forest #10: A swap's minimum-output (amountOutMin) caps a sandwich. The attacker sizes its front-run so the victim still clears that floor. A wide slippage setting means a bigger extractable gap. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #10: Your \"slippage tolerance\" is the worst price you accept. For a sandwich bot, it is also the budget: it can push the price up to that limit and your trade still goes through. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Your slippage setting is the bot's budget",
+      "sub": "The wider your tolerance, the bigger the gap a sandwich can take without a revert."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -85,6 +128,10 @@
     "long": "Back-running: inserting a transaction immediately after a target transaction, such as a large swap or an oracle update, to capture the state it creates, for example by arbitraging a price the swap moved. Unlike front-running, it does not change the target's execution, because the target has already executed when the back-run runs. It is the milder form of MEV and the basis of the refund schemes later in the series.",
     "tech": "Crypto #MEV Dark Forest #11: Back-running = inserting a tx immediately after a target tx (a large swap, an oracle update) to capture the state it creates. Unlike front-running, it does not worsen the target's execution. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #11: Back-running is the gentle cousin: a bot places its trade right after yours, for example to fix a price your trade moved. You don't lose anything from it. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Back-running, the milder form of MEV",
+      "sub": "A transaction placed right after a target captures the state it creates, without harm."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -93,6 +140,10 @@
     "long": "DEX arbitrage is, per ethereum.org, the simplest and best-known MEV opportunity, and so the most competitive. If two DEXes price a token differently, a searcher buys on the cheaper pool and sells on the other in a single atomic transaction: if any leg fails, the whole transaction reverts. This form of MEV is useful: it keeps prices aligned across AMMs so users get more correct prices.",
     "tech": "Crypto #MEV Dark Forest #12: DEX arbitrage is the simplest, best-known MEV: buy on the pool with the lower price, sell on the other, atomically in one tx. If any leg fails, the whole tx reverts. It keeps AMM prices in line. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #12: Not all MEV is bad. When a token is cheaper on one exchange than another, bots buy low and sell high at once. That keeps prices aligned across DEXes. #DeFi #CryptoTrading",
+    "card": {
+      "title": "DEX arbitrage keeps prices aligned",
+      "sub": "Buy on the cheaper pool, sell on the other, in one atomic transaction that can revert."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -101,6 +152,10 @@
     "long": "Liquidations: lending protocols like Aave or Maker let users borrow against collateral. When collateral value falls below the required ratio, the protocol lets anyone repay the debt and seize the collateral, and the borrower pays a liquidation fee, part of which goes to the liquidator. Searchers watch positions and race to liquidate first. That race is MEV, and the protocol relies on it so lenders get paid back.",
     "tech": "Crypto #MEV Dark Forest #13: Liquidations: when a borrower's collateral falls below the required ratio, anyone can repay debt and seize collateral plus a fee. Searchers watch positions and race to liquidate first. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #13: Lending apps need someone to close loans that are no longer safe. Bots race to do it because the protocol pays them a bonus. That race is MEV, and it keeps lenders solvent. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Liquidation races keep lenders whole",
+      "sub": "Searchers race to repay bad debt and seize collateral, earning part of the fee."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   },
@@ -109,6 +164,11 @@
     "long": "Flash loans remove the capital barrier. Aave V3 lets anyone borrow with no collateral as long as the amount plus a fee is returned in the same transaction; otherwise the whole transaction reverts. The fee was 0.05% at V3 deployment and can be changed by governance. Aave cites arbitrage and liquidations as uses: a bot can capture MEV without holding the principal itself.",
     "tech": "Crypto #MEV Dark Forest #14: Aave flash loans: borrow with no collateral, return amount + fee (0.05% at V3 deployment, changeable by governance) in the same tx, or it reverts. Aave cites arbitrage and liquidations without holding the principal. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #14: A bot doesn't need to be rich to do arbitrage. With a flash loan it borrows with no collateral, trades, and repays plus a small fee, all in one transaction. If it can't repay, the whole transaction is cancelled. #DeFi #CryptoTrading",
+    "card": {
+      "big": "0.05%",
+      "title": "Flash loans remove the capital barrier",
+      "sub": "Borrow with no collateral, repay plus a fee in the same transaction, or it all reverts."
+    },
     "source": "https://aave.com/docs/aave-v3/guides/flash-loans (+ https://ethereum.org/en/developers/docs/mev/)",
     "status": "checked"
   },
@@ -117,6 +177,11 @@
     "long": "Just-in-time (JIT) liquidity on Uniswap v3, described by Uniswap Labs (Sept 2022): a liquidity provider sees a large pending swap, mints a concentrated position in the tick range the swap will cross, collects a share of the swap fee, then burns the position right after, all in one block, often via a Flashbots bundle. Over 2021-22, more than 95% of this JIT liquidity came from a single address.",
     "tech": "Crypto #MEV Dark Forest #15: JIT liquidity on Uniswap v3: an LP mints a concentrated position in the tick a large pending swap crosses, then burns it right after, in one block, often via a Flashbots bundle. >95% came from one address (2021-22). #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #15: Just-in-time liquidity: a bot sees a very large trade coming, adds liquidity to the pool just before it, collects a share of the trading fee, and pulls out right after, all in the same block. #DeFi #CryptoTrading",
+    "card": {
+      "big": ">95%",
+      "title": "Just-in-time liquidity on Uniswap v3",
+      "sub": "An LP mints a position before a large swap, takes fees, then burns it in the same block."
+    },
     "source": "https://blog.uniswap.org/jit-liquidity (Uniswap Labs, Sept 2022 ; l'ancien lien Kaiko redirige vers app.kaiko.com)",
     "status": "checked"
   },
@@ -125,6 +190,10 @@
     "long": "Before private channels, MEV competition was public. Flash Boys 2.0 documented priority gas auctions (PGAs): competing bots rebroadcast the same transaction with ever higher gas prices, outbidding each other in real time to get the earliest position in the block. These open bidding wars were the first visible form of MEV competition on Ethereum.",
     "tech": "Crypto #MEV Dark Forest #16: Flash Boys 2.0 documented priority gas auctions (PGAs): bots rebroadcast the same tx with ever higher gas prices, outbidding each other in real time for the earliest position in the block. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #16: Before private auctions, bots fought in public: each raised its fee to jump ahead of the others, again and again. Researchers called these fee wars \"priority gas auctions\". #DeFi #CryptoTrading",
+    "card": {
+      "title": "When MEV was a public bidding war",
+      "sub": "In priority gas auctions, bots rebroadcast the same transaction at ever higher gas prices."
+    },
     "source": "https://arxiv.org/abs/1904.05234",
     "status": "checked"
   },
@@ -133,6 +202,10 @@
     "long": "Public gas auctions had side effects for everyone. Per Flashbots, they caused network congestion, raised gas prices for normal users, and filled blockspace with reverted transactions from losing bots that still paid fees. Flashbots Auction was built to move this bidding off-chain, into a private sealed-bid channel, to reduce those costs.",
     "tech": "Crypto #MEV Dark Forest #17: Public PGAs had side effects: network congestion, higher gas for all users, and blockspace wasted on reverted txs from losing bots. Flashbots Auction was built to move this bidding off-chain. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #17: Those fee wars hurt everyone: they pushed gas prices up for normal users and filled blocks with failed bot transactions that still paid fees. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Gas wars cost everyone, not just bots",
+      "sub": "Congestion, higher gas prices and blocks filled with reverted transactions from losers."
+    },
     "source": "https://docs.flashbots.net/flashbots-auction/overview",
     "status": "checked"
   },
@@ -141,6 +214,10 @@
     "long": "Generalized frontrunners, described in Paradigm's \"Ethereum is a Dark Forest\": bots that watch pending transactions for any that would be profitable to copy, replace the addresses with their own, and send the copy first. They can also execute a transaction and copy profitable internal calls found in its trace. They do not need to understand the contract, only to see that the copy makes money.",
     "tech": "Crypto #MEV Dark Forest #18: A generalized frontrunner looks for any pending tx it can profitably copy, replacing the addresses with its own. It can also execute the tx and copy profitable internal calls from its trace. No need to understand the contract. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #18: Some bots don't even need to understand your transaction. They look for any pending transaction that would make money, copy it with their own address swapped in, and try to get the copy in first. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Bots that copy without understanding",
+      "sub": "Generalized frontrunners swap in their own address and send a profitable copy first."
+    },
     "source": "https://www.paradigm.xyz/writing/ethereum-is-a-dark-forest",
     "status": "checked"
   },
@@ -149,6 +226,11 @@
     "long": "The story behind the name: in \"Ethereum is a Dark Forest\" (Paradigm, Aug 28 2020), Robinson and Konstantopoulos describe about $12,000 of Uniswap v2 LP tokens sitting in a pair contract, which anyone could claim by calling burn(). Their attempt to recover them was spotted in the mempool by a generalized frontrunner, which copied their call and took the tokens first.",
     "tech": "Crypto #MEV Dark Forest #19: \"Ethereum is a Dark Forest\" (Robinson & Konstantopoulos, Aug 28 2020): ≈$12k of Uniswap v2 LP tokens sat in a pair contract; anyone could call burn(). A generalized frontrunner copied their call and took them. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #19: In Aug 2020, two researchers tried to rescue about $12,000 of tokens anyone could claim. A bot saw their transaction and claimed the tokens first. They titled their story \"Ethereum is a Dark Forest\". #DeFi #CryptoTrading",
+    "card": {
+      "big": "$12,000",
+      "title": "The rescue that named the dark forest",
+      "sub": "A recovery of Uniswap v2 LP tokens was spotted in the mempool, copied and taken first."
+    },
     "source": "https://www.paradigm.xyz/writing/ethereum-is-a-dark-forest",
     "status": "checked"
   },
@@ -157,6 +239,10 @@
     "long": "The metaphor comes from Liu Cixin's science-fiction novel The Dark Forest: a universe full of hidden predators where being detected means being destroyed. Paradigm applied it to Ethereum's mempool: a profitable pending transaction is detected by simulation, then copied or front-run by bots. The safe move is to stay hidden.",
     "tech": "Crypto #MEV Dark Forest #20: The metaphor is from Liu Cixin's The Dark Forest: being detected means being destroyed. In the mempool, a profitable pending tx is detected by simulation, then copied or front-run by bots. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #20: Why \"dark forest\"? It comes from Liu Cixin's sci-fi novel The Dark Forest: a universe where anything that reveals itself gets destroyed by hidden predators. Like a pending transaction. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Detected means destroyed",
+      "sub": "Borrowed from Liu Cixin's novel: in the mempool, a visible profitable trade gets copied."
+    },
     "source": "https://www.paradigm.xyz/writing/ethereum-is-a-dark-forest + https://en.wikipedia.org/wiki/The_Dark_Forest (auteur Liu Cixin, non nommé dans l'article Paradigm)",
     "status": "checked"
   },
@@ -165,6 +251,11 @@
     "long": "\"Escaping the Dark Forest\" (samczsun, Sept 2020): a vulnerable Lien Finance contract held about 25,000 ETH, over $9.6M. A public rescue transaction could have been copied by bots, so the team sent the rescue transactions to the SparkPool mining pool through a private submission feature: they never touched the public mempool. Private submission was the defense.",
     "tech": "Crypto #MEV Dark Forest #21: \"Escaping the Dark Forest\" (samczsun, Sept 2020): a Lien Finance contract held ≈25k ETH (over $9.6M). The rescue txs went to SparkPool via a private submission feature and never touched the public mempool. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #21: In Sept 2020, a white hat found ≈25,000 ETH at risk in a DeFi contract. To rescue it without bots stealing it, his team sent the transactions privately to a mining pool instead of the public mempool. #DeFi #CryptoTrading",
+    "card": {
+      "big": "25,000 ETH",
+      "title": "Escaping the dark forest in private",
+      "sub": "The rescue went straight to a mining pool and never touched the public mempool."
+    },
     "source": "https://samczsun.com/escaping-the-dark-forest/",
     "status": "checked"
   },
@@ -173,6 +264,11 @@
     "long": "Black Thursday, March 12 2020: gas spiked and most MakerDAO keeper bots failed to bid in collateral auctions. Some auctions closed with a single bid of 0 DAI, so about $8.32M of ETH collateral was won for nothing. It shows the reverse of MEV competition: when congestion stops bots from competing, liquidations go badly for the protocol and its users.",
     "tech": "Crypto #MEV Dark Forest #22: MakerDAO, March 12 2020: gas spiked, most keeper bots failed to bid, and some liquidation auctions closed with a single 0 DAI bid. ≈$8.32M of ETH collateral was won for nothing. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #22: On Black Thursday (March 12, 2020), Ethereum was so congested that some MakerDAO collateral auctions got no competing bids. About $8.3M of ETH went to bidders who paid 0 DAI. #DeFi #CryptoTrading",
+    "card": {
+      "big": "0 DAI",
+      "title": "Black Thursday: when bots stopped bidding",
+      "sub": "Gas spiked, keepers failed, and about $8.32M of ETH collateral was won for nothing."
+    },
     "source": "https://medium.com/@whiterabbit_hq/black-thursday-for-makerdao-8-32-million-was-liquidated-for-0-dai-36b83cac56b6",
     "status": "checked"
   },
@@ -181,6 +277,10 @@
     "long": "Time-bandit attacks, from Flash Boys 2.0: if the MEV available in past blocks exceeds the cost of reorganizing the chain, a block producer is incentivized to fork and re-mine those blocks to capture it. Per ethereum.org, MEV well above the block reward could push validators to reorg, causing consensus instability. MEV is then not only a user problem but a risk to the chain's security.",
     "tech": "Crypto #MEV Dark Forest #23: Time-bandit attacks (Flash Boys 2.0): if the MEV in past blocks exceeds the cost of reorganizing the chain, a producer is incentivized to fork and re-mine those blocks to capture it. A consensus risk. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #23: MEV can even threaten the chain itself. If an old block held enough profit, a block producer could be tempted to rewrite history to grab it. Researchers call this a \"time-bandit\" attack. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Time-bandit attacks threaten consensus",
+      "sub": "If past MEV exceeds the cost of a reorg, producers are tempted to rewrite the chain."
+    },
     "source": "https://arxiv.org/abs/1904.05234",
     "status": "checked"
   },
@@ -189,6 +289,10 @@
     "long": "Flashbots bundles: a searcher sends an ordered list of transactions, executed all-or-nothing, privately and with a sealed bid, instead of competing in the public mempool. A bundle that would revert is simply not included, so losing searchers pay nothing. This moved MEV competition off-chain and stopped failed bot transactions from filling blocks.",
     "tech": "Crypto #MEV Dark Forest #24: Flashbots bundles: an ordered list of txs, executed all-or-nothing, sent privately with a sealed bid. A bundle that would revert is simply not included, so losing searchers pay nothing. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #24: Flashbots, a research group, gave bots a private channel: they send a sealed bid with a package of transactions straight to block producers, instead of fighting in public. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Flashbots bundles: all or nothing",
+      "sub": "Private, sealed-bid, ordered transactions. A bundle that would revert costs nothing."
+    },
     "source": "https://docs.flashbots.net/flashbots-auction/overview",
     "status": "checked"
   },
@@ -197,6 +301,11 @@
     "long": "EIP-1559 (London upgrade, Aug 2021) split the Ethereum fee: the base fee is burned, and only the priority fee (tip) goes to the block's fee recipient. MEV is paid on top of that, either through higher priority fees or through a direct transfer to the producer, and none of it is burned. This is why bots compete with tips and direct payments.",
     "tech": "Crypto #MEV Dark Forest #25: EIP-1559 (London, Aug 2021): base fee is burned, the priority fee goes to the block's fee recipient. MEV is paid on top, via priority fees or a direct transfer, and none of it is burned. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #25: Since the London upgrade (Aug 2021), Ethereum burns the base part of every fee. Only the tip goes to the block producer, and bots compete with tips or direct payments. #DeFi #CryptoTrading",
+    "card": {
+      "big": "EIP-1559",
+      "title": "Why MEV is never burned",
+      "sub": "Only the base fee is burned; tips and direct payments go to the block producer."
+    },
     "source": "https://ethereum.org/en/developers/docs/gas/",
     "status": "checked"
   },
@@ -205,6 +314,10 @@
     "long": "Proposer-builder separation (PBS): the validator that proposes a block usually does not build it. Specialized builders compete to assemble the most valuable block from public and private order flow, and the proposer simply selects the highest bid. Validators need no MEV skills: per ethereum.org, even if a few specialized builders dominate, the MEV reward can go to any validator, including home stakers.",
     "tech": "Crypto #MEV Dark Forest #26: Proposer-builder separation (PBS): builders compete to assemble the most valuable block from public and private order flow; the proposer just selects the highest bid. Validators need no MEV skills. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #26: Today on Ethereum, the validator who proposes a block usually doesn't build it. Specialists called builders assemble the block, and the validator picks the one that pays it most. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Proposers choose, builders build",
+      "sub": "Builders compete to assemble the most valuable block and the proposer takes the top bid."
+    },
     "source": "https://ethereum.org/en/roadmap/pbs/",
     "status": "checked"
   },
@@ -213,6 +326,11 @@
     "long": "MEV-Boost is Flashbots' out-of-protocol PBS sidecar for validators. It activated with The Merge on Sept 15 2022 (Merge block 15537394, MEV-Boost from block 15537940). Adoption was fast: per Flashbots' anniversary review, 50% of validators ran it within the first month and about 90% by the end of the second month.",
     "tech": "Crypto #MEV Dark Forest #27: MEV-Boost (out-of-protocol PBS sidecar) activated at the Merge, block 15537940, Sept 15 2022. Flashbots reports 50% of validators ran it after one month and ≈90% after two. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #27: MEV-Boost, made by Flashbots, went live with the Merge on Sept 15, 2022. Validators adopted it fast: about 90% of them ran it within two months. #DeFi #CryptoTrading",
+    "card": {
+      "big": "90%",
+      "title": "MEV-Boost spread fast after The Merge",
+      "sub": "50% of validators ran it within the first month, about 90% by the end of the second."
+    },
     "source": "https://collective.flashbots.net/t/merge-anniversary-a-year-in-review/2400",
     "status": "checked"
   },
@@ -221,6 +339,10 @@
     "long": "Relays are the trusted middlemen of MEV-Boost. They hold builders' blocks in escrow and check the block and its payment. The proposer signs a blinded header for the best bid, without seeing the contents; only then does the relay release the full payload. Builders trust relays not to steal their MEV, and proposers trust that the bids are real.",
     "tech": "Crypto #MEV Dark Forest #28: In MEV-Boost, relays escrow builder blocks. The proposer signs a blinded header for the best bid; only then does the relay release the payload. Builders trust relays not to steal MEV, proposers trust bids are real. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #28: Between builders and validators sit \"relays\": middlemen trusted by both sides. They check the block and its payment, and hide its contents until the validator commits to it. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Relays are the trusted middlemen",
+      "sub": "The proposer signs a blinded header first; only then does the relay release the block."
+    },
     "source": "https://docs.flashbots.net/flashbots-mev-boost/introduction",
     "status": "checked"
   },
@@ -229,6 +351,11 @@
     "long": "Relay and builder concentration, per Flashbots' Merge anniversary review (Sept 2023): the top 6 MEV-Boost relays had a combined ≈90% market share, though no single relay exceeded 25%. The top 4 block builders also held about 90% of builder market share. A few intermediaries carried most Ethereum blocks one year after The Merge.",
     "tech": "Crypto #MEV Dark Forest #29: Flashbots' Merge anniversary review (Sept 2023): top 6 MEV-Boost relays held ≈90% of slot share, none above 25%. The top 4 builders also held ≈90% of builder market share. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #29: One year after the Merge, a handful of relays carried most Ethereum blocks: the top 6 handled about 90% of them, and no single relay had more than 25%. #DeFi #CryptoTrading",
+    "card": {
+      "big": "≈90%",
+      "title": "A handful of relays carry most blocks",
+      "sub": "A year after The Merge, the top 6 relays held ≈90% share, and the top 4 builders too."
+    },
     "source": "https://collective.flashbots.net/t/merge-anniversary-a-year-in-review/2400",
     "status": "checked"
   },
@@ -237,6 +364,11 @@
     "long": "Builder concentration grew further. According to Ethereum Foundation researcher Toni Wahrstätter, reported by Cointelegraph, two builders, beaverbuild and Titan, built 88.7% of Ethereum mainnet blocks in the first two weeks of October 2024. Their edge comes from exclusive order flow. Thousands of validators propose, but very few parties decide block contents.",
     "tech": "Crypto #MEV Dark Forest #30: Builder concentration: per EF researcher Toni Wahrstätter, beaverbuild and Titan built 88.7% of Ethereum mainnet blocks in the first two weeks of Oct 2024. Exclusive order flow drives the edge. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #30: Thousands of validators, but very few block builders. In early October 2024, just two builders produced about 89% of all Ethereum blocks. A new kind of centralization. #DeFi #CryptoTrading",
+    "card": {
+      "big": "88.7%",
+      "title": "Two builders, most of Ethereum's blocks",
+      "sub": "beaverbuild and Titan built 88.7% of blocks in two weeks of October 2024."
+    },
     "source": "https://cointelegraph.com/news/two-ethereum-entities-produced-88-blocks-centralization-concerns",
     "status": "checked"
   },
@@ -245,6 +377,11 @@
     "long": "MEV peaks with market chaos. Flashbots' review of the first post-Merge year lists the largest MEV episodes by ETH paid to proposers: the FTX collapse (five days of liquidations, 14,585 ETH), the SVB/USDC depeg (7,694 ETH) and the Vyper exploit (7,187 ETH). Volatility creates price gaps, liquidations and arbitrage.",
     "tech": "Crypto #MEV Dark Forest #31: Largest MEV episodes in the first post-Merge year (Flashbots): FTX collapse 14,585 ETH, SVB/USDC depeg 7,694 ETH, Vyper exploit 7,187 ETH paid to validators. Volatility creates arbitrage. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #31: MEV peaks during market chaos. In Ethereum's first post-Merge year, the biggest MEV period was the FTX collapse, followed by the USDC depeg. Panic means price gaps, and price gaps mean bots. #DeFi #CryptoTrading",
+    "card": {
+      "big": "14,585 ETH",
+      "title": "MEV peaks when markets panic",
+      "sub": "FTX, the USDC depeg and the Vyper exploit topped the first post-Merge year."
+    },
     "source": "https://collective.flashbots.net/t/merge-anniversary-a-year-in-review/2400",
     "status": "checked"
   },
@@ -253,6 +390,11 @@
     "long": "MEV rewards are very uneven. Per Flashbots, the highest single MEV payout in the first post-Merge year was 678 ETH, from a whitehat transaction via beaverbuild, passed on to the block's proposer. Over that whole year, validators received over 300,000 ETH from the blocks they proposed. A few blocks are jackpots.",
     "tech": "Crypto #MEV Dark Forest #32: MEV rewards are very uneven: the record single MEV-Boost payout in the first post-Merge year was 678 ETH, while total proposer income over that year was over 300,000 ETH (fees + MEV). #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #32: Some blocks are jackpots. In Ethereum's first year after the Merge, the largest MEV payment for a single block was 678 ETH, paid to one validator. #DeFi #CryptoTrading",
+    "card": {
+      "big": "678 ETH",
+      "title": "A few blocks are jackpots",
+      "sub": "Top single MEV payout of the first post-Merge year, against over 300,000 ETH in total."
+    },
     "source": "https://collective.flashbots.net/t/merge-anniversary-a-year-in-review/2400",
     "status": "checked"
   },
@@ -261,6 +403,11 @@
     "long": "Censorship through PBS: after the US sanctioned Tornado Cash in Aug 2022, some relays filtered OFAC-sanctioned addresses. Per Flashbots, blocks from censoring relays peaked at 79% on Nov 21 2022, then fell to a low of 17% in April 2023 as non-censoring relays and builders gained share, before rising again to nearly 30% by Sept 2023.",
     "tech": "Crypto #MEV Dark Forest #33: OFAC censorship via PBS: relays filtering sanctioned addresses peaked at 79% of blocks on Nov 21 2022, fell to 17% in April 2023 as non-censoring relays and builders gained share. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #33: After the US sanctioned Tornado Cash in Aug 2022, some relays refused blocks with its transactions. At the peak, on Nov 21, 2022, about 79% of Ethereum blocks went through such relays. #DeFi #CryptoTrading",
+    "card": {
+      "big": "79%",
+      "title": "Censorship crept in through relays",
+      "sub": "Blocks from relays filtering OFAC-sanctioned addresses peaked on Nov 21 2022."
+    },
     "source": "https://collective.flashbots.net/t/merge-anniversary-a-year-in-review/2400",
     "status": "checked"
   },
@@ -269,6 +416,10 @@
     "long": "jaredfromsubway.eth, a sandwich bot named after the Subway sandwich chain, became one of Ethereum's top gas spenders during the April 2023 memecoin frenzy, per The Block. It paid millions of dollars in fees to front-run and sandwich memecoin buyers such as PEPE traders. It is the most famous example of sandwich MEV.",
     "tech": "Crypto #MEV Dark Forest #34: jaredfromsubway.eth, a sandwich bot named for the sandwich chain, became one of Ethereum's top gas spenders in April 2023, paying millions in fees to front-run memecoin buyers like PEPE traders. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #34: The most famous sandwich bot has a name: jaredfromsubway.eth. During the April 2023 memecoin frenzy it spent millions of dollars on fees to sandwich traders. #DeFi #CryptoTrading",
+    "card": {
+      "title": "The bot named after a sandwich chain",
+      "sub": "jaredfromsubway.eth paid millions in fees to sandwich memecoin buyers in April 2023."
+    },
     "source": "https://www.theblock.co/post/227110",
     "status": "checked"
   },
@@ -277,6 +428,11 @@
     "long": "Predators became prey. In April 2023, a malicious validator exploited a flaw in a MEV-Boost relay to see the contents of sandwich bots' bundles before its block was final. It used bait trades and reordered transactions to drain the bots: about $25M taken in about 12 seconds, in one block. It exposed the trust placed in relays.",
     "tech": "Crypto #MEV Dark Forest #35: April 2023: a malicious validator exploited a MEV-Boost relay flaw to see bundle contents before the block was final, then reordered txs to drain sandwich bots via bait trades. ≈$25M in ≈12 seconds. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #35: Predators can become prey. In April 2023, a validator used a flaw in MEV-Boost software to see sandwich bots' trades before committing, and turned them against the bots: about $25M taken in one block. #DeFi #CryptoTrading",
+    "card": {
+      "big": "$25M",
+      "title": "When sandwich bots became the prey",
+      "sub": "A malicious validator used a relay flaw to drain bots in about 12 seconds, in one block."
+    },
     "source": "https://www.theblock.co/post/378101/massive-overstep-mistrial-declared-for-mev-brothers-accused-of-25-million-fraud-on-ethereum",
     "status": "checked"
   },
@@ -285,6 +441,10 @@
     "long": "US v. Peraire-Bueno (SDNY): prosecutors charged two MIT-educated brothers over the April 2023 $25M MEV-Boost exploit. The trial in New York lasted four weeks in 2025; the jury could not agree and a mistrial was declared in November 2025. Prosecutors want to retry them; as of March 2026 no retrial date was set. Check the status before publishing.",
     "tech": "Crypto #MEV Dark Forest #36: US v. Peraire-Bueno (SDNY): the brothers accused of the April 2023 $25M MEV-Boost exploit went to trial in 2025. After four weeks the jury deadlocked; mistrial in Nov 2025. The government seeks a retrial. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #36: US prosecutors charged two MIT-educated brothers over that $25M MEV exploit. Their trial in New York ended in a mistrial in November 2025: the jury could not agree. Prosecutors want to retry them. #DeFi #CryptoTrading",
+    "card": {
+      "title": "The MEV-Boost exploit went to court",
+      "sub": "A 2025 trial over the $25M exploit ended in a mistrial, with no retrial date set yet."
+    },
     "source": "https://cointelegraph.com/news/mev-bot-trial-ends-in-mistrial-after-jury-deadlock-on-brothers-verdict + https://innercitypress.com/cryptobrostrial26perairebuenoicp033026.html (30/03/2026 : le parquet se dit prêt à rejuger « as soon as practicable », la défense demande juin 2027 ; aucune date fixée par le juge, motion Rule 29 en attente)",
     "status": "checked"
   },
@@ -293,6 +453,10 @@
     "long": "Simple protection: Flashbots Protect RPC. The wallet sends the transaction directly to builders instead of the public mempool, so it cannot be front-run or sandwiched there. Reverted transactions are not included, so a failed swap costs no gas. Switching the wallet's RPC is enough to stop being visible to public mempool bots.",
     "tech": "Crypto #MEV Dark Forest #37: Flashbots Protect RPC: txs skip the public mempool and go to builders directly, so they can't be front-run or sandwiched there. Reverted txs aren't included, so a failed swap costs no gas. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #37: Simple protection: a private RPC like Flashbots Protect. Your wallet sends the transaction privately to block builders, so it never sits in the public mempool where sandwich bots look. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Switch your RPC, leave the public mempool",
+      "sub": "Flashbots Protect sends transactions straight to builders, and failed swaps cost no gas."
+    },
     "source": "https://docs.flashbots.net/flashbots-protect/overview",
     "status": "checked"
   },
@@ -301,6 +465,11 @@
     "long": "Private RPCs still need trust. By default, Flashbots Protect sends a transaction only to the Flashbots builder and drops it if not included within 25 blocks. Sharing it with more builders raises the inclusion rate, but per Flashbots' docs, you trust each of them not to frontrun your transaction or disclose it to third-party MEV searchers. Speed against trust.",
     "tech": "Crypto #MEV Dark Forest #38: Flashbots Protect default: your tx goes only to the Flashbots builder and is dropped if not included within 25 blocks. Sharing with more builders raises the inclusion rate, but you trust each not to frontrun or leak it. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #38: Private RPCs are not magic. With Flashbots Protect, you trust the block builders that get your transaction not to front-run it or leak it to other bots. More builders can mean faster inclusion, but more parties to trust. #DeFi #CryptoTrading",
+    "card": {
+      "big": "25 blocks",
+      "title": "Private RPCs trade speed for trust",
+      "sub": "More builders means better inclusion, but each must be trusted not to frontrun you."
+    },
     "source": "https://docs.flashbots.net/flashbots-protect/settings-guide + https://docs.flashbots.net/flashbots-protect/quick-start (\"you trust them not to frontrun your transaction or disclose it to third-party MEV searchers\")",
     "status": "checked"
   },
@@ -309,6 +478,10 @@
     "long": "MEV-Share, introduced by Flashbots in 2023, is an order flow auction: it reveals selected hints about a user's transaction to searchers, who bid to back-run it. A share of the winning bid is refunded to the user. The MEV from your own trade partly goes back to you instead of only to bots and validators.",
     "tech": "Crypto #MEV Dark Forest #39: MEV-Share, introduced by Flashbots in 2023, is an order flow auction: it reveals selected tx hints to searchers, who bid to back-run; a share of the winning bid is refunded to the user. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #39: What if the MEV from your trade went back to you? Flashbots' MEV-Share (2023) lets bots back-run your transaction and pays you part of their profit. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Getting paid for your own MEV",
+      "sub": "MEV-Share lets searchers bid to back-run your trade and refunds you part of the bid."
+    },
     "source": "https://docs.flashbots.net/flashbots-mev-share/overview",
     "status": "checked"
   },
@@ -317,6 +490,11 @@
     "long": "MEV Blocker RPC launched on April 5 2023, built by CoW Swap, Agnostic Relay and Beaver Build, per The Block. It shields transactions from front-running and lets searchers bid to back-run them; at least 90% of the winning bid goes back to the user and the rest to the validator. Another order flow auction that returns MEV to users.",
     "tech": "Crypto #MEV Dark Forest #40: MEV Blocker RPC (launched Apr 5 2023, CoW Swap + Agnostic Relay + Beaver Build): searchers bid to back-run your tx; ≥90% of the winning bid goes back to the user, the rest to the validator. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #40: Another option, MEV Blocker, launched in April 2023 by CoW Swap, Agnostic Relay and Beaver Build. It shields your trade and returns at least 90% of back-run profits to you. #DeFi #CryptoTrading",
+    "card": {
+      "big": "≥90%",
+      "title": "MEV Blocker sends the bid back to you",
+      "sub": "It shields trades from front-running and returns most of each back-run bid to the user."
+    },
     "source": "https://www.theblock.co/post/225023/ethereum-projects-come-together-on-mev-blocker-rpc-launch-to-share-profits-with-users",
     "status": "checked"
   },
@@ -325,6 +503,10 @@
     "long": "CoW Protocol uses batch auctions: users sign orders as intents, solvers compete to settle a whole batch, and all trades of the same pair in a batch clear at a uniform price. If everyone gets the same price, ordering inside the batch gives no edge, so there is no \"before you\" for a bot to exploit. MEV protection by design, not by hiding.",
     "tech": "Crypto #MEV Dark Forest #41: CoW Protocol batch auctions: orders are signed intents, solvers compete to settle a batch, and all trades of a pair in that batch clear at a uniform price, so in-batch ordering gives no edge. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #41: CoW Swap groups trades into batches settled at one price per token. If everyone gets the same price in a batch, there is no \"before you\" for a bot to jump into. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Same price for all, nothing to front-run",
+      "sub": "CoW Protocol settles batches at a uniform price, so order inside a batch gives no edge."
+    },
     "source": "https://docs.cow.fi/cow-protocol/concepts/benefits/mev-protection",
     "status": "checked"
   },
@@ -333,6 +515,10 @@
     "long": "BuilderNet, announced in Dec 2024 by Flashbots, Nethermind and beaverbuild (per Blockworks): a block builder run by several operators together, inside trusted execution environments (TEEs), so order flow is processed without being exposed to the operators. The aim is to fight the centralization of block building.",
     "tech": "Crypto #MEV Dark Forest #42: BuilderNet (Dec 2024, Flashbots + Nethermind + beaverbuild): a multi-operator builder running inside trusted execution environments (TEEs), so order flow is processed without being exposed to operators. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #42: In Dec 2024, Flashbots, Nethermind and beaverbuild announced BuilderNet: a block builder run by several operators together, to fight the centralization of building. #DeFi #CryptoTrading",
+    "card": {
+      "title": "A block builder no single party controls",
+      "sub": "BuilderNet runs inside TEEs with several operators, so order flow stays hidden from them."
+    },
     "source": "https://blockworks.co/news/flashbots-block-building-network-mev",
     "status": "checked"
   },
@@ -341,6 +527,11 @@
     "long": "ePBS (EIP-7732) would enshrine proposer-builder separation in Ethereum's consensus, removing the trusted relay from the builder auction. It was chosen as the consensus-layer headliner of the Glamsterdam upgrade. As of Nov 10 2026, Glamsterdam is not yet on mainnet. Check the status before publishing.",
     "tech": "Crypto #MEV Dark Forest #43: EIP-7732 (ePBS) enshrines proposer-builder separation in consensus, removing the trusted relay from the auction. It was chosen as the consensus-layer headliner of the Glamsterdam upgrade. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #43: Ethereum plans to build proposer-builder separation into the protocol itself, so validators no longer need to trust relays. It is a headline feature of the upcoming Glamsterdam upgrade. #DeFi #CryptoTrading",
+    "card": {
+      "big": "ePBS",
+      "title": "Enshrined PBS would remove the trusted relay",
+      "sub": "EIP-7732 would put builder separation in consensus, as the Glamsterdam headliner."
+    },
     "source": "https://etherworld.co/eip-7732-epbs-selected-as-glamsterdam-headliner/",
     "status": "checked"
   },
@@ -349,6 +540,11 @@
     "long": "FOCIL (EIP-7805, fork-choice enforced inclusion lists): each slot, a committee of validators publishes inclusion lists of transactions, and attesters only vote for a block that includes them. One builder can then no longer quietly leave transactions out. It brings censorship resistance through the fork-choice rule.",
     "tech": "Crypto #MEV Dark Forest #44: FOCIL (EIP-7805, fork-choice enforced inclusion lists): a committee of validators publishes inclusion lists each slot; attesters only vote for a block that includes those txs. Censorship resistance via fork choice. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #44: Against censorship, Ethereum researchers propose \"inclusion lists\": several validators each pick transactions that the next block must include, so one builder can't quietly leave them out. #DeFi #CryptoTrading",
+    "card": {
+      "big": "EIP-7805",
+      "title": "Inclusion lists against quiet censorship",
+      "sub": "Attesters only vote for a block that includes the transactions on the committee's lists."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-7805",
     "status": "checked"
   },
@@ -357,6 +553,10 @@
     "long": "MEV burn, a research proposal by Justin Drake on ethresear.ch (2023): attesters set a floor from the builder bids they observe, and that part of the winning bid is burned, like the EIP-1559 base fee, instead of paid to the proposer. The value would go to all ETH holders. It is a proposal, not scheduled for any upgrade.",
     "tech": "Crypto #MEV Dark Forest #45: MEV burn (Justin Drake, ethresear.ch, 2023): attesters set a floor from observed builder bids, and that part of the winning bid is burned like the EIP-1559 base fee. Research proposal, not scheduled. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #45: One research idea: burn the MEV. Part of builders' bids would be destroyed instead of paid to the validator, so the value goes to all ETH holders. It is a proposal, not live. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Burning MEV instead of paying proposers",
+      "sub": "A 2023 research proposal would burn part of the winning bid, like the EIP-1559 base fee."
+    },
     "source": "https://ethresear.ch/t/mev-burn-a-simple-design/15590",
     "status": "checked"
   },
@@ -365,6 +565,10 @@
     "long": "Encrypted mempool: since July 2024, Shutterized Gnosis Chain lets users threshold-encrypt transactions. A set of keypers releases the decryption key only after the order of transactions is committed, so nobody can front-run a transaction based on its content. Bots cannot exploit what they cannot read.",
     "tech": "Crypto #MEV Dark Forest #46: Shutterized Gnosis Chain (July 2024): txs are threshold-encrypted; a set of keypers releases the decryption key only after ordering is committed, so front-running by content is not possible. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #46: What if nobody could read your transaction until its place in the block is fixed? Since July 2024, Gnosis Chain offers an encrypted mempool built with Shutter. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Bots cannot exploit what they cannot read",
+      "sub": "On Shutterized Gnosis Chain, transactions stay encrypted until their order is committed."
+    },
     "source": "https://www.theblock.co/post/305028/gnosis-shutter-mev",
     "status": "checked"
   },
@@ -373,6 +577,11 @@
     "long": "Layer 2s often have a single sequencer ordering all transactions. Arbitrum Timeboost (Arbitrum One, April 2025) sells the right to a 60-second express lane through a sealed-bid second-price auction; other transactions are delayed by 200 ms while the controller holds the round. Bots buy a short head start, and the proceeds go to the Arbitrum DAO, not a validator.",
     "tech": "Crypto #MEV Dark Forest #47: Arbitrum Timeboost (Arbitrum One, April 2025): a sealed-bid second-price auction sells a 60-second express lane; other txs are delayed by 200 ms while a controller holds the round. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #47: On many layer 2s, one sequencer orders all transactions. Arbitrum added Timeboost in April 2025: bots can buy a short head start, and the money goes to the chain's DAO, not a validator. #DeFi #CryptoTrading",
+    "card": {
+      "big": "200 ms",
+      "title": "Arbitrum sells a short head start",
+      "sub": "Timeboost auctions a 60-second express lane, and the proceeds go to the Arbitrum DAO."
+    },
     "source": "https://docs.arbitrum.io/how-arbitrum-works/timeboost/timeboost-faq",
     "status": "checked"
   },
@@ -381,6 +590,10 @@
     "long": "Solana has no global public mempool: its Gulf Stream protocol forwards transactions directly to upcoming leaders. MEV competition goes through Jito's validator client, which adds an off-chain block engine where searchers send bundles with tips, paid to the validators who run it and their stakers.",
     "tech": "Crypto #MEV Dark Forest #48: Solana forwards txs directly to upcoming leaders (no global mempool). Jito's validator client adds an off-chain block engine where searchers send bundles with tips, paid to validators who run it and their stakers. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #48: Solana works differently: there is no classic public mempool. Transactions go straight to the next block leaders, and bots compete through Jito's bundle auctions with tips. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Solana MEV runs without a mempool",
+      "sub": "Searchers send tipped bundles to Jito's block engine, paid to validators and stakers."
+    },
     "source": "https://solana.com/news/gulf-stream--solana-s-mempool-less-transaction-forwarding-protocol + https://docs.jito.wtf/lowlatencytxnsend/",
     "status": "checked"
   },
@@ -389,6 +602,10 @@
     "long": "Jito did run a mempool stream on Solana, where searchers could see pending transactions. On March 8 2024 Jito Labs suspended it, saying anti-sandwich fixes had become \"a cat-and-mouse game with MEV searchers\" with no engineering solution in sight. Removing visibility was the remedy chosen.",
     "tech": "Crypto #MEV Dark Forest #49: March 8 2024: Jito Labs suspended its Solana mempool stream, saying anti-sandwich fixes had become \"a cat-and-mouse game with MEV searchers\" with no engineering solution in sight. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #49: Jito did run a mempool on Solana, where bots could see pending transactions. On March 8, 2024 it shut it down because it was mainly used for sandwich attacks. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Jito shut its mempool to stop sandwiches",
+      "sub": "In March 2024, Jito Labs called the fixes a cat-and-mouse game and suspended the stream."
+    },
     "source": "https://www.coindesk.com/business/2024/03/08/solana-client-developer-jito-announces-end-of-mempool-function",
     "status": "checked"
   },
@@ -397,6 +614,11 @@
     "long": "Bitcoin has a mempool too. Bitcoin Core 28.0, released Oct 2 2024, changed the default of -mempoolfullrbf from 0 to 1: full replace-by-fee. Nodes now relay a higher-fee replacement for any unconfirmed transaction, even without the BIP 125 opt-in signal.",
     "tech": "Crypto #MEV Dark Forest #50: Bitcoin Core 28.0 (Oct 2 2024) changed -mempoolfullrbf default from 0 to 1: full replace-by-fee, so nodes relay replacements even without the BIP 125 opt-in signal. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #50: Bitcoin has a mempool too. Since Bitcoin Core 28.0 (Oct 2024), nodes by default accept a replacement for any unconfirmed transaction that pays a higher fee. #DeFi #CryptoTrading",
+    "card": {
+      "big": "0 → 1",
+      "title": "Bitcoin Core 28.0 turns on full-RBF",
+      "sub": "Nodes now relay higher-fee replacements for any unconfirmed transaction, opt-in or not."
+    },
     "source": "https://bitcoincore.org/en/releases/28.0/",
     "status": "checked"
   },
@@ -405,6 +627,10 @@
     "long": "Consequence of full-RBF by default in Bitcoin Core 28.0: merchants can no longer rely on the absence of the opt-in RBF flag to accept zero-confirmation payments. Any unconfirmed transaction can be replaced by a conflicting one that pays a higher fee. A 0-conf payment is a promise until it is in a block.",
     "tech": "Crypto #MEV Dark Forest #51: With full-RBF default in Bitcoin Core 28.0, merchants can't rely on the opt-in RBF flag to accept 0-conf: any unconfirmed tx may be double-spent by a higher-fee conflicting tx. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #51: Lesson from full-RBF: a Bitcoin payment with zero confirmations is a promise, not a payment. Until it is in a block, the sender can replace it with a higher-fee one. #DeFi #CryptoTrading",
+    "card": {
+      "title": "Zero-conf is a promise, not a payment",
+      "sub": "With full-RBF by default, any unconfirmed payment can be replaced by a higher-fee one."
+    },
     "source": "https://bitcoincore.org/en/releases/28.0/",
     "status": "checked"
   },
@@ -413,6 +639,10 @@
     "long": "Recap of the series: MEV is the value from including, excluding and ordering transactions. A pending transaction is public, and bots profit from sandwiches, arbitrage and liquidations. Competition moved from public gas auctions to Flashbots bundles and MEV-Boost; a few builders now assemble most blocks. Defenses: private RPCs, order flow auctions, batch auctions, encrypted mempools and ePBS. Ends by inviting readers to follow the next series.",
     "tech": "Crypto #MEV Dark Forest #52: Recap: MEV = value from ordering txs. Sandwiches, arbs, liquidations; PGAs to Flashbots bundles to MEV-Boost; builder centralization; ePBS, encrypted mempools, OFAs. Follow for the next series. #DeFi #CryptoTrading",
     "simple": "Crypto #MEV Dark Forest #52: Recap: your pending transaction is public, bots profit from its order, a few builders assemble most blocks, and private RPCs or batch auctions can protect you. Follow for more crypto deep dives. #DeFi #CryptoTrading",
+    "card": {
+      "title": "The dark forest, from bots to defenses",
+      "sub": "Private RPCs, order flow auctions, batch auctions, encrypted mempools and ePBS fight back."
+    },
     "source": "https://ethereum.org/en/developers/docs/mev/",
     "status": "checked"
   }
