@@ -5,6 +5,11 @@
     "tech": "Crypto #Anonymity Myths #1: Bitcoin is pseudonymous, not anonymous. Every transaction since the genesis block (Jan 3, 2009) sits on a public ledger anyone can download. Privacy rests on one thing: nobody linking an address to you. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #1: Is Bitcoin anonymous? No. It is pseudonymous: every payment ever made is public, forever. Only the name behind each address is hidden, and that name can be found. This series shows how, and what real privacy takes. #CryptoPrivacy #Monero",
     "variant": "Crypto #Anonymity Myths #1: The biggest myth in crypto: \"Bitcoin is anonymous.\" Police have traced hackers, ransomware gangs and darknet admins through it for over a decade. Let's look at how they do it, and what privacy tools really change. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "Jan 3, 2009",
+      "title": "Bitcoin is pseudonymous, not anonymous",
+      "sub": "Every transaction since the genesis block is public. Only the link to a person is hidden."
+    },
     "source": "https://bitcoin.org/bitcoin.pdf",
     "status": "checked"
   },
@@ -13,6 +18,10 @@
     "long": "Pseudonymity means one stable identifier with many actions attached to it, like a pen name. As long as nobody ties the address to a person, it looks private. But once a single address is linked to a real identity, for example through a KYC exchange withdrawal, a public donation page or a shop order, its entire past history and all its counterparties are exposed too, including old payments.",
     "tech": "Crypto #Anonymity Myths #2: Pseudonymity = one stable identifier with many actions attached. Once one address is tied to a real identity (KYC withdrawal, donation page, shop order), its whole history and counterparties are exposed. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #2: Think of a Bitcoin address as a pen name. Nobody knows who wrote the books, until one book is traced to you. Then every book under that pen name is yours too, including the old ones. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "One address linked, whole history exposed",
+      "sub": "A single KYC withdrawal or shop order can reveal all past payments and counterparties."
+    },
     "source": "https://en.bitcoin.it/wiki/Privacy",
     "status": "checked"
   },
@@ -21,6 +30,10 @@
     "long": "Satoshi flagged the limits in the Bitcoin whitepaper itself. Section 10, \"Privacy\", advises using a new key pair for each transaction to keep them from being linked to a common owner, but admits that \"some linking is still unavoidable with multi-input transactions, which necessarily reveal that their inputs were owned by the same owner.\" The design never claimed full anonymity.",
     "tech": "Crypto #Anonymity Myths #3: Bitcoin whitepaper, section 10 \"Privacy\": use a new key pair for each transaction, but \"some linking is still unavoidable with multi-input transactions, which necessarily reveal that their inputs were owned by the same owner.\" #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #3: Satoshi warned about this in the Bitcoin whitepaper itself (section 10): use a new address for every payment, and know that some linking is still unavoidable. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Satoshi warned about linking from day one",
+      "sub": "The whitepaper admits multi-input transactions reveal a common owner."
+    },
     "source": "https://bitcoin.org/bitcoin.pdf",
     "status": "checked"
   },
@@ -29,6 +42,10 @@
     "long": "Whitepaper section 10 contrasts Bitcoin with banks. The traditional model gets privacy by limiting access to records to the parties and a trusted third party. Bitcoin must announce every transaction publicly, so privacy can only come from keeping public keys anonymous, like a stock exchange tape that shows the time and size of trades but not who traded. Once a key is tied to a person, that privacy is gone.",
     "tech": "Crypto #Anonymity Myths #4: Whitepaper section 10: banks get privacy by limiting access to records. Bitcoin announces every transaction, so privacy comes only from keeping public keys anonymous, like a stock tape without names. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #4: The whitepaper compares Bitcoin to banks: a bank keeps your privacy by hiding its records. Bitcoin can't, since all records are public. Its only privacy is keeping addresses unlinked from people. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Privacy like a stock exchange tape",
+      "sub": "Trades are public, traders are not. Once a key is tied to a person, privacy is gone."
+    },
     "source": "https://bitcoin.org/bitcoin.pdf",
     "status": "checked"
   },
@@ -37,6 +54,10 @@
     "long": "The common-input-ownership heuristic is the base of chain analysis: when a transaction spends several inputs, they are assumed to belong to one owner, because each input needs a valid signature and one wallet normally signs them all. Applied transitively across many transactions, it merges addresses into clusters that likely belong to one entity, such as a person or an exchange.",
     "tech": "Crypto #Anonymity Myths #5: Common-input-ownership heuristic: all inputs of a transaction are assumed to share one owner, since each needs a valid signature. Applied transitively, it merges addresses into \"clusters\": the base of chain analysis. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #5: Rule #1 of blockchain tracing: if one payment spends coins from several addresses, they almost surely belong to the same person, because one wallet had to sign them all. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Many inputs, one owner: the base rule",
+      "sub": "Clustering co-spent inputs merges addresses into entities like people or exchanges."
+    },
     "source": "https://en.bitcoin.it/wiki/Privacy",
     "status": "checked"
   },
@@ -45,6 +66,10 @@
     "long": "A Bitcoin UTXO is spent whole, so a payment usually has a second output returning the leftover change to the sender at a new address. If an analyst can tell which output is change, using clues like round payment amounts, matching script types or a fresh never-seen address, they know which address still belongs to the sender. Meiklejohn et al. formalized change heuristics in 2013.",
     "tech": "Crypto #Anonymity Myths #6: Change-address heuristics: a UTXO is spent whole, so the leftover returns to the sender. Analysts guess the change output from round amounts, script type, or a fresh never-seen address. Meiklejohn et al. formalized this in 2013. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #6: When you pay with Bitcoin, the leftover \"change\" goes back to a new address of yours. Spotting which output is the change tells a tracer which address is still you. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Change outputs give the sender away",
+      "sub": "Round amounts, matching scripts or fresh addresses reveal which output is change."
+    },
     "source": "https://blog.acolyer.org/2017/02/20/a-fistful-of-bitcoins-characterizing-payments-among-men-with-no-names/ + https://raw.githubusercontent.com/bitcoin/bips/master/bip-0078.mediawiki",
     "status": "checked"
   },
@@ -53,6 +78,11 @@
     "long": "In \"A Fistful of Bitcoins\" (Meiklejohn et al., IMC 2013), researchers made 344 transactions with Bitcoin services to learn and tag their addresses. Combining those labels with the multi-input and change-address clustering heuristics, they could follow money flows to major exchanges and services. Commercial tracing firms scale up this same tag-and-cluster method.",
     "tech": "Crypto #Anonymity Myths #7: \"A Fistful of Bitcoins\" (Meiklejohn et al., IMC 2013): researchers transacted with services to tag their addresses, then used clustering to map flows to exchanges. Tracing firms scale up this tag-and-cluster method. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #7: In 2013, researchers bought things from Bitcoin services just to learn their addresses. With a few labels and the clustering tricks, they could follow money to big exchanges and services. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "344",
+      "title": "Tag a few addresses, trace the rest",
+      "sub": "Researchers labeled services with test transactions, then followed flows to exchanges."
+    },
     "source": "https://smeiklej.com/files/imc13.pdf (Meiklejohn et al., IMC 2013: 344 transactions with services to tag addresses, multi-input and change heuristics)",
     "status": "checked"
   },
@@ -61,6 +91,10 @@
     "long": "Reusing one address merges every payment into a single public record: balance, income and counterparties. Anyone who pays you or receives from you can see it all. HD wallets (BIP32) exist partly for this reason: they derive a fresh address for each receive. Reuse also gives analysts an anchor to cluster your other coins.",
     "tech": "Crypto #Anonymity Myths #8: Address reuse merges every payment into one public record: balance, income, counterparties. That's why HD wallets (BIP32) give a fresh address per receive. Reuse also helps cluster your other coins. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #8: Using the same address over and over is like giving everyone your bank statement. Anyone who pays you, or gets paid by you, can see your whole balance and history. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Address reuse builds a public profile",
+      "sub": "Balance, income and counterparties land in one record. HD wallets use fresh addresses."
+    },
     "source": "https://en.bitcoin.it/wiki/Privacy",
     "status": "checked"
   },
@@ -69,6 +103,10 @@
     "long": "A dusting attack: an observer sends tiny amounts (dust) to many already-used addresses. If a wallet later spends that dust together with its other UTXOs in one transaction, the common-input heuristic links those addresses for the observer. Wallets with coin control can leave the dust unspent, which prevents the link.",
     "tech": "Crypto #Anonymity Myths #9: Dusting: an observer sends tiny outputs to already-used addresses. If the wallet later co-spends them with other UTXOs, the common-input heuristic links those addresses. Not spending that dust (coin control) prevents it. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #9: A \"dusting attack\": someone sends tiny amounts to many addresses. If your wallet later spends that dust together with your other coins, it links your addresses for them. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Dusting attacks bait your wallet",
+      "sub": "Spend tiny dust with other coins and the addresses get linked. Coin control prevents it."
+    },
     "source": "https://en.bitcoin.it/wiki/Privacy",
     "status": "checked"
   },
@@ -77,6 +115,10 @@
     "long": "The usual weak point is not the blockchain but the on- and off-ramps. Exchanges that verify identity (KYC) link deposit and withdrawal addresses to real names in their records, and must answer subpoenas from authorities. A single KYC touchpoint can put a name on a whole cluster of addresses built with the clustering heuristics.",
     "tech": "Crypto #Anonymity Myths #10: On/off-ramps are the main deanonymization point: KYC'd exchanges link deposit and withdrawal addresses to verified identities, and must answer subpoenas. One KYC touchpoint can label a whole cluster of addresses. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #10: The weakest link is usually not the blockchain, it's the exchange. Buy or sell on a platform that checked your ID, and your address is linked to your name in their records. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Exchanges are the weak point",
+      "sub": "One identity check can put a real name on a whole cluster of addresses."
+    },
     "source": "https://en.bitcoin.it/wiki/Privacy",
     "status": "checked"
   },
@@ -85,6 +127,11 @@
     "long": "Ledger data is public and permanent, so deanonymization works retroactively. A payment that looks untraceable today can be unmasked years later by new heuristics, a leaked database or a seized server. Example: the Bitfinex theft happened in 2016 and the arrests came in 2022. Privacy on a public chain has to hold forever, not just at the time of the payment.",
     "tech": "Crypto #Anonymity Myths #11: Ledger data is permanent and public, so deanonymization is retroactive: new heuristics, a leaked database or a seized server can unmask payments made years ago. Bitfinex: 2016 theft, 2022 arrests. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #11: The blockchain never forgets. A payment that looks untraceable today can be traced in 10 years with better tools or one leaked record. Privacy has to hold forever, not just today. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "2016 → 2022",
+      "title": "Deanonymization works years later",
+      "sub": "The Bitfinex theft came first, the arrests six years on. Privacy has to hold forever."
+    },
     "source": "https://www.theblock.co/linked/133499/us-government-seizes-3-6-billion-in-bitcoin-tied-to-2016-hack-of-crypto-exchange-bitfinex",
     "status": "checked"
   },
@@ -93,6 +140,11 @@
     "long": "Even without address links, amounts and timing leak. Unusual values, matching sums and tight time windows let analysts connect flows across hops, across chains and even through mixers. If 0.4271 BTC leaves one place and 0.4271 BTC appears elsewhere minutes later, an observer can connect the two. Analysts use this when address heuristics fail.",
     "tech": "Crypto #Anonymity Myths #12: Amount and timing correlation: odd values, matching sums and tight time windows link flows across hops, chains and even mixers. Analysts use it when address heuristics fail. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #12: Even without linking addresses, timing and amounts give you away. Send 0.4271 BTC and see 0.4271 BTC arrive somewhere minutes later: an observer can connect the two. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "0.4271 BTC",
+      "title": "Amounts and timing leak too",
+      "sub": "Matching values in tight time windows connect flows across hops, chains and mixers."
+    },
     "source": "https://en.bitcoin.it/wiki/Privacy",
     "status": "checked"
   },
@@ -101,6 +153,10 @@
     "long": "Privacy can also leak at the network layer. Biryukov, Khovratovich and Pustogarov (CCS 2014) showed that a few machines connected to many Bitcoin nodes can link transactions to the IP addresses of the clients that broadcast them, even clients behind NAT. Nodes that hear a transaction first can guess where it came from.",
     "tech": "Crypto #Anonymity Myths #13: Network-layer deanonymization: Biryukov, Khovratovich & Pustogarov (CCS 2014) showed that a few machines connected to many Bitcoin nodes can link transactions to the IP addresses of clients that sent them, even behind NAT. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #13: Your internet address can leak too. When your wallet broadcasts a payment, nodes that hear it first can guess where it came from, and link your address to your IP. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Your IP can betray your transaction",
+      "sub": "A few well-connected machines can link transactions to the clients that broadcast them."
+    },
     "source": "https://arxiv.org/abs/1405.7418",
     "status": "checked"
   },
@@ -109,6 +165,11 @@
     "long": "Light wallets need a server to find their transactions. BIP37 Bloom filters were meant to hide which addresses a client cares about, but Gervais et al. (2014) showed they leak a large share of a wallet's addresses to the node that answers. BIP157/158 compact block filters reverse the flow: the client downloads filters and checks them locally.",
     "tech": "Crypto #Anonymity Myths #14: BIP37 Bloom filters let light clients fetch their transactions, but Gervais et al. (2014) showed they leak much of a wallet's addresses. BIP157/158 compact filters flip it: the client downloads and checks locally. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #14: Light wallets on phones ask servers for their transactions. Early designs leaked which addresses were yours to whoever answered. Newer designs download filters instead of asking directly. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "BIP157/158",
+      "title": "Light wallets can leak your addresses",
+      "sub": "BIP37 Bloom filters exposed many addresses. Compact filters are checked locally instead."
+    },
     "source": "https://eprint.iacr.org/2014/763",
     "status": "checked"
   },
@@ -117,6 +178,10 @@
     "long": "Ethereum uses an account model: one address holds a running balance, so most users reuse a single account for swaps, NFTs, salary and everything else. There is no fresh address per payment as in Bitcoin's UTXO wallets, so linking activity is often trivial. Token approvals and DeFi positions are public too, all on one page in a block explorer.",
     "tech": "Crypto #Anonymity Myths #15: Ethereum's account model: one address holds a running balance, so users reuse it for everything. No fresh address per payment, so linking is often trivial. Token approvals and DeFi positions are public too. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #15: Ethereum is even less private by default. Most people use one account for everything: swaps, NFTs, salary. Its whole history and balance sit on one public page. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "One Ethereum account, one open book",
+      "sub": "Swaps, NFTs, salary and token approvals all sit on a single public address page."
+    },
     "source": "https://raw.githubusercontent.com/ethereum/ethereum-org-website/master/public/content/developers/docs/accounts/index.md",
     "status": "checked"
   },
@@ -125,6 +190,10 @@
     "long": "ENS maps readable names like alice.eth to addresses, and reverse records map addresses back to names, publicly on-chain. That makes payments easier but labels the wallet. If the name is also linked to a social profile, every transaction of that address carries a public identity anyone can look up.",
     "tech": "Crypto #Anonymity Myths #16: ENS maps names to addresses, and reverse records map addresses back to names, publicly on-chain. Link a name to your social profile and every transaction of that address carries your label. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #16: A nice name like \"alice.eth\" makes payments easier, but it also puts a public label on your wallet. Anyone can look it up and see everything that address did. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "ENS names label your wallet",
+      "sub": "Reverse records map addresses to names. Add a social profile and every payment is public."
+    },
     "source": "https://docs.ens.domains/web/reverse",
     "status": "checked"
   },
@@ -133,6 +202,11 @@
     "long": "On Nov 28, 2018, OFAC (US Treasury) listed digital currency addresses in a sanctions designation for the first time: two Iran-based individuals tied to exchanging SamSam ransomware payments. Addresses are now routinely added, and compliance tools screen transfers against them. This only works because blockchains are traceable.",
     "tech": "Crypto #Anonymity Myths #17: OFAC first listed digital currency addresses on Nov 28, 2018: two Iran-based individuals tied to SamSam ransomware payments. Addresses are now routinely added, and compliance tools screen transfers against them. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #17: Since 2018, the US sanctions list includes crypto addresses, not just names. Companies must block payments to them, which only works because blockchains are traceable. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "Nov 28, 2018",
+      "title": "First addresses on a US sanctions list",
+      "sub": "OFAC listed two Iran-based individuals tied to SamSam ransomware payments."
+    },
     "source": "https://www.wilmerhale.com/en/insights/client-alerts/20181130-ofac-identifies-digital-currency-addresses-in-sanctions-designations-and-provides-faqs-on-digital-currency-compliance",
     "status": "checked"
   },
@@ -141,6 +215,11 @@
     "long": "Silk Road, the darknet market, ran on Bitcoin. Its founder Ross Ulbricht was arrested in Oct 2013, and the FBI seized about 144,000 BTC from his computer, then the largest Bitcoin seizure. The US Marshals later auctioned seized Silk Road coins in 2014-2015. Using Bitcoin did not hide him.",
     "tech": "Crypto #Anonymity Myths #18: Ross Ulbricht (Silk Road) was arrested in Oct 2013. The FBI seized ≈144,000 BTC from his computer, then the largest Bitcoin seizure. The US Marshals later auctioned seized Silk Road coins in 2014-2015. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #18: Silk Road, the darknet market, ran on Bitcoin. When the FBI arrested its founder in 2013, it seized about 144,000 BTC from his laptop. Bitcoin didn't hide him. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "144,000 BTC",
+      "title": "Silk Road's founder was not hidden",
+      "sub": "The FBI seized the coins from Ross Ulbricht's computer, then the largest Bitcoin seizure."
+    },
     "source": "https://thehackernews.com/2013/10/fbi-seized-144000-bitcoins-worth-285.html",
     "status": "checked"
   },
@@ -149,6 +228,11 @@
     "long": "In Nov 2020, seven years after Silk Road was shut down, the DOJ filed to forfeit about 69,370 BTC that a hacker, \"Individual X\", had stolen from the market. Investigators used blockchain analysis (Chainalysis) to trace the flows back to Silk Road's wallets. Old coins on a public ledger can still be followed.",
     "tech": "Crypto #Anonymity Myths #19: Nov 2020: DOJ filed to forfeit ≈69,370 BTC stolen from Silk Road by \"Individual X\". Investigators traced the flows with blockchain analysis (Chainalysis) back to the market's wallets, years after it was shut down. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #19: Seven years after Silk Road closed, the US traced and seized about 69,370 BTC that a hacker had stolen from it. Old coins, still followed. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "69,370 BTC",
+      "title": "Seven years later, the coins were traced",
+      "sub": "Funds stolen by Individual X were followed back to Silk Road's wallets and forfeited."
+    },
     "source": "https://siliconangle.com/2020/11/05/feds-seize-1b-bitcoin-linked-defunct-dark-web-marketplace-silk-road/",
     "status": "checked"
   },
@@ -157,6 +241,11 @@
     "long": "James Zhong exploited Silk Road's withdrawal system in Sept 2012 and took over 50,000 BTC. In a Nov 2021 raid, agents found the coins in an underground floor safe and on a single-board computer hidden in a popcorn tin. He pleaded guilty in 2022. Nine years was not enough to stay hidden.",
     "tech": "Crypto #Anonymity Myths #20: James Zhong exploited Silk Road's withdrawal system in Sept 2012 to take 50,000+ BTC. A Nov 2021 raid found the coins in an underground safe and on a single-board computer in a popcorn tin. He pleaded guilty in 2022. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #20: A man stole over 50,000 BTC from Silk Road in 2012. Agents found it in 2021 in a floor safe and on a tiny computer hidden in a popcorn tin. Nine years is not enough to hide. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "50,000+ BTC",
+      "title": "Stolen bitcoin hidden in a popcorn tin",
+      "sub": "James Zhong robbed Silk Road in 2012. Nine years later, agents found the coins."
+    },
     "source": "https://therecord.media/doj-says-it-seized-billions-in-bitcoin-stolen-by-hacker-from-silk-road-darknet-marketplace/",
     "status": "checked"
   },
@@ -165,6 +254,11 @@
     "long": "In 2016, 119,754 BTC were stolen from the exchange Bitfinex. Investigators followed the coins for years. In Feb 2022, the DOJ arrested Ilya Lichtenstein and Heather Morgan and seized about 94,000 BTC, then worth about $3.6B, after tracing the funds through thousands of transactions to wallets they controlled.",
     "tech": "Crypto #Anonymity Myths #21: Bitfinex 2016: 119,754 BTC stolen. Feb 2022: DOJ arrested Ilya Lichtenstein and Heather Morgan and seized ≈94,000 BTC (≈$3.6B then), tracing funds through thousands of transactions to wallets they controlled. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #21: In 2016, hackers stole about 120,000 BTC from Bitfinex. Investigators followed the coins for years. In 2022: two arrests and about 94,000 BTC seized, then worth ≈$3.6B. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "119,754 BTC",
+      "title": "The Bitfinex hack, traced for years",
+      "sub": "In 2022 the DOJ seized about 94,000 BTC, then worth about $3.6B, from two suspects."
+    },
     "source": "https://www.theblock.co/linked/133499/us-government-seizes-3-6-billion-in-bitcoin-tied-to-2016-hack-of-crypto-exchange-bitfinex",
     "status": "checked"
   },
@@ -173,6 +267,11 @@
     "long": "The Bitfinex launderers layered funds through many wallets, fake identities, chain-hopping, a darknet market and mixers. The trail still stayed on public ledgers. In Nov 2024, Ilya Lichtenstein was sentenced to 5 years in prison for the Bitfinex money laundering conspiracy.",
     "tech": "Crypto #Anonymity Myths #22: Ilya Lichtenstein was sentenced in Nov 2024 to 5 years for the Bitfinex laundering conspiracy. Layering used included many wallets, chain-hopping, a darknet market and mixers. The trail stayed on public ledgers throughout. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #22: The Bitfinex hacker used fake identities, chain-hopping and darknet services to hide the coins. It didn't work: in Nov 2024 he was sentenced to 5 years in prison. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "5 years",
+      "title": "Layering did not erase the trail",
+      "sub": "Mixers, fake identities and chain-hopping still left records on public ledgers."
+    },
     "source": "https://www.axios.com/2024/11/15/bitcoin-hacker-sentenced-stolen-crypto-laundering-bitfinex",
     "status": "checked"
   },
@@ -181,6 +280,11 @@
     "long": "In 2021, Colonial Pipeline paid a ransom in Bitcoin to the DarkSide ransomware group. In June 2021, the DOJ seized 63.7 BTC (about $2.3M) of it. Agents followed the transfers on Bitcoin's public ledger to an address whose private key the FBI held.",
     "tech": "Crypto #Anonymity Myths #23: Colonial Pipeline (DarkSide ransomware): in June 2021 DOJ seized 63.7 BTC (≈$2.3M) of the ransom. Agents traced the transfers on the Bitcoin public ledger to an address whose private key the FBI held. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #23: 2021: Colonial Pipeline paid a ransom in Bitcoin. A month later the FBI got most of it back by following the payment on the public ledger to a wallet it could open. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "63.7 BTC",
+      "title": "Colonial Pipeline ransom partly recovered",
+      "sub": "Agents followed the transfers to an address whose private key the FBI held."
+    },
     "source": "https://www.justice.gov/usao-ndca/pr/department-justice-seizes-23-million-cryptocurrency-paid-ransomware-extortionists",
     "status": "checked"
   },
@@ -189,6 +293,11 @@
     "long": "Welcome To Video, a darknet child abuse site, took payment in Bitcoin; each user got a unique bitcoin address. Tracing those payments let investigators locate the server and its admin in South Korea. The DOJ announced in Oct 2019 that the case led to arrests of 337 users in the US and 11 other countries.",
     "tech": "Crypto #Anonymity Myths #24: Welcome To Video (DOJ, Oct 2019): each user got a unique bitcoin address. Tracing payments located the server and admin in South Korea; 337 users were arrested in the US and 11 other countries. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #24: A darknet abuse site took payment in Bitcoin, thinking it was untraceable. Tracing those payments led to the site's admin and 337 arrests in 12 countries in 2019. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "337 users",
+      "title": "Unique addresses led to the server",
+      "sub": "Tracing Welcome To Video payments located its admin in South Korea, then its users."
+    },
     "source": "https://www.justice.gov/archives/opa/pr/south-korean-national-and-hundreds-others-charged-worldwide-takedown-largest-darknet-child",
     "status": "checked"
   },
@@ -197,6 +306,11 @@
     "long": "Hydra Market, the largest Russian-language darknet market, was taken down in April 2022: German authorities shut its servers and seized about $25M in bitcoin. The US Treasury sanctioned Hydra the same day, Apr 5, 2022, and listed more than 100 associated crypto addresses.",
     "tech": "Crypto #Anonymity Myths #25: Hydra Market takedown, Apr 2022: German authorities shut its servers and seized ≈$25M in bitcoin. The US Treasury sanctioned Hydra the same day (Apr 5) and listed 100+ associated crypto addresses. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #25: Hydra, the biggest Russian darknet market, was taken down by German police in April 2022. They shut its servers and seized about $25M in bitcoin. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "$25M",
+      "title": "Hydra Market taken down",
+      "sub": "Germany shut its servers; the US sanctioned it and listed over 100 crypto addresses."
+    },
     "source": "https://fraser.stlouisfed.org/title/press-releases-united-states-department-treasury-6111/treasury-sanctions-russia-based-hydra-worlds-largest-darknet-market-ransomware-enabling-virtual-currency-exchange-garantex-619297/fulltext",
     "status": "checked"
   },
@@ -205,6 +319,11 @@
     "long": "On Feb 21, 2025, hackers stole about $1.5B in crypto, mostly ETH, from the exchange Bybit. On Feb 26, the FBI attributed the theft to North Korea's \"TraderTraitor\" activity and published Ethereum addresses holding the funds, asking exchanges, node operators and others to block transactions with them.",
     "tech": "Crypto #Anonymity Myths #26: Bybit hack (Feb 21, 2025, ≈$1.5B, mostly ETH): the FBI attributed it to North Korea's \"TraderTraitor\" on Feb 26 and published Ethereum addresses holding the funds, asking exchanges and node operators to block them. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #26: Feb 2025: hackers stole about $1.5B in crypto from the exchange Bybit. Within days, the FBI named North Korea and published addresses so others could block the funds. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "$1.5B",
+      "title": "FBI names North Korea in the Bybit hack",
+      "sub": "It published addresses holding the stolen funds and asked exchanges to block them."
+    },
     "source": "https://www.ic3.gov/PSA/2025/PSA250226",
     "status": "checked"
   },
@@ -213,6 +332,10 @@
     "long": "CoinJoin, named by Gregory Maxwell in 2013: several owners co-sign one combined transaction. Since the inputs no longer share one owner, it defeats the common-input heuristic, the base rule of tracing. Each participant signs only their own input after checking the outputs, so no one can steal the others' coins.",
     "tech": "Crypto #Anonymity Myths #27: CoinJoin (named by Gregory Maxwell in 2013): many owners co-sign one transaction. It defeats the common-input heuristic, since inputs no longer share an owner. Each signs only their part, so no one can steal. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #27: CoinJoin: several people combine their payments into one big transaction. From outside, you can't tell whose coins went where, which breaks rule #1 of tracing. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "CoinJoin breaks the common-input rule",
+      "sub": "Several owners co-sign one transaction, and each signs only their own input."
+    },
     "source": "https://bitcoinops.org/en/topics/coinjoin/",
     "status": "checked"
   },
@@ -221,6 +344,11 @@
     "long": "In a CoinJoin, equal-value outputs form the anonymity set. With N identical outputs, such as 50 outputs of 0.1 BTC, amounts alone give only 1-in-N odds of matching an input to an output. Any leftover change output is not equal to the others, so it stays linkable to its input.",
     "tech": "Crypto #Anonymity Myths #28: Equal-value outputs form the anonymity set: with N identical outputs, amounts alone give 1-in-N odds of matching input to output. Leftover \"change\" stays linkable to its input. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #28: CoinJoin works best when everyone gets back the same amount, say 0.1 BTC each. With 50 identical outputs, each one could belong to any of the 50 participants. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "1-in-N",
+      "title": "Equal outputs form the anonymity set",
+      "sub": "With identical outputs, amounts alone cannot match inputs. Leftover change stays linkable."
+    },
     "source": "https://en.bitcoin.it/wiki/Privacy",
     "status": "checked"
   },
@@ -229,6 +357,10 @@
     "long": "CoinJoin is not a magic eraser. Privacy depends on a coin's whole history: if mixed outputs are later spent together with change or unmixed coins, or merged with each other, the common-input heuristic links them again. Sending mixed coins straight to a KYC exchange can also tie them back to a person.",
     "tech": "Crypto #Anonymity Myths #29: CoinJoin gains are lost by post-mix mistakes: merging mixed outputs with change or with each other re-applies the common-input heuristic. Privacy depends on the coin's whole history. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #29: CoinJoin isn't a magic eraser. If you later spend mixed and unmixed coins together, or send them straight to an exchange, you can link yourself back. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "CoinJoin is not a magic eraser",
+      "sub": "Merging mixed coins with change, or sending them to a KYC exchange, can relink them."
+    },
     "source": "https://en.bitcoin.it/wiki/Privacy",
     "status": "checked"
   },
@@ -237,6 +369,10 @@
     "long": "JoinMarket, announced by Chris Belcher on Jan 9, 2015, turned CoinJoin into a market. \"Makers\" offer their coins as liquidity and earn fees; \"takers\" pay to build CoinJoins with them right away. There is no central coordinator, which matters given what later happened to coordinator-based services.",
     "tech": "Crypto #Anonymity Myths #30: JoinMarket, announced by Chris Belcher on Jan 9, 2015: \"makers\" offer liquidity for fees, \"takers\" build CoinJoins with them. No central coordinator, which matters given what later happened to coordinator-based services. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #30: JoinMarket (2015) turned CoinJoin into a market: some users offer their coins to mix and earn a small fee, others pay to mix right away. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "JoinMarket turns mixing into a market",
+      "sub": "Makers earn fees for liquidity, takers pay for instant CoinJoins. No central coordinator."
+    },
     "source": "https://bitcoinops.org/en/topics/coinjoin/",
     "status": "checked"
   },
@@ -245,6 +381,10 @@
     "long": "Wasabi Wallet 1.0 launched Oct 31, 2018 and made CoinJoin easy for non-experts; version 2.0 with the WabiSabi protocol came in June 2022. Its company zkSNACKs stopped its coinjoin coordinator on June 1, 2024, citing regulatory risk. The open-source wallet still works and can connect to other coordinators.",
     "tech": "Crypto #Anonymity Myths #31: Wasabi 1.0 launched Oct 31, 2018; 2.0 (WabiSabi protocol) in June 2022. zkSNACKs stopped its coinjoin coordinator on June 1, 2024 over regulatory risk. The open-source wallet can still connect to other coordinators. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #31: Wasabi Wallet made CoinJoin easy for everyone in 2018. In 2024 its company shut down its mixing server, citing legal uncertainty. The wallet remained, the main coordinator went away. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Wasabi's coordinator went dark in 2024",
+      "sub": "zkSNACKs cited regulatory risk. The open-source wallet can still use other coordinators."
+    },
     "source": "https://nobsbitcoin.com/zksnacks-to-suspend-its-coinjoin-coordination-service-on-june-1st",
     "status": "checked"
   },
@@ -253,6 +393,11 @@
     "long": "Samourai Wallet ran a CoinJoin service called Whirlpool. Founders Keonne Rodriguez and William Hill were charged in 2024 and sentenced in Nov 2025 to 5 and 4 years for running an unlicensed money transmitting business. The DOJ says over 80,000 BTC passed through Whirlpool and Ricochet, including over $237M of criminal proceeds.",
     "tech": "Crypto #Anonymity Myths #32: Samourai Wallet (Whirlpool CoinJoin, launched 2019): founders Keonne Rodriguez and William Hill got 5 and 4 years in Nov 2025. DOJ says 80,000+ BTC passed through Whirlpool and Ricochet, and $237M+ of criminal proceeds. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #32: Samourai Wallet ran a CoinJoin service called Whirlpool. Its founders were charged in 2024 and sentenced in Nov 2025 to 5 and 4 years for running an unlicensed money business. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "5 and 4 years",
+      "title": "Samourai founders sentenced",
+      "sub": "The DOJ says over 80,000 BTC passed through Whirlpool and Ricochet."
+    },
     "source": "https://www.justice.gov/usao-sdny/pr/founders-samourai-wallet-cryptocurrency-mixing-service-sentenced-five-and-four-years",
     "status": "checked"
   },
@@ -261,6 +406,11 @@
     "long": "PayJoin (BIP78): when paying a receiver, such as a shop, the receiver adds one of its own inputs to the transaction. It looks like an ordinary payment, but the common-input heuristic now wrongly merges sender and receiver, and the receiver's output no longer equals the amount paid, which misleads amount analysis.",
     "tech": "Crypto #Anonymity Myths #33: PayJoin (BIP78): the receiver contributes an input to the payment. It looks ordinary, yet the common-input heuristic now wrongly merges sender and receiver, and the receiver's output no longer equals the amount paid. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #33: PayJoin: when you pay a shop, the shop adds one of its own coins to your transaction. It looks normal, but rule #1 of tracing now points the wrong way. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "BIP78",
+      "title": "PayJoin fools the analysts",
+      "sub": "The receiver adds an input, so tracing wrongly merges sender and receiver."
+    },
     "source": "https://raw.githubusercontent.com/bitcoin/bips/master/bip-0078.mediawiki",
     "status": "checked"
   },
@@ -269,6 +419,11 @@
     "long": "Taproot (BIPs 340-342) activated in Nov 2021 at block 709,632. With a key-path spend, an output controlled by a multisig or a contract looks like an ordinary single-key Schnorr payment, and unused script branches are never revealed. In the common case, complex wallets give fewer clues to trackers.",
     "tech": "Crypto #Anonymity Myths #34: Taproot (BIPs 340-342, active Nov 2021, block 709,632): a key-path spend of a multisig or contract output looks like a single-key Schnorr payment, and unused script branches stay hidden. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #34: Bitcoin's 2021 Taproot upgrade made complex wallets, like shared or multi-signature ones, look like normal single wallets on-chain in the common case. Fewer clues for trackers. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "709,632",
+      "title": "Taproot makes complex wallets look plain",
+      "sub": "Multisig and contract outputs can pass as ordinary single-key Schnorr payments."
+    },
     "source": "https://raw.githubusercontent.com/bitcoin/bips/master/bip-0341.mediawiki (Deployment: \"deployed concurrently with BIP342\", \"did activate at height 709632\") + https://raw.githubusercontent.com/bitcoin/bips/master/bip-0342.mediawiki (\"deployed identically to Taproot\") + https://raw.githubusercontent.com/bitcoinops/bitcoinops.github.io/master/_posts/en/newsletters/2021-11-17-newsletter.md (Optech, Nov 17, 2021: \"Taproot activated\")",
     "status": "checked"
   },
@@ -277,6 +432,10 @@
     "long": "Lightning payments are not recorded on the Bitcoin blockchain one by one. They are routed with onion routing (Sphinx), so each hop knows only the previous and next node. Channel opens and closes are on-chain and public. The spec itself warns that traffic analysis can still link payments.",
     "tech": "Crypto #Anonymity Myths #35: Lightning uses onion routing (Sphinx): each hop knows only the previous and next node. Payments aren't on-chain, channel opens and closes are. Traffic analysis can still link payments, the spec warns. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #35: Lightning payments don't go on the Bitcoin blockchain one by one, and they hop through several nodes like a relay. Only opening and closing a channel is public. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Lightning keeps payments off-chain",
+      "sub": "Onion routing hides the path, but channel opens and closes are public on-chain."
+    },
     "source": "https://raw.githubusercontent.com/lightning/bolts/master/04-onion-routing.md",
     "status": "checked"
   },
@@ -285,6 +444,10 @@
     "long": "A custodial mixer pools deposits in its own wallet and pays out different coins, minus a fee. Unlike CoinJoin, the operator holds the funds and keeps the full map of who sent what and who got what. Users must trust it not to steal, and a leak or seizure of its records can expose them.",
     "tech": "Crypto #Anonymity Myths #36: Custodial mixers take deposits into a pooled wallet and pay out other coins, minus a fee. Unlike CoinJoin, the operator holds the funds and the full map of who got what, so a leak or seizure of its records can expose users. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #36: A custodial \"mixer\" works like a coin swap counter: you hand over coins and get different ones back. You must trust the operator not to steal, and to keep secret who got what. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Custodial mixers keep the full map",
+      "sub": "The operator holds the funds and knows who sent what. A seizure can expose users."
+    },
     "source": "https://en.bitcoin.it/wiki/Privacy",
     "status": "checked"
   },
@@ -293,6 +456,11 @@
     "long": "Bitcoin Fog was one of the oldest mixers, running from 2011 to 2021. The DOJ says it moved over 1.2M BTC, about $400M at the time, much of it from darknet markets. Its operator Roman Sterlingov was sentenced on Nov 8, 2024 to 12 years and 6 months in prison.",
     "tech": "Crypto #Anonymity Myths #37: Bitcoin Fog: Roman Sterlingov was sentenced Nov 8, 2024 to 12 years 6 months. DOJ says the mixer moved over 1.2M BTC (≈$400M at the time) from 2011 to 2021, much of it from darknet markets. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #37: Bitcoin Fog was one of the oldest mixers, running from 2011 to 2021. Its operator was sentenced in Nov 2024 to 12.5 years in prison. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "$400M",
+      "title": "One of the oldest mixers, shut down",
+      "sub": "Bitcoin Fog moved over 1.2M BTC. Its operator got 12 years and 6 months."
+    },
     "source": "https://www.justice.gov/archives/opa/pr/bitcoin-fog-operator-sentenced-money-laundering-conspiracy",
     "status": "checked"
   },
@@ -301,6 +469,11 @@
     "long": "Helix was a bitcoin mixer run from 2014 to 2017 and tied to Grams, a darknet market search engine. The DOJ says it moved about 354,000 BTC, worth about $300M at the time. Operator Larry Harmon pleaded guilty and was sentenced in Nov 2024 to 3 years for a money laundering conspiracy.",
     "tech": "Crypto #Anonymity Myths #38: Helix (2014-2017), tied to the Grams darknet search engine: Larry Harmon got 3 years in Nov 2024 for a money laundering conspiracy. DOJ says Helix moved ≈354,000 BTC, worth ≈$300M at the time. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #38: Helix was a mixer built into a darknet search engine. Its operator pleaded guilty and in Nov 2024 was sentenced to 3 years. It had laundered about $300M. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "354,000 BTC",
+      "title": "Helix mixer tied to a darknet search engine",
+      "sub": "Operator Larry Harmon pleaded guilty and got 3 years for money laundering conspiracy."
+    },
     "source": "https://www.justice.gov/usao-dc/pr/operator-helix-darknet-cryptocurrency-mixer-sentenced-money-laundering-conspiracy",
     "status": "checked"
   },
@@ -309,6 +482,11 @@
     "long": "On Mar 15, 2023, German and US authorities, supported by Europol, took down the ChipMixer service. They seized 4 servers and about 1,909 BTC (about EUR 44M). ChipMixer allegedly mixed about 152,000 BTC, including ransomware payments.",
     "tech": "Crypto #Anonymity Myths #39: ChipMixer takedown (Mar 15, 2023, Europol-supported): German and US authorities seized 4 servers and ≈1,909 BTC (≈€44M). It allegedly mixed ≈152,000 BTC, including ransomware payments. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #39: March 2023: German and US police shut down the ChipMixer service and seized about €44M in bitcoin from it. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "1,909 BTC",
+      "title": "ChipMixer taken down",
+      "sub": "German and US authorities seized 4 servers. It allegedly mixed about 152,000 BTC."
+    },
     "source": "https://eucrim.eu/news/chipmixer-taken-down",
     "status": "checked"
   },
@@ -317,6 +495,11 @@
     "long": "On May 6, 2022, OFAC sanctioned Blender.io, its first ever designation of a virtual currency mixer. It cited the mixer's use by North Korea's Lazarus Group to launder proceeds of the Ronin bridge hack (Axie Infinity).",
     "tech": "Crypto #Anonymity Myths #40: OFAC sanctioned Blender.io on May 6, 2022, its first designation of a virtual currency mixer, citing its use by North Korea's Lazarus Group to launder Ronin (Axie Infinity) bridge hack proceeds. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #40: In May 2022, Blender.io became the first crypto mixer ever sanctioned by the US Treasury, for helping North Korean hackers launder stolen funds. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "May 6, 2022",
+      "title": "Blender.io, the first sanctioned mixer",
+      "sub": "OFAC cited its use by Lazarus Group to launder Ronin bridge hack proceeds."
+    },
     "source": "https://therecord.media/cryptocurrency-mixer-sanctions-ofac-blendrio-lazarus-group",
     "status": "checked"
   },
@@ -325,6 +508,10 @@
     "long": "When one mixer closes, another appears. On Nov 29, 2023, OFAC sanctioned the mixer Sinbad.io, the same day its website was seized. Analysts at Elliptic had linked it to Blender.io as a likely successor, and it was used by North Korea's Lazarus Group.",
     "tech": "Crypto #Anonymity Myths #41: OFAC sanctioned Sinbad.io on Nov 29, 2023, the same day its site was seized. Analysts (Elliptic) had linked it to Blender.io as a likely successor, used by the Lazarus Group. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #41: When one mixer is closed, another appears. In Nov 2023 the US sanctioned Sinbad, a mixer seen as Blender.io's successor, also used by North Korean hackers. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Sinbad.io, a likely Blender.io successor",
+      "sub": "OFAC sanctioned it the same day its website was seized. Lazarus Group used it too."
+    },
     "source": "https://www.elliptic.co/blog/sinbad-crypto-mixer-flagged-by-elliptic-sanctioned-and-seized",
     "status": "checked"
   },
@@ -333,6 +520,10 @@
     "long": "Tornado Cash on Ethereum: a user deposits a fixed amount with a secret commitment, then later withdraws to a fresh address using a zk-SNARK proving they own an unspent deposit in the pool, without revealing which one. All deposits of the same size in the pool form the anonymity set.",
     "tech": "Crypto #Anonymity Myths #42: Tornado Cash: deposit a fixed amount with a secret commitment, later withdraw to a fresh address with a zk-SNARK proving you own an unspent deposit, without revealing which one. The pool is the anonymity set. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #42: Tornado Cash works like a sealed box: people drop in fixed amounts of ETH, then later take them out to a new address, proving they deposited without saying which deposit. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "How Tornado Cash hides the link",
+      "sub": "A zk-SNARK proves you own a deposit in the pool without revealing which one."
+    },
     "source": "https://raw.githubusercontent.com/tornadocash/tornado-core/master/README.md",
     "status": "checked"
   },
@@ -341,6 +532,11 @@
     "long": "On Aug 8, 2022, OFAC designated Tornado Cash and listed its smart contract addresses. Treasury said it had laundered more than $7B since 2019, including over $455M stolen by North Korea's Lazarus Group. It was the first sanction of immutable, open-source code.",
     "tech": "Crypto #Anonymity Myths #43: OFAC designated Tornado Cash on Aug 8, 2022, listing its smart contract addresses. Treasury said it laundered $7B+ since 2019, incl. $455M+ stolen by the Lazarus Group. First sanction of immutable, open-source code. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #43: Aug 2022: the US Treasury sanctioned Tornado Cash, saying it had laundered more than $7B since 2019, including over $455M stolen by North Korean hackers. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "$7B",
+      "title": "Sanctions hit open-source code",
+      "sub": "OFAC listed its contracts, citing over $455M stolen by North Korea's Lazarus Group."
+    },
     "source": "https://home.treasury.gov/news/press-releases/jy0916",
     "status": "checked"
   },
@@ -349,6 +545,10 @@
     "long": "Can code nobody controls be sanctioned? In Van Loon v. Treasury (Nov 26, 2024), the US Fifth Circuit ruled that Tornado Cash's immutable smart contracts are not \"property\" under IEEPA, so OFAC cannot block them. Treasury delisted Tornado Cash on Mar 21, 2025.",
     "tech": "Crypto #Anonymity Myths #44: Van Loon v. Treasury (5th Cir., Nov 26, 2024): Tornado Cash's immutable smart contracts aren't \"property\" under IEEPA, so OFAC can't block them. Treasury delisted Tornado Cash on Mar 21, 2025. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #44: Can you sanction code nobody controls? A US appeals court said no in Nov 2024. In March 2025, the Treasury removed Tornado Cash from its sanctions list. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "A court says code is not property",
+      "sub": "The Fifth Circuit ruled OFAC cannot block immutable contracts. Treasury then delisted it."
+    },
     "source": "https://www.steptoe.com/en/news-publications/international-compliance-blog/treasury-department-delists-tornado-cash-following-the-fifth-circuits-decision.html",
     "status": "checked"
   },
@@ -357,6 +557,11 @@
     "long": "On May 14, 2024, a Dutch court in 's-Hertogenbosch convicted Tornado Cash developer Alexey Pertsev of money laundering and sentenced him to 64 months. He appealed. The case is a key test of whether writing privacy software can make a developer liable.",
     "tech": "Crypto #Anonymity Myths #45: May 14, 2024: a court in 's-Hertogenbosch (NL) convicted Tornado Cash developer Alexey Pertsev of money laundering and sentenced him to 64 months. He appealed: a key test of developer liability. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #45: Writing privacy code can still land you in court. In May 2024 a Dutch court sentenced Tornado Cash developer Alexey Pertsev to 64 months for money laundering. He appealed. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "64 months",
+      "title": "A Dutch court convicts a privacy developer",
+      "sub": "Tornado Cash developer Alexey Pertsev was found guilty of money laundering. He appealed."
+    },
     "source": "https://www.theblock.co/post/294322/tornado-cash-developer-found-guilty-alexey-pertsev-money-laundering-charges-to-serve-five-year-prison-sentence",
     "status": "checked"
   },
@@ -365,6 +570,10 @@
     "long": "In the US, Tornado Cash co-founder Roman Storm went on trial in 2025. In Aug 2025 in SDNY, the jury convicted him of conspiracy to operate an unlicensed money transmitting business, and deadlocked on the money laundering and sanctions conspiracy charges.",
     "tech": "Crypto #Anonymity Myths #46: Aug 2025, SDNY: Roman Storm convicted of conspiracy to operate an unlicensed money transmitting business. The jury deadlocked on money laundering and sanctions conspiracy charges. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #46: In the US, Tornado Cash co-founder Roman Storm went on trial in 2025. The jury found him guilty on one charge, unlicensed money transmitting, and couldn't agree on the others. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Roman Storm's split verdict",
+      "sub": "Convicted of unlicensed money transmitting conspiracy; jury deadlocked on other charges."
+    },
     "source": "https://decrypt.co/333790/jury-tornado-cash-developer-storm-guilty-money-transmitting",
     "status": "checked"
   },
@@ -373,6 +582,10 @@
     "long": "Monero was designed to hide what Bitcoin leaves public, and its privacy is on by default: ring signatures hide which input is real (the sender), one-time stealth addresses hide the receiver, and RingCT hides amounts. Since privacy is mandatory, all users share one large anonymity set instead of a small opt-in group.",
     "tech": "Crypto #Anonymity Myths #47: Monero privacy stack, on by default: ring signatures hide the real input, one-time (stealth) addresses hide the receiver, RingCT hides amounts. Mandatory privacy means everyone shares one large anonymity set. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #47: Monero was built to fix what Bitcoin leaves open. It hides three things by default: who sent, who received, and how much. Not optional, for everyone. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Monero: private by default",
+      "sub": "Ring signatures, stealth addresses and RingCT hide sender, receiver and amount."
+    },
     "source": "https://raw.githubusercontent.com/monero-project/monero-site/master/_i18n/en/resources/moneropedia/ringCT.md",
     "status": "checked"
   },
@@ -381,6 +594,11 @@
     "long": "Monero uses CLSAG ring signatures: each input is signed with a ring of 16 members, 1 real and 15 decoys, and observers cannot tell which is real. Ring size became 16 with the v0.18 hard fork in Aug 2022. Key images prevent double spends without revealing the signer.",
     "tech": "Crypto #Anonymity Myths #48: Monero ring signatures (CLSAG): each input has 16 ring members, 1 real + 15 decoys. Ring size became 16 in the v0.18 hard fork (Aug 2022). Key images stop double spends without revealing the signer. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #48: In Monero, each payment is signed by a group of 16 possible senders. Only one is real, and nobody watching can tell which. That's a ring signature. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "Ring size 16",
+      "title": "Hiding the real signer among decoys",
+      "sub": "Each input has 15 decoys; key images stop double spends without naming the signer."
+    },
     "source": "https://getmonero.org/2022/07/19/monero-0.18.0.0-released.html",
     "status": "checked"
   },
@@ -389,6 +607,10 @@
     "long": "Monero stealth addresses: a user shares one public address, but for each payment the sender derives a one-time output key from the recipient's public view and spend keys plus random data. Only sender and recipient can link it; the recipient finds it by scanning with the private view key. Outsiders can't tie payments together.",
     "tech": "Crypto #Anonymity Myths #49: Monero stealth addresses: the sender derives a one-time output key from the recipient's public view and spend keys plus random data. Only sender and recipient can link it; the recipient spots it with the private view key. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #49: In Monero, you can share one public address, yet every payment you receive lands at a brand new one-time address. Outsiders can't tie your payments together. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "One public address, endless one-time keys",
+      "sub": "Each payment gets a fresh output key that only sender and recipient can link."
+    },
     "source": "https://raw.githubusercontent.com/monero-project/monero-site/master/_i18n/en/resources/moneropedia/stealthaddress.md",
     "status": "checked"
   },
@@ -397,6 +619,10 @@
     "long": "RingCT, mandatory in Monero since 2017, hides amounts with Pedersen commitments, and range proofs show amounts are not negative, so the network can check no coins are created from nothing. Bulletproofs (Oct 2018) shrank those proofs, and Bulletproofs+ (Aug 2022) cut size and verification time again.",
     "tech": "Crypto #Anonymity Myths #50: RingCT (mandatory since 2017) hides amounts with Pedersen commitments; range proofs show they aren't negative. Bulletproofs (Oct 2018) shrank those proofs; Bulletproofs+ (Aug 2022) cut size and verification time again. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #50: Monero also hides amounts. The network can check that no coins were created from nothing, without anyone seeing how much was sent. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Hidden amounts that still add up",
+      "sub": "Pedersen commitments hide values, while range proofs show no coins are created."
+    },
     "source": "https://raw.githubusercontent.com/monero-project/monero-site/master/_i18n/en/resources/moneropedia/ringCT.md + https://raw.githubusercontent.com/monero-project/monero-site/master/_i18n/en/resources/moneropedia/bulletproofs.md + https://raw.githubusercontent.com/monero-project/monero-site/master/_posts/2022-07-19-monero-0.18.0.0-released.md",
     "status": "checked"
   },
@@ -405,6 +631,10 @@
     "long": "Privacy doesn't rule out disclosure. A Monero wallet has a private view key, separate from the spend key. Sharing the view key gives read-only access to incoming outputs, for an auditor, accountant or tax office, without any power to spend. Outgoing payments can't be reliably seen with it alone.",
     "tech": "Crypto #Anonymity Myths #51: Monero wallets have a private view key (read-only: detects incoming outputs) separate from the spend key. Sharing the view key enables audits without spending power. Outgoing payments can't be reliably seen with it. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #51: Private doesn't mean you can't show anything. A Monero \"view key\" lets you give an auditor, accountant or tax office read-only access to your incoming payments. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "A view key for auditors, not spenders",
+      "sub": "It shows incoming outputs read-only, with no power to spend. Outgoing stays unclear."
+    },
     "source": "https://raw.githubusercontent.com/monero-project/monero-site/master/_i18n/en/resources/moneropedia/viewkey.md",
     "status": "checked"
   },
@@ -413,6 +643,10 @@
     "long": "Monero added Dandelion++ in v0.16 (2020). A new transaction first goes through a \"stem\" phase, forwarded along a random path of single peers, then a \"fluff\" phase floods it to the network. This makes the original broadcaster hard to spot and weakens the IP-linking attacks that work on plain gossip networks.",
     "tech": "Crypto #Anonymity Myths #52: Dandelion++ (added in Monero v0.16, 2020): a \"stem\" phase forwards a tx along a random path of single peers, then a \"fluff\" phase floods it. This weakens the IP-linking attacks that work on plain gossip networks. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #52: Monero also hides where a transaction starts on the internet. It's passed quietly from node to node first, then spread widely, so the first broadcaster is hard to spot. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Dandelion++ hides who broadcast first",
+      "sub": "A random stem path, then a flood, weakens IP-linking attacks on Monero."
+    },
     "source": "https://getmonero.org/2020/04/18/dandelion-implemented.html",
     "status": "checked"
   },
@@ -421,6 +655,11 @@
     "long": "Monero's early privacy was weaker. Möser et al. (PoPETs 2018) found that about 62% of early inputs with mixins could be deduced by chain-reaction analysis, and that guessing the newest ring member was right about 80% of the time, mostly due to weak decoys. Bigger rings and better decoy selection followed.",
     "tech": "Crypto #Anonymity Myths #53: Möser et al. (PoPETs 2018): ≈62% of early Monero inputs with mixins were deducible by chain-reaction analysis; guessing the newest ring member was right ≈80% of the time. Bigger rings and better decoys followed. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #53: Monero wasn't always this strong. A 2018 study found that in its early years many payments could be traced, mostly due to weak decoys. The protocol was then hardened. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "62%",
+      "title": "Early Monero privacy was weaker",
+      "sub": "Guessing the newest ring member was right about 80% of the time, due to weak decoys."
+    },
     "source": "https://arxiv.org/abs/1704.04299",
     "status": "checked"
   },
@@ -429,6 +668,11 @@
     "long": "In Sept 2020, the IRS awarded contracts to Chainalysis and Integra FEC, up to $625K each and $1.25M in total, to build Monero tracing tools. No public break of Monero's cryptography, or general method to trace it, has been shown.",
     "tech": "Crypto #Anonymity Myths #54: Sept 2020: the IRS gave contracts (up to $625K each, $1.25M total) to Chainalysis and Integra FEC to build Monero tracing tools. No public break of Monero's cryptography has been shown. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #54: Can governments crack Monero? In 2020 the IRS paid two firms to try to build Monero tracing tools. No public proof of a general break has been shown. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "$1.25M",
+      "title": "The IRS paid for Monero tracing tools",
+      "sub": "No public break of Monero's cryptography, or general method to trace it, has been shown."
+    },
     "source": "https://decrypt.co/43451/irs-1-million-contracts-data-firms-crack-monero",
     "status": "checked"
   },
@@ -437,6 +681,10 @@
     "long": "Privacy coins pay a price in access: major exchanges remove them. Binance, the largest exchange, delisted XMR on Feb 20, 2024, after first adding a monitoring tag. Other exchanges in several jurisdictions have done the same, because default-private coins conflict with AML and Travel Rule obligations.",
     "tech": "Crypto #Anonymity Myths #55: Binance delisted XMR on Feb 20, 2024, after adding a monitoring tag. Other exchanges in several jurisdictions have done the same, as default-private coins conflict with AML and Travel Rule obligations. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #55: Privacy coins have a cost: big exchanges remove them. Binance, the largest one, delisted Monero in Feb 2024, citing listing standards. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Privacy coins lose exchange access",
+      "sub": "Binance delisted XMR in 2024, as default privacy clashes with AML and Travel Rule duties."
+    },
     "source": "https://decrypt.co/218194/binance-finalizes-monero-delisting",
     "status": "checked"
   },
@@ -445,6 +693,10 @@
     "long": "Zcash launched on Oct 28, 2016 (genesis block), built on the Zerocash protocol. Its shielded transactions use zk-SNARKs, proofs that inputs are valid and balanced, while sender, receiver and amount stay encrypted on-chain. It is a different route to privacy than Monero's decoys.",
     "tech": "Crypto #Anonymity Myths #56: Zcash launched Oct 28, 2016 (genesis block), built on the Zerocash protocol. Shielded transactions use zk-SNARKs to prove inputs are valid and balanced, while sender, receiver and amount stay encrypted on-chain. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #56: Zcash takes another route: math that proves a payment is valid without showing who paid, who got paid, or how much. It launched in 2016. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Zcash encrypts the whole transaction",
+      "sub": "zk-SNARKs prove validity while sender, receiver and amount stay encrypted on-chain."
+    },
     "source": "https://z.cash/learn/what-are-zk-snarks/ + https://raw.githubusercontent.com/zcash/zcash/master/src/chainparams.cpp + https://raw.githubusercontent.com/zcash/zcash/master/README.md",
     "status": "checked"
   },
@@ -453,6 +705,10 @@
     "long": "A zero-knowledge proof convinces a verifier that a statement is true, such as \"I own an unspent note in this set\", while revealing nothing else, like proving you are over 18 without showing your birth date. zk-SNARKs are short and fast to verify, which makes them usable on-chain. They power Zcash and Tornado Cash.",
     "tech": "Crypto #Anonymity Myths #57: A zero-knowledge proof convinces a verifier that a statement is true (e.g. \"I own an unspent note in this set\") while revealing nothing else. zk-SNARKs are short and fast to verify, which makes them usable on-chain. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #57: Zero-knowledge proof: proving you know a secret without revealing it. Like proving you're over 18 without showing your birth date. It's the engine behind Zcash and Tornado Cash. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Proving a fact without revealing it",
+      "sub": "Like showing you are over 18 without your birth date. zk-SNARKs make it fit on-chain."
+    },
     "source": "https://z.cash/learn/what-are-zk-snarks/",
     "status": "checked"
   },
@@ -461,6 +717,10 @@
     "long": "Zcash privacy is optional. It has transparent t-addresses that work like Bitcoin's public UTXOs, and separate shielded pools. Kappos et al. (USENIX Security 2018) showed that simple heuristics based on usage patterns considerably shrink the shielded anonymity set.",
     "tech": "Crypto #Anonymity Myths #58: Zcash has transparent t-addresses (Bitcoin-like UTXOs) and shielded pools. Kappos et al. (USENIX Security 2018) showed simple heuristics based on usage patterns shrink the shielded anonymity set considerably. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #58: Myth: \"Zcash is always private.\" Privacy is optional. Its transparent addresses work like Bitcoin's, public for all. A 2018 study showed simple usage patterns could shrink its privacy a lot. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Optional privacy shrinks the crowd",
+      "sub": "Usage-pattern heuristics considerably shrink Zcash's shielded anonymity set."
+    },
     "source": "https://www.usenix.org/node/217538",
     "status": "checked"
   },
@@ -469,6 +729,11 @@
     "long": "Zcash usage has moved toward privacy. In Oct 2025, the shielded supply (Sapling + Orchard pools) reached about 4.5M ZEC, a record at the time, driven in part by wallets that shield by default. A bigger shielded pool means a bigger anonymity set for every user in it.",
     "tech": "Crypto #Anonymity Myths #59: Shielded supply (Sapling + Orchard) reached ≈4.5M ZEC in Oct 2025, a record then. Wallets that shield by default drove part of it. A bigger shielded pool means a bigger anonymity set for every user. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #59: Zcash usage has shifted toward privacy. In Oct 2025, about 4.5 million ZEC sat in shielded pools, a record at the time. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "4.5M ZEC",
+      "title": "Zcash's shielded supply reached a record",
+      "sub": "Wallets that shield by default helped. A bigger pool means a bigger anonymity set."
+    },
     "source": "https://www.theblock.co/post/376312/zcash-shielded-supply-privacy-token-surges-7x",
     "status": "checked"
   },
@@ -477,6 +742,10 @@
     "long": "Zcash's original SNARKs needed a trusted setup: a ceremony whose secret leftovers (\"toxic waste\") had to be destroyed. The NU5 upgrade on May 31, 2022 added the Orchard shielded pool, built on Halo 2, which needs no trusted setup.",
     "tech": "Crypto #Anonymity Myths #60: Original Zcash SNARKs needed a trusted setup (\"toxic waste\" had to be destroyed). NU5 (May 31, 2022) added the Orchard pool using Halo 2, which needs no trusted setup. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #60: Zcash's early design needed a secret setup ceremony whose leftovers had to be destroyed. A 2022 upgrade removed that need for its newest pool. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Goodbye to the toxic waste ceremony",
+      "sub": "The NU5 upgrade added Orchard, built on Halo 2, which needs no trusted setup."
+    },
     "source": "https://electriccoin.co/blog/nu5-activates-on-mainnet-eliminating-trusted-setup-and-launching-a-new-era-for-zcash",
     "status": "checked"
   },
@@ -485,6 +754,10 @@
     "long": "Zcash supports viewing keys (ZIP 310). An incoming or full viewing key reveals a shielded address's transactions without giving spend authority. This enables selective disclosure, for audits or compliance, while staying private toward everyone else, similar to Monero's view key.",
     "tech": "Crypto #Anonymity Myths #61: Zcash viewing keys: an incoming or full viewing key reveals a shielded address's transactions without spend authority. It enables selective disclosure for audits and compliance while staying private toward everyone else. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #61: Like Monero, Zcash lets you share a viewing key, so an auditor can see your shielded payments without being able to spend your coins. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Viewing keys for selective disclosure",
+      "sub": "They reveal a shielded address's transactions without granting spend authority."
+    },
     "source": "https://raw.githubusercontent.com/zcash/zips/main/zips/zip-0310.rst",
     "status": "checked"
   },
@@ -493,6 +766,10 @@
     "long": "Privacy Pools (2023 paper co-written by Vitalik Buterin): users prove with a zero-knowledge proof that their deposit belongs to an approved \"association set\" that excludes known illicit deposits, without revealing which deposit is theirs. The aim is privacy plus a way to show funds are not from a known bad source.",
     "tech": "Crypto #Anonymity Myths #62: Privacy Pools (Buterin et al., 2023): users prove with ZK that their deposit belongs to an approved \"association set\" that excludes known illicit deposits, without revealing which deposit is theirs. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #62: Can you have privacy and still prove your money is clean? A 2023 paper co-written by Vitalik Buterin proposed \"Privacy Pools\": prove your funds aren't from a known bad source. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Prove clean funds, keep your privacy",
+      "sub": "A zero-knowledge proof shows a deposit sits in an approved set, without saying which."
+    },
     "source": "https://www.newswise.com/pdf_docs/170903654855378_1-s2.0-S2096720923000519-main.pdf",
     "status": "checked"
   },
@@ -501,6 +778,10 @@
     "long": "Banks pass sender and receiver details along with wire transfers. In 2019, the FATF, the global AML standard setter, extended Recommendation 16, the \"Travel Rule\", to virtual asset service providers: originator and beneficiary information must travel with transfers between VASPs. The EU applies it from the first euro.",
     "tech": "Crypto #Anonymity Myths #63: FATF (2019) extended Recommendation 16, the \"Travel Rule\", to virtual asset service providers: originator and beneficiary info must travel with transfers between VASPs. The EU applies it from the first euro. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #63: Banks share sender and receiver names when they wire money. Since 2019, the global anti-money-laundering standard asks crypto exchanges to do the same. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "The Travel Rule comes to crypto",
+      "sub": "Since 2019, originator and beneficiary data must travel with transfers between VASPs."
+    },
     "source": "https://www.21analytics.co/what-is-the-fatf-travel-rule/",
     "status": "checked"
   },
@@ -509,6 +790,11 @@
     "long": "The EU AML Regulation 2024/1624, Art. 79, applying from July 10, 2027, bars crypto-asset service providers from keeping anonymous accounts, or accounts that allow transactions to be obfuscated, \"including through anonymity-enhancing coins\". The text names no coin; Monero (XMR) and Zcash (ZEC) are commonly cited examples.",
     "tech": "Crypto #Anonymity Myths #64: EU AMLR 2024/1624, Art. 79, applying from July 10, 2027: crypto-asset service providers may not keep anonymous accounts, or accounts that obfuscate transactions \"including through anonymity-enhancing coins\" (e.g. XMR, ZEC). #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #64: Europe is closing the door on anonymous crypto accounts. From July 2027, regulated crypto platforms in the EU may not offer anonymous accounts, or accounts that hide transactions with privacy coins. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "July 10, 2027",
+      "title": "The EU bans anonymous crypto accounts",
+      "sub": "Providers must not keep accounts that allow obfuscation, including via privacy coins."
+    },
     "source": "https://www.springlex.eu/en/packages/aml/amlr-regulation/article-79/ (Art. 79(1), OJ text) + https://www.springlex.eu/en/packages/aml/amlr-regulation/article-90/ (applies from 10 July 2027) + https://eur-lex.europa.eu/eli/reg/2024/1624/oj/eng (metadata: 2027-07-10) + https://cointelegraph.com/news/eu-crypto-ban-anonymous-privacy-tokens-2027 (XMR/ZEC as examples: the text names no coin)",
     "status": "checked"
   },
@@ -517,6 +803,11 @@
     "long": "Is crypto mostly for crime? Chainalysis's 2026 report (Jan 2026) estimates illicit addresses received a record $154B in 2025, a lower bound, mainly driven by sanctioned entities and state-level sanctions evasion. The 2024 figure was revised to $57.2B from $40.9B first reported. Illicit activity is still under 1% of on-chain volume. Public ledgers are what make such counts possible.",
     "tech": "Crypto #Anonymity Myths #65: Chainalysis 2026 report: illicit addresses got ≈$154B in 2025 (a lower bound), vs a revised $57.2B for 2024 (first reported as $40.9B). Still under 1% of on-chain volume. Public ledgers make such counts possible. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #65: Myth: \"crypto is mostly for crime.\" Chainalysis estimates illicit addresses got at least ≈$154B in 2025, a record driven by sanctions evasion, yet still under 1% of all on-chain volume. #CryptoPrivacy #Monero",
+    "card": {
+      "big": "$154B",
+      "title": "Is crypto mostly for crime?",
+      "sub": "Illicit activity is still under 1% of on-chain volume. Public ledgers make it countable."
+    },
     "source": "https://www.theblock.co/post/384753/crypto-crime-150-billion-usd-2025-state-actors-scale-onchain-chainalysis (Jan 8, 2026)",
     "status": "checked"
   },
@@ -525,6 +816,10 @@
     "long": "On-chain privacy has legitimate uses. On a public ledger, competitors can see salaries and supplier payments, thieves can see balances, and hostile regimes can see donations. For a person, a shop or an employer, that is a real risk. This is why selective disclosure tools exist: view keys and zero-knowledge proofs let users show what they choose to the people they choose.",
     "tech": "Crypto #Anonymity Myths #66: Legit reasons for on-chain privacy: salaries and supplier payments visible to competitors, balances visible to thieves, donations visible to hostile regimes. Hence selective disclosure (view keys, ZK). #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #66: Privacy isn't only for criminals. If your wallet is public, anyone you pay can see your salary, savings and spending. For an employer, a shop or a family, that's a real risk. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Why honest users want privacy",
+      "sub": "Public ledgers show salaries, balances and donations to competitors, thieves and regimes."
+    },
     "source": "https://raw.githubusercontent.com/monero-project/monero-site/master/_i18n/en/resources/moneropedia/viewkey.md",
     "status": "checked"
   },
@@ -533,6 +828,10 @@
     "long": "Recap: Bitcoin is pseudonymous, not anonymous. Public ledgers plus clustering heuristics plus KYC records make flows traceable, even years later, as Silk Road, Bitfinex and Colonial Pipeline cases show. CoinJoin breaks clustering heuristics, Monero hides sender, receiver and amount by default, Zcash uses zk-SNARKs. Each has limits, and the law keeps moving.",
     "tech": "Crypto #Anonymity Myths #67: Recap: public ledgers + clustering + KYC = traceable. Bitfinex, Colonial and Silk Road prove it. CoinJoin breaks heuristics, Monero hides by default, Zcash uses zk-SNARKs. Law keeps moving. Follow @xcryptokeys for more series. #CryptoPrivacy #Monero",
     "simple": "Crypto #Anonymity Myths #67: Recap: Bitcoin is pseudonymous, not anonymous. Clustering, KYC and leaks link addresses to people, years later. CoinJoin, Monero and Zcash raise the bar, with legal limits. Follow for more. #CryptoPrivacy #Monero",
+    "card": {
+      "title": "Traceable by default, private with effort",
+      "sub": "CoinJoin, Monero and Zcash each counter tracing in their own way. Each has limits."
+    },
     "source": "https://bitcoin.org/bitcoin.pdf",
     "status": "checked"
   }
