@@ -41,9 +41,7 @@ L'exécutable est autonome (un seul fichier, .NET inclus). Copier le dossier `pu
 À côté de l'exécutable :
 
 - `appsettings.json` : les réglages par défaut (fourni) ;
-- `appsettings.local.json` : **facultatif**, seulement pour changer un réglage sur un serveur (par exemple `Git.UserEmail`). Il est ignoré par git ; ne jamais le committer.
-
-Le chemin du clone se donne avec `--repo <dossier>` sur la ligne de commande (voir [Lancer toutes les 15 minutes](#lancer-toutes-les-15-minutes)). Sans `--repo` ni `RepoPath`, le programme cherche le dépôt en remontant depuis son propre dossier, puis depuis le dossier courant, jusqu'au dossier qui contient `.git` et `accounts/`. Aucun fichier de réglages n'est donc nécessaire sur le serveur : seuls les `account.local.json` des comptes portent les clés.
+- `appsettings.local.json` : les réglages propres au serveur (au minimum `RepoPath`), à créer à partir de `appsettings.local.example.json`. Il est ignoré par git ; ne jamais le committer.
 
 Dans le dossier de chaque compte, `accounts/<Compte>/` :
 
@@ -56,7 +54,7 @@ Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, 
 
 | Clé | Défaut | Rôle |
 |---|---|---|
-| `RepoPath` | `--repo`, sinon trouvé en remontant | Chemin du clone du dépôt sur le serveur. Plus simple : `--repo` dans la tâche planifiée |
+| `RepoPath` | | Chemin du clone du dépôt sur le serveur |
 | `AccountsFolder` | `accounts` | Dossier des comptes dans le dépôt (un sous-dossier par compte, ses campagnes dans `threads/`) |
 | `DefaultVersion` | `simple` | Version publiée par défaut (`simple`, `tech`, `variant`) ; un post peut la changer avec `"use": "tech"` |
 | `AttachImages` | `true` | Joint `post_N.png` (ou .jpg, .webp, .gif) s'il existe |
@@ -75,6 +73,14 @@ Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, 
 | `Accounts.<Compte>.Enabled`, `Accounts.<Compte>.X.…` | | Facultatif : remplace, depuis `appsettings(.local).json` ou une variable d'environnement, une valeur des fichiers du compte |
 
 `<Compte>` est le nom du dossier dans `accounts/`, par exemple `XCryptoKeys` (majuscules indifférentes). Exemple :
+
+`appsettings.local.json`
+
+```json
+{
+  "RepoPath": "/srv/x-bots"
+}
+```
 
 `accounts/XCryptoKeys/account.json` (commité)
 
@@ -97,7 +103,7 @@ Le bot ne commite que les `status.json` et `posts.json` des campagnes : `account
 
 ### Passage depuis l'ancienne configuration (un seul compte)
 
-Avant, les clés étaient dans la section `X` et les campagnes dans `threads/`. Le programme refuse maintenant de démarrer (code 2) si des clés sont encore dans `X` : les déplacer dans `accounts/XCryptoKeys/account.local.json` (section `x`, voir l'exemple plus haut), puis supprimer `appsettings.local.json` et ajouter `--repo <clone>` à la tâche planifiée (ou garder seulement `RepoPath` dans `appsettings.local.json`). Une section `Accounts.XCryptoKeys.X` dans `appsettings.local.json`, ou `XCK__Accounts__XCryptoKeys__X__ApiKey` (ancien `XCK__X__ApiKey`), marche aussi. Supprimer aussi `ThreadsFolder` s'il était réglé.
+Avant, les clés étaient dans la section `X` et les campagnes dans `threads/`. Le programme refuse maintenant de démarrer (code 2) si des clés sont encore dans `X` : les déplacer dans `accounts/XCryptoKeys/account.local.json` (section `x`, voir l'exemple plus haut), puis ne garder que `RepoPath` dans `appsettings.local.json`. Une section `Accounts.XCryptoKeys.X` dans `appsettings.local.json`, ou `XCK__Accounts__XCryptoKeys__X__ApiKey` (ancien `XCK__X__ApiKey`), marche aussi. Supprimer aussi `ThreadsFolder` s'il était réglé.
 
 ## Clés de l'API X
 
@@ -125,7 +131,7 @@ De ton côté, fais un `git pull` avant de modifier un `status.json` ou un `post
 **Linux (cron)**, avec `crontab -e` :
 
 ```cron
-*/15 * * * * /opt/xck-publisher/xck-publisher --repo /srv/x-bots > /dev/null 2>&1
+*/15 * * * * /opt/xck-publisher/xck-publisher > /dev/null 2>&1
 ```
 
 Le programme écrit lui-même son log dans `logs/`.
@@ -133,7 +139,7 @@ Le programme écrit lui-même son log dans `logs/`.
 **Windows (Planificateur de tâches)**, dans une invite de commandes administrateur :
 
 ```bat
-schtasks /Create /TN "XCryptoKeys Publisher" /TR "C:\xck-publisher\xck-publisher.exe --repo C:\x-bots" /SC MINUTE /MO 15 /RU "%USERNAME%"
+schtasks /Create /TN "XCryptoKeys Publisher" /TR "C:\xck-publisher\xck-publisher.exe" /SC MINUTE /MO 15 /RU "%USERNAME%"
 ```
 
 La tâche doit tourner avec un compte qui a les identifiants git. Un verrou empêche deux passages en même temps.

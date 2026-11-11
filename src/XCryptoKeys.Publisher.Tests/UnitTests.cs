@@ -318,25 +318,6 @@ public class AccountTests
         }
     }
 
-    [Fact]
-    public void Repo_is_found_by_walking_up_to_git_and_accounts()
-    {
-        string root = Path.Combine(Path.GetTempPath(), "xck-repo-" + Guid.NewGuid().ToString("N"));
-        string deep = Path.Combine(root, "src", "publish", "linux-x64");
-        Directory.CreateDirectory(deep);
-        Directory.CreateDirectory(Path.Combine(root, "accounts"));
-        try
-        {
-            Assert.Null(Settings.FindRepo(deep));
-            Directory.CreateDirectory(Path.Combine(root, ".git"));
-            Assert.Equal(Path.GetFullPath(root), Settings.FindRepo(deep));
-        }
-        finally
-        {
-            Directory.Delete(root, true);
-        }
-    }
-
     private static Account TempAccount(string name, string? accountJson, string? localJson)
     {
         string dir = Path.Combine(Path.GetTempPath(), "xck-accfiles-" + Guid.NewGuid().ToString("N"), name);
