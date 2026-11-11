@@ -5,6 +5,11 @@
     "tech": "#Crypto Math #1: A Bitcoin or Ethereum private key is an integer from 1 to n-1, where n (the secp256k1 group order) is about 1.158 x 10^77, just under 2^256. All security rests on it being truly random. Daily series on the math behind it. #Cryptography #Blockchain",
     "simple": "#Crypto Math #1: Your coins aren't guarded by a vault. They're guarded by a number. A private key is one pick out of about 10^77 possibilities, far too many for any computer to guess. One fact a day on the math that guards your coins. #Cryptography #Blockchain",
     "variant": "#Crypto Math #1: Not a password, not a file: your crypto is a random number below about 1.158 x 10^77. Seed words, addresses, signatures are all math built on top of it. Let's open the box, one post a day. #Cryptography #Blockchain",
+    "card": {
+      "big": "10^77",
+      "title": "Your private key is just a number",
+      "sub": "One random integer from 1 to n-1. Seed words, addresses and signatures build on it."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -13,6 +18,10 @@
     "long": "Bitcoin and Ethereum use the same elliptic curve, secp256k1, a Koblitz curve defined in the SEC 2 standard. It is not one of the NIST curves like P-256 that most software relied on. Bitcoin chose it and Ethereum later reused it. Before Bitcoin became popular the curve was almost never used, so its wide adoption today comes almost entirely from crypto.",
     "tech": "#Crypto Math #2: secp256k1 is a Koblitz curve from the SEC 2 standard, not one of the popular NIST curves such as P-256. Bitcoin picked it and Ethereum followed. It was almost never used before Bitcoin. #Cryptography #Blockchain",
     "simple": "#Crypto Math #2: Bitcoin and Ethereum both use the same elliptic curve, called secp256k1. It was almost never used before Bitcoin: most software relied on the NIST curves instead. #Cryptography #Blockchain",
+    "card": {
+      "title": "One curve for Bitcoin and Ethereum",
+      "sub": "secp256k1 is a Koblitz curve from SEC 2, almost never used before Bitcoin."
+    },
     "source": "https://en.bitcoin.it/wiki/Secp256k1",
     "status": "checked"
   },
@@ -21,6 +30,11 @@
     "long": "secp256k1 has a very short equation: y^2 = x^3 + 7, so a = 0 and b = 7. All arithmetic is done modulo the prime p = 2^256 - 2^32 - 977 (hex 0xFFFF...FFFEFFFFFC2F), a 78-digit number, so coordinates are whole numbers that wrap around p. The missing a*x term and the special form of p make fast implementations possible.",
     "tech": "#Crypto Math #3: secp256k1: y^2 = x^3 + 7 over the prime field p = 2^256 - 2^32 - 977 (0xFFFF...FFFEFFFFFC2F). No 'a*x' term, b = 7. That special shape enables fast implementations. #Cryptography #Blockchain",
     "simple": "#Crypto Math #3: The curve behind Bitcoin is a strikingly short formula: y^2 = x^3 + 7. All the math happens on whole numbers that wrap around a huge prime, 78 digits long. #Cryptography #Blockchain",
+    "card": {
+      "big": "y^2 = x^3 + 7",
+      "title": "A curve written in one short line",
+      "sub": "All the math runs modulo a 78-digit prime, p = 2^256 - 2^32 - 977."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -29,6 +43,10 @@
     "long": "Unlike the NIST curves, whose constants cannot all be fully explained, secp256k1's parameters come from a predictable, non-random construction. That leaves less room for a deliberately planted weakness (a backdoor). The special structure also allows optimizations: a well-optimized implementation can be often more than 30% faster than on other curves.",
     "tech": "#Crypto Math #4: Unlike the NIST curves, secp256k1's constants come from a predictable, non-random construction. That lowers the room for a planted weakness and allows optimizations often more than 30% faster. #Cryptography #Blockchain",
     "simple": "#Crypto Math #4: Why trust secp256k1? Its constants were chosen in a predictable way. That leaves less room for a hidden backdoor than curves whose constants can't be fully explained. #Cryptography #Blockchain",
+    "card": {
+      "title": "Why trust the constants of secp256k1",
+      "sub": "They follow a predictable construction, leaving less room for a hidden backdoor."
+    },
     "source": "https://en.bitcoin.it/wiki/Secp256k1",
     "status": "checked"
   },
@@ -37,6 +55,11 @@
     "long": "A public key is P = d*G: the private key d times the fixed generator point G, using elliptic curve scalar multiplication. Computing P from d is fast. Going back, recovering d from P, is the elliptic curve discrete logarithm problem (ECDLP), believed infeasible for classical computers. Every wallet's security rests on that one-way property.",
     "tech": "#Crypto Math #5: Public key P = d*G: scalar multiplication of the generator point G by the private key d. Recovering d from P is the elliptic curve discrete logarithm problem (ECDLP), the hard problem behind every wallet. #Cryptography #Blockchain",
     "simple": "#Crypto Math #5: Your public key is your private key multiplied by a fixed point on the curve. Going forward takes a split second. Going backward, from public key to private key, is believed infeasible. #Cryptography #Blockchain",
+    "card": {
+      "big": "P = d*G",
+      "title": "Easy one way, infeasible the other",
+      "sub": "Public key = private key times a fixed point. Reversing it is the ECDLP."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -45,6 +68,11 @@
     "long": "A secp256k1 public key can be serialized in two ways. Uncompressed: prefix 0x04, then x and y, 65 bytes. Compressed: prefix 0x02 or 0x03 (the parity of y), then x only, 33 bytes. Since y^2 = x^3 + 7 gives two possible y for each x, one hint bit is enough to recompute y. Bitcoin Core defines SIZE = 65 and COMPRESSED_SIZE = 33 in pubkey.h.",
     "tech": "#Crypto Math #6: Uncompressed pubkey: 0x04 || x || y = 65 bytes. Compressed: 0x02/0x03 (parity of y) || x = 33 bytes. y^2 = x^3 + 7 has two roots, the prefix picks one. Bitcoin Core: SIZE 65, COMPRESSED_SIZE 33. #Cryptography #Blockchain",
     "simple": "#Crypto Math #6: A Bitcoin public key can be written in 65 bytes or just 33. The short form keeps x plus one hint for y, since y can be recomputed from the curve formula. #Cryptography #Blockchain",
+    "card": {
+      "big": "33 bytes",
+      "title": "Same public key, 65 or 33 bytes",
+      "sub": "The compressed form keeps x plus one hint bit; y is recomputed from the curve."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/pubkey.h",
     "status": "checked"
   },
@@ -53,6 +81,11 @@
     "long": "A 256-bit key does not give 256 bits of security. Generic attacks on the discrete log such as Pollard's rho need about sqrt(n) steps, i.e. about 2^128 group operations for secp256k1. So the curve targets a 128-bit security level, the target BIP340 also states. 2^128 is still far beyond any classical computer.",
     "tech": "#Crypto Math #7: secp256k1 targets a 128-bit security level: generic attacks like Pollard's rho solve ECDLP in about sqrt(n), i.e. 2^128 group operations. BIP340 states 128 bits as its target. #Cryptography #Blockchain",
     "simple": "#Crypto Math #7: A 256-bit key doesn't give 256 bits of security. The best attacks need about the square root of the work, so you get 128 bits. Still far beyond any classical computer. #Cryptography #Blockchain",
+    "card": {
+      "big": "2^128",
+      "title": "A 256-bit key, 128-bit security",
+      "sub": "Pollard's rho needs about sqrt(n) steps. Still far beyond any classical computer."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -61,6 +94,11 @@
     "long": "A classic Bitcoin ECDSA signature is a pair of integers (r, s) encoded in DER. Its length varies. BIP62 notes that with the low-S rule and strict DER, S is at most 32 bytes and R at most 33, so a signature is at most 72 bytes and about 71.494 bytes on average.",
     "tech": "#Crypto Math #8: ECDSA signature = (r, s), DER-encoded. With low-S and strict DER, R is at most 33 bytes and S at most 32: total at most 72 bytes, 71.494 on average (BIP62). #Cryptography #Blockchain",
     "simple": "#Crypto Math #8: A classic Bitcoin signature is two numbers, r and s, wrapped in a format called DER. Its size varies a little: at most 72 bytes, about 71.5 on average. #Cryptography #Blockchain",
+    "card": {
+      "big": "72 bytes",
+      "title": "What an ECDSA signature weighs",
+      "sub": "Two integers, r and s, encoded in DER. About 71.494 bytes on average."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki",
     "status": "checked"
   },
@@ -69,6 +107,10 @@
     "long": "ECDSA signs with s = k^-1 (z + r*d) mod n, where k is a secret per-signature nonce, z the message hash and d the private key. If the same k is used twice, both signatures share the same r. Anyone can then compute k = (z1 - z2)/(s1 - s2) and d = (s1*k - z1)/r. So a reused nonce leaks the private key through simple algebra, no hacking needed.",
     "tech": "#Crypto Math #9: ECDSA: s = k^-1 (z + r*d) mod n. Two signatures with the same nonce k share r. Then k = (z1 - z2)/(s1 - s2) and d = (s1*k - z1)/r. A reused nonce is a leaked private key. #Cryptography #Blockchain",
     "simple": "#Crypto Math #9: Every ECDSA signature needs a fresh secret random number. Use the same one twice and anyone can compute your private key from just two signatures. No hacking, only algebra. #Cryptography #Blockchain",
+    "card": {
+      "title": "Reuse a nonce, lose your key",
+      "sub": "Two ECDSA signatures with the same k reveal the private key through simple algebra."
+    },
     "source": "https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm",
     "status": "checked"
   },
@@ -77,6 +119,10 @@
     "long": "At the Chaos Communication Congress in 2010, the group fail0verflow showed that Sony's ECDSA code for the PS3 did not use a different random nonce for each signature. With two signatures using the same k, they could compute Sony's private signing key with the nonce-reuse algebra. A real-world example of how one randomness mistake breaks ECDSA.",
     "tech": "#Crypto Math #10: PS3, Chaos Communication Congress 2010: fail0verflow showed Sony's ECDSA code did not generate a different random nonce per signature. Two signatures with the same k were enough to recover Sony's private key. #Cryptography #Blockchain",
     "simple": "#Crypto Math #10: In 2010, the hacker group fail0verflow showed that Sony signed PS3 software with the same 'random' number every time. That one mistake exposed Sony's private signing key. #Cryptography #Blockchain",
+    "card": {
+      "title": "How Sony leaked its PS3 signing key",
+      "sub": "fail0verflow showed Sony reused the same nonce. Two signatures were enough."
+    },
     "source": "https://en.wikipedia.org/wiki/PlayStation_3_homebrew",
     "status": "checked"
   },
@@ -85,6 +131,10 @@
     "long": "In August 2013 (alert of Aug 11), a flaw in Android's Java SecureRandom meant it could produce colliding values. Android Bitcoin wallet apps therefore produced ECDSA signatures with repeated r values, i.e. reused nonces. Attackers solved the private keys from those signatures and took the funds.",
     "tech": "#Crypto Math #11: Aug 11, 2013 alert: Android's Java SecureRandom could produce colliding values, so Android wallets emitted ECDSA signatures with repeated r. Private keys were solved from them and funds taken. #Cryptography #Blockchain",
     "simple": "#Crypto Math #11: August 2013: Android's random number generator had a flaw. Bitcoin wallet apps reused 'random' values in signatures, thieves computed the private keys and took the coins. #Cryptography #Blockchain",
+    "card": {
+      "title": "When Android's randomness failed wallets",
+      "sub": "A SecureRandom flaw repeated ECDSA nonces. Attackers solved the keys and took funds."
+    },
     "source": "https://www.theregister.com/2013/08/12/android_bug_batters_bitcoin_wallets/",
     "status": "checked"
   },
@@ -93,6 +143,11 @@
     "long": "RFC 6979 removes the dependence on good randomness when signing: the ECDSA nonce k is derived deterministically from the private key and the message hash with HMAC-DRBG. The same message always gives the same k, and different messages give different k, so the nonce cannot repeat by bad luck or a broken RNG. libsecp256k1 supports this derandomized ECDSA.",
     "tech": "#Crypto Math #12: RFC 6979: derive the ECDSA nonce deterministically from the private key and message hash (HMAC-DRBG). Same message, same k; different message, different k. libsecp256k1 supports it. #Cryptography #Blockchain",
     "simple": "#Crypto Math #12: The cure for bad random numbers in signatures: don't use them. Modern wallets compute the secret number from your key and the message, so it's unique per message and never left to chance. #Cryptography #Blockchain",
+    "card": {
+      "big": "RFC 6979",
+      "title": "Signing without trusting the RNG",
+      "sub": "The nonce comes from the key and message hash, so it cannot repeat by bad luck."
+    },
     "source": "https://github.com/bitcoin-core/secp256k1/blob/master/README.md",
     "status": "checked"
   },
@@ -101,6 +156,11 @@
     "long": "ECDSA is malleable: if (r, s) is valid, (r, n - s) is valid too, so anyone can change a signature without the key, which changed txids of non-SegWit transactions. BIP146's LOW_S rule requires s to be at most n/2 (0x7FFF...5D576E7357A4501DDFE92F46681B20A0). Bitcoin Core enforces it as relay policy, closing this third-party way to alter transactions.",
     "tech": "#Crypto Math #13: ECDSA malleability: if (r, s) is valid, so is (r, n - s). BIP146 LOW_S requires s <= n/2 (0x7FFF...5D576E7357A4501DDFE92F46681B20A0), closing a third-party way to alter txids. #Cryptography #Blockchain",
     "simple": "#Crypto Math #13: Odd ECDSA quirk: every signature has a twin. Flip one value and it's still valid. Bitcoin nodes now only relay the 'low' version, so outsiders can't tweak a signature. #Cryptography #Blockchain",
+    "card": {
+      "big": "n/2",
+      "title": "Every ECDSA signature has a twin",
+      "sub": "If (r, s) is valid, so is (r, n - s). Bitcoin relays only the low-S version."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0146.mediawiki",
     "status": "checked"
   },
@@ -109,6 +169,10 @@
     "long": "Until 2015, Bitcoin relied on OpenSSL to parse signatures, and OpenSSL accepted various non-DER encodings. When OpenSSL 1.0.0p and 1.0.1k stopped accepting some of them, some nodes rejected the chain. BIP66 (strict DER, from Jan 2015) then made Bitcoin define its exact signature encoding rules itself. Lesson: consensus code cannot depend on a general library's quirks.",
     "tech": "#Crypto Math #14: BIP66 (strict DER, created Jan 2015): OpenSSL 1.0.0p and 1.0.1k stopped accepting some non-DER signatures, making some nodes reject the chain. Bitcoin then defined exact DER rules itself. #Cryptography #Blockchain",
     "simple": "#Crypto Math #14: In 2015, an OpenSSL update changed which signatures it accepted, and some Bitcoin nodes rejected the chain. Lesson: consensus code can't rely on a general library's quirks. #Cryptography #Blockchain",
+    "card": {
+      "title": "An OpenSSL update split Bitcoin nodes",
+      "sub": "BIP66 then made Bitcoin define its own strict DER signature rules in 2015."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki",
     "status": "checked"
   },
@@ -117,6 +181,11 @@
     "long": "Bitcoin developers built libsecp256k1, a library dedicated to Bitcoin's curve. Bitcoin Core 0.12.0 (Feb 2016) switched ECDSA signature validation from OpenSSL to it. The release announcement says validation became up to 7x faster on 64-bit and that raw reindexing and block validation took less than half the time it did before.",
     "tech": "#Crypto Math #15: Bitcoin Core 0.12.0 (Feb 2016) moved signature validation from OpenSSL to libsecp256k1: up to 7x faster on 64-bit, and block validation and reindex took less than half the time. #Cryptography #Blockchain",
     "simple": "#Crypto Math #15: Bitcoin developers wrote their own math library for its curve. When Bitcoin Core switched to it in 2016, checking signatures became up to 7 times faster. #Cryptography #Blockchain",
+    "card": {
+      "big": "7x",
+      "title": "Bitcoin's own curve library pays off",
+      "sub": "Bitcoin Core 0.12.0 moved to libsecp256k1: validation up to 7x faster on 64-bit."
+    },
     "source": "https://bitcoincore.org/en/2016/02/23/release-0.12.0/",
     "status": "checked"
   },
@@ -125,6 +194,10 @@
     "long": "Claus Schnorr's signature scheme (journal paper 1991) is simpler than ECDSA but was covered by US patent 4,995,082, which expired in February 2010. Bitcoin launched in January 2009, before that, and used ECDSA. Schnorr signatures only came to Bitcoin later, with Taproot and BIP340.",
     "tech": "#Crypto Math #16: Claus Schnorr's scheme (journal paper 1991) was covered by US patent 4,995,082, which expired in Feb 2010. Bitcoin launched in Jan 2009 with ECDSA; Schnorr came only with Taproot (BIP340). #Cryptography #Blockchain",
     "simple": "#Crypto Math #16: Schnorr signatures are simpler than ECDSA, but they were patented. The patent only expired in February 2010, a year after Bitcoin launched with ECDSA. #Cryptography #Blockchain",
+    "card": {
+      "title": "The patent that kept Schnorr out",
+      "sub": "US patent 4,995,082 expired in February 2010, after Bitcoin launched with ECDSA."
+    },
     "source": "https://en.wikipedia.org/wiki/Schnorr_signature",
     "status": "checked"
   },
@@ -133,6 +206,11 @@
     "long": "BIP340 Schnorr signatures have a fixed size of 64 bytes (R.x then s), while DER-encoded ECDSA signatures vary up to 72 bytes. Public keys are 32-byte x-only keys with an implicit even y, instead of 33-byte compressed keys. Less data on-chain means lower fees.",
     "tech": "#Crypto Math #17: BIP340: fixed 64-byte Schnorr signatures (R.x || s) vs DER ECDSA up to 72 bytes. Public keys are 32-byte x-only (implicit even y) vs 33-byte compressed. #Cryptography #Blockchain",
     "simple": "#Crypto Math #17: Taproot's Schnorr signatures have a fixed size: always 64 bytes. Public keys shrink too, to 32 bytes. Less data on-chain means lower fees. #Cryptography #Blockchain",
+    "card": {
+      "big": "64 bytes",
+      "title": "Schnorr signatures have a fixed size",
+      "sub": "Versus up to 72 bytes for ECDSA, with 32-byte x-only public keys. Lower fees."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -141,6 +219,10 @@
     "long": "BIP340 says Schnorr signatures are provably secure: strongly unforgeable under chosen message attack (SUF-CMA) in the random oracle model, assuming the elliptic curve discrete log problem (ECDLP) is hard. In contrast, the best known provable-security results for ECDSA rely on stronger assumptions.",
     "tech": "#Crypto Math #18: BIP340: Schnorr is SUF-CMA secure in the random oracle model assuming ECDLP is hard. The best known provable-security results for ECDSA rely on stronger assumptions. #Cryptography #Blockchain",
     "simple": "#Crypto Math #18: Schnorr signatures come with a mathematical proof of security under standard assumptions. ECDSA's best known proofs need stronger assumptions. #Cryptography #Blockchain",
+    "card": {
+      "title": "Schnorr comes with a security proof",
+      "sub": "Provably secure if ECDLP is hard. ECDSA's best proofs need stronger assumptions."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -149,6 +231,11 @@
     "long": "Schnorr verification is linear: s*G = R + e*P. If several signers add their nonces and their partial signatures, the result satisfies the same equation for the sum of their public keys. So keys and signatures can be added, and several people can jointly produce one signature valid for an aggregate key. This is the base of MuSig, MuSig2 and FROST.",
     "tech": "#Crypto Math #19: Schnorr linearity: s*G = R + e*P. Summing nonces and partial signatures gives a valid signature for the aggregate key. It's the building block of MuSig, MuSig2 and FROST. #Cryptography #Blockchain",
     "simple": "#Crypto Math #19: Schnorr has a superpower called linearity: keys and signatures can be added. Several people can jointly make one signature valid for the sum of their keys. #Cryptography #Blockchain",
+    "card": {
+      "big": "s*G = R + e*P",
+      "title": "Keys and signatures that add up",
+      "sub": "Schnorr is linear, so several signers can make one signature for a summed key."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -157,6 +244,11 @@
     "long": "BIP327 MuSig2 lets n signers create one aggregate public key and one ordinary 64-byte Schnorr signature. Per BIP327, MuSig2 Taproot outputs are indistinguishable for a blockchain observer from regular single-signer Taproot outputs, so a 3-of-3 wallet looks like a normal wallet and outsiders cannot tell that several people signed.",
     "tech": "#Crypto Math #20: BIP327 MuSig2: n signers produce one aggregate public key and one 64-byte Schnorr signature. MuSig2 Taproot outputs are indistinguishable from single-signer Taproot outputs. #Cryptography #Blockchain",
     "simple": "#Crypto Math #20: With MuSig2, a 3-of-3 wallet looks exactly like a normal single-key wallet on the blockchain. Outsiders can't tell that several people signed. #Cryptography #Blockchain",
+    "card": {
+      "big": "3-of-3",
+      "title": "A multisig that looks like one key",
+      "sub": "MuSig2 Taproot outputs are indistinguishable from regular single-signer ones."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki",
     "status": "checked"
   },
@@ -165,6 +257,10 @@
     "long": "MuSig2 needs only two communication rounds, while earlier schemes like MuSig1 needed three. The first round, exchanging nonces, can be done in advance, before the message or the exact set of signers is known. Once the session is fixed, signers send partial signatures with no further interaction.",
     "tech": "#Crypto Math #21: MuSig2 is a two-round multisig (MuSig1 needed three). Round 1, the nonce exchange, can be preprocessed before the message is known; then partial signatures need no further interaction. #Cryptography #Blockchain",
     "simple": "#Crypto Math #21: MuSig2 needs only two rounds of messages between signers, and the first round can be done before you even know what you'll sign. #Cryptography #Blockchain",
+    "card": {
+      "title": "MuSig2 cuts signing to two rounds",
+      "sub": "The nonce round can happen in advance, before the message is even known."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki",
     "status": "checked"
   },
@@ -173,6 +269,10 @@
     "long": "BIP340 chose the (R, s) signature form, verified with s*G = R + e*P, because it puts no elliptic curve operations inside the hash. That allows batch verification: a node can check many signatures together faster than one by one. Per BIP340, standardized ECDSA cannot be batch-verified more efficiently without extra witness data.",
     "tech": "#Crypto Math #22: BIP340 uses the (R, s) form so s*G = R + e*P has no curve operations inside the hash. That enables batch verification. Standard ECDSA can't be batch-verified faster without extra data. #Cryptography #Blockchain",
     "simple": "#Crypto Math #22: Schnorr signatures can be checked in batches: a node can verify many signatures together, faster than checking each one separately. #Cryptography #Blockchain",
+    "card": {
+      "title": "Checking signatures in bulk",
+      "sub": "Schnorr allows batch verification: many signatures checked faster than one by one."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -181,6 +281,10 @@
     "long": "BIP340 tagged hashes compute SHA256(SHA256(tag) || SHA256(tag) || x), with a tag like 'BIP0340/challenge'. The 64-byte prefix is exactly one SHA-256 block, so implementations can precompute it as a modified initial state. The point is domain separation: a hash made for one purpose cannot be reinterpreted as a hash for another.",
     "tech": "#Crypto Math #23: BIP340 tagged hashes: SHA256(SHA256(tag) || SHA256(tag) || x). The 64-byte prefix fills exactly one SHA-256 block, so it can be precomputed. Result: domain separation. #Cryptography #Blockchain",
     "simple": "#Crypto Math #23: Taproot hashes carry a label, like 'BIP0340/challenge', so a hash made for one purpose can never be mistaken for a hash made for another. #Cryptography #Blockchain",
+    "card": {
+      "title": "Hashes that carry a label",
+      "sub": "Tags like 'BIP0340/challenge' stop a hash being reused for another purpose."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -189,6 +293,10 @@
     "long": "In Taproot (BIP341), the output key is Q = P + hash(P || m)*G, where P is an internal key and m the Merkle root of a tree of alternative spending scripts. A key-path spend is a plain signature and reveals nothing about the scripts, so backup rules stay hidden. A script-path spend reveals only the branch actually used.",
     "tech": "#Crypto Math #24: BIP341: output key Q = P + hash(P || m)*G, where m is the Merkle root of the script tree. Key-path spends reveal nothing about scripts; script-path spends reveal only the branch used. #Cryptography #Blockchain",
     "simple": "#Crypto Math #24: A Taproot address can hide a whole set of backup spending rules inside one public key. Spend the normal way, and nobody learns those rules existed. #Cryptography #Blockchain",
+    "card": {
+      "title": "Backup rules hidden in one key",
+      "sub": "A key-path Taproot spend is a plain signature that reveals nothing about the scripts."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki",
     "status": "checked"
   },
@@ -197,6 +305,11 @@
     "long": "Taproot stores its spending scripts in a Merkle tree. To spend with one script, you reveal it plus a control block of 33 + 32m bytes, where m, the Merkle path length, is between 0 and 128. BIP341 caps it at 128 because a script with less than a 1 in 2^128 chance of being used is beyond the security bound anyway. Only the used branch is revealed.",
     "tech": "#Crypto Math #25: Taproot control block = 33 + 32m bytes, Merkle path length m from 0 to 128. The 128 cap: a script with under 1/2^128 chance of use is beyond the security bound anyway. #Cryptography #Blockchain",
     "simple": "#Crypto Math #25: Taproot stores spending scripts in a tree. To use one, you reveal only that branch and a short proof, not every possible condition. #Cryptography #Blockchain",
+    "card": {
+      "big": "33 + 32m",
+      "title": "Reveal only the branch you use",
+      "sub": "Taproot scripts sit in a Merkle tree, with the path length capped at 128."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki",
     "status": "checked"
   },
@@ -205,6 +318,11 @@
     "long": "Taproot (BIP340, 341 and 342) activated at block 709,632 on November 14, 2021. It added Schnorr signatures and SegWit version 1 outputs to Bitcoin, alongside the existing ECDSA.",
     "tech": "#Crypto Math #26: Taproot (BIP340/341/342) activated at block 709,632 on Nov 14, 2021, adding Schnorr signatures and SegWit v1 outputs next to ECDSA. #Cryptography #Blockchain",
     "simple": "#Crypto Math #26: Schnorr signatures went live on Bitcoin with the Taproot upgrade in November 2021. #Cryptography #Blockchain",
+    "card": {
+      "big": "709,632",
+      "title": "Taproot goes live on Bitcoin",
+      "sub": "Activated on November 14, 2021, adding Schnorr signatures and SegWit v1 outputs."
+    },
     "source": "https://www.blockchain.com/explorer/blocks/btc/709632",
     "status": "checked"
   },
@@ -213,6 +331,11 @@
     "long": "A Bitcoin block's hash is SHA256(SHA256(header)) of an 80-byte header: version (4 bytes), previous block hash (32), Merkle root (32), time (4), nBits target (4) and nonce (4). Changing any bit gives a completely different hash. Miners vary the nonce and other fields until the hash meets the target.",
     "tech": "#Crypto Math #27: Block hash = SHA256(SHA256(header)). 80-byte header: version (4), prev hash (32), Merkle root (32), time (4), nBits (4), nonce (4). Miners vary the nonce (and more) to hit the target. #Cryptography #Blockchain",
     "simple": "#Crypto Math #27: A Bitcoin block's ID is the fingerprint of a tiny 80-byte header, run through SHA-256 twice. Change one bit of the block and the ID changes completely. #Cryptography #Blockchain",
+    "card": {
+      "big": "80-byte",
+      "title": "A block ID is a double SHA-256",
+      "sub": "Hash a tiny header twice. Change one bit and the hash changes completely."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/primitives/block.h",
     "status": "checked"
   },
@@ -221,6 +344,10 @@
     "long": "Bitcoin's genesis block hash is 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f, starting with ten zeros. Proof of work is valid when the block hash, read as a 256-bit number, is below the target encoded in nBits. Leading zeros are what a number below a target looks like, so mining is a hunt for such hashes.",
     "tech": "#Crypto Math #28: Genesis block hash: 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f. Valid proof of work = the hash, read as a 256-bit number, is below the target encoded in nBits. #Cryptography #Blockchain",
     "simple": "#Crypto Math #28: Bitcoin's very first block has an ID starting with ten zeros. Mining is a hunt for a hash that starts with enough zeros, i.e. a number below a target. #Cryptography #Blockchain",
+    "card": {
+      "title": "The genesis block's string of zeros",
+      "sub": "Leading zeros are what a hash below the target looks like. Mining hunts for them."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/kernel/chainparams.cpp",
     "status": "checked"
   },
@@ -229,6 +356,11 @@
     "long": "BIP141 notes that by the end of 2015, about 2^84 hashes had been computed in Bitcoin mining since its creation, so 2^80 work 'is not infeasible anymore'. That is why SegWit's P2WSH commits to a 32-byte SHA-256 of the script rather than a 20-byte hash: the total mining work changed which hash sizes count as safe.",
     "tech": "#Crypto Math #29: BIP141: by end of 2015, about 2^84 hashes had been computed in Bitcoin mining, so 2^80 work 'is not infeasible anymore'. That's why P2WSH uses a 32-byte SHA-256 instead of a 20-byte hash. #Cryptography #Blockchain",
     "simple": "#Crypto Math #29: By the end of 2015, Bitcoin miners had computed about 2^84 hashes in total. A number that big changed which hash sizes count as safe. #Cryptography #Blockchain",
+    "card": {
+      "big": "2^84",
+      "title": "Mining work changed safe hash sizes",
+      "sub": "By the end of 2015, that many hashes made 2^80 work no longer infeasible."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki",
     "status": "checked"
   },
@@ -237,6 +369,11 @@
     "long": "By the birthday paradox, finding a collision in an n-bit hash takes about 2^(n/2) tries, so about 2^80 for a 160-bit hash, not 2^160. A malicious co-signer could grind such a collision on a P2SH multisig. BIP141's P2WSH uses a 256-bit SHA-256 instead, making its scriptPubKey 34 bytes versus 23 bytes for P2SH.",
     "tech": "#Crypto Math #30: Collision security is half the output size: 160-bit hash, about 2^80. A malicious co-signer could grind a collision on a P2SH multisig. P2WSH (34-byte scriptPubKey vs 23) uses SHA-256 instead. #Cryptography #Blockchain",
     "simple": "#Crypto Math #30: Birthday paradox: finding two inputs with the same 160-bit hash takes about 2^80 tries, not 2^160. That's why SegWit multisig scripts use 256-bit hashes. #Cryptography #Blockchain",
+    "card": {
+      "big": "2^80",
+      "title": "Birthday math for hash collisions",
+      "sub": "A 160-bit hash collides in about 2^80 tries, so P2WSH uses 256-bit SHA-256."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki",
     "status": "checked"
   },
@@ -245,6 +382,10 @@
     "long": "P2PKH and P2WPKH outputs do not contain the public key, only HASH160 of it: RIPEMD-160(SHA-256(pubkey)), a 20-byte fingerprint made with two different hash functions in a row. Bitcoin Core's CHash160 class applies SHA-256 first, then RIPEMD-160.",
     "tech": "#Crypto Math #31: P2PKH and P2WPKH commit to HASH160 = RIPEMD-160(SHA-256(pubkey)), a 20-byte hash. Bitcoin Core's CHash160: SHA-256 first, then RIPEMD-160. #Cryptography #Blockchain",
     "simple": "#Crypto Math #31: A classic Bitcoin address doesn't contain your public key, only a fingerprint of it, hashed by two different functions in a row. #Cryptography #Blockchain",
+    "card": {
+      "title": "An address is a fingerprint of your key",
+      "sub": "HASH160 runs SHA-256, then RIPEMD-160, giving a 20-byte fingerprint."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/hash.h",
     "status": "checked"
   },
@@ -253,6 +394,11 @@
     "long": "Legacy Bitcoin addresses use Base58, whose alphabet is 123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz (from Bitcoin Core's base58.cpp). It is the digits and letters minus 0, O, I and l, the characters easiest to confuse when reading or copying by hand, which leaves 58 symbols.",
     "tech": "#Crypto Math #32: Base58 alphabet: 123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz. 58 symbols: digits and letters minus 0, O, I and l. #Cryptography #Blockchain",
     "simple": "#Crypto Math #32: Old-style Bitcoin addresses never contain 0, O, I or l. They were left out because they're too easy to confuse when reading or copying by hand. #Cryptography #Blockchain",
+    "card": {
+      "big": "58",
+      "title": "Base58 drops look-alike characters",
+      "sub": "No 0, O, I or l: they are too easy to confuse when copying by hand."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/base58.cpp",
     "status": "checked"
   },
@@ -261,6 +407,10 @@
     "long": "Base58Check appends a 4-byte checksum, the first 4 bytes of SHA256(SHA256(payload)). A typo almost always fails it, but it cannot locate the error. BIP173 lists among base58's drawbacks that this double SHA256 checksum is slow and has no error-detection guarantees.",
     "tech": "#Crypto Math #33: Base58Check appends the first 4 bytes of SHA256(SHA256(payload)). BIP173 notes this hash checksum is slow and has no error-detection guarantees. #Cryptography #Blockchain",
     "simple": "#Crypto Math #33: Legacy addresses end with a 4-byte checksum, a hash of the rest. A typo almost always fails the check, but it can't tell you where the mistake is. #Cryptography #Blockchain",
+    "card": {
+      "title": "A checksum that can't find the typo",
+      "sub": "Base58Check adds 4 bytes of double SHA-256. It flags errors but cannot locate them."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki",
     "status": "checked"
   },
@@ -269,6 +419,11 @@
     "long": "Bech32 addresses (bc1, BIP173) use a BCH code as checksum. It guarantees detection of any error affecting at most 4 characters, and has less than a 1 in 10^9 chance of failing to detect larger errors. Bech32 strings are at most 90 characters. The guarantee is mathematical, not just a probability, for small typos.",
     "tech": "#Crypto Math #34: Bech32 (BIP173) uses a BCH code: guaranteed detection of any error affecting at most 4 characters, and less than a 1 in 10^9 chance of missing larger errors. Max length 90. #Cryptography #Blockchain",
     "simple": "#Crypto Math #34: bc1 addresses (Bech32) use an error-detecting code: any typo touching up to 4 characters is always caught. Guaranteed, not just likely. #Cryptography #Blockchain",
+    "card": {
+      "big": "1 in 10^9",
+      "title": "Typo detection with a guarantee",
+      "sub": "Bech32 always catches errors touching up to 4 characters, by math, not luck."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki",
     "status": "checked"
   },
@@ -277,6 +432,10 @@
     "long": "BIP173 says decoders MUST NOT accept mixed-case Bech32 strings. A single case avoids base58's mixed-case problems (hard to write down, type on mobile keyboards or read aloud), and uppercase can be used in QR codes, whose alphanumeric mode is more compact. Lowercase is preferred for display.",
     "tech": "#Crypto Math #35: BIP173: decoders MUST NOT accept mixed-case Bech32 strings. One case avoids base58's mixed-case pain and allows uppercase for compact alphanumeric QR codes. #Cryptography #Blockchain",
     "simple": "#Crypto Math #35: Why are bc1 addresses all lowercase? A single case is easier to read aloud, type on a phone and fit into QR codes. Mixed case is rejected. #Cryptography #Blockchain",
+    "card": {
+      "title": "Why bc1 addresses use one case",
+      "sub": "A single case is easier to read aloud, type on a phone and pack into QR codes."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki",
     "status": "checked"
   },
@@ -285,6 +444,10 @@
     "long": "BIP350 describes an unexpected Bech32 weakness: whenever the final character is 'p', inserting or deleting any number of 'q' characters immediately before it does not invalidate the checksum. Existing SegWit v0 addresses were not affected because they are restricted to two specific lengths, but future uses could be.",
     "tech": "#Crypto Math #36: BIP350: in Bech32, when the final char is 'p', inserting or deleting any number of 'q' right before it keeps the checksum valid. Fixed-length SegWit v0 addresses weren't affected. #Cryptography #Blockchain",
     "simple": "#Crypto Math #36: Bech32 had a surprise flaw: if an address ends in 'p', you can add or remove 'q' letters just before it and the checksum still passes. #Cryptography #Blockchain",
+    "card": {
+      "title": "Bech32's surprise flaw with 'p' and 'q'",
+      "sub": "Insert or delete 'q' before a final 'p' and the checksum still passes."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki",
     "status": "checked"
   },
@@ -293,6 +456,11 @@
     "long": "The fix is Bech32m (BIP350): same design, but the constant XORed into the checksum at the end changes from 1 to 0x2bc830a3. SegWit v0 outputs (P2WPKH, P2WSH, bc1q addresses) keep Bech32, while witness versions 1 through 16, including Taproot (bc1p), use Bech32m.",
     "tech": "#Crypto Math #37: Bech32m (BIP350) only changes the final XOR constant, to 0x2bc830a3. SegWit v0 (P2WPKH, P2WSH) stays Bech32; versions 1 to 16, incl. Taproot, use Bech32m. #Cryptography #Blockchain",
     "simple": "#Crypto Math #37: The fix is called Bech32m: same design, one constant changed. Taproot addresses (bc1p...) use it; older bc1q addresses keep Bech32. #Cryptography #Blockchain",
+    "card": {
+      "big": "0x2bc830a3",
+      "title": "Bech32m: one constant changed",
+      "sub": "Taproot bc1p addresses use Bech32m, while SegWit v0 bc1q addresses keep Bech32."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki",
     "status": "checked"
   },
@@ -301,6 +469,11 @@
     "long": "An Ethereum address is the last 20 bytes of the Keccak-256 hash of the public key, where the public key is the 64-byte x || y without the 0x04 prefix. In geth's code: Keccak256(pubBytes[1:])[12:]. 20 bytes is 40 hex characters, which is why addresses are 0x plus 40 hex digits.",
     "tech": "#Crypto Math #38: Ethereum address = last 20 bytes of Keccak-256(pubkey), with pubkey the 64-byte x || y (0x04 prefix dropped). In geth: Keccak256(pubBytes[1:])[12:]. #Cryptography #Blockchain",
     "simple": "#Crypto Math #38: An Ethereum address is the last 20 bytes of a hash of your public key. That's why every address is 40 hex characters after the 0x. #Cryptography #Blockchain",
+    "card": {
+      "big": "20 bytes",
+      "title": "Where Ethereum addresses come from",
+      "sub": "The tail of the Keccak-256 hash of the public key: 40 hex characters."
+    },
     "source": "https://github.com/ethereum/go-ethereum/blob/master/crypto/crypto.go",
     "status": "checked"
   },
@@ -309,6 +482,10 @@
     "long": "Ethereum's hash is often called SHA-3 but is the original Keccak-256, not the FIPS 202 SHA3-256 standard. Both use the same permutation but different padding, so they give different outputs for the same input. geth builds its hasher with NewLegacyKeccak256.",
     "tech": "#Crypto Math #39: Ethereum uses legacy Keccak-256, not FIPS 202 SHA3-256: same permutation, different padding, so outputs differ. geth builds it with NewLegacyKeccak256. #Cryptography #Blockchain",
     "simple": "#Crypto Math #39: Ethereum's hash is often called 'SHA-3', but it isn't exactly. It's the original Keccak, which gives different outputs from the official SHA3-256. #Cryptography #Blockchain",
+    "card": {
+      "title": "Ethereum's 'SHA-3' isn't SHA3-256",
+      "sub": "It's the original Keccak-256: same permutation, different padding and output."
+    },
     "source": "https://github.com/ethereum/go-ethereum/blob/master/crypto/crypto.go",
     "status": "checked"
   },
@@ -317,6 +494,11 @@
     "long": "EIP-55 adds a checksum to Ethereum addresses through capitalization: hex letter i is uppercased if bit 4*i of Keccak-256 of the lowercase hex address is 1. On average this gives 15 check bits per address, and EIP-55 states that a mistyped random address passes the check with a probability of 0.0247%. That's why addresses show random capital letters.",
     "tech": "#Crypto Math #40: EIP-55: hex letter i is uppercased if bit 4*i of Keccak-256(lowercase hex address) is 1. About 15 check bits per address, so a random typo passes 0.0247% of the time. #Cryptography #Blockchain",
     "simple": "#Crypto Math #40: Ever noticed random capital letters in Ethereum addresses? They're a checksum. A mistyped address has only about a 0.02% chance of passing it. #Cryptography #Blockchain",
+    "card": {
+      "big": "0.0247%",
+      "title": "The checksum hidden in capital letters",
+      "sub": "EIP-55 encodes about 15 check bits per address through letter case."
+    },
     "source": "https://github.com/ethereum/ercs/blob/master/ERCS/erc-55.md",
     "status": "checked"
   },
@@ -325,6 +507,10 @@
     "long": "Ethereum transactions carry a signature (v, r, s) but no 'from' field. Nodes recover the sender's public key from the ECDSA signature (ecrecover) and derive the address from it. v encodes the parity of y of the curve point whose x is r, which tells the recovery which of the two possible points to use.",
     "tech": "#Crypto Math #41: Ethereum txs carry (v, r, s), no 'from' field. The sender's pubkey is recovered from the ECDSA signature (ecrecover); v encodes the parity of y of the point whose x is r. #Cryptography #Blockchain",
     "simple": "#Crypto Math #41: Ethereum transactions don't say who sent them. Nodes compute the sender's public key from the signature itself, then derive the address. #Cryptography #Blockchain",
+    "card": {
+      "title": "Transactions with no sender field",
+      "sub": "Nodes recover the sender's public key from the signature, then derive the address."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md",
     "status": "checked"
   },
@@ -333,6 +519,10 @@
     "long": "EIP-155, from block 2,675,000, adds replay protection: transactions are signed over (nonce, gasprice, startgas, to, value, data, chainid, 0, 0), and v is set to {0,1} + CHAIN_ID*2 + 35. Mainnet has CHAIN_ID = 1. Since the chain ID is inside the signature, a transaction signed for one network cannot be replayed on another.",
     "tech": "#Crypto Math #42: EIP-155 (from block 2,675,000): sign over (nonce, gasprice, startgas, to, value, data, chainid, 0, 0) and set v = {0,1} + CHAIN_ID*2 + 35. Mainnet CHAIN_ID = 1. #Cryptography #Blockchain",
     "simple": "#Crypto Math #42: Since EIP-155, an Ethereum signature includes the chain's ID, so a transaction signed for one network can't be replayed on another. #Cryptography #Blockchain",
+    "card": {
+      "title": "One signature, one network",
+      "sub": "EIP-155 puts the chain ID inside the signature to block cross-chain replays."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md",
     "status": "checked"
   },
@@ -341,6 +531,10 @@
     "long": "EIP-712 defines signing of typed structured data instead of raw bytes: the signed payload is \\x19\\x01 || domainSeparator || hashStruct(message). Wallets can show readable fields to the user, and the domain separator binds the signature to one app and contract, so it cannot be reused elsewhere. Users should still read the fields before signing.",
     "tech": "#Crypto Math #43: EIP-712 signs typed structured data, not raw bytes: \\x19\\x01 || domainSeparator || hashStruct(message). The domain separator ties a signature to one app and contract. #Cryptography #Blockchain",
     "simple": "#Crypto Math #43: When a dApp asks for a signature, EIP-712 lets your wallet show readable fields instead of a blob of hex. Read them before you sign. #Cryptography #Blockchain",
+    "card": {
+      "title": "Readable signatures with EIP-712",
+      "sub": "Wallets show typed fields bound to one app and contract. Read them before signing."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-712.md",
     "status": "checked"
   },
@@ -349,6 +543,11 @@
     "long": "BIP39: the checksum is the first ENT/32 bits of SHA256(entropy), appended to the entropy. For 12 words, 128 bits of entropy + 4 checksum bits = 132 bits = 12 words of 11 bits. Because 4 bits must match, only about 1 in 16 random 12-word combinations is a valid phrase.",
     "tech": "#Crypto Math #44: BIP39: entropy ENT + checksum = first ENT/32 bits of SHA256(entropy). 12 words: 128 + 4 = 132 bits = 12 x 11. So 1 in 16 random 12-word combos is valid. #Cryptography #Blockchain",
     "simple": "#Crypto Math #44: A 12-word seed phrase holds 128 bits of randomness plus a 4-bit checksum. That's why 12 random words are rarely a valid phrase: only about 1 in 16 is. #Cryptography #Blockchain",
+    "card": {
+      "big": "1 in 16",
+      "title": "Most random 12-word phrases are invalid",
+      "sub": "128 bits of entropy plus a 4-bit checksum make 132 bits, 12 words of 11 bits."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki",
     "status": "checked"
   },
@@ -357,6 +556,11 @@
     "long": "For 24 words, BIP39 uses 256 bits of entropy plus an 8-bit checksum: 264 bits = 24 x 11. The last word holds 3 entropy bits and 8 checksum bits, so it is mostly checksum, and only 8 of the 2048 words can complete a given 23-word start.",
     "tech": "#Crypto Math #45: BIP39 24 words: 256-bit entropy + 8-bit checksum = 264 bits = 24 x 11. The last word = 3 entropy bits + 8 checksum bits, so only 8 of 2048 words can complete a given 23-word start. #Cryptography #Blockchain",
     "simple": "#Crypto Math #45: A 24-word seed holds 256 bits of randomness plus an 8-bit checksum. The 24th word is mostly checksum: it carries only 3 bits of randomness. #Cryptography #Blockchain",
+    "card": {
+      "big": "8 of 2048",
+      "title": "The 24th word is mostly checksum",
+      "sub": "It holds only 3 entropy bits next to 8 checksum bits."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki",
     "status": "checked"
   },
@@ -365,6 +569,11 @@
     "long": "BIP39 splits entropy plus checksum into 11-bit groups. Each group is a number from 0 to 2047, an index into a list of exactly 2048 words, because 2^11 = 2048. So 12 words encode 2048^12 = 2^132 possibilities.",
     "tech": "#Crypto Math #46: BIP39 splits entropy + checksum into 11-bit groups, each an index 0-2047 into a 2048-word list. 2048^12 = 2^132. #Cryptography #Blockchain",
     "simple": "#Crypto Math #46: The seed phrase word list has exactly 2048 words. Each word encodes 11 bits, because 2^11 = 2048. #Cryptography #Blockchain",
+    "card": {
+      "big": "2^11 = 2048",
+      "title": "Why the word list has 2048 words",
+      "sub": "Each word is an 11-bit index, so 12 words encode 2^132 possibilities."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki",
     "status": "checked"
   },
@@ -373,6 +582,10 @@
     "long": "In the BIP39 English list of 2048 words, no two words share the same first 4 letters, so typing or writing 4 letters is enough to identify a word unambiguously. The list also avoids similar word pairs (like build/built) to limit memorization and transcription errors.",
     "tech": "#Crypto Math #47: BIP39 English wordlist: 2048 words, no two share the same first 4 letters, so a 4-letter prefix identifies the word. Similar words are also avoided to limit transcription errors. #Cryptography #Blockchain",
     "simple": "#Crypto Math #47: In the English seed word list, the first 4 letters of each word are unique. Write down just 4 letters and the word can still be recovered. #Cryptography #Blockchain",
+    "card": {
+      "title": "Four letters are enough per word",
+      "sub": "No two BIP39 English words share their first 4 letters, so each is unambiguous."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt",
     "status": "checked"
   },
@@ -381,6 +594,11 @@
     "long": "BIP39 itself lists, among its shortcomings, that the checksum is short: it only gives modest odds of catching random errors (1 in 256 errors will be missed, the 8-bit case of 24 words; with 12 words and 4 bits it's 1 in 16). It also cannot help correct errors or say which word is wrong.",
     "tech": "#Crypto Math #48: BIP39 'shortcomings': the checksum is short; with 8 bits (24 words), 1 in 256 random errors is missed. With 12 words (4 bits) it's 1 in 16. No error correction. #Cryptography #Blockchain",
     "simple": "#Crypto Math #48: The seed checksum is short. BIP39's own text says it gives modest odds of catching random errors, and it can't tell you which word is wrong. #Cryptography #Blockchain",
+    "card": {
+      "big": "1 in 256",
+      "title": "The seed checksum is admittedly short",
+      "sub": "BIP39's own text says it misses some errors and can't say which word is wrong."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki",
     "status": "checked"
   },
@@ -389,6 +607,11 @@
     "long": "A BIP39 phrase is not used directly as the key. It goes through PBKDF2 with HMAC-SHA512: password = the mnemonic (UTF-8 NFKD), salt = 'mnemonic' + optional passphrase, 2048 iterations. The output is a 512-bit (64-byte) seed. The iterations make each guess slower.",
     "tech": "#Crypto Math #49: BIP39 seed = PBKDF2 with HMAC-SHA512, password = mnemonic (UTF-8 NFKD), salt = 'mnemonic' + passphrase, 2048 iterations. Output: a 512-bit seed. #Cryptography #Blockchain",
     "simple": "#Crypto Math #49: Your seed phrase isn't used as-is. It goes through 2048 rounds of hashing to become a 512-bit master seed, which makes guessing slower. #Cryptography #Blockchain",
+    "card": {
+      "big": "2048 rounds",
+      "title": "Your phrase is hashed before use",
+      "sub": "PBKDF2 with HMAC-SHA512 turns it into a 512-bit seed, slowing each guess."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki",
     "status": "checked"
   },
@@ -397,6 +620,10 @@
     "long": "BIP39's optional passphrase (the '25th word') goes into the PBKDF2 salt. Every passphrase produces a valid seed and wallet, which BIP39 presents as plausible deniability. The flip side: a typo in the passphrase silently opens a different, empty wallet instead of giving an error.",
     "tech": "#Crypto Math #50: BIP39: the passphrase goes into the PBKDF2 salt. Every passphrase yields a valid seed: plausible deniability, but a typo silently derives a different wallet. #Cryptography #Blockchain",
     "simple": "#Crypto Math #50: A seed passphrase (the '25th word') opens a completely different wallet. Any passphrase is valid, so a wrong one shows an empty wallet, never an error. #Cryptography #Blockchain",
+    "card": {
+      "title": "The 25th word opens another wallet",
+      "sub": "Every passphrase is valid, so a typo shows an empty wallet instead of an error."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki",
     "status": "checked"
   },
@@ -405,6 +632,10 @@
     "long": "BIP32 turns one seed into a whole key tree. First step: I = HMAC-SHA512(key = 'Bitcoin seed', data = seed). The left 32 bytes are the master private key, the right 32 bytes the chain code, an extra 256 bits of entropy that extends the key. From this master key, billions of addresses can be derived.",
     "tech": "#Crypto Math #51: BIP32: I = HMAC-SHA512(key = 'Bitcoin seed', data = seed). Left 32 bytes = master private key, right 32 bytes = chain code (an extra 256 bits of entropy). #Cryptography #Blockchain",
     "simple": "#Crypto Math #51: One seed can produce billions of addresses. Step one: hash the seed with the fixed phrase 'Bitcoin seed' to get a master key. #Cryptography #Blockchain",
+    "card": {
+      "title": "One seed, billions of addresses",
+      "sub": "BIP32 hashes the seed with 'Bitcoin seed' to get a master key and chain code."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki",
     "status": "checked"
   },
@@ -413,6 +644,11 @@
     "long": "In BIP32, each extended key has 2^31 normal children (indices 0 to 2^31-1) and 2^31 hardened children (2^31 to 2^32-1), about 4.3 billion in total. Hardened derivation uses the parent private key rather than the public key, which limits the damage if a key leaks.",
     "tech": "#Crypto Math #52: BIP32: each extended key has 2^31 normal children (index 0 to 2^31-1) and 2^31 hardened (2^31 to 2^32-1). Hardened derivation hashes the parent private key, not the public key. #Cryptography #Blockchain",
     "simple": "#Crypto Math #52: Each key in an HD wallet has about 4.3 billion possible children: half 'normal', half 'hardened'. Hardened ones limit the damage if a key leaks. #Cryptography #Blockchain",
+    "card": {
+      "big": "4.3 billion",
+      "title": "How many children an HD key has",
+      "sub": "Half normal, half hardened. Hardened ones limit the damage if a key leaks."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki",
     "status": "checked"
   },
@@ -421,6 +657,10 @@
     "long": "BIP32 warns that knowing a parent extended public key (xpub) plus any non-hardened private key derived from it is equivalent to knowing the parent extended private key, and so every key below it. Sharing an xpub seems to reveal only balances, but one leaked child key exposes the whole branch. That's why account levels use hardened derivation.",
     "tech": "#Crypto Math #53: BIP32 warning: parent xpub + any non-hardened child private key = the parent extended private key, and thus every key below it. Account levels use hardened derivation for this reason. #Cryptography #Blockchain",
     "simple": "#Crypto Math #53: Sharing your xpub only reveals balances, right? Unless one child private key also leaks. Then an attacker can rebuild every key under that xpub. #Cryptography #Blockchain",
+    "card": {
+      "title": "Sharing an xpub is riskier than it seems",
+      "sub": "With one leaked child private key, every key under that xpub can be rebuilt."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki",
     "status": "checked"
   },
@@ -429,6 +669,10 @@
     "long": "BIP44 defines the path m / purpose' / coin_type' / account' / change / address_index. Purpose is 44, coin type 0 is Bitcoin, and ' marks hardened steps. A string like m/44'/0'/0'/0/0 tells the wallet which branch of the key tree to use, so the same seed with the same path gives the same address in any compatible wallet.",
     "tech": "#Crypto Math #54: BIP44 path: m / purpose' / coin_type' / account' / change / address_index. Purpose 44, coin type 0 = Bitcoin. Same seed + same path = same address in any compatible wallet. #Cryptography #Blockchain",
     "simple": "#Crypto Math #54: That string m/44'/0'/0'/0/0 in wallet settings is a path: it tells the wallet which branch of its key tree to use. The ' marks a hardened step. #Cryptography #Blockchain",
+    "card": {
+      "title": "Reading a derivation path",
+      "sub": "m/44'/0'/0'/0/0 tells the wallet which branch of its key tree to use."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki",
     "status": "checked"
   },
@@ -437,6 +681,11 @@
     "long": "SLIP-39 applies Shamir's secret sharing to seed backups: a seed is split into shares with a threshold, for example any 3 of 5. Shares use a 1024-word list (10 bits per word), and the last 3 words are an RS1024 checksum. With fewer shares than the threshold, nothing about the seed is learned.",
     "tech": "#Crypto Math #55: SLIP-39: Shamir's secret sharing for mnemonics. Shares use a 1024-word list (10 bits per word) and an RS1024 checksum (last 3 words). Fewer than the threshold leaks nothing. #Cryptography #Blockchain",
     "simple": "#Crypto Math #55: You can split a seed into shares, say any 3 of 5. With fewer than 3 shares, an attacker learns nothing about the seed. That's Shamir's secret sharing. #Cryptography #Blockchain",
+    "card": {
+      "big": "3 of 5",
+      "title": "Split a seed into shares",
+      "sub": "With fewer shares than the threshold, nothing about the seed is learned."
+    },
     "source": "https://github.com/satoshilabs/slips/blob/master/slip-0039.md",
     "status": "checked"
   },
@@ -445,6 +694,10 @@
     "long": "BIP352 Silent Payments let a receiver publish one static address while each payment goes to a fresh output. The sender tweaks the output using ECDH (a*B = b*A) with the sum of its input keys; the receiver scans transactions for P = B + hash(b*A)*G. No on-chain notification is needed and payments are not linkable on-chain.",
     "tech": "#Crypto Math #56: BIP352: the sender tweaks the output with ECDH (a*B = b*A) over the sum of input keys. The receiver scans for P = B + hash(b*A)*G. No on-chain notification, no linkability. #Cryptography #Blockchain",
     "simple": "#Crypto Math #56: Silent Payments let you publish one static address, yet every payment lands at a fresh address that only you can find. #Cryptography #Blockchain",
+    "card": {
+      "title": "One static address, fresh outputs",
+      "sub": "Silent Payments use ECDH so only the receiver can find each payment."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0352.mediawiki",
     "status": "checked"
   },
@@ -453,6 +706,11 @@
     "long": "A block's transactions are summarized in a Merkle root. When a level has an odd number of hashes, Bitcoin duplicates the last one, which is unusual. As a result, some different transaction lists give the same root (duplicate txids): CVE-2012-2459. Bitcoin Core's Merkle code warns about this and detects the mutation.",
     "tech": "#Crypto Math #57: Bitcoin's Merkle tree duplicates the last hash on odd levels, so some tx lists give the same root: CVE-2012-2459 (blocks with duplicate txids). Nodes now detect this mutation. #Cryptography #Blockchain",
     "simple": "#Crypto Math #57: A block's transactions are summed up in one hash, the Merkle root. With an odd count, Bitcoin copies the last hash, a quirk that once enabled a bug. #Cryptography #Blockchain",
+    "card": {
+      "big": "CVE-2012-2459",
+      "title": "A Merkle tree quirk that enabled a bug",
+      "sub": "With an odd count, Bitcoin duplicates the last hash, so some lists share a root."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/consensus/merkle.cpp",
     "status": "checked"
   },
@@ -461,6 +719,11 @@
     "long": "A Merkle proof needs only about log2(n) hashes. For a block of 4,096 transactions, 12 sibling hashes (12 x 32 = 384 bytes) link a txid to the Merkle root in the header, instead of downloading the whole block. This is the basis of SPV light wallets.",
     "tech": "#Crypto Math #58: Merkle proofs are log2(n) hashes: a block of 4,096 txs needs 12 sibling hashes (12 x 32 = 384 bytes) to link a txid to the header's Merkle root. Basis of SPV. #Cryptography #Blockchain",
     "simple": "#Crypto Math #58: To prove a payment is in a block of about 4,000 transactions, you need only about 12 hashes, not the whole block. That's how light wallets check payments. #Cryptography #Blockchain",
+    "card": {
+      "big": "12 hashes",
+      "title": "Proving a payment without the block",
+      "sub": "A Merkle proof needs about log2(n) hashes. This is how SPV light wallets work."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/consensus/merkle.cpp",
     "status": "checked"
   },
@@ -469,6 +732,10 @@
     "long": "Brain wallets derived the private key directly from a memorable phrase: private key = SHA256(passphrase). Attackers hashed huge lists of phrases and swept funds. Ryan Castellucci's DEF CON 23 talk (2015) and his Brainflayer tool showed how cheaply such keys can be cracked at scale. Humans are bad random generators.",
     "tech": "#Crypto Math #59: Brainwallet: private key = SHA256(passphrase). Ryan Castellucci's DEF CON 23 talk (2015) and his Brainflayer tool showed how cheaply such keys are cracked at scale. #Cryptography #Blockchain",
     "simple": "#Crypto Math #59: 'Brain wallets' turned a memorable phrase into a private key. Attackers just hashed huge lists of phrases and swept the funds. Humans make bad random generators. #Cryptography #Blockchain",
+    "card": {
+      "title": "Humans are bad at randomness",
+      "sub": "Brain wallets hashed a memorable phrase into a key. Attackers hashed phrase lists."
+    },
     "source": "https://infocondb.org/con/def-con/def-con-23/cracking-cryptocurrency-brainwallets",
     "status": "checked"
   },
@@ -477,6 +744,11 @@
     "long": "Milk Sad, CVE-2023-39910: Libbitcoin Explorer 3.x 'bx seed' used the MT19937 Mersenne Twister PRNG seeded with 32 bits of clock time, so only about 2^32 (4 billion) possible wallets, all enumerable. Attackers stole about 29.65 BTC, with the funds sent on July 12, 2023; per the disclosure, over $900K of crypto assets in total were moved.",
     "tech": "#Crypto Math #60: Milk Sad, CVE-2023-39910: Libbitcoin Explorer 3.x 'bx seed' used Mersenne Twister MT19937 seeded with 32 bits of clock time, so about 2^32 keys. About 29.65 BTC stolen on Jul 12, 2023. #Cryptography #Blockchain",
     "simple": "#Crypto Math #60: Milk Sad (2023): a command-line wallet tool built seed phrases from a 32-bit clock-based seed. Only about 4 billion possible wallets, all crackable. Over $900K was stolen. #Cryptography #Blockchain",
+    "card": {
+      "big": "2^32",
+      "title": "Milk Sad: wallets from a clock seed",
+      "sub": "Only about 4 billion possible wallets, all enumerable. Over $900K was moved."
+    },
     "source": "https://git.distrust.co/milksad/website-public/src/branch/main-public/disclosure.md",
     "status": "checked"
   },
@@ -485,6 +757,10 @@
     "long": "Randstorm: the JSBN library's SecureRandom(), used in BitcoinJS until March 2014, looked for window.crypto.random, which browsers didn't provide, and silently fell back to Math.random(), a weak random function. Browser wallets created around 2011-2015 may therefore have weak keys.",
     "tech": "#Crypto Math #61: Randstorm: JSBN SecureRandom() (in BitcoinJS until Mar 2014) looked for window.crypto.random, missing in browsers, and silently fell back to Math.random(). Wallets from about 2011-2015. #Cryptography #Blockchain",
     "simple": "#Crypto Math #61: Randstorm: browser wallets made around 2011-2015 may have weak keys, because an old JavaScript library quietly fell back to a weak random function. #Cryptography #Blockchain",
+    "card": {
+      "title": "Randstorm and the silent fallback",
+      "sub": "An old JavaScript library fell back to Math.random(), leaving weak browser keys."
+    },
     "source": "https://www.unciphered.com/blog/randstorm-you-cant-patch-a-house-of-cards",
     "status": "checked"
   },
@@ -493,6 +769,11 @@
     "long": "In November 2022, the Trust Wallet browser extension generated seeds with effectively only 32 bits of entropy, so every possible seed could be enumerated and knowing an address was enough to rebuild its key. Ledger Donjon found it; the fix was committed on Nov 21, 2022 and the issue disclosed on Apr 22, 2023.",
     "tech": "#Crypto Math #62: Trust Wallet extension (Nov 2022): seed entropy was effectively 32 bits, so every seed could be enumerated. Found by Ledger Donjon, fix committed Nov 21, 2022, disclosed Apr 22, 2023. #Cryptography #Blockchain",
     "simple": "#Crypto Math #62: In 2022, a wallet browser extension generated seeds with only 32 bits of randomness. Knowing an address was enough to rebuild its key. Ledger's researchers caught it. #Cryptography #Blockchain",
+    "card": {
+      "big": "32 bits",
+      "title": "A wallet extension with tiny entropy",
+      "sub": "Knowing an address was enough to rebuild its key. Ledger Donjon found the flaw."
+    },
     "source": "https://nobsbitcoin.com/trust-wallet-browser-extension-vulnerability",
     "status": "checked"
   },
@@ -501,6 +782,11 @@
     "long": "Vanity addresses like 0x0000... are made by brute-forcing keys. On Sep 20, 2022, market maker Wintermute lost $160M from a vault whose admin was a Profanity vanity address. 1inch had just disclosed that keys from the Profanity generator could be brute-forced.",
     "tech": "#Crypto Math #63: Sep 20, 2022: Wintermute lost $160M from a vault whose admin was a Profanity vanity address (0x0000000...). 1inch had just disclosed that Profanity keys could be brute-forced. #Cryptography #Blockchain",
     "simple": "#Crypto Math #63: Vanity addresses look cool (0x0000...), but in 2022 a flawed generator, Profanity, made keys that could be brute-forced. Market maker Wintermute lost $160M. #Cryptography #Blockchain",
+    "card": {
+      "big": "$160M",
+      "title": "When vanity addresses backfire",
+      "sub": "Keys from the Profanity generator could be brute-forced, hitting Wintermute's vault."
+    },
     "source": "https://www.theblock.co/post/171192",
     "status": "checked"
   },
@@ -509,6 +795,11 @@
     "long": "On Feb 19, 2017, Monero found a CryptoNote bug: adding a small-order (torsion) point to an ed25519 key image let one output be spent up to 8 times, enough to create coins undetected. It was patched quietly first, and Monero's chain was never exploited. The fix checks that key images lie in the prime-order subgroup.",
     "tech": "#Crypto Math #64: Monero (found Feb 19, 2017): adding a small-order (torsion) point to an ed25519 key image let one output be spent up to 8 times. Fix: check that key images lie in the prime-order subgroup. #Cryptography #Blockchain",
     "simple": "#Crypto Math #64: In 2017, Monero found a bug that could have let someone create unlimited coins undetected. It was patched quietly first; Monero's chain was never exploited. #Cryptography #Blockchain",
+    "card": {
+      "big": "8 times",
+      "title": "Monero's quietly patched coin bug",
+      "sub": "A torsion point trick could create coins undetected. The chain was never exploited."
+    },
     "source": "https://getmonero.org/2017/05/17/disclosure-of-a-major-bug-in-cryptonote-based-currencies.html",
     "status": "checked"
   },
@@ -517,6 +808,10 @@
     "long": "Ethereum's consensus layer does not use secp256k1. Validators sign with BLS on the BLS12-381 curve: public keys are 48-byte compressed G1 points and signatures 96-byte compressed G2 points, verified with pairings. BLS signatures can be aggregated.",
     "tech": "#Crypto Math #65: Ethereum consensus uses BLS12-381: public keys are 48-byte compressed G1 points, signatures 96-byte compressed G2 points. Verification uses pairings. #Cryptography #Blockchain",
     "simple": "#Crypto Math #65: Ethereum validators don't sign with secp256k1. They use BLS signatures on the BLS12-381 curve, which can be merged together. #Cryptography #Blockchain",
+    "card": {
+      "title": "Ethereum validators sign differently",
+      "sub": "They use BLS on the BLS12-381 curve, not secp256k1, and signatures can merge."
+    },
     "source": "https://github.com/ethereum/consensus-specs/blob/master/specs/phase0/beacon-chain.md",
     "status": "checked"
   },
@@ -525,6 +820,11 @@
     "long": "BLS signatures can be aggregated: signatures on the same message combine into one 96-byte signature, verified against the aggregate public key in one check. Ethereum uses this so many validators' votes become one signature; Altair's sync committee has 512 validators.",
     "tech": "#Crypto Math #66: BLS aggregation: signatures on the same message combine into one 96-byte signature, verified against the aggregate pubkey. Altair's sync committee: 512 validators. #Cryptography #Blockchain",
     "simple": "#Crypto Math #66: BLS signatures add up: hundreds of Ethereum validators can sign, and the result is a single signature checked in one go. #Cryptography #Blockchain",
+    "card": {
+      "big": "512",
+      "title": "Hundreds of votes, one signature",
+      "sub": "BLS signatures on one message combine into a single 96-byte signature."
+    },
     "source": "https://github.com/ethereum/consensus-specs/blob/master/specs/altair/beacon-chain.md",
     "status": "checked"
   },
@@ -533,6 +833,10 @@
     "long": "EIP-2333 defines key derivation for BLS12-381 validator keys. Each child key is derived through intermediate Lamport keys. Lamport is a hash-based signature scheme, so these keys are meant as a post-quantum backup in case BLS12-381 is ever no longer considered secure.",
     "tech": "#Crypto Math #67: EIP-2333 (BLS12-381 key derivation): each child key is derived via intermediate Lamport keys, a hash-based scheme meant as a post-quantum backup if BLS12-381 is no longer secure. #Cryptography #Blockchain",
     "simple": "#Crypto Math #67: Ethereum validator keys hide a quantum plan B: their derivation goes through hash-based Lamport keys, meant as a bridge if BLS ever breaks. #Cryptography #Blockchain",
+    "card": {
+      "title": "A quantum plan B for validator keys",
+      "sub": "EIP-2333 derives keys through hash-based Lamport keys, a post-quantum backup."
+    },
     "source": "https://github.com/ethereum/ercs/blob/master/ERCS/erc-2333.md",
     "status": "checked"
   },
@@ -541,6 +845,10 @@
     "long": "EIP-196 and EIP-197 added precompiled contracts for the alt_bn128 curve (also called BN254): point addition, scalar multiplication and pairing checks. They make the curve math used by zkSNARKs cheap enough that proofs can be verified within the block gas limit.",
     "tech": "#Crypto Math #68: EIP-196/197 added precompiles for alt_bn128 (BN254) point addition, scalar multiplication and pairing checks, so zkSNARKs can be verified within the block gas limit. #Cryptography #Blockchain",
     "simple": "#Crypto Math #68: Ethereum has built-in shortcuts for the curve math used by zero-knowledge proofs. Without them, checking such a proof would cost too much gas. #Cryptography #Blockchain",
+    "card": {
+      "title": "Built-in shortcuts for ZK proofs",
+      "sub": "Precompiles for alt_bn128 make zkSNARK checks fit within the block gas limit."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-196.md",
     "status": "checked"
   },
@@ -549,6 +857,10 @@
     "long": "Zcash's original (pre-Sapling) zk-SNARK system had a flaw that could have allowed undetectable counterfeiting. Ariel Gabizon found it on March 1, 2018. It was fixed by the Sapling upgrade on Oct 28, 2018 and disclosed on Feb 5, 2019, with no evidence of exploitation.",
     "tech": "#Crypto Math #69: Zcash counterfeiting bug in its pre-Sapling zk-SNARK system: found by Ariel Gabizon on Mar 1, 2018, fixed by Sapling (Oct 28, 2018), disclosed Feb 5, 2019. No evidence of exploitation. #Cryptography #Blockchain",
     "simple": "#Crypto Math #69: In 2018, a Zcash engineer found a flaw in its zero-knowledge proof system that could have allowed invisible counterfeiting. Fixed in Oct 2018, made public in Feb 2019. #Cryptography #Blockchain",
+    "card": {
+      "title": "A counterfeiting flaw in Zcash's proofs",
+      "sub": "Found in March 2018, fixed by Sapling that October, no evidence of exploitation."
+    },
     "source": "https://fortune.com/2019/02/05/zcash-vulnerability-cryptocurrency",
     "status": "checked"
   },
@@ -557,6 +869,11 @@
     "long": "Ethereum's KZG ceremony ran from Jan 13 to Aug 8, 2023, 208 days, and collected 141,416 contributions to the setup used by EIP-4844 blob commitments. Its trust model is 1-of-N: it is secure as long as at least one contributor was honest and destroyed their secret.",
     "tech": "#Crypto Math #70: KZG ceremony, Jan 13 to Aug 8, 2023: 141,416 contributions over 208 days, for EIP-4844 blob commitments. 1-of-N trust: one honest contributor is enough. #Cryptography #Blockchain",
     "simple": "#Crypto Math #70: Ethereum's 2023 setup ceremony collected 141,416 contributions. It stays secure as long as just one participant was honest and destroyed their secret. #Cryptography #Blockchain",
+    "card": {
+      "big": "141,416",
+      "title": "Secure if just one person was honest",
+      "sub": "Ethereum's KZG ceremony ran 208 days in 2023 for EIP-4844 blob commitments."
+    },
     "source": "https://blog.ethereum.org/2024/01/23/kzg-wrap",
     "status": "checked"
   },
@@ -565,6 +882,11 @@
     "long": "An EIP-4844 blob is 4096 BLS12-381 field elements of 32 bytes each, 128 KiB of data for layer-2 networks. Each blob gets a KZG commitment, and transactions reference it by a versioned hash: 0x01 followed by SHA256(commitment) without its first byte. Nodes can check the data against the commitment.",
     "tech": "#Crypto Math #71: EIP-4844 blob = 4096 BLS12-381 field elements (32 bytes each, 128 KiB), with a KZG commitment. Txs reference it by versioned hash: 0x01 || SHA256(commitment)[1:]. #Cryptography #Blockchain",
     "simple": "#Crypto Math #71: Ethereum 'blobs' carry data for layer-2 networks. Each blob gets a short cryptographic commitment, so nodes can check the data without trusting anyone. #Cryptography #Blockchain",
+    "card": {
+      "big": "128 KiB",
+      "title": "What an Ethereum blob holds",
+      "sub": "4096 field elements of 32 bytes, each blob checked against a KZG commitment."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-4844.md",
     "status": "checked"
   },
@@ -573,6 +895,10 @@
     "long": "The quantum threat: per BIP360, Shor's algorithm lets a cryptographically relevant quantum computer (CRQC) solve the discrete log problem exponentially faster than classical methods, so it could derive ECDSA or Schnorr private keys from public keys. BIP360 says it is unclear when or if CRQCs will become viable.",
     "tech": "#Crypto Math #72: Shor's algorithm solves the discrete log problem exponentially faster than classical methods, so a cryptographically relevant quantum computer (CRQC) could derive ECDSA/Schnorr keys from public keys. #Cryptography #Blockchain",
     "simple": "#Crypto Math #72: The quantum threat in short: Shor's algorithm, on a large enough quantum computer, could derive a private key from a public key. Nobody knows when or if such a machine will exist. #Cryptography #Blockchain",
+    "card": {
+      "title": "The quantum threat in one algorithm",
+      "sub": "Shor's algorithm could derive private keys from public keys. No one knows when or if."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki",
     "status": "checked"
   },
@@ -581,6 +907,10 @@
     "long": "BIP360 separates quantum attacks by exposure. Long exposure attacks target public keys already visible on-chain: P2PK outputs (e.g. Satoshi's coins), reused addresses and Taproot outputs, which could be attacked at leisure. Short exposure attacks must recover a key while a transaction waits in the mempool, before confirmation, which needs faster machines.",
     "tech": "#Crypto Math #73: BIP360 'long exposure' attacks target keys already public on-chain: P2PK outputs (e.g. Satoshi's coins), reused addresses, Taproot outputs. 'Short exposure' must beat confirmation time. #Cryptography #Blockchain",
     "simple": "#Crypto Math #73: Not all coins face the same quantum risk. Coins whose public key is already on-chain, like Satoshi-era coins, could be attacked at leisure. #Cryptography #Blockchain",
+    "card": {
+      "title": "Not all coins face the same quantum risk",
+      "sub": "Coins with public keys already on-chain, like Satoshi's, could be attacked at leisure."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki",
     "status": "checked"
   },
@@ -589,6 +919,10 @@
     "long": "On Aug 13, 2024, NIST released its first three finalized post-quantum standards: FIPS 203 (ML-KEM, from Kyber) for key encapsulation, and FIPS 204 (ML-DSA, from Dilithium) and FIPS 205 (SLH-DSA, from SPHINCS+), both signature schemes. Quantum-safe signatures therefore already exist as standards.",
     "tech": "#Crypto Math #74: Aug 13, 2024: NIST released FIPS 203 (ML-KEM, ex-Kyber), FIPS 204 (ML-DSA, ex-Dilithium) and FIPS 205 (SLH-DSA, ex-SPHINCS+). 204 and 205 are signature schemes. #Cryptography #Blockchain",
     "simple": "#Crypto Math #74: Quantum-safe signatures already exist on paper. NIST published its first post-quantum standards in August 2024, two of them for digital signatures. #Cryptography #Blockchain",
+    "card": {
+      "title": "Quantum-safe signatures already exist",
+      "sub": "NIST finalized its first post-quantum standards in August 2024, two for signatures."
+    },
     "source": "https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards",
     "status": "checked"
   },
@@ -597,6 +931,11 @@
     "long": "BIP360, still Draft, proposes Pay-to-Merkle-Root (P2MR), renamed in Feb 2026 from P2TSH (earlier P2QRH): outputs like Taproot but with the key-path spend removed, so no public key sits exposed in the output. This resists long exposure quantum attacks; protection against short exposure attacks may need post-quantum signatures.",
     "tech": "#Crypto Math #75: BIP360 (Draft; P2QRH, then P2TSH, renamed P2MR in Feb 2026): Taproot-like outputs with the key-path spend removed, resisting long-exposure quantum attacks. Short exposure needs PQ signatures. #Cryptography #Blockchain",
     "simple": "#Crypto Math #75: One Bitcoin quantum proposal, BIP360 (P2MR), is Taproot without the public-key shortcut, so keys aren't left exposed on-chain. It's still a draft. #Cryptography #Blockchain",
+    "card": {
+      "big": "BIP360",
+      "title": "Taproot without the key path",
+      "sub": "The P2MR draft leaves no public key exposed, resisting long exposure attacks."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki",
     "status": "checked"
   },
@@ -605,6 +944,10 @@
     "long": "Recap: coins rest on a random private key, the secp256k1 curve and its ECDLP (128-bit security), hash functions like SHA-256 and Keccak, ECDSA then Schnorr signatures, BLS aggregation, BIP39/BIP32 seeds and ZK proofs. The math holds up; most real losses came from nonce reuse, weak randomness and sloppy code.",
     "tech": "#Crypto Math #76: Recap: secp256k1 ECDLP (128-bit security), SHA-256 and Keccak, ECDSA then Schnorr, BLS aggregation, BIP39/32 seeds, ZK proofs. Most real losses: nonce reuse and weak RNGs. Follow for more. #Cryptography #Blockchain",
     "simple": "#Crypto Math #76: Recap: your coins rest on a random number, one curve, a few hash functions and signatures. The math holds up; losses come from bad randomness and sloppy code. Follow for more. #Cryptography #Blockchain",
+    "card": {
+      "title": "The math holds, the code fails",
+      "sub": "Most real losses came from nonce reuse, weak randomness and sloppy code."
+    },
     "source": "https://github.com/bitcoin/bips",
     "status": "checked"
   }
