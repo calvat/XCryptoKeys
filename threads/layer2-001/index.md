@@ -4,6 +4,7 @@
 - Angle : ce que garantit vraiment un L2 et ce qu'il ne garantit pas.
 - Préfixe : `Crypto #Layer2 Unlocked #N:`
 - Hashtags fixes : #Rollups #Lightning
+- Hashtag de campagne : `#XCKlay1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (67 posts checked, 0 draft)
 
 Notes avant publication :
@@ -16,4 +17,4 @@ Notes avant publication :
 ## Fichiers
 
 - `posts.json` : les 67 posts de la campagne, dans l'ordre de publication. Chaque entrée a `index`, `simple`, `tech`, `source` et `status`, et parfois `variant` (une 3e version).
-
+- `status.json` : l'avancement de la publication (`status` actif ou inactif, `last_posted_index` et `last_posted_at` du dernier post publié). Format dans le README.

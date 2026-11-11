@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>xck-publisher</AssemblyName>
+    <RootNamespace>XCryptoKeys.Publisher</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="appsettings.local.example.json" CopyToOutputDirectory="PreserveNewest" />
+    <InternalsVisibleTo Include="XCryptoKeys.Publisher.Tests" />
+  </ItemGroup>
+
+</Project>

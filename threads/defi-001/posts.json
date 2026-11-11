@@ -279,7 +279,7 @@
     "index": 23,
     "long": "Mango Markets, October 11, 2022: 483M MNGO perpetuals were bought at $0.0382 between two accounts of the attacker, then the MNGO spot price was pushed to $0.91, more than 20x. The unrealized profit counted as collateral, and about $116M was borrowed out. The oracle reported the real market price; the problem was a market too thin to resist manipulation.",
     "tech": "#DeFi Mechanics #23: Mango Markets, Oct 11 2022: 483M MNGO perps bought at $0.0382 between two accounts, then MNGO spot pumped to $0.91. The unrealized PnL counted as collateral and ≈ $116M was borrowed. Oracle correct, liquidity too thin. #Stablecoins #Web3 #DEX",
-    "simple": "#DeFi Mechanics #23: October 11, 2022: a trader on Mango Markets pushed the price of the thin MNGO token up more than 20x, used the inflated position as collateral, and borrowed out about $116M. The price feed told the truth. The market was too thin. #Stablecoins #Web3 #DEX",
+    "simple": "#DeFi Mechanics #23: October 11, 2022: a trader on Mango Markets pushed the price of the thin MNGO token up more than 20x, used the inflated position as collateral, and borrowed out about $116M. The feed was honest. The market was too thin. #Stablecoins #Web3 #DEX",
     "card": {
       "big": "$116M",
       "title": "Honest oracle, thin market",

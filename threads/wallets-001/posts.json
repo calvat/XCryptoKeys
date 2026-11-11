@@ -3,7 +3,7 @@
     "index": 1,
     "long": "A crypto wallet does not hold coins. Balances are on-chain state; the wallet stores private keys, or a seed that derives them, and uses them to sign transactions. Whoever can sign controls the funds. So wallet security comes down to two things: guarding the key, and knowing exactly what you sign. Losing the keys means losing access; leaking them means losing the coins. Even with your own keys, one bad signature can empty a wallet. The series covers how wallets work and how people get drained.",
     "tech": "Crypto #Wallet Security #1: A wallet is a key manager: it stores private keys (or a seed that derives them) and signs transactions. Balances are on-chain state. Whoever can sign controls the funds, so security = guarding the key and what you sign. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #1: Your wallet holds no coins. Coins live on the blockchain; your wallet holds the keys that can move them. Lose the keys, lose access. Leak them, lose the coins. Daily posts on how wallets work and how people get drained. #CryptoSecurity #SelfCustody",
+    "simple": "Crypto #Wallet Security #1: Your wallet holds no coins. Coins live on the blockchain; your wallet holds the keys that can move them. Lose the keys, lose access. Leak them, lose the coins. Daily: how wallets work and how people get drained. #CryptoSecurity #SelfCustody",
     "variant": "Crypto #Wallet Security #1: Not your keys, not your coins. But even with your keys, one bad signature can empty a wallet. This series covers what a wallet really does, and every trick used to drain one. #CryptoSecurity #SelfCustody",
     "card": {
       "title": "Your wallet holds keys, not coins",
@@ -378,7 +378,7 @@
     "index": 31,
     "long": "Ledger's 2020 e-commerce data leak: about 1M email addresses, plus 272,852 records with names, postal addresses and phone numbers, dumped online in December 2020. Wallets and funds were not affected, but customers became phishing targets. Buying a wallet can expose your identity and address; real support never asks for your recovery words.",
     "tech": "Crypto #Wallet Security #31: Ledger's 2020 e-commerce data leak: about 1M email addresses, plus 272,852 records with name, postal address and phone, dumped online in Dec 2020. Wallet security was unaffected, but buyers were exposed to phishing. #CryptoSecurity #SelfCustody",
-    "simple": "Crypto #Wallet Security #31: Your shipping address can be a risk. A 2020 leak of a wallet maker's customer data exposed about 272,000 names, postal addresses and phones. Leaked buyer lists feed phishing. Real support never asks for your words. #CryptoSecurity #SelfCustody",
+    "simple": "Crypto #Wallet Security #31: Your shipping address can be a risk. A 2020 leak of a wallet maker's customer data exposed ~272,000 names, postal addresses and phones. Leaked buyer lists feed phishing. Real support never asks for your words. #CryptoSecurity #SelfCustody",
     "card": {
       "big": "272,852",
       "title": "A wallet order can expose your home address",

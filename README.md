@@ -10,8 +10,9 @@ Posts et threads préparés pour le compte X **@xcryptokeys** : blockchains et c
 | `STYLE.md` | Les règles de rédaction de chaque post |
 | `STYLE-GRAPHIQUE.md` | Le style des illustrations (palette, polices, composition) |
 | `design/` | Bannière de référence et script de rendu PNG |
-| `threads/` | Un dossier par campagne, nommé `<nom technique>-<numéro sur 3 chiffres>` : par exemple `threads/pactus-001/` pour la 1re campagne Pactus. Il contient `index.md` (description de la campagne) et `posts.json` (les posts) |
+| `threads/` | Un dossier par campagne, nommé `<nom technique>-<numéro sur 3 chiffres>` : par exemple `threads/pactus-001/` pour la 1re campagne Pactus. Il contient `index.md` (description de la campagne), `posts.json` (les posts) et `status.json` (où en est la publication) |
 | `threads/_template/` | Le modèle à copier pour une nouvelle campagne |
+| `src/` | Le programme C# qui publie automatiquement les posts sur X (voir [`src/README.md`](src/README.md)) |
 
 ## Règles clés (détails dans `STYLE.md`)
 
@@ -37,6 +38,32 @@ Un tableau, dans l'ordre de publication. Chaque entrée :
 ```
 
 Quelques posts ont aussi `variant`, une 3e version.
+
+## Format de `status.json`
+
+Un objet par campagne, qui dit où en est la publication :
+
+```json
+{
+  "status": "inactive",
+  "last_posted_index": 0,
+  "last_posted_at": null,
+  "interval_days": 1,
+  "post_time": "09:00",
+  "hashtag": "#XCKbtc1"
+}
+```
+
+- `status` : `active` (campagne en cours de publication) ou `inactive` (pas commencée, en pause ou terminée)
+- `last_posted_index` : `index` (dans `posts.json`) du dernier post publié ; `0` si rien n'est encore publié. Le prochain post à publier est donc `last_posted_index + 1`
+- `last_posted_at` : date du dernier post publié, au format ISO 8601 (`2026-11-11` ou `2026-11-11T09:30:00Z`) ; `null` si rien n'est encore publié
+- `interval_days` : nombre de jours entre deux posts (`1` = un post par jour, la règle par défaut)
+- `post_time` : heure de publication, au format `HH:MM` en UTC
+- `hashtag` : hashtag unique de la campagne, `#XCK` + 3 lettres du sujet + numéro de campagne (ex. `#XCKbtc1`). Le programme l'ajoute à la fin de chaque post, et il compte dans les 280 caractères. Il est aussi indiqué dans `index.md`
+
+Le prochain post (`last_posted_index + 1`) est dû le jour `last_posted_at + interval_days`, à l'heure `post_time`. Pour le premier post d'une campagne, on la passe en `active` et on publie le jour choisi.
+
+À chaque publication, mettre à jour `last_posted_index` et `last_posted_at` ensemble (et passer le post en `posted` dans `posts.json`). Le programme de `src/` le fait lui-même, puis commit et push.
 
 ## Statut d'un post
 

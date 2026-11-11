@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="XCryptoKeys.Publisher.Tests/XCryptoKeys.Publisher.Tests.csproj" />
+  <Project Path="XCryptoKeys.Publisher/XCryptoKeys.Publisher.csproj" />
+</Solution>

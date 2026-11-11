@@ -4,6 +4,7 @@
 - Angle : les formules derrière les DEX, les prêts, les stablecoins, les oracles et les vaults, avec leurs cas limites et les incidents qui les ont révélées.
 - Préfixe : `#DeFi Mechanics #N:`
 - Hashtags fixes : #Stablecoins #Web3 #DEX
+- Hashtag de campagne : `#XCKdfi1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (53 posts checked, 0 draft)
 
 Notes avant publication :
@@ -14,4 +15,4 @@ Notes avant publication :
 ## Fichiers
 
 - `posts.json` : les 53 posts de la campagne, dans l'ordre de publication. Chaque entrée a `index`, `simple`, `tech`, `source` et `status`, et parfois `variant` (une 3e version).
-
+- `status.json` : l'avancement de la publication (`status` actif ou inactif, `last_posted_index` et `last_posted_at` du dernier post publié). Format dans le README.

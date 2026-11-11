@@ -4,6 +4,7 @@
 - Angle : signatures, hash et seed phrases expliqués par leurs détails, avec les échecs célèbres.
 - Préfixe : `#Crypto Math #N:`
 - Hashtags fixes : #Cryptography #Blockchain
+- Hashtag de campagne : `#XCKcry1`, unique à la campagne, ajouté par le programme à la fin de chaque post (compte dans les 280 caractères)
 - Statut : checked (76 posts checked, 0 draft)
 
 Notes :
@@ -16,4 +17,4 @@ Notes :
 ## Fichiers
 
 - `posts.json` : les 76 posts de la campagne, dans l'ordre de publication. Chaque entrée a `index`, `simple`, `tech`, `source` et `status`, et parfois `variant` (une 3e version).
-
+- `status.json` : l'avancement de la publication (`status` actif ou inactif, `last_posted_index` et `last_posted_at` du dernier post publié). Format dans le README.
