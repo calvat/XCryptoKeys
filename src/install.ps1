@@ -9,7 +9,8 @@
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
     [string]$InstallDir = "C:\xck-publisher",
-    [string]$RepoPath = (Split-Path -Parent $PSScriptRoot),
+    # Vide = le dépôt qui contient ce script (calculé plus bas : $PSScriptRoot est vide ici sous PowerShell 5.1).
+    [string]$RepoPath = "",
     [string]$TaskName = "X-Bots Publisher",
     [ValidateRange(1, 1440)][int]$IntervalMinutes = 15,
     [string]$Rid = "win-x64",
@@ -21,6 +22,8 @@ param(
     [switch]$Force
 )
 $ErrorActionPreference = "Stop"
+$scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
+if (-not $RepoPath) { $RepoPath = Split-Path -Parent $scriptDir }
 
 function Fail([string]$message) { Write-Host "ERREUR : $message" -ForegroundColor Red; exit 1 }
 function Step([string]$message) { Write-Host ""; Write-Host "== $message" -ForegroundColor Cyan }
@@ -28,7 +31,7 @@ function Step([string]$message) { Write-Host ""; Write-Host "== $message" -Foreg
 # 1. Vérifications
 Step "Vérifications"
 $admin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-if (-not $admin) { Fail "lancer ce script dans un PowerShell administrateur (clic droit > Exécuter en tant qu'administrateur)." }
+if (-not $admin -and -not $WhatIfPreference) { Fail "lancer ce script dans un PowerShell administrateur (clic droit > Exécuter en tant qu'administrateur)." }
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) { Fail "git est introuvable dans le PATH. Installer Git for Windows, puis relancer." }
 $RepoPath = (Resolve-Path $RepoPath).Path
 if (-not (Test-Path (Join-Path $RepoPath ".git"))) { Fail "$RepoPath n'est pas un clone git du dépôt (option -RepoPath)." }
@@ -49,17 +52,17 @@ foreach ($a in $accounts) {
     if ((Test-Path (Join-Path $a.FullName "account.json")) -and -not (Test-Path (Join-Path $a.FullName "account.local.json"))) {
         $waiting += $a.Name
         Write-Host "[$($a.Name)] pas encore de clés X : le bot s'installe quand même et attend, sans rien publier pour ce compte." -ForegroundColor Yellow
-        Write-Host "    Plus tard : copier accounts\$($a.Name)\account.local.example.json (ou celui de XCryptoKeys) en account.local.json et y mettre les 4 clés."
+        Write-Host "    Plus tard : copier accounts\XCryptoKeys\account.local.example.json en accounts\$($a.Name)\account.local.json et y mettre les 4 clés."
         Write-Host "    Le fichier est relu à chaque passage : la publication commence au passage suivant, sans réinstaller."
     }
 }
 
 # 2. Construction
-$publishDir = Join-Path $PSScriptRoot "publish\$Rid"
+$publishDir = Join-Path $scriptDir "publish\$Rid"
 if (-not $SkipBuild) {
     Step "Construction ($Rid)"
     if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { Fail "SDK .NET 10 introuvable (dotnet). L'installer, ou construire ailleurs et utiliser -SkipBuild." }
-    Push-Location $PSScriptRoot
+    Push-Location $scriptDir
     try {
         dotnet publish XCryptoKeys.Publisher -c Release -r $Rid --self-contained -p:PublishSingleFile=true -o "publish/$Rid"
         if ($LASTEXITCODE -ne 0) { Fail "dotnet publish a échoué." }
@@ -144,7 +147,7 @@ if ($PSCmdlet.ShouldProcess($TaskName, "Créer ou mettre à jour la tâche (comp
 }
 
 Write-Host ""
-if ($waiting.Count -gt 0) {
+if ($waiting.Count -gt 0 -and -not $WhatIfPreference) {
     Write-Host "Installé. En attente des clés X pour : $($waiting -join ', '). Rien ne sera publié pour ces comptes tant que leur account.local.json n'est pas rempli." -ForegroundColor Yellow
 }
 Write-Host "Logs : $InstallDir\logs\publisher-AAAA-MM-JJ.log"

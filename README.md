@@ -34,7 +34,7 @@ On peut l'installer **avant d'avoir les clés de l'API X** : tant que `account.l
 ### Ce qu'il faut sur le PC
 
 - **Git for Windows**, avec le droit de **pousser** sur le dépôt (`git push` doit marcher sans rien demander) ;
-- le **SDK .NET 10**, pour construire l'exécutable : `winget install Microsoft.DotNet.SDK.10`. Sans lui : copier le dossier `src\publish\win-x64\` construit sur un autre PC au même endroit du clone, et ajouter `-SkipBuild` aux commandes `install.ps1` ;
+- le **SDK .NET 10**, pour construire l'exécutable : `winget install Microsoft.DotNet.SDK.10`. Sans lui : copier le dossier `src\publish\win-x64\` construit sur un autre PC au même endroit du clone, et ajouter `-SkipBuild` aux commandes `install.cmd` ;
 - un compte Windows avec mot de passe : la tâche tourne sous ce compte, même sans session ouverte.
 
 ### Installation
@@ -51,18 +51,18 @@ Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en 
 
    Si `git push` demande de se connecter, le faire une fois, **avec le compte Windows qui lancera la tâche** : Git for Windows retient les identifiants.
 
-2. Vérifier sans rien changer :
+2. Vérifier sans rien changer (pas besoin d'être administrateur pour cette étape) :
 
    ```powershell
-   powershell -ExecutionPolicy Bypass -File .\src\install.ps1 -WhatIf
+   .\src\install.cmd -WhatIf
    ```
 
-   `-ExecutionPolicy Bypass` évite l'erreur « l'exécution de scripts est désactivée sur ce système », sans changer le réglage du PC.
+   Passer par `install.cmd` évite l'erreur « l'exécution de scripts est désactivée sur ce système », sans changer le réglage du PC. Équivalent : `powershell -ExecutionPolicy Bypass -File .\src\install.ps1 -WhatIf`.
 
-3. Installer :
+3. Installer, dans le PowerShell **administrateur** :
 
    ```powershell
-   powershell -ExecutionPolicy Bypass -File .\src\install.ps1
+   .\src\install.cmd
    ```
 
    Le script construit l'exécutable, le copie dans `C:\xck-publisher`, y crée `appsettings.local.json` (chemin du dépôt), lance un test à blanc (`--dry-run`), liste les campagnes actives et demande s'il faut activer la tâche. Il demande ensuite le mot de passe Windows, pour que la tâche tourne même sans session ouverte ; il n'est enregistré dans aucun fichier.
@@ -99,8 +99,8 @@ Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en 
 | Tester ce qui partirait maintenant | `C:\xck-publisher\xck-publisher.exe --dry-run` |
 | Lancer un passage tout de suite | `Start-ScheduledTask -TaskName 'X-Bots Publisher'` |
 | Mettre en pause / reprendre | `Disable-ScheduledTask -TaskName 'X-Bots Publisher'` / `Enable-ScheduledTask -TaskName 'X-Bots Publisher'` |
-| Mettre à jour après un `git pull` | relancer `.\src\install.ps1` |
-| Désinstaller | `powershell -ExecutionPolicy Bypass -File .\src\uninstall.ps1` (ajouter `-RemoveFiles` pour supprimer aussi `C:\xck-publisher`) |
+| Mettre à jour après un `git pull` | relancer `.\src\install.cmd` |
+| Désinstaller | `.\src\uninstall.cmd` (ajouter `-RemoveFiles` pour supprimer aussi `C:\xck-publisher`) |
 
 Pour mettre une campagne en pause, passer son `status.json` en `inactive`, puis commit et push. Depuis un autre PC, faire un `git pull` avant de modifier un `status.json` ou un `posts.json`, puisque le bot y écrit.
 

@@ -139,11 +139,13 @@ Le programme écrit lui-même son log dans `logs/`.
 **Windows : script d'installation.** Le programme fait un passage puis s'arrête : sous Windows, le « service » est une tâche planifiée qui le lance toutes les 15 minutes. `install.ps1` fait tout, dans un PowerShell **administrateur**, depuis le clone du dépôt :
 
 ```powershell
-.\src\install.ps1                  # installation ou mise à jour
-.\src\install.ps1 -WhatIf          # montre ce qui serait fait, sans rien changer
-.\src\uninstall.ps1                # supprime la tâche (garde les fichiers)
-.\src\uninstall.ps1 -RemoveFiles   # supprime aussi C:\xck-publisher
+.\src\install.cmd                  # installation ou mise à jour
+.\src\install.cmd -WhatIf          # montre ce qui serait fait, sans rien changer (sans droits administrateur)
+.\src\uninstall.cmd                # supprime la tâche (garde les fichiers)
+.\src\uninstall.cmd -RemoveFiles   # supprime aussi C:\xck-publisher
 ```
+
+`install.cmd` et `uninstall.cmd` lancent `install.ps1` et `uninstall.ps1` avec `-ExecutionPolicy Bypass` : ils marchent même quand Windows bloque les scripts PowerShell (« l'exécution de scripts est désactivée sur ce système »), sans changer ce réglage. Les options sont transmises telles quelles.
 
 `install.ps1` :
 
