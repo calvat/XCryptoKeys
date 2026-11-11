@@ -37,7 +37,7 @@ Un seul dégradé d'accent : cyan `#5cfcfa` → violet `#ad59e9`, de gauche à d
 
 1. En haut à gauche : préfixe de série, puis titre (marge 60 px).
 2. Au centre : un seul schéma, lisible sur mobile. 3 à 6 boîtes maximum, texte ≥ 15 px.
-3. En bas à droite : `@xcryptokeys · <hashtags fixes de la campagne>` en mono bleu clair.
+3. En bas à droite : la signature `@xcryptokeys`, seule (pas de hashtag ni d'autre mention), en mono bleu clair.
 4. Fond : dégradé radial + grille 40 px très discrète + 1 ou 2 halos flous (bleu, violet) + quelques pistes de circuit et bribes `0x…`/binaire à 20 % d'opacité, jamais derrière du texte.
 
 ## Éléments
@@ -48,7 +48,7 @@ Un seul dégradé d'accent : cyan `#5cfcfa` → violet `#ad59e9`, de gauche à d
 - **Chiffre ou formule clé** : dans une carte mise en avant, en Exo 2 800.
 - Pas de logo de marque, de photo ni d'image IA dans les schémas. Les logos de chaînes restent pour la bannière.
 
-## Fond de vérité
+## Exactitude
 
 L'image ne doit rien affirmer de plus que le post (`long`, `tech`, `simple`). Un schéma se vérifie comme un post, contre la même source.
 
