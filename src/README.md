@@ -15,7 +15,7 @@ Programme C# (.NET 10) qui publie sur X les posts préparés dans `accounts/<Com
 
 Un post est **bloqué** (erreur dans le log, la campagne attend) s'il n'est pas `checked`, si la version demandée n'existe pas, ou s'il dépasse 280 caractères tels que X les compte, hashtag de campagne compris. Les autres campagnes continuent.
 
-Un compte sans clés X est **ignoré** (erreur dans le log s'il a une campagne active) ; les autres comptes continuent. Les lignes du log sont préfixées par `[Compte/campagne]`.
+Un compte dont les clés X ne sont pas encore renseignées (`account.local.json` absent, vide ou resté à l'exemple) est **en attente** : rien n'est publié pour lui, une ligne d'information dans le log, pas d'erreur. Dès que les 4 clés sont dans le fichier, le passage suivant publie, sans rien réinstaller. Des clés **en partie** renseignées sont une erreur (compte ignoré, erreur dans le log) ; les autres comptes continuent. Les lignes du log sont préfixées par `[Compte/campagne]`.
 
 ## Hashtag de campagne
 

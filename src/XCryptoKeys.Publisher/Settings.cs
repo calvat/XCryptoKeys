@@ -114,15 +114,22 @@ public sealed class Settings
         };
     }
 
-    /// <summary>Identifiants X manquants pour un compte (vide si tout est là).</summary>
+    /// <summary>Vrai si la valeur est vide ou encore un texte d'exemple comme « &lt;API Key&gt; » : elle n'est jamais envoyée à X.</summary>
+    public static bool IsUnset(string? value) =>
+        string.IsNullOrWhiteSpace(value) || (value.Trim().StartsWith('<') && value.Trim().EndsWith('>'));
+
+    /// <summary>Identifiants X manquants pour un compte (vide si tout est là). Un texte d'exemple compte comme manquant.</summary>
     public IEnumerable<string> MissingCredentials(string account)
     {
         var x = XFor(account);
-        if (string.IsNullOrWhiteSpace(x.ApiKey)) yield return "ApiKey";
-        if (string.IsNullOrWhiteSpace(x.ApiKeySecret)) yield return "ApiKeySecret";
-        if (string.IsNullOrWhiteSpace(x.AccessToken)) yield return "AccessToken";
-        if (string.IsNullOrWhiteSpace(x.AccessTokenSecret)) yield return "AccessTokenSecret";
+        if (IsUnset(x.ApiKey)) yield return "ApiKey";
+        if (IsUnset(x.ApiKeySecret)) yield return "ApiKeySecret";
+        if (IsUnset(x.AccessToken)) yield return "AccessToken";
+        if (IsUnset(x.AccessTokenSecret)) yield return "AccessTokenSecret";
     }
+
+    /// <summary>Vrai si aucune des 4 clés n'est renseignée : le compte attend ses clés (état normal, pas une erreur).</summary>
+    public bool HasNoCredentials(string account) => MissingCredentials(account).Count() == 4;
 
     public sealed class LogSettings
     {

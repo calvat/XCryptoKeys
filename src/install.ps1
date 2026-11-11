@@ -43,10 +43,14 @@ Write-Host "Installation: $InstallDir"
 Write-Host "Tâche       : « $TaskName », toutes les $IntervalMinutes min, compte $User"
 
 # Clés X : seulement un avertissement, les clés ne sont jamais créées ni affichées ici.
+$waiting = @()
 $accounts = Get-ChildItem $accountsDir -Directory | Where-Object { $_.Name -notmatch '^[_.]' -and (Test-Path (Join-Path $_.FullName "threads")) }
 foreach ($a in $accounts) {
     if ((Test-Path (Join-Path $a.FullName "account.json")) -and -not (Test-Path (Join-Path $a.FullName "account.local.json"))) {
-        Write-Warning "[$($a.Name)] pas de account.local.json : ce compte ne publiera pas. Le créer à partir de accounts\XCryptoKeys\account.local.example.json avec ses 4 clés X."
+        $waiting += $a.Name
+        Write-Host "[$($a.Name)] pas encore de clés X : le bot s'installe quand même et attend, sans rien publier pour ce compte." -ForegroundColor Yellow
+        Write-Host "    Plus tard : copier accounts\$($a.Name)\account.local.example.json (ou celui de XCryptoKeys) en account.local.json et y mettre les 4 clés."
+        Write-Host "    Le fichier est relu à chaque passage : la publication commence au passage suivant, sans réinstaller."
     }
 }
 
@@ -140,5 +144,8 @@ if ($PSCmdlet.ShouldProcess($TaskName, "Créer ou mettre à jour la tâche (comp
 }
 
 Write-Host ""
+if ($waiting.Count -gt 0) {
+    Write-Host "Installé. En attente des clés X pour : $($waiting -join ', '). Rien ne sera publié pour ces comptes tant que leur account.local.json n'est pas rempli." -ForegroundColor Yellow
+}
 Write-Host "Logs : $InstallDir\logs\publisher-AAAA-MM-JJ.log"
 Write-Host "Lancer un passage tout de suite : Start-ScheduledTask -TaskName '$TaskName'"

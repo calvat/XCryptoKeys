@@ -141,20 +141,27 @@ using (lockFile)
             }
 
             XClient? x = null;
-            if (!dryRun)
+            string keysFile = $"{settings.AccountsFolder}/{account.Name}/{Settings.AccountLocalFile}";
+            var missing = settings.MissingCredentials(account.Name).ToList();
+            if (settings.HasNoCredentials(account.Name))
             {
-                var missing = settings.MissingCredentials(account.Name).ToList();
-                if (missing.Count > 0)
+                // Aucune clé (fichier absent, vide ou resté à l'exemple) : le compte attend ses clés, ce n'est pas une erreur.
+                if (dryRun)
+                    log.Info($"[{account.Name}] clés X non renseignées ({keysFile}) : en vrai, rien ne serait publié pour ce compte.");
+                else
                 {
-                    // Un compte pas encore configuré ne bloque pas les autres.
-                    if (account.HasActiveCampaign())
-                        log.Error($"[{account.Name}] identifiants X manquants ({string.Join(", ", missing)}) dans {settings.AccountsFolder}/{account.Name}/{Settings.AccountLocalFile} ; compte ignoré.");
-                    else
-                        log.Info($"[{account.Name}] pas d'identifiants X et aucune campagne active ; compte ignoré.");
+                    log.Info($"[{account.Name}] clés X non renseignées ({keysFile}) ; compte en attente, rien n'est publié.");
                     continue;
                 }
-                x = new XClient(settings.XFor(account.Name), log);
             }
+            else if (missing.Count > 0)
+            {
+                // Clés en partie renseignées : sûrement une erreur de saisie. Le compte est ignoré, les autres continuent.
+                log.Error($"[{account.Name}] clés X incomplètes ({string.Join(", ", missing)} manquante(s)) dans {keysFile} ; compte ignoré.");
+                continue;
+            }
+            else if (!dryRun)
+                x = new XClient(settings.XFor(account.Name), log);
 
             using (x)
             {

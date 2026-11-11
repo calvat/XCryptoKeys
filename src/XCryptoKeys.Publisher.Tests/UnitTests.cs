@@ -318,6 +318,46 @@ public class AccountTests
         }
     }
 
+    [Fact]
+    public void Missing_or_example_keys_mean_waiting_and_partial_keys_are_incomplete()
+    {
+        Assert.True(Settings.IsUnset(null));
+        Assert.True(Settings.IsUnset("  "));
+        Assert.True(Settings.IsUnset("<API Key (Consumer Key)>"));
+        Assert.False(Settings.IsUnset("abc123"));
+
+        // Fichier absent.
+        var none = TempAccount("None", """{ "x": { "username": "none" } }""", null);
+        // Fichier copié depuis l'exemple sans être rempli.
+        string? root = FindRepoRoot();
+        string examplePath = Path.Combine(root ?? "", "accounts", "XCryptoKeys", "account.local.example.json");
+        string example = root is not null && File.Exists(examplePath)
+            ? File.ReadAllText(examplePath)
+            : """{ "x": { "apiKey": "<API Key>", "apiKeySecret": "<API Key Secret>", "accessToken": "<Access Token>", "accessTokenSecret": "<Access Token Secret>" } }""";
+        var placeholders = TempAccount("Placeholders", null, example);
+        var partial = TempAccount("Partial", null, """{ "x": { "apiKey": "k", "apiKeySecret": "<API Key Secret>" } }""");
+        var settings = new Settings();
+        try
+        {
+            foreach (var a in new[] { none, placeholders, partial }) settings.LoadAccountFiles(a);
+            Assert.True(settings.HasNoCredentials("None"));
+            Assert.True(settings.HasNoCredentials("Placeholders"));
+            Assert.False(settings.HasNoCredentials("Partial"));
+            Assert.Equal(["ApiKeySecret", "AccessToken", "AccessTokenSecret"], settings.MissingCredentials("Partial"));
+        }
+        finally
+        {
+            foreach (var a in new[] { none, placeholders, partial }) Directory.Delete(Path.GetDirectoryName(a.Directory)!, true);
+        }
+    }
+
+    private static string? FindRepoRoot()
+    {
+        string? dir = AppContext.BaseDirectory;
+        while (dir is not null && !Directory.Exists(Path.Combine(dir, "accounts"))) dir = Path.GetDirectoryName(dir);
+        return dir;
+    }
+
     private static Account TempAccount(string name, string? accountJson, string? localJson)
     {
         string dir = Path.Combine(Path.GetTempPath(), "xck-accfiles-" + Guid.NewGuid().ToString("N"), name);
