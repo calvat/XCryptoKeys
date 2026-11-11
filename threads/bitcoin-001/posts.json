@@ -4,6 +4,11 @@
     "long": "Bitcoin is defined by consensus rules that every full node enforces on its own: a 4,000,000 weight-unit block limit, difficulty periods of 2016 blocks, a 100-block maturity before coinbase rewards can be spent, and a clock based on the median of the last 11 blocks. Some rules are quirks most holders never hear of: coins that can never be spent, a 2010 bug that created about 184 billion BTC, a block clock allowed to run 2 hours fast. The series takes one rule a day, from the code and the BIPs.",
     "tech": "#Bitcoin Internals #1: Under the hood, Bitcoin is a set of consensus rules every full node enforces: a 4M weight limit, 2016-block difficulty periods, 100-block coinbase maturity, an 11-block median clock. One rule (or quirk) per day, from the code and the BIPs. #BTC #Crypto",
     "simple": "#Bitcoin Internals #1: Bitcoin has rules most holders never read: coins that can never be spent, a bug that once printed 184 billion BTC, a clock allowed to run 2 hours fast. One rule a day, explained simply. #BTC #Crypto",
+    "card": {
+      "big": "184 billion",
+      "title": "One consensus rule a day, from the code",
+      "sub": "Quirks included: unspendable coins, a 2010 bug, a clock allowed to run fast."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/consensus/consensus.h",
     "status": "checked"
   },
@@ -12,6 +17,10 @@
     "long": "Bitcoin has no accounts and no stored balances. The chain state is a set of unspent transaction outputs (UTXOs), each one an amount plus a locking script. A transaction consumes whole UTXOs as inputs and creates new ones as outputs. A wallet's \"balance\" is only the sum of the UTXOs its keys can spend, added up by the wallet itself. This model, from the whitepaper, shapes everything else: change outputs, fees, privacy and how nodes validate.",
     "tech": "#Bitcoin Internals #2: No account model: the chain state is a set of unspent transaction outputs (UTXOs), each an amount plus a locking script. A transaction consumes whole UTXOs and creates new ones. A wallet's balance is the sum of UTXOs it can spend. #BTC #Crypto",
     "simple": "#Bitcoin Internals #2: Bitcoin has no accounts and no balances. It tracks unspent coins (UTXOs). Your \"balance\" is just the sum of the coins your keys can unlock, added up by your wallet. #BTC #Crypto",
+    "card": {
+      "title": "No accounts, no balances, only UTXOs",
+      "sub": "Your balance is just the sum of unspent coins your keys can unlock."
+    },
     "source": "https://bitcoin.org/bitcoin.pdf",
     "status": "checked"
   },
@@ -20,6 +29,11 @@
     "long": "Consensus never uses floating point. Amounts are 64-bit integers counted in satoshis, with COIN = 100,000,000 sats per BTC, so nothing smaller than 1 sat can be sent. MAX_MONEY (21 million BTC) serves as a sanity bound: a transaction with any output, or an output total, above it is invalid. Integer math means every node computes exactly the same amounts, with no rounding differences between machines.",
     "tech": "#Bitcoin Internals #3: Amounts are 64-bit integers in satoshis: COIN = 100,000,000. No floating point in consensus. MAX_MONEY (21M BTC) is used as a sanity bound: any output or total above it makes the transaction invalid. #BTC #Crypto",
     "simple": "#Bitcoin Internals #3: Bitcoin doesn't use decimals inside. Every amount is a whole number of satoshis, and 1 BTC = 100,000,000 sats. You can never send 0.5 sat. #BTC #Crypto",
+    "card": {
+      "big": "100,000,000",
+      "title": "Every amount is a whole number of sats",
+      "sub": "Consensus never uses decimals, so every node computes exactly the same amounts."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/consensus/amount.h",
     "status": "checked"
   },
@@ -28,6 +42,10 @@
     "long": "The 21 million cap is not exact. The block subsidy is 50 BTC shifted right once per halving, computed in integer satoshis over 210,000-block eras, and each shift drops any fraction of a satoshi. Summing every era gives 2,099,999,997,690,000 sats, about 20,999,999.9769 BTC. The real maximum supply is therefore slightly below 21 million, purely because of rounding down to whole satoshis.",
     "tech": "#Bitcoin Internals #4: Summing the subsidy (50 BTC >> halvings, in integer sats) over 210,000-block eras gives 2,099,999,997,690,000 sats, ≈20,999,999.9769 BTC. Each halving's right shift drops fractions of a satoshi. #BTC #Crypto",
     "simple": "#Bitcoin Internals #4: The supply cap isn't exactly 21 million. Rewards are rounded down to whole satoshis at each halving, so the real maximum is about 20,999,999.9769 BTC. #BTC #Crypto",
+    "card": {
+      "title": "Why the 21 million cap is not exact",
+      "sub": "Rounding to whole sats at each halving keeps the real max just below 21 million."
+    },
     "source": "https://en.bitcoin.it/wiki/Controlled_supply",
     "status": "checked"
   },
@@ -36,6 +54,11 @@
     "long": "GetBlockSubsidy computes the reward as 50 * COIN shifted right by (height / 210000). So the subsidy halves every 210,000 blocks, roughly every 4 years: 50 BTC, then 25 at block 210,000, 12.5 at 420,000, 6.25 at 630,000 and 3.125 BTC since block 840,000 in 2024. The schedule is tied to block height, never to a calendar date.",
     "tech": "#Bitcoin Internals #5: GetBlockSubsidy: 50 * COIN >> (height / 210000). Eras so far: 50 → 25 (block 210,000) → 12.5 (420,000) → 6.25 (630,000) → 3.125 BTC (840,000). It is set by block height, not by date. #BTC #Crypto",
     "simple": "#Bitcoin Internals #5: Every 210,000 blocks (about 4 years) the new-coin reward per block is cut in half: 50, 25, 12.5, 6.25, and 3.125 BTC since 2024. #BTC #Crypto",
+    "card": {
+      "big": "50 → 25 → 12.5",
+      "title": "Halving every 210,000 blocks",
+      "sub": "Roughly every 4 years, tied to block height and never to a calendar date."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/kernel/chainparams.cpp",
     "status": "checked"
   },
@@ -44,6 +67,10 @@
     "long": "The four halvings so far happened at blocks 210,000 (2012-11-28), 420,000 (2016-07-09), 630,000 (2020-05-11) and 840,000 (2024-04-20). Because halvings follow block count, not the calendar, and blocks have on average come a bit faster than every 10 minutes, each halving landed earlier than a strict 4-year schedule would predict. The dates drift; the heights never do.",
     "tech": "#Bitcoin Internals #6: Halving heights and dates: 210,000 (2012-11-28), 420,000 (2016-07-09), 630,000 (2020-05-11), 840,000 (2024-04-20). Faster-than-10-min blocks pull each one earlier than a strict 4-year schedule. #BTC #Crypto",
     "simple": "#Bitcoin Internals #6: Bitcoin's halvings so far: Nov 28, 2012; July 9, 2016; May 11, 2020; April 20, 2024. The dates drift because they follow block count, not the calendar. #BTC #Crypto",
+    "card": {
+      "title": "Four halvings, four drifting dates",
+      "sub": "Halvings follow block count, so each one landed earlier than a strict 4-year pace."
+    },
     "source": "https://en.bitcoin.it/wiki/Controlled_supply",
     "status": "checked"
   },
@@ -52,6 +79,11 @@
     "long": "The subsidy is 5,000,000,000 sats shifted right by the number of halvings. After 32 halvings it is 1 sat; at the 33rd halving (block 6,930,000) the shift gives 0, so new issuance ends, expected around the year 2140. The code also returns 0 explicitly once halvings reach 64, because shifting a 64-bit value by 64 or more is undefined behaviour in C++. After that, miners are paid by fees alone.",
     "tech": "#Bitcoin Internals #7: Subsidy = 5,000,000,000 sats >> halvings. After 32 halvings it is 1 sat; at the 33rd (block 6,930,000) it becomes 0. The code also returns 0 if halvings >= 64, to avoid undefined shift behaviour. Expected ≈2140. #BTC #Crypto",
     "simple": "#Bitcoin Internals #7: New bitcoins stop around the year 2140. After 33 halvings, the reward rounds down to zero, and miners live on fees only. #BTC #Crypto",
+    "card": {
+      "big": "2140",
+      "title": "When new bitcoins stop for good",
+      "sub": "After 33 halvings the reward rounds down to zero and miners live on fees alone."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/validation.cpp",
     "status": "checked"
   },
@@ -60,6 +92,11 @@
     "long": "The genesis block is hardcoded in chainparams: timestamp 1231006505 (2009-01-03 18:15:05 UTC), nonce 2083236893, nBits 0x1d00ffff. Its coinbase scriptSig embeds the headline \"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks\", which proves the block was not mined before that date and hints at why Bitcoin was made.",
     "tech": "#Bitcoin Internals #8: Genesis block: timestamp 1231006505 (2009-01-03 18:15:05 UTC), nonce 2083236893, nBits 0x1d00ffff. Its coinbase scriptSig embeds \"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks\". #BTC #Crypto",
     "simple": "#Bitcoin Internals #8: The first Bitcoin block (genesis) is dated Jan 3, 2009. It carries a newspaper headline: \"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks\". #BTC #Crypto",
+    "card": {
+      "big": "2009-01-03",
+      "title": "A newspaper headline in the first block",
+      "sub": "The genesis coinbase quotes The Times on a second bailout for banks."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/kernel/chainparams.cpp",
     "status": "checked"
   },
@@ -68,6 +105,10 @@
     "long": "The 50 BTC reward of the genesis block can never be spent. The block is hardcoded and never goes through normal block connection, so its coinbase output was never added to the UTXO set. Any transaction trying to spend it fails as spending a missing input. This is not a lock in a script: the coin simply does not exist for the nodes, and changing that would require a hard fork.",
     "tech": "#Bitcoin Internals #9: The genesis block is hardcoded and never connected through normal validation, so its coinbase output never entered the UTXO set. Any transaction trying to spend it fails as spending a missing input. Changing that would need a hard fork. #BTC #Crypto",
     "simple": "#Bitcoin Internals #9: The 50 BTC reward of the very first block can never be spent. Not because of a lock: the code simply never added that coin to its list of spendable coins. #BTC #Crypto",
+    "card": {
+      "title": "The genesis reward can never move",
+      "sub": "Its 50 BTC was never added to the UTXO set, so for nodes the coin doesn't exist."
+    },
     "source": "https://en.bitcoin.it/wiki/Genesis_block",
     "status": "checked"
   },
@@ -76,6 +117,11 @@
     "long": "Block 170, mined on 2009-01-12, contains the first transaction that is not a coinbase: Satoshi Nakamoto sent 10 BTC to Hal Finney, spending the coinbase output of block 9. Before it, every transaction on the chain was a block reward. It is the first recorded transfer of bitcoin from one person to another.",
     "tech": "#Bitcoin Internals #10: Block 170 (2009-01-12) holds the first non-coinbase transaction: 10 BTC from Satoshi to Hal Finney, spending the coinbase of block 9. Before it, every transaction was a block reward. #BTC #Crypto",
     "simple": "#Bitcoin Internals #10: The first Bitcoin transfer between two people was in block 170, on Jan 12, 2009: Satoshi Nakamoto sent 10 BTC to Hal Finney. #BTC #Crypto",
+    "card": {
+      "big": "10 BTC",
+      "title": "Satoshi to Hal, the first real transfer",
+      "sub": "Block 170, Jan 12, 2009: the first transaction that was not a block reward."
+    },
     "source": "https://www.blockchain.com/explorer/blocks/btc/170",
     "status": "checked"
   },
@@ -84,6 +130,11 @@
     "long": "A block header is 80 bytes: version (4), previous block hash (32), merkle root (32), time (4), nBits target (4) and nonce (4). Proof of work is the double SHA-256 of these 80 bytes, and that small header is all miners hash, trillions of times. The transactions themselves are committed only through the merkle root, which is why the header stays tiny however big the block is.",
     "tech": "#Bitcoin Internals #11: Header = 80 bytes: version (4), previous block hash (32), merkle root (32), time (4), nBits target (4), nonce (4). Proof of work is SHA-256d of these 80 bytes; transactions are committed only via the merkle root. #BTC #Crypto",
     "simple": "#Bitcoin Internals #11: A block header is tiny: just 80 bytes. That's all a miner hashes over and over, trillions of times, looking for a winning number. #BTC #Crypto",
+    "card": {
+      "big": "80 bytes",
+      "title": "All a miner hashes is a tiny header",
+      "sub": "Transactions are committed through the merkle root, so the header never grows."
+    },
     "source": "https://developer.bitcoin.org/reference/block_chain.html",
     "status": "checked"
   },
@@ -92,6 +143,10 @@
     "long": "Mining means finding a header whose double SHA-256, read as a 256-bit little-endian number, is less than or equal to the target encoded in nBits, a compact float with a 1-byte exponent and 3-byte mantissa. A lower target needs more attempts on average. Difficulty is just the difficulty-1 target divided by the current target: it is a ratio, not a separate rule.",
     "tech": "#Bitcoin Internals #12: Proof of work: SHA256(SHA256(header)), read as a 256-bit little-endian number, must be <= the target encoded in nBits (compact float: 1 byte exponent, 3 bytes mantissa). Difficulty = difficulty-1 target / current target. #BTC #Crypto",
     "simple": "#Bitcoin Internals #12: Mining means hashing a block header until the result is a number below a target. A lower target means more tries are needed. That's all \"difficulty\" is. #BTC #Crypto",
+    "card": {
+      "title": "Mining is a search below a target",
+      "sub": "A lower target needs more attempts. Difficulty is only a ratio, not a separate rule."
+    },
     "source": "https://developer.bitcoin.org/reference/block_chain.html",
     "status": "checked"
   },
@@ -100,6 +155,11 @@
     "long": "The header nonce is only 32 bits, about 4.29 billion values, which modern miners exhaust almost instantly. To get fresh search space they also change an extraNonce in the coinbase (which changes the merkle root), adjust the timestamp, and roll some header version bits, as BIP320 allows (version rolling).",
     "tech": "#Bitcoin Internals #13: The header nonce is 32 bits (≈4.29 billion values). Miners also vary an extraNonce in the coinbase (which changes the merkle root), the timestamp, and some version bits (version rolling, BIP320) to get fresh search space. #BTC #Crypto",
     "simple": "#Bitcoin Internals #13: The block's \"nonce\" counter only has about 4.3 billion values. Modern miners run through that in a blink, so they also change other parts of the block to keep searching. #BTC #Crypto",
+    "card": {
+      "big": "32 bits",
+      "title": "Miners burn through the nonce in a blink",
+      "sub": "So they also tweak the coinbase extraNonce, the timestamp and version bits."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0320.mediawiki",
     "status": "checked"
   },
@@ -108,6 +168,10 @@
     "long": "Chainparams sets nPowTargetSpacing = 600 seconds (one block per 10 minutes) and nPowTargetTimespan = 14 days. The retarget interval is 1,209,600 / 600 = 2016 blocks, about 2 weeks. At each boundary every node recomputes the new target on its own from the chain data; nobody announces or votes on the difficulty.",
     "tech": "#Bitcoin Internals #14: nPowTargetSpacing = 600 s, nPowTargetTimespan = 14 days, so the retarget interval is 1,209,600 / 600 = 2016 blocks. Each node computes the new target itself; no one announces it. #BTC #Crypto",
     "simple": "#Bitcoin Internals #14: Bitcoin aims for one block every 10 minutes. Every 2016 blocks (about 2 weeks) every node recomputes the difficulty to stay on that pace. #BTC #Crypto",
+    "card": {
+      "title": "Difficulty resets on a two-week rhythm",
+      "sub": "Every 2016 blocks each node recomputes the target. Nobody announces or votes on it."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/kernel/chainparams.cpp",
     "status": "checked"
   },
@@ -116,6 +180,11 @@
     "long": "In pow.cpp the measured timespan of a period is clamped to between a quarter and four times the target timespan. So a single retarget can make mining at most 4x harder or 4x easier, however fast or slow the last 2016 blocks were. The resulting target is also capped at powLimit, which corresponds to difficulty 1, the easiest allowed.",
     "tech": "#Bitcoin Internals #15: Retarget clamps the measured timespan to [timespan/4, timespan*4], so one adjustment moves the target by at most a factor of 4 either way. The target is also capped at powLimit (difficulty 1). #BTC #Crypto",
     "simple": "#Bitcoin Internals #15: Difficulty can't jump wildly: one adjustment can make mining at most 4x harder or 4x easier, however fast or slow the last 2 weeks were. #BTC #Crypto",
+    "card": {
+      "big": "4x",
+      "title": "Difficulty can never jump wildly",
+      "sub": "One retarget makes mining at most four times harder or easier, whatever the pace."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/pow.cpp",
     "status": "checked"
   },
@@ -124,6 +193,10 @@
     "long": "The retarget measures time from the first to the last block of a 2016-block period, which is 2015 intervals, not 2016. Periods do not overlap, so the gap between periods is never measured. A majority of hashrate can exploit this by backdating timestamps to make periods look slow and push difficulty down over time: the \"time warp\" attack. It is an old off-by-one quirk still present in mainnet consensus.",
     "tech": "#Bitcoin Internals #16: Retarget uses the time from the first to the last block of the period: 2015 intervals, not 2016. Periods don't overlap, so a majority of hashrate can backdate timestamps and drive difficulty down over time: the \"time warp\" attack. #BTC #Crypto",
     "simple": "#Bitcoin Internals #16: An old quirk: difficulty is meant to measure 2016 block gaps but measures only 2015. That small slip opens the \"time warp\" attack, where miners fake timestamps to lower difficulty. #BTC #Crypto",
+    "card": {
+      "title": "An off-by-one that opens the time warp",
+      "sub": "Retargets measure 2015 gaps, not 2016, so miners can backdate to cut difficulty."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/pow.cpp",
     "status": "checked"
   },
@@ -132,6 +205,11 @@
     "long": "BIP94 defines the testnet4 rules shipped in Bitcoin Core 28.0. One of them fixes the time warp: the first block of a retarget period may not have a timestamp more than 600 seconds earlier than the previous block (MAX_TIMEWARP). Mainnet still has the old rule. A mainnet fix is specified in BIP54 (Consensus Cleanup), which is not activated.",
     "tech": "#Bitcoin Internals #17: BIP94 (testnet4, shipped in Bitcoin Core 28.0): the first block of a retarget period may not be more than 600 s earlier than the previous block (MAX_TIMEWARP). A mainnet fix is specified in BIP54 (Consensus Cleanup), not activated. #BTC #Crypto",
     "simple": "#Bitcoin Internals #17: The time warp bug has been fixed on Bitcoin's newest test network (testnet4): the first block of a difficulty period can't be backdated much. Mainnet still has the old rule. #BTC #Crypto",
+    "card": {
+      "big": "600 s",
+      "title": "Testnet4 closes the time warp",
+      "sub": "Mainnet still runs the old rule, and its fix in BIP54 is not activated."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0094.mediawiki",
     "status": "checked"
   },
@@ -140,6 +218,11 @@
     "long": "Block timestamps are loose. Consensus requires a block's time to be greater than the median time past (MTP) of the previous 11 blocks. Separately, a node rejects a block more than 2 hours ahead of its adjusted time (MAX_FUTURE_BLOCK_TIME), a local check. Within these bounds miners pick the time, so consecutive block times can even go backwards.",
     "tech": "#Bitcoin Internals #18: Timestamp rules: nTime > median time past (MTP) of the last 11 blocks (consensus), and nTime <= node's adjusted time + 2 h (MAX_FUTURE_BLOCK_TIME, local check). So block times can go backwards. #BTC #Crypto",
     "simple": "#Bitcoin Internals #18: Block timestamps don't have to be exact. A block is valid if its time is later than the middle value of the previous 11 blocks, and not more than 2 hours ahead of your clock. #BTC #Crypto",
+    "card": {
+      "big": "2 hours",
+      "title": "Block timestamps are allowed to be loose",
+      "sub": "Miners pick the time within bounds, so block times can even go backwards."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/chain.h",
     "status": "checked"
   },
@@ -148,6 +231,11 @@
     "long": "The header's nTime is an unsigned 32-bit count of Unix seconds. Its maximum, 4,294,967,295, is 2106-02-07 06:28:15 UTC, after which the field overflows. Any fix changes how block headers are validated, so it needs a consensus change, ideally deployed long before then.",
     "tech": "#Bitcoin Internals #19: Header nTime is a uint32 of Unix seconds, so it overflows after 4,294,967,295 = 2106-02-07 06:28:15 UTC. Any fix changes how headers are validated, so it needs a consensus change well before then. #BTC #Crypto",
     "simple": "#Bitcoin Internals #19: Bitcoin has a far-future date problem: block time is stored in 32 bits, which runs out in the year 2106. Fixing it will need a change to the rules. #BTC #Crypto",
+    "card": {
+      "big": "2106",
+      "title": "Bitcoin's clock runs out of bits",
+      "sub": "Block time is an unsigned 32-bit count of seconds, and fixing it needs a rule change."
+    },
     "source": "https://developer.bitcoin.org/reference/block_chain.html",
     "status": "checked"
   },
@@ -156,6 +244,11 @@
     "long": "COINBASE_MATURITY = 100: a coinbase output can only be spent in a block at least 100 blocks after the one that created it, about 17 hours. If a block is orphaned in a reorg, its coinbase disappears; the delay stops those coins from spreading into later transactions that would then become invalid.",
     "tech": "#Bitcoin Internals #20: COINBASE_MATURITY = 100: a coinbase output can be spent only 100 or more blocks after the block that created it. A reorg would erase the coinbase, so this stops it from spreading into transactions that would then become invalid. #BTC #Crypto",
     "simple": "#Bitcoin Internals #20: Miners can't spend new block rewards right away. They must wait 100 blocks (about 17 hours), in case their block gets replaced by another. #BTC #Crypto",
+    "card": {
+      "big": "100 blocks",
+      "title": "Fresh block rewards must wait",
+      "sub": "About 17 hours, so a reorg can't spread vanished coins into later transactions."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/consensus/consensus.h",
     "status": "checked"
   },
@@ -164,6 +257,10 @@
     "long": "Consensus checks that a coinbase's outputs total at most the subsidy plus fees, not exactly that amount. Whatever a miner fails to claim is never created and is permanently out of supply. Some early and buggy blocks did underclaim, which is part of why the real supply ends below the cap. A miner can claim less, never more.",
     "tech": "#Bitcoin Internals #21: Consensus checks coinbase output total <= subsidy + fees, not ==. Any shortfall is never created and is permanently out of supply. A few early and buggy blocks underclaimed, which is part of why the real supply ends below the cap. #BTC #Crypto",
     "simple": "#Bitcoin Internals #21: A miner may claim less than the full reward, never more. Whatever they don't claim is lost forever. It has happened, through bugs and mistakes. #BTC #Crypto",
+    "card": {
+      "title": "A miner can claim less, never more",
+      "sub": "Unclaimed reward is never created, which helps keep the real supply below the cap."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/validation.cpp",
     "status": "checked"
   },
@@ -172,6 +269,11 @@
     "long": "On Aug 15, 2010, block 74638 contained a transaction with two outputs of about 92.2 billion BTC each, about 184 billion in total. The values overflowed the 64-bit sum check, so the transaction passed. A fixed version that rejected such outputs was out within about 5 hours. Once upgraded miners built a longer chain, the chain without the bad transaction won and the coins vanished.",
     "tech": "#Bitcoin Internals #22: Value overflow incident, Aug 15, 2010, block 74638: two outputs of ≈92.2 billion BTC each overflowed the 64-bit sum check. The fix rejected such outputs; once upgraded miners overtook it, the chain without the bad tx won. #BTC #Crypto",
     "simple": "#Bitcoin Internals #22: In 2010, someone made a transaction worth about 184 billion BTC. A number in the code overflowed. Within about 5 hours a fixed version was out, and the bad block was dropped. #BTC #Crypto",
+    "card": {
+      "big": "184 billion",
+      "title": "The 2010 overflow that minted billions",
+      "sub": "A sum check overflowed in block 74638. A fix shipped and the bad chain lost."
+    },
     "source": "https://en.bitcoin.it/wiki/Value_overflow_incident",
     "status": "checked"
   },
@@ -180,6 +282,10 @@
     "long": "The coinbases of blocks 91,812 and 91,842, and of 91,722 and 91,880, have identical txids. In each pair the later one overwrote the earlier in the UTXO set, so 50 BTC was lost per pair. BIP30 now forbids a transaction whose txid matches one that still has unspent outputs, with blocks 91,842 and 91,880 hardcoded as exceptions.",
     "tech": "#Bitcoin Internals #23: Coinbases in blocks 91,812/91,842 and 91,722/91,880 share txids; the later one overwrote the earlier in the UTXO set (50 BTC lost per pair). BIP30 bans a txid matching an unspent one; 91,842 and 91,880 are hardcoded exceptions. #BTC #Crypto",
     "simple": "#Bitcoin Internals #23: Two pairs of Bitcoin blocks have reward transactions with the exact same ID. Each pair counts only once: two 50 BTC rewards vanished. A rule (BIP30) now forbids this. #BTC #Crypto",
+    "card": {
+      "title": "Identical coinbase txids, twice",
+      "sub": "Each later coinbase overwrote the earlier one, and 50 BTC vanished per pair."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0030.mediawiki",
     "status": "checked"
   },
@@ -188,6 +294,10 @@
     "long": "BIP34, enforced from block 227,931 in 2013, requires the coinbase scriptSig to start with the block height. Since every block has a different height, coinbase transactions get different txids, so the duplicate-coinbase problem behind BIP30 cannot occur in normal operation.",
     "tech": "#Bitcoin Internals #24: BIP34 (enforced from block 227,931): the coinbase scriptSig must start with the block height. Different heights give different coinbase txids, so BIP30-style duplicates can't occur in normal operation. #BTC #Crypto",
     "simple": "#Bitcoin Internals #24: Since 2013, each block must write its own block number inside its reward transaction. That makes every reward transaction unique. #BTC #Crypto",
+    "card": {
+      "title": "Every block now writes its own height",
+      "sub": "BIP34 made reward transactions unique, so duplicate coinbases can't recur."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki",
     "status": "checked"
   },
@@ -196,6 +306,10 @@
     "long": "CVE-2018-17144: Bitcoin Core 0.14 to 0.16.2 skipped a check for duplicate inputs in a block's transactions. In 0.14 that meant a crash; from 0.15 it could also let a miner inflate supply by spending the same coin twice in one transaction. It was fixed in 0.16.3 on Sept 18, 2018, with full disclosure on Sept 20. No exploitation was known.",
     "tech": "#Bitcoin Internals #25: CVE-2018-17144: Core 0.14 to 0.16.2 skipped a duplicate-input check (a crash bug); from 0.15 it could also inflate supply. Fixed in 0.16.3 (Sept 18, 2018), full disclosure Sept 20. No exploitation was known. #BTC #Crypto",
     "simple": "#Bitcoin Internals #25: Sept 2018: a bug in Bitcoin Core could have let a miner create coins from nothing by spending the same coin twice in one transaction. It was patched quietly first, then disclosed. #BTC #Crypto",
+    "card": {
+      "title": "A Core bug that could have inflated supply",
+      "sub": "Patched in 0.16.3 in Sept 2018, then disclosed. No exploitation was known."
+    },
     "source": "https://bitcoincore.org/en/2018/09/20/notice/",
     "status": "checked"
   },
@@ -204,6 +318,10 @@
     "long": "BIP50, March 2013: a block valid under Bitcoin Core 0.8, which used LevelDB, needed more database locks than pre-0.8 versions with Berkeley DB allowed. The network split into two chains for a few hours. Mining pools downgraded to 0.7 so that chain would win, and 0.8 nodes reorganized onto it. Two versions disagreeing on one block was enough to fork Bitcoin.",
     "tech": "#Bitcoin Internals #26: BIP50: a block valid under 0.8 (LevelDB) needed more database locks than pre-0.8 (Berkeley DB) allowed, so the network split. Pools downgraded to 0.7 so its chain won, and 0.8 nodes reorganized onto it. #BTC #Crypto",
     "simple": "#Bitcoin Internals #26: March 2013: Bitcoin split into two chains for a few hours because two versions of the software disagreed on one big block. Miners chose to roll back to the old version's chain. #BTC #Crypto",
+    "card": {
+      "title": "Two versions, one block, a split chain",
+      "sub": "In March 2013 a block valid on 0.8 was rejected by older nodes. Pools went back to 0.7."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki",
     "status": "checked"
   },
@@ -212,6 +330,11 @@
     "long": "The header does not list transactions. It stores a merkle root: a binary tree of double SHA-256 txids hashed up to one value. Changing any transaction changes the root. A light client can check a transaction is in a block with about log2(n) hashes, around 12 for a 4,000-transaction block, instead of downloading the whole block.",
     "tech": "#Bitcoin Internals #27: The merkle root is a binary tree of SHA-256d txids. A light client checks a tx is in a block with log2(n) hashes: ≈12 hashes for a 4,000-tx block, instead of downloading the whole block. #BTC #Crypto",
     "simple": "#Bitcoin Internals #27: A block doesn't list its transactions in the header. It stores one fingerprint (the merkle root) that sums up all of them. Change one transaction and it changes. #BTC #Crypto",
+    "card": {
+      "big": "log2(n)",
+      "title": "One fingerprint for all transactions",
+      "sub": "A light client proves inclusion with a few hashes instead of the whole block."
+    },
     "source": "https://bitcoin.org/bitcoin.pdf",
     "status": "checked"
   },
@@ -220,6 +343,10 @@
     "long": "CVE-2012-2459: when a merkle tree level has an odd count, the last node is paired with itself, so duplicating the last transactions can yield the same root. Nodes could then cache a valid block's hash as invalid and reject the real block. Bitcoin Core now detects this mutation.",
     "tech": "#Bitcoin Internals #28: CVE-2012-2459: with an odd count, the last merkle node is paired with itself, so duplicating the last txs keeps the same root. Nodes could cache that block hash as invalid and reject the real block. Now this mutation is detected. #BTC #Crypto",
     "simple": "#Bitcoin Internals #28: Bitcoin's transaction tree has a quirk: copying the last transaction can give the same fingerprint. In 2012 that could trick nodes into rejecting good blocks. It's handled now. #BTC #Crypto",
+    "card": {
+      "title": "A merkle quirk that got good blocks rejected",
+      "sub": "Duplicating the last transactions can keep the same root. Core now detects it."
+    },
     "source": "https://en.bitcoin.it/wiki/Common_Vulnerabilities_and_Exposures",
     "status": "checked"
   },
@@ -228,6 +355,10 @@
     "long": "A Bitcoin transaction has no fee field. The fee is implicit: the sum of inputs minus the sum of outputs. Consensus only requires inputs to be at least the outputs. The miner of the block collects all these differences in the block's coinbase.",
     "tech": "#Bitcoin Internals #29: fee = sum(inputs) - sum(outputs). It is implicit, never written in the tx. Consensus only requires inputs >= outputs; the miner claims all fees in the block's coinbase. #BTC #Crypto",
     "simple": "#Bitcoin Internals #29: There is no \"fee\" field in a Bitcoin transaction. The fee is whatever you don't send: coins going in minus coins going out. The miner keeps the difference. #BTC #Crypto",
+    "card": {
+      "title": "There is no fee field",
+      "sub": "The fee is inputs minus outputs, and the block's miner collects the difference."
+    },
     "source": "https://bitcoin.org/bitcoin.pdf",
     "status": "checked"
   },
@@ -236,6 +367,10 @@
     "long": "A UTXO is always spent whole. To pay 0.3 BTC from a 1 BTC coin, the wallet spends all of it: one output to the payee and a change output back to a new address of its own. If the change output is forgotten, the whole remainder is not sent anywhere and becomes the miner's fee.",
     "tech": "#Bitcoin Internals #30: A UTXO is spent whole. Wallets add a change output back to a new address of their own. Forget the change output and the whole remainder becomes miner fee. #BTC #Crypto",
     "simple": "#Bitcoin Internals #30: You can't spend part of a coin. To pay 0.3 BTC from a 1 BTC coin, you spend all of it: 0.3 to the payee and the rest back to yourself as \"change\". #BTC #Crypto",
+    "card": {
+      "title": "Coins are always spent whole",
+      "sub": "Pay part of one and the rest returns as change. Forget it and the miner keeps it."
+    },
     "source": "https://bitcoin.org/bitcoin.pdf",
     "status": "checked"
   },
@@ -244,6 +379,11 @@
     "long": "nLockTime lets a transaction be invalid until a given point. A value below 500,000,000 is read as a block height; 500,000,000 or more is a Unix timestamp (Nov 5, 1985). The same field means two things depending on its size. Since BIP113, time-based locks compare against median time past, not the block's own timestamp.",
     "tech": "#Bitcoin Internals #31: nLockTime < 500,000,000 is a block height; >= 500,000,000 is a Unix timestamp (Nov 5, 1985). Since BIP113, time locks compare against median time past, not the block's own timestamp. #BTC #Crypto",
     "simple": "#Bitcoin Internals #31: A transaction can be locked until a future date or block. The same number means a block height if it's small, or a date if it's big. #BTC #Crypto",
+    "card": {
+      "big": "500,000,000",
+      "title": "One field, two meanings",
+      "sub": "Below the threshold nLockTime is a block height; at or above, a Unix timestamp."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/script/script.h",
     "status": "checked"
   },
@@ -252,6 +392,10 @@
     "long": "BIP65 added OP_CHECKLOCKTIMEVERIFY, enforced from block 388,381 in 2015. The script fails unless the spending transaction's nLockTime is past the value in the script, so coins can be locked inside the script until a set date or height. It redefined OP_NOP2, so it was a soft fork. It enables time-locked savings and payment channels.",
     "tech": "#Bitcoin Internals #32: BIP65 OP_CHECKLOCKTIMEVERIFY, enforced from block 388,381: the script fails unless the spending tx's nLockTime is past the value in the script. It reused the OP_NOP2 opcode, so it was a soft fork. #BTC #Crypto",
     "simple": "#Bitcoin Internals #32: Coins can be locked inside a script so they can't move before a set date. That rule (2015) made things like time-locked savings and payment channels possible. #BTC #Crypto",
+    "card": {
+      "title": "Locking coins until a set date",
+      "sub": "CLTV, a 2015 soft fork, enabled time-locked savings and payment channels."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki",
     "status": "checked"
   },
@@ -260,6 +404,10 @@
     "long": "BIP68, BIP112 and BIP113 (CSV), active from block 419,328, added relative time locks. nSequence encodes a lock counted in blocks or in 512-second units from when the coin was confirmed, OP_CHECKSEQUENCEVERIFY enforces it in script, and BIP113 uses median time past for time locks. Relative locks are what make Lightning's safety windows work.",
     "tech": "#Bitcoin Internals #33: BIP68/112/113 (CSV), active at block 419,328: nSequence encodes a relative lock in blocks or 512-s units, OP_CHECKSEQUENCEVERIFY enforces it in script, and BIP113 uses median time past for time locks. #BTC #Crypto",
     "simple": "#Bitcoin Internals #33: Bitcoin also has relative time locks: \"this coin can move only 1,000 blocks after it was received\". That's what makes Lightning's safety windows work. #BTC #Crypto",
+    "card": {
+      "title": "Locks that count from confirmation",
+      "sub": "Relative time locks via nSequence and CSV are what make Lightning's windows safe."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki",
     "status": "checked"
   },
@@ -268,6 +416,10 @@
     "long": "Script is a small stack-based, Forth-like language. It has no loops or jumps, so execution length is bounded by script size and every script finishes. A spend is valid if the scriptSig or witness plus the scriptPubKey run without error and leave a true value on top of the stack.",
     "tech": "#Bitcoin Internals #34: Script is a stack-based, Forth-like language with no loops or jumps, so execution length is bounded by script size. A spend is valid if scriptSig/witness + scriptPubKey run without error and leave a true value on top. #BTC #Crypto",
     "simple": "#Bitcoin Internals #34: Bitcoin has its own small programming language, Script. It has no loops on purpose, so every script finishes and can't hang the network. #BTC #Crypto",
+    "card": {
+      "title": "A language with no loops, by design",
+      "sub": "Script is small and stack-based, so every script finishes and can't hang the network."
+    },
     "source": "https://en.bitcoin.it/wiki/Script",
     "status": "checked"
   },
@@ -276,6 +428,10 @@
     "long": "In 2010 several opcodes, including OP_CAT, OP_SUBSTR, OP_MUL and OP_LSHIFT, were disabled after bugs were found: any script containing them fails, even inside an unexecuted branch. Re-enabling OP_CAT in tapscript is proposed in BIP347, which is not active and is still debated.",
     "tech": "#Bitcoin Internals #35: In 2010 OP_CAT, OP_SUBSTR, OP_MUL, OP_LSHIFT and others were disabled: any script containing them fails, even in an unexecuted branch. Re-enabling OP_CAT in tapscript is proposed in BIP347, not active. #BTC #Crypto",
     "simple": "#Bitcoin Internals #35: In 2010 Satoshi switched off several Script commands, including OP_CAT, after bugs were found. Proposals to bring OP_CAT back are still debated today. #BTC #Crypto",
+    "card": {
+      "title": "Opcodes switched off in 2010",
+      "sub": "OP_CAT and others were disabled after bugs. Bringing OP_CAT back is still debated."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0347.mediawiki",
     "status": "checked"
   },
@@ -284,6 +440,11 @@
     "long": "Legacy and SegWit v0 scripts have hard limits so no transaction can overload a node: 10,000 bytes per script, 201 non-push opcodes, 520 bytes per stack element, 1,000 stack items and 20 keys per OP_CHECKMULTISIG.",
     "tech": "#Bitcoin Internals #36: Legacy/SegWit v0 script limits: 10,000 bytes per script, 201 non-push opcodes, 520 bytes per stack element, 1,000 stack items, 20 keys per OP_CHECKMULTISIG. #BTC #Crypto",
     "simple": "#Bitcoin Internals #36: Bitcoin scripts have hard limits so no transaction can overload a node: size, number of steps and size of each piece of data are all capped. #BTC #Crypto",
+    "card": {
+      "big": "10,000 bytes",
+      "title": "Hard caps that protect every node",
+      "sub": "Script size, opcode count, element size, stack items and multisig keys are capped."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/script/script.h",
     "status": "checked"
   },
@@ -292,6 +453,10 @@
     "long": "OP_CHECKMULTISIG pops one more stack element than it uses, a bug from the original code. Removing it would be a hard fork, so every multisig spend pushes a useless dummy OP_0. BIP147 (NULLDUMMY, deployed with SegWit) requires that dummy to be empty, closing a malleability vector where it could be changed.",
     "tech": "#Bitcoin Internals #37: OP_CHECKMULTISIG pops one extra stack element. It can't be removed without a hard fork, so spenders push a dummy OP_0. BIP147 (NULLDUMMY, with SegWit) requires that dummy to be empty, closing a malleability vector. #BTC #Crypto",
     "simple": "#Bitcoin Internals #37: A bug from 2009 still lives in Bitcoin: multisig takes one more item than it needs. Every multisig spend carries an extra useless zero because of it. #BTC #Crypto",
+    "card": {
+      "title": "Multisig still pops one item too many",
+      "sub": "Fixing it means a hard fork, so every spend carries a useless dummy zero."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0147.mediawiki",
     "status": "checked"
   },
@@ -300,6 +465,10 @@
     "long": "A scriptPubKey that starts with OP_RETURN fails whenever it is executed, so the output is provably unspendable. It is used to write small data on chain. Because nobody can ever spend such outputs, nodes do not add them to the UTXO set, which keeps it smaller.",
     "tech": "#Bitcoin Internals #38: A scriptPubKey starting with OP_RETURN fails whenever executed, so the output can never be spent. Nodes don't add these outputs to the UTXO set, keeping it smaller. #BTC #Crypto",
     "simple": "#Bitcoin Internals #38: Some outputs are provably unspendable: those starting with OP_RETURN. They're used to write small data on chain, and nodes can forget them because nobody can ever spend them. #BTC #Crypto",
+    "card": {
+      "title": "Outputs nobody can ever spend",
+      "sub": "OP_RETURN outputs carry small data, and nodes leave them out of the UTXO set."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/script/script.h",
     "status": "checked"
   },
@@ -308,6 +477,10 @@
     "long": "BIP16 (P2SH), enforced from April 1, 2012 (timestamp 1333238400), lets an output commit only to the HASH160 of a redeem script. The spender later reveals the script and its inputs. With version byte 0x05 these addresses start with \"3\", so a sender can pay a complex wallet, like a 2-of-3 multisig, with a short address.",
     "tech": "#Bitcoin Internals #39: BIP16 P2SH, enforced from April 1, 2012 (timestamp 1333238400): the output commits to HASH160 of a redeem script; the spender reveals the script and its inputs. Version byte 0x05 gives \"3\" addresses. #BTC #Crypto",
     "simple": "#Bitcoin Internals #39: Addresses starting with \"3\" came in 2012. They let you send to a complex wallet (like 2-of-3 multisig) while the sender only sees a short address. #BTC #Crypto",
+    "card": {
+      "title": "Why some addresses start with 3",
+      "sub": "P2SH, live since April 2012, lets anyone pay a complex wallet with a short address."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki",
     "status": "checked"
   },
@@ -316,6 +489,10 @@
     "long": "Mainnet address prefixes reveal the output type: \"1\" is P2PKH (Base58Check, version 0x00), \"3\" is P2SH (0x05), \"bc1q\" is witness v0 (bech32, BIP173) and \"bc1p\" is witness v1 Taproot (bech32m, BIP350). Addresses are not stored on chain; only the scripts they encode are. All of them send the same bitcoin.",
     "tech": "#Bitcoin Internals #40: Mainnet address prefixes: \"1\" P2PKH (Base58Check, 0x00), \"3\" P2SH (0x05), \"bc1q\" witness v0 (bech32, BIP173), \"bc1p\" witness v1 Taproot (bech32m, BIP350). Addresses aren't on chain; scripts are. #BTC #Crypto",
     "simple": "#Bitcoin Internals #40: Bitcoin addresses tell you their type by their start: 1 = original, 3 = script, bc1q = SegWit, bc1p = Taproot. They all send the same bitcoin. #BTC #Crypto",
+    "card": {
+      "title": "An address prefix tells its type",
+      "sub": "1, 3, bc1q and bc1p map to different scripts. They all send the same bitcoin."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki",
     "status": "checked"
   },
@@ -324,6 +501,10 @@
     "long": "The Base58 alphabet is 0-9, A-Z and a-z minus 0, O, I and l, so look-alike characters can't be confused when copying an address by hand. Base58Check also appends a 4-byte checksum taken from the double SHA-256, so most typos are detected before sending.",
     "tech": "#Bitcoin Internals #41: Base58 alphabet: 0-9, A-Z, a-z minus 0, O, I and l. Base58Check appends a 4-byte checksum (first bytes of SHA-256d), so most typos are caught before sending. #BTC #Crypto",
     "simple": "#Bitcoin Internals #41: Old Bitcoin addresses never contain 0, O, I or l. Satoshi left them out so nobody mixes them up when copying an address by hand. #BTC #Crypto",
+    "card": {
+      "title": "Base58 drops look-alike characters",
+      "sub": "No 0, O, I or l, plus a checksum that catches most typos before sending."
+    },
     "source": "https://en.bitcoin.it/wiki/Base58Check_encoding",
     "status": "checked"
   },
@@ -332,6 +513,10 @@
     "long": "Bech32 (BIP173) has a flaw: if an address ends in \"p\", inserting or deleting \"q\" characters just before it can go undetected by the checksum. BIP350 defines bech32m, which only changes the checksum constant, and uses it for witness version 1 and above, so Taproot (bc1p) addresses use it while bc1q keeps bech32.",
     "tech": "#Bitcoin Internals #42: Bech32 (BIP173) has a flaw: if an address ends in \"p\", inserting or deleting \"q\" chars just before it can go undetected. BIP350 bech32m changes the checksum constant and is used for witness v1+ (Taproot). #BTC #Crypto",
     "simple": "#Bitcoin Internals #42: Taproot addresses (bc1p) use a slightly different checksum than SegWit ones (bc1q). The first format had a small weakness, so it was patched for new address types. #BTC #Crypto",
+    "card": {
+      "title": "Taproot addresses got a new checksum",
+      "sub": "Bech32 missed some q edits before a final p, so bech32m fixed it for bc1p."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0350.mediawiki",
     "status": "checked"
   },
@@ -340,6 +525,11 @@
     "long": "P2PKH and P2WPKH outputs commit to HASH160(pubkey) = RIPEMD-160(SHA-256(pubkey)), a 20-byte fingerprint, not the key itself. The full public key appears on chain only in the input that spends the coin. Taproot outputs, by contrast, contain a 32-byte key directly.",
     "tech": "#Bitcoin Internals #43: P2PKH and P2WPKH commit to HASH160(pubkey) = RIPEMD-160(SHA-256(pubkey)), 20 bytes. The full key is revealed in the spending input. Taproot outputs, by contrast, hold a 32-byte key directly. #BTC #Crypto",
     "simple": "#Bitcoin Internals #43: An old-style address is not your public key: it's a 20-byte fingerprint of it. Your public key only appears on chain when you spend. #BTC #Crypto",
+    "card": {
+      "big": "20 bytes",
+      "title": "Old addresses hide your public key",
+      "sub": "They commit to a hash of the key, which shows on chain only when you spend."
+    },
     "source": "https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses",
     "status": "checked"
   },
@@ -348,6 +538,11 @@
     "long": "Bitcoin keys use the secp256k1 elliptic curve, y² = x³ + 7 over a 256-bit prime field. A private key is just an integer below the group order n, about 1.158×10^77; the public key is that integer multiplied by the generator point G.",
     "tech": "#Bitcoin Internals #44: Keys are on secp256k1 (y² = x³ + 7 over a 256-bit prime field). A private key is an integer below the group order n ≈ 1.158×10^77; the public key is that integer times the generator point G. #BTC #Crypto",
     "simple": "#Bitcoin Internals #44: Bitcoin's keys use an elliptic curve called secp256k1, rare when Satoshi chose it. Your private key is just a 256-bit number. #BTC #Crypto",
+    "card": {
+      "big": "y² = x³ + 7",
+      "title": "Inside the curve behind every key",
+      "sub": "A private key is just a number below the group order, about 1.158×10^77."
+    },
     "source": "https://en.bitcoin.it/wiki/Secp256k1",
     "status": "checked"
   },
@@ -356,6 +551,11 @@
     "long": "The 1,000,000-byte MAX_BLOCK_SIZE was not in the first release: Satoshi added it in 2010 with little explanation, and it became the center of years of debate. Raising it would have been a hard fork. SegWit replaced it in 2017 with a 4M weight limit, as a soft fork that old nodes still accept.",
     "tech": "#Bitcoin Internals #45: MAX_BLOCK_SIZE = 1,000,000 bytes was added to the code by Satoshi in 2010. Raising it would be a hard fork; SegWit replaced it in 2017 with a 4M weight limit, a soft fork that old nodes still accept. #BTC #Crypto",
     "simple": "#Bitcoin Internals #45: The 1 MB block size limit wasn't in the first version. Satoshi added it in 2010, without much explanation. It became the center of years of debate. #BTC #Crypto",
+    "card": {
+      "big": "1 MB",
+      "title": "A limit missing from the first release",
+      "sub": "Satoshi added it in 2010 with little explanation, sparking years of debate."
+    },
     "source": "https://en.bitcoin.it/wiki/Block_size_limit_controversy",
     "status": "checked"
   },
@@ -364,6 +564,10 @@
     "long": "SegWit (BIP141, 143, 144) activated at block 481,824 on 2017-08-24. Signatures and other witness data are kept outside the legacy transaction serialization and committed in the coinbase through an OP_RETURN witness commitment. This fixed txid malleability and made room for more transactions per block.",
     "tech": "#Bitcoin Internals #46: SegWit (BIP141/143/144) activated at block 481,824 on 2017-08-24. Witness data is kept outside the legacy tx serialization and committed in the coinbase via an OP_RETURN witness commitment. #BTC #Crypto",
     "simple": "#Bitcoin Internals #46: SegWit went live on Aug 24, 2017. It moved signatures to a separate part of the transaction, which fixed an old bug and made room for more transactions. #BTC #Crypto",
+    "card": {
+      "title": "SegWit moved signatures aside",
+      "sub": "Live since August 2017, it fixed txid malleability and made room for more transactions."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki",
     "status": "checked"
   },
@@ -372,6 +576,11 @@
     "long": "Since SegWit, blocks are limited by weight, not bytes: weight = 3 x base size + total size, with MAX_BLOCK_WEIGHT = 4,000,000 WU. A non-witness byte counts 4 WU and a witness byte 1 WU, so signature data is 4x cheaper. Fee rates are quoted in vbytes, weight divided by 4.",
     "tech": "#Bitcoin Internals #47: Block weight = 3 x base size + total size, limit 4,000,000 WU (MAX_BLOCK_WEIGHT). A non-witness byte = 4 WU, a witness byte = 1 WU. Fees are quoted in vbytes = weight / 4. #BTC #Crypto",
     "simple": "#Bitcoin Internals #47: Bitcoin blocks aren't limited to 1 MB anymore. Since SegWit, the limit is in \"weight\": signature data counts 4x less than the rest. #BTC #Crypto",
+    "card": {
+      "big": "4,000,000 WU",
+      "title": "Blocks are measured in weight, not bytes",
+      "sub": "A witness byte counts 1 WU, a non-witness byte 4, so signatures are 4x cheaper."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/consensus/consensus.h",
     "status": "checked"
   },
@@ -380,6 +589,10 @@
     "long": "Before SegWit, a third party could re-encode a transaction's signatures, for example by flipping an ECDSA s value to n-s, and so change its txid without stealing anything. That broke software that tracked payments by txid. SegWit txids exclude witness data, which made chains of unconfirmed transactions, needed by Lightning, safe.",
     "tech": "#Bitcoin Internals #48: Txid malleability: a third party could re-encode signatures (e.g. flip ECDSA s to n-s) and change the txid. SegWit txids exclude witness data, which made unconfirmed chains of txs (needed by Lightning) safe. #BTC #Crypto",
     "simple": "#Bitcoin Internals #48: Before SegWit, anyone could slightly change a transaction's ID before it was confirmed, without stealing anything. That broke apps that tracked payments by ID. #BTC #Crypto",
+    "card": {
+      "title": "When anyone could change a txid",
+      "sub": "Re-encoded signatures broke payment tracking until SegWit left witnesses out."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki",
     "status": "checked"
   },
@@ -388,6 +601,11 @@
     "long": "Block 774,628, mined by Luxor on Feb 1, 2023, is the largest Bitcoin block so far at about 3.96 MB. Nearly all of it was a single Taproot witness inscription, a \"Taproot Wizard\" image. Because witness data is cheap in weight, a block can approach 4 MB.",
     "tech": "#Bitcoin Internals #49: Block 774,628 (Feb 1, 2023), mined by Luxor, ≈3.96 MB, nearly all a single Taproot witness inscription (a \"Taproot Wizard\" image). Large witness data is cheap in weight, so a block can reach about 4 MB. #BTC #Crypto",
     "simple": "#Bitcoin Internals #49: The biggest Bitcoin block so far was about 3.96 MB, mined in Feb 2023. Most of it was one picture, an NFT-style inscription. #BTC #Crypto",
+    "card": {
+      "big": "3.96 MB",
+      "title": "The biggest block was mostly one image",
+      "sub": "Mined by Luxor in Feb 2023, it held a single Taproot witness inscription."
+    },
     "source": "https://www.theblock.co/post/207986/luxor-mines-largest-bitcoin-block-ever",
     "status": "checked"
   },
@@ -396,6 +614,10 @@
     "long": "Ordinals inscriptions put data in a Taproot script-path witness, inside an envelope that is never executed: OP_FALSE OP_IF ... OP_ENDIF. Tapscript has no 10,000-byte script limit, so the data is bounded only by block weight, and witness bytes are cheap. It is a use the protocol allows, not a special feature.",
     "tech": "#Bitcoin Internals #50: Ordinals inscriptions put data in a Taproot script-path witness inside an unexecuted OP_FALSE OP_IF ... OP_ENDIF envelope. Tapscript has no 10,000-byte script limit, so data is bounded only by block weight. #BTC #Crypto",
     "simple": "#Bitcoin Internals #50: Inscriptions (\"Bitcoin NFTs\") store data in the signature part of a transaction, which is cheaper in weight. It's a use the protocol allows, not a special feature. #BTC #Crypto",
+    "card": {
+      "title": "How inscriptions fit in the witness",
+      "sub": "Data sits in an unexecuted envelope, bounded only by block weight. The protocol allows it."
+    },
     "source": "https://docs.ordinals.com/inscriptions.html",
     "status": "checked"
   },
@@ -404,6 +626,10 @@
     "long": "BIP66, enforced from block 363,725 in 2015, requires ECDSA signatures to use strict DER encoding. Before that, validity depended on OpenSSL's lax parsing, which could differ across platforms and versions, a risk of nodes disagreeing on what is valid.",
     "tech": "#Bitcoin Internals #51: BIP66 strict DER signatures, enforced from block 363,725: ECDSA signatures must use strict DER encoding. Before that, validity depended on OpenSSL's lax parsing, which could differ across platforms. #BTC #Crypto",
     "simple": "#Bitcoin Internals #51: In 2015 Bitcoin forced all signatures into one strict format. Some old software accepted odd variants, which was risky since not all versions read them the same way. #BTC #Crypto",
+    "card": {
+      "title": "One strict format for every signature",
+      "sub": "BIP66 ended reliance on OpenSSL's lax parsing, which could differ between platforms."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki",
     "status": "checked"
   },
@@ -412,6 +638,11 @@
     "long": "Taproot, made of BIP340 (Schnorr), BIP341 (Taproot) and BIP342 (Tapscript), activated at block 709,632 on 2021-11-14. It used Speedy Trial signaling with a 90% threshold, 1,815 of 2,016 blocks in a period. It brought new signatures and better privacy for complex spending conditions.",
     "tech": "#Bitcoin Internals #52: Taproot (BIP340 Schnorr, BIP341 Taproot, BIP342 Tapscript) activated at block 709,632 on 2021-11-14, after Speedy Trial signaling with a 90% threshold (1,815 of 2,016 blocks). #BTC #Crypto",
     "simple": "#Bitcoin Internals #52: Taproot, Bitcoin's last big upgrade, went live on Nov 14, 2021. It brought new signatures and better privacy for complex wallets. #BTC #Crypto",
+    "card": {
+      "big": "90%",
+      "title": "Taproot, the last big upgrade",
+      "sub": "Live on Nov 14, 2021 with new signatures and better privacy for complex spending."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki",
     "status": "checked"
   },
@@ -420,6 +651,11 @@
     "long": "BIP340 Schnorr signatures are a fixed 64 bytes, versus up to 72 for DER ECDSA, with 32-byte x-only public keys. Their linearity allows key aggregation, such as MuSig2 (BIP327), so an n-of-n multisig can look on chain like a single-key spend.",
     "tech": "#Bitcoin Internals #53: BIP340 Schnorr signatures are a fixed 64 bytes (ECDSA DER: up to 72) with 32-byte x-only public keys. Linearity allows key aggregation (e.g. MuSig2, BIP327), so an n-of-n multisig looks like a single-key spend. #BTC #Crypto",
     "simple": "#Bitcoin Internals #53: Taproot added Schnorr signatures: shorter than the old kind, and several signers can combine their keys into one signature that looks like a single person's. #BTC #Crypto",
+    "card": {
+      "big": "64 bytes",
+      "title": "Schnorr signatures are short and combinable",
+      "sub": "Key aggregation lets an n-of-n multisig look on chain like a single-key spend."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki",
     "status": "checked"
   },
@@ -428,6 +664,10 @@
     "long": "BIP341: a Taproot output key commits to an internal key plus a merkle tree of scripts (MAST). A key-path spend reveals nothing about any script. A script-path spend reveals only the leaf used plus a merkle proof, so the other spending rules stay hidden forever.",
     "tech": "#Bitcoin Internals #54: BIP341: the output key commits to an internal key plus a merkle tree of scripts (MAST). Key-path spends reveal nothing about scripts; script-path spends reveal one leaf plus a merkle proof. #BTC #Crypto",
     "simple": "#Bitcoin Internals #54: With Taproot, a coin can have many hidden spending rules. When you spend it, you reveal only the rule you used. The others stay private forever. #BTC #Crypto",
+    "card": {
+      "title": "Many spending rules, only one revealed",
+      "sub": "A Taproot spend shows just the leaf used. The other rules stay hidden forever."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki",
     "status": "checked"
   },
@@ -436,6 +676,10 @@
     "long": "BIP342 makes opcodes 80, 98, 126-129, 131-134, 137-138, 141-142, 149-153 and 187-254 into OP_SUCCESSx in tapscript: any script containing one is valid, until a future soft fork gives it a meaning. Leaf versions add another upgrade path. Taproot was built to leave room for safe later upgrades.",
     "tech": "#Bitcoin Internals #55: BIP342 tapscript: opcodes 80, 98, 126-129, 131-134, 137-138, 141-142, 149-153, 187-254 become OP_SUCCESSx; any script containing one is valid until a soft fork defines it. Leaf versions add another upgrade path. #BTC #Crypto",
     "simple": "#Bitcoin Internals #55: Taproot also left room for future upgrades: many unused commands are reserved so later soft forks can give them a meaning safely. #BTC #Crypto",
+    "card": {
+      "title": "Reserved opcodes for future soft forks",
+      "sub": "Any tapscript using an OP_SUCCESSx is valid until an upgrade gives it a meaning."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki",
     "status": "checked"
   },
@@ -444,6 +688,10 @@
     "long": "BIP342: in tapscript, the 10,000-byte script limit and the 201 non-push opcode limit no longer apply. Instead each input gets a signature-operation budget of 50 plus its witness size in bytes, and each signature check costs 50, so the budget grows with the data the spender pays for.",
     "tech": "#Bitcoin Internals #56: BIP342: in tapscript the 10,000-byte script limit and 201 non-push opcode limit don't apply. Sigops get a per-input budget of 50 + witness size in bytes, and each signature check costs 50. #BTC #Crypto",
     "simple": "#Bitcoin Internals #56: Taproot scripts dropped some old limits, like the 201-step cap. A spend's \"signature budget\" now grows with the size of the data you pay for. #BTC #Crypto",
+    "card": {
+      "title": "Tapscript trades old caps for a budget",
+      "sub": "Each input's signature budget grows with the witness data the spender pays for."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki",
     "status": "checked"
   },
@@ -452,6 +700,10 @@
     "long": "A soft fork tightens the rules: blocks valid under the new rules are still valid to old nodes, so they keep following the chain. P2SH, CLTV, CSV, SegWit and Taproot were all soft forks. A hard fork loosens the rules: non-upgraded nodes reject the new blocks and the chain splits.",
     "tech": "#Bitcoin Internals #57: Soft fork: tightens the rules, so blocks valid under new rules are still valid to old nodes (P2SH, CLTV, CSV, SegWit, Taproot). Hard fork: loosens them, so non-upgraded nodes reject the new blocks and the chain splits. #BTC #Crypto",
     "simple": "#Bitcoin Internals #57: Old Bitcoin software still follows today's chain after an upgrade. That's a soft fork: new rules only make things stricter, so old nodes see new blocks as valid. #BTC #Crypto",
+    "card": {
+      "title": "Soft forks tighten, hard forks split",
+      "sub": "Old nodes still accept blocks under stricter rules. Looser rules split the chain."
+    },
     "source": "https://en.bitcoin.it/wiki/Softfork",
     "status": "checked"
   },
@@ -460,6 +712,11 @@
     "long": "BIP9 versionbits: miners signal readiness by setting a bit in the header version. A deployment locks in when 1,916 of 2,016 blocks (95%) in one retarget period signal, and activates one period later. It was used for CSV and SegWit.",
     "tech": "#Bitcoin Internals #58: BIP9 versionbits: miners set a bit in the header version; a deployment locks in when 1,916 of 2,016 blocks (95%) in one retarget period signal, then activates one period later. Used for CSV and SegWit. #BTC #Crypto",
     "simple": "#Bitcoin Internals #58: How does Bitcoin decide to upgrade? For years miners signaled readiness inside blocks; an upgrade locked in when 95% of blocks in a 2-week period signaled. #BTC #Crypto",
+    "card": {
+      "big": "95%",
+      "title": "How miners signaled for upgrades",
+      "sub": "Lock-in took 1,916 of 2,016 blocks in one period, then activation a period later."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki",
     "status": "checked"
   },
@@ -468,6 +725,11 @@
     "long": "Nodes follow the valid chain with the most cumulative proof of work, summing 2^256 / (target+1) per block, not the chain with the most blocks. A long chain of low-difficulty blocks loses to a shorter but harder one. \"Longest chain\" really means most work.",
     "tech": "#Bitcoin Internals #59: Nodes follow the valid chain with the most cumulative proof of work (sum of 2^256 / (target+1) per block), not the highest block count. A long chain of low-difficulty blocks loses to a shorter but harder one. #BTC #Crypto",
     "simple": "#Bitcoin Internals #59: Bitcoin's longest chain is not the one with the most blocks. It's the one with the most total work behind it. #BTC #Crypto",
+    "card": {
+      "big": "2^256",
+      "title": "Longest chain really means most work",
+      "sub": "A long run of easy blocks loses to a shorter chain with more cumulative work."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/chain.cpp",
     "status": "checked"
   },
@@ -476,6 +738,11 @@
     "long": "Section 11 of the whitepaper computes an attacker's chance to catch up. With 10% of the hashrate (q = 0.1), the probability falls below 0.001 at z = 5 blocks (0.0009137). At q = 0.3 it takes z = 24 blocks. The common \"6 confirmations\" is a convention, not a protocol rule.",
     "tech": "#Bitcoin Internals #60: Whitepaper, section 11: with q = 0.1 attacker hashrate, P < 0.001 at z = 5 blocks (0.0009137). At q = 0.3 it takes z = 24. \"6 confirmations\" is a convention, not a protocol rule. #BTC #Crypto",
     "simple": "#Bitcoin Internals #60: Why wait several confirmations? The whitepaper's math: an attacker with 10% of mining power has under a 0.1% chance to undo a payment 5 blocks deep. #BTC #Crypto",
+    "card": {
+      "big": "0.0009137",
+      "title": "The math behind waiting for confirmations",
+      "sub": "At 10% hashrate an attacker's odds fall below 0.1% at 5 blocks deep."
+    },
     "source": "https://bitcoin.org/bitcoin.pdf",
     "status": "checked"
   },
@@ -484,6 +751,11 @@
     "long": "The mempool is local policy, not consensus: each node keeps its own, so two nodes can see different pending transactions. Bitcoin Core defaults to -maxmempool = 300 MB; when full it evicts the lowest-feerate transactions and raises its minimum feerate. Miners can include any valid transaction, whether it was in a mempool or not.",
     "tech": "#Bitcoin Internals #61: The mempool is local policy, not consensus. Bitcoin Core default -maxmempool = 300 MB; when full it evicts the lowest-feerate txs and raises its min feerate. Miners can include any valid tx, mempool or not. #BTC #Crypto",
     "simple": "#Bitcoin Internals #61: There's no single global queue of pending transactions. Each node keeps its own \"mempool\" (300 MB by default), so two nodes can see different pending lists. #BTC #Crypto",
+    "card": {
+      "big": "300 MB",
+      "title": "Every node keeps its own mempool",
+      "sub": "It's local policy, so two nodes can see different pending transactions."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/kernel/mempool_options.h",
     "status": "checked"
   },
@@ -492,6 +764,10 @@
     "long": "Replace-by-fee lets a stuck transaction be replaced by a version paying a higher fee. BIP125 made it opt-in, signaled through nSequence. Bitcoin Core 28.0 (2024) made -mempoolfullrbf default to true, so nodes relay a higher-fee replacement whether or not the original signaled.",
     "tech": "#Bitcoin Internals #62: Replace-by-fee: BIP125 made it opt-in via nSequence signaling. Bitcoin Core 28.0 made -mempoolfullrbf default to true, so a higher-fee replacement is relayed whatever the signal. #BTC #Crypto",
     "simple": "#Bitcoin Internals #62: A stuck transaction can be replaced by a new version paying a higher fee. Since Bitcoin Core 28.0 (2024), nodes accept such replacements by default. #BTC #Crypto",
+    "card": {
+      "title": "Replacing a stuck transaction",
+      "sub": "Since Bitcoin Core 28.0, nodes relay higher-fee replacements by default."
+    },
     "source": "https://bitcoincore.org/en/releases/28.0/",
     "status": "checked"
   },
@@ -500,6 +776,11 @@
     "long": "Policy differs from consensus: Bitcoin Core's MAX_STANDARD_TX_WEIGHT is 400,000 WU, a tenth of the 4,000,000 WU block limit. By default nodes do not relay a transaction above it, as it is non-standard. A miner can still include one directly, up to the consensus block limit.",
     "tech": "#Bitcoin Internals #63: Policy, not consensus: MAX_STANDARD_TX_WEIGHT = 400,000 WU, so non-standard txs aren't relayed by default Bitcoin Core nodes. A miner can still include up to the 4,000,000 WU block limit. #BTC #Crypto",
     "simple": "#Bitcoin Internals #63: Network rules vs node habits: the 4M weight limit is consensus, but nodes by default refuse to relay any single transaction above a tenth of that. #BTC #Crypto",
+    "card": {
+      "big": "400,000 WU",
+      "title": "Policy limits differ from consensus",
+      "sub": "Nodes won't relay a transaction above a tenth of the block limit. Miners can mine it."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/policy/policy.h",
     "status": "checked"
   },
@@ -508,6 +789,11 @@
     "long": "Dust is an output worth less than it would cost to spend. Bitcoin Core counts an output as dust at 3 sat/vB (DUST_RELAY_TX_FEE = 3000 sat/kvB), giving 546 sats for P2PKH and 294 for P2WPKH. By default nodes refuse to relay transactions creating dust. It is policy only, not consensus.",
     "tech": "#Bitcoin Internals #64: Dust policy: an output is dust if spending it costs more than its value at 3 sat/vB (DUST_RELAY_TX_FEE = 3000 sat/kvB). That gives 546 sats for P2PKH and 294 for P2WPKH. Policy only, not consensus. #BTC #Crypto",
     "simple": "#Bitcoin Internals #64: \"Dust\" is an output so small it would cost more in fees to spend than it's worth. Nodes refuse to relay most of them by default. #BTC #Crypto",
+    "card": {
+      "big": "546 sats",
+      "title": "Outputs worth less than spending them",
+      "sub": "Nodes refuse to relay dust by default. It's policy only, not consensus."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/policy/policy.h",
     "status": "checked"
   },
@@ -516,6 +802,11 @@
     "long": "Bitcoin Core 29.1 (Sept 2025) and 30.0 (Oct 2025) lowered the default -minrelaytxfee and -incrementalrelayfee from 1 to 0.1 sat/vB (100 sat/kvB), 10x lower. Wallet feerates, the dust feerate and the fee estimator minimum were not changed. Transactions paying less than before only propagate as more nodes adopt the new defaults.",
     "tech": "#Bitcoin Internals #65: Bitcoin Core 29.1 and 30.0 (2025) lowered the -minrelaytxfee and -incrementalrelayfee defaults from 1 to 0.1 sat/vB (100 sat/kvB). Wallet fee rates weren't changed; low-fee txs only propagate as nodes upgrade. #BTC #Crypto",
     "simple": "#Bitcoin Internals #65: Since Bitcoin Core 29.1 (Sept 2025), nodes by default relay transactions paying as little as 0.1 sat per vbyte, 10x lower than before. #BTC #Crypto",
+    "card": {
+      "big": "0.1 sat/vB",
+      "title": "Relay fees dropped tenfold in 2025",
+      "sub": "Wallet feerates and dust were unchanged. Cheaper transactions spread as nodes upgrade."
+    },
     "source": "https://bitcoincore.org/en/releases/30.0/",
     "status": "checked"
   },
@@ -524,6 +815,11 @@
     "long": "On mainnet, Bitcoin nodes talk on port 8333 by default, and every P2P message starts with the magic bytes 0xF9 0xBE 0xB4 0xD9, so mainnet traffic can't be mistaken for testnet. Each message has a 24-byte header: magic, 12-byte command, payload length and 4-byte checksum.",
     "tech": "#Bitcoin Internals #66: Mainnet P2P: default port 8333, message start (magic) bytes 0xF9 0xBE 0xB4 0xD9. Each message has a 24-byte header: magic, 12-byte command, payload length, 4-byte checksum. #BTC #Crypto",
     "simple": "#Bitcoin Internals #66: Bitcoin nodes talk on port 8333, and every network message starts with the same 4 magic bytes, so nodes can tell mainnet from testnet traffic. #BTC #Crypto",
+    "card": {
+      "big": "8333",
+      "title": "Magic bytes open every message",
+      "sub": "Each P2P message starts with them, so mainnet traffic can't pass for testnet."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/kernel/chainparams.cpp",
     "status": "checked"
   },
@@ -532,6 +828,11 @@
     "long": "BIP152 compact blocks: instead of resending full transactions, a node sends the block header plus 6-byte short transaction IDs (SipHash) and a few prefilled transactions. The peer rebuilds the block from its own mempool and asks only for what it's missing, so new blocks spread fast.",
     "tech": "#Bitcoin Internals #67: BIP152 compact blocks: a node sends the header plus 6-byte short tx IDs (SipHash) and a few prefilled txs; the peer fills the rest from its mempool and only asks for what's missing. #BTC #Crypto",
     "simple": "#Bitcoin Internals #67: New blocks spread fast because nodes don't resend transactions they already have. They send a short summary, and peers rebuild the block from their mempool. #BTC #Crypto",
+    "card": {
+      "big": "6 bytes",
+      "title": "Why new blocks spread so fast",
+      "sub": "Peers get short IDs and rebuild the block from their own mempool."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki",
     "status": "checked"
   },
@@ -540,6 +841,11 @@
     "long": "With -prune, a node still fully validates every block, then deletes old block and undo files. The minimum target is 550 MiB (MIN_DISK_SPACE_FOR_BLOCK_FILES). The node keeps the UTXO set and stays a full validating node, but can no longer serve old blocks to peers.",
     "tech": "#Bitcoin Internals #68: -prune: the node fully validates every block, then deletes old block and undo files. Minimum target is 550 MiB (MIN_DISK_SPACE_FOR_BLOCK_FILES). It keeps the UTXO set but can't serve old blocks to peers. #BTC #Crypto",
     "simple": "#Bitcoin Internals #68: You can run a full node without storing the whole blockchain. A pruned node checks everything, then deletes old blocks, keeping as little as about 550 MB. #BTC #Crypto",
+    "card": {
+      "big": "550 MiB",
+      "title": "A full node without the full chain",
+      "sub": "A pruned node validates every block, then deletes old ones it no longer serves."
+    },
     "source": "https://github.com/bitcoin/bitcoin/blob/master/src/validation.h",
     "status": "checked"
   },
@@ -548,6 +854,11 @@
     "long": "BIP39 encodes 128 to 256 bits of entropy plus a checksum as 11-bit words from a 2048-word list, giving 12 to 24 words. PBKDF2 stretches them into a seed, and BIP32 derives a whole key tree from it. Recovery words are never stored on the blockchain; none of this is consensus, only wallet convention.",
     "tech": "#Bitcoin Internals #69: BIP39: entropy (128-256 bits) plus a checksum split into 11-bit words from a 2048-word list gives 12-24 words, stretched by PBKDF2 into a seed. BIP32 derives a key tree from it. None of this is consensus. #BTC #Crypto",
     "simple": "#Bitcoin Internals #69: Your 12 or 24 recovery words aren't stored on the blockchain. They're a human-friendly encoding of one big random number your wallet derives all keys from. #BTC #Crypto",
+    "card": {
+      "big": "2048 words",
+      "title": "Recovery words never touch the chain",
+      "sub": "They encode one random number your wallet derives every key from."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki",
     "status": "checked"
   },
@@ -556,6 +867,10 @@
     "long": "A signature's sighash flag chooses which parts of the transaction it covers: ALL, NONE or SINGLE, each optionally combined with ANYONECANPAY, which lets others add inputs or outputs later. Taproot adds SIGHASH_DEFAULT (0x00), which means ALL without an extra byte, so its signatures stay 64 bytes.",
     "tech": "#Bitcoin Internals #70: Sighash flags: ALL, NONE, SINGLE, each optionally combined with ANYONECANPAY. Taproot adds SIGHASH_DEFAULT (0x00, same as ALL with no extra byte), so its signatures stay 64 bytes. #BTC #Crypto",
     "simple": "#Bitcoin Internals #70: When you sign a transaction, you choose what your signature covers. Usually all of it, but some flags let others add inputs or outputs later. #BTC #Crypto",
+    "card": {
+      "title": "Choosing what a signature covers",
+      "sub": "Some sighash flags let others add inputs or outputs after you sign."
+    },
     "source": "https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki",
     "status": "checked"
   },
@@ -564,6 +879,10 @@
     "long": "Recap of the series: no accounts but UTXOs, integer satoshis and a cap of about 20,999,999.9769 BTC, 2016-block retargets clamped at 4x, timestamps checked against the median of 11 blocks and a 2-hour window, 100-block maturity, the 2010 overflow bug, BIP30/34 duplicate fixes, SegWit's 4M weight, Taproot's Schnorr and MAST, and policy vs consensus. Bitcoin is its rules, and anyone can check them in the code.",
     "tech": "#Bitcoin Internals #71: Recap: UTXOs, integer sats, 2016-block retargets clamped at 4x, MTP-11 timestamps, BIP30/34 duplicate fixes, 4M weight, Schnorr and MAST, policy vs consensus. Bitcoin is its rules, and anyone can check them. Follow for more. #BTC #Crypto",
     "simple": "#Bitcoin Internals #71: That's the series: no accounts, a cap of about 20,999,999.9769 BTC, 100-block maturity, a 2-hour clock window, the 2010 overflow bug, SegWit, Taproot. The rules live in the code. Follow for more. #BTC #Crypto",
+    "card": {
+      "title": "Bitcoin is its rules",
+      "sub": "UTXOs, integer sats, retargets, SegWit and Taproot. Anyone can check them in the code."
+    },
     "source": "https://github.com/bitcoin/bitcoin",
     "status": "checked"
   }
