@@ -4,6 +4,11 @@
     "long": "Ethereum mainnet launched with Frontier on July 30, 2015, as a blockchain that runs programs, not just payments. Since then it has gone through about 20 network upgrades, switched from proof-of-work to proof-of-stake at the Merge, and added a cheap data layer (blobs) for rollups. This series opens the hood one mechanism per post: accounts, gas, the EVM, consensus, staking and blobs, each with a source.",
     "tech": "#Ethereum Deep Dive #1: Ethereum mainnet (Frontier) launched July 30, 2015. Since then: about 20 network upgrades, a switch from proof-of-work to proof-of-stake and a data layer for rollups. This series covers how each piece works, one fact per post. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #1: Ethereum went live on July 30, 2015, as a blockchain that runs programs, not just payments. This series opens the hood: accounts, gas, the EVM, staking, blobs. One mechanism a day. #ETH #SmartContracts",
+    "card": {
+      "big": "July 30, 2015",
+      "title": "A blockchain that runs programs",
+      "sub": "About 20 upgrades since launch. One mechanism per post, each with a source."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -12,6 +17,10 @@
     "long": "Ethereum uses an account model, not Bitcoin's UTXO model. Bitcoin tracks unspent coins; Ethereum keeps a ledger of accounts whose balances go up and down. Each account has 4 fields: nonce, balance (in wei), storageRoot (root of its storage trie) and codeHash (hash of its code; for a plain wallet, the hash of empty code). This makes smart contracts with persistent state natural to express.",
     "tech": "#Ethereum Deep Dive #2: Ethereum uses an account model, not UTXOs. Each account holds 4 fields: nonce, balance (in wei), storageRoot (root of its storage trie) and codeHash (hash of its code; for wallets, the hash of empty code). #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #2: Bitcoin tracks coins (unspent outputs). Ethereum tracks accounts, like a bank ledger: each address has a balance that goes up and down. #ETH #SmartContracts",
+    "card": {
+      "title": "Accounts, not unspent coins",
+      "sub": "Each account holds a nonce, a balance, a storage root and a code hash."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/accounts/index.md",
     "status": "checked"
   },
@@ -20,6 +29,10 @@
     "long": "Ethereum has two account types. Externally owned accounts (EOAs) are controlled by a secp256k1 private key: that's your wallet. Contract accounts are controlled by their EVM code. Only EOAs can originate a transaction; a contract never acts on its own, it only runs when a transaction or another contract calls it. Every on-chain action therefore starts with a signature from a key holder.",
     "tech": "#Ethereum Deep Dive #3: Two account types: externally owned accounts (EOAs), controlled by a secp256k1 key, and contract accounts, controlled by EVM code. Only EOAs originate transactions; contracts run when called. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #3: Two kinds of accounts: ones controlled by a private key (your wallet) and ones controlled by code (smart contracts). Only key holders can start a transaction; contracts only react. #ETH #SmartContracts",
+    "card": {
+      "title": "Two kinds of accounts",
+      "sub": "Keys control wallets, code controls contracts. Only key holders start a transaction."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/accounts/index.md",
     "status": "checked"
   },
@@ -28,6 +41,11 @@
     "long": "An Ethereum address is derived from the public key: take the 64-byte uncompressed secp256k1 public key (without the 0x04 prefix), hash it with Keccak-256 and keep the last 20 bytes. 20 bytes is 40 hex characters, the part after 0x.",
     "tech": "#Ethereum Deep Dive #4: An Ethereum address = last 20 bytes of Keccak-256(public key), where the key is the 64-byte uncompressed secp256k1 point (no 0x04 prefix). 20 bytes = 40 hex chars. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #4: Your Ethereum address is derived from your public key: hash it, keep the last 20 bytes. That's the 40 hex characters after 0x. #ETH #SmartContracts",
+    "card": {
+      "big": "20 bytes",
+      "title": "Where your address comes from",
+      "sub": "Hash the public key with Keccak-256 and keep the last 20 bytes: 40 hex characters."
+    },
     "source": "https://github.com/ethereum/yellowpaper/blob/master/Paper.tex",
     "status": "checked"
   },
@@ -36,6 +54,10 @@
     "long": "EIP-55 adds a checksum to addresses using letter case. Hash the lowercase hex address with Keccak-256; each letter in the address is uppercased if the matching nibble of the hash is >= 8. A typo breaks the pattern with high probability, so wallets can catch it. The mixed case is not random. An all-lowercase address is still valid, it simply carries no checksum.",
     "tech": "#Ethereum Deep Dive #5: EIP-55 checksum: hash the lowercase hex address with Keccak-256; each letter is uppercased if the matching hash nibble is >= 8. A typo breaks the pattern with high probability. All-lowercase stays valid, just unchecked. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #5: Ever noticed addresses mix UPPER and lower case letters? It's not random: the pattern is a checksum that lets wallets catch typos. #ETH #SmartContracts",
+    "card": {
+      "title": "Mixed-case addresses are a checksum",
+      "sub": "EIP-55 uses letter case to encode a hash, so wallets can catch typos."
+    },
     "source": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-55.md",
     "status": "checked"
   },
@@ -44,6 +66,10 @@
     "long": "Ethereum's keccak256 is not the NIST SHA3-256 standard. Both use the same Keccak permutation, but FIPS 202 changed the padding (domain byte 0x06 instead of Keccak's original 0x01), so the same input gives a different hash. Ethereum and Solidity's keccak256() use the original Keccak. Calling it 'SHA-3' is common but wrong, and mixing them up breaks signatures and addresses.",
     "tech": "#Ethereum Deep Dive #6: Ethereum uses Keccak-256, not NIST SHA3-256. The permutation is the same, but FIPS 202 changed the padding (domain byte 0x06 vs Keccak's 0x01), so outputs differ. Solidity's keccak256() is the original Keccak. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #6: Ethereum's hash function is often called SHA-3, but it isn't the official SHA-3. It uses the original Keccak, so the same input gives a different hash. #ETH #SmartContracts",
+    "card": {
+      "title": "Keccak-256 is not official SHA-3",
+      "sub": "Same permutation, different padding. The same input gives a different hash."
+    },
     "source": "https://github.com/XKCP/XKCP/blob/master/lib/high/Keccak/FIPS202/SimpleFIPS202.c ; https://github.com/ethereum/yellowpaper/blob/master/Paper.tex",
     "status": "checked"
   },
@@ -52,6 +78,11 @@
     "long": "ETH units: 1 ETH = 10^18 wei, the smallest unit. 1 gwei = 10^9 wei, a billionth of an ETH, and is the usual unit for gas prices. Older named units: szabo (10^12 wei) and finney (10^15 wei). The protocol itself only knows wei: every balance and a transaction's value field are integers in wei, which avoids rounding errors.",
     "tech": "#Ethereum Deep Dive #7: ETH denominations: 1 ETH = 10^18 wei; 1 gwei = 10^9 wei. Older named units: szabo (10^12 wei) and finney (10^15 wei). The protocol only knows wei: balances and a tx's value field are in wei. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #7: 1 ETH = 1,000,000,000,000,000,000 wei, the smallest unit. Gas prices use gwei: one billionth of an ETH. Under the hood, every balance is counted in wei. #ETH #SmartContracts",
+    "card": {
+      "big": "10^18 wei",
+      "title": "One ETH, counted in wei",
+      "sub": "Gas prices use gwei, a billionth of an ETH. The protocol only knows wei."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/intro-to-ether/index.md ; https://github.com/ethereum/homestead-guide/blob/master/source/ether.rst",
     "status": "checked"
   },
@@ -60,6 +91,10 @@
     "long": "An Ethereum transaction has no 'from' field. Nodes recover the signer's public key from the ECDSA signature (v, r, s) and derive the sender address from it. This saves space and means the sender can't be faked: whoever signed is the sender. The same recovery is available to contracts through the ecrecover precompile at address 0x01.",
     "tech": "#Ethereum Deep Dive #8: There is no sender field in an Ethereum transaction. Nodes recover the signer's public key from the ECDSA signature (v, r, s) and derive the address. The same idea powers the ecrecover precompile at address 0x01. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #8: An Ethereum transaction has no 'from' field. Nodes work out who sent it from the signature itself. #ETH #SmartContracts",
+    "card": {
+      "title": "No 'from' field in a transaction",
+      "sub": "Nodes recover the sender from the signature. Whoever signed is the sender."
+    },
     "source": "https://github.com/ethereum/yellowpaper/blob/master/Paper.tex",
     "status": "checked"
   },
@@ -68,6 +103,10 @@
     "long": "Each EOA has a nonce: the number of transactions it has sent. A transaction must carry exactly the account's current nonce, so transactions from one account run in strict order and an old signed transaction can't be replayed. Wallets 'speed up' or cancel a pending transaction by sending a new one with the same nonce and a higher fee.",
     "tech": "#Ethereum Deep Dive #9: An EOA's nonce = number of transactions it has sent. A tx must carry exactly the current nonce, so txs from one account run in strict order and can't be replayed. Reusing a nonce with a higher fee is how wallets 'speed up' or cancel. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #9: Every wallet has a counter called a nonce. Each transaction uses the next number, so the same transaction can't be replayed and order is guaranteed. #ETH #SmartContracts",
+    "card": {
+      "title": "The nonce keeps transactions in order",
+      "sub": "Each transaction carries the next number, so old ones can't be replayed."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/accounts/index.md",
     "status": "checked"
   },
@@ -76,6 +115,11 @@
     "long": "EIP-155 (Spurious Dragon, Nov 2016) mixes the chain ID into the signed data, with v = chainId*2 + 35 or 36. A transaction signed for Ethereum mainnet (chain ID 1) is therefore invalid on Ethereum Classic or a testnet, which blocks cross-chain replay. Newer typed transactions carry chainId as an explicit field.",
     "tech": "#Ethereum Deep Dive #10: EIP-155 (Spurious Dragon, Nov 2016) mixes the chain ID into the signed data: v = chainId*2 + 35 or 36. A tx signed for mainnet (chain ID 1) is invalid on Ethereum Classic or a testnet. Typed txs carry chainId as a field. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #10: Why can't a transaction signed for Ethereum be replayed on another chain? Since 2016, each signature includes the chain's ID. Ethereum mainnet is chain 1. #ETH #SmartContracts",
+    "card": {
+      "big": "Chain ID 1",
+      "title": "Signatures bound to one chain",
+      "sub": "Since EIP-155 in 2016, a mainnet transaction is invalid on other chains."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md",
     "status": "checked"
   },
@@ -84,6 +128,10 @@
     "long": "For every valid ECDSA signature (r, s) there is a twin (r, n-s) that is also valid. EIP-2 (Homestead, 2016) rejects transaction signatures with s > secp256k1n/2, so only the 'low' one is accepted. This removes signature malleability: nobody can tweak a signature to change a transaction's hash (its ID) without invalidating it.",
     "tech": "#Ethereum Deep Dive #11: EIP-2 (Homestead, 2016) rejects tx signatures with s > secp256k1n/2. For every valid (r, s) there is a twin (r, n-s); allowing only the low one removes signature malleability and changes to the tx hash. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #11: An ECDSA signature has a 'mirror twin' that is also valid. Since 2016, Ethereum only accepts one of the two, so nobody can tweak a signature to change a tx's ID. #ETH #SmartContracts",
+    "card": {
+      "title": "Every signature has a valid twin",
+      "sub": "EIP-2 accepts only the low one, so nobody can tweak a transaction's ID."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md",
     "status": "checked"
   },
@@ -92,6 +140,11 @@
     "long": "Every EVM opcode has a gas cost, a measure of work. A transaction pays gas_used times the gas price. A plain ETH transfer costs the intrinsic 21,000 gas; contract calls cost more depending on what they do. The gas limit field caps what a transaction may use: if it runs out, its state changes are reverted but the gas spent is still paid.",
     "tech": "#Ethereum Deep Dive #12: Every EVM opcode has a gas cost; a tx pays gas_used * gas price. A plain ETH transfer costs the intrinsic 21,000 gas. The gas limit field caps what a tx may use; if it runs out, its changes are reverted but the gas is still paid. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #12: Every action on Ethereum costs 'gas', a unit of work. A plain ETH transfer always costs 21,000 gas. Running a contract costs more, depending on what it does. #ETH #SmartContracts",
+    "card": {
+      "big": "21,000 gas",
+      "title": "Gas measures every step of work",
+      "sub": "A plain ETH transfer costs 21,000 gas. Contract calls cost more."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/gas/index.md",
     "status": "checked"
   },
@@ -100,6 +153,11 @@
     "long": "Block size is set by the block gas limit, which proposers vote on: each block may move it by less than 1/1024 of the parent's limit, so it changes in small steps. EIP-7935, written in April 2025 when mainnet was at 36M gas, had execution clients raise their default gas limit to 60M ahead of Fusaka (Dec 2025). No hard fork is needed for this.",
     "tech": "#Ethereum Deep Dive #13: The block gas limit is voted by proposers: each block may change it by < 1/1024 of the parent's limit. EIP-7935 (Apr 2025, mainnet at 36M) had clients raise their default gas limit to 60M ahead of Fusaka. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #13: How big can a block be? Validators decide together: each new block can move the limit only a tiny step up or down. For Fusaka (Dec 2025), clients' default limit was raised to 60 million gas. #ETH #SmartContracts",
+    "card": {
+      "big": "60M gas",
+      "title": "Block size is a vote",
+      "sub": "Each block can move the gas limit by less than 1/1024. No hard fork needed."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7935.md ; https://github.com/ethereum/yellowpaper/blob/master/Paper.tex",
     "status": "checked"
   },
@@ -108,6 +166,11 @@
     "long": "At the Frontier launch (July 30, 2015) each block had a 5,000 gas limit, below the 21,000 gas a single transfer needs, so early blocks could hold no transactions. It let miners start and users set up clients without rushing. 'Frontier Thawing' at block 200,000 (Sep 7, 2015) lifted the limit and set a default gas price of 51 gwei.",
     "tech": "#Ethereum Deep Dive #14: Frontier genesis set a 5,000 gas limit per block, below the 21,000 gas of a transfer, so early blocks held no txs. 'Frontier Thawing' at block 200,000 (Sep 7, 2015) lifted it and set a new default gas price. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #14: Ethereum's first blocks were almost empty on purpose: at launch each block was capped at 5,000 gas, not even enough for one transfer. The cap was lifted at block 200,000. #ETH #SmartContracts",
+    "card": {
+      "big": "5,000 gas",
+      "title": "The first blocks were empty on purpose",
+      "sub": "At launch a block couldn't fit one transfer. The cap was lifted at block 200,000."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -117,6 +180,11 @@
     "tech": "#Ethereum Deep Dive #15: EIP-1559 (London, Aug 5, 2021): each block has a base fee that is burned. It moves by up to 12.5% per block, up if the parent used more gas than the target, down if less. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #15: Since August 2021, part of every Ethereum fee is destroyed (burned). This 'base fee' rises when blocks are full and falls when they are empty. #ETH #SmartContracts",
     "variant": "#Ethereum Deep Dive #15: Part of every fee paid on Ethereum since 2021 has simply vanished, on purpose. EIP-1559 burns the 'base fee' of every transaction instead of paying it to the block producer. #ETH #SmartContracts",
+    "card": {
+      "big": "12.5%",
+      "title": "Part of every fee is burned",
+      "sub": "Since London in 2021, the base fee is destroyed instead of paid to the producer."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-1559",
     "status": "checked"
   },
@@ -125,6 +193,10 @@
     "long": "EIP-1559 type-2 transactions set maxFeePerGas and maxPriorityFeePerGas. The price paid per gas is base fee + min(tip, maxFee - base fee). The base fee part is burned, the tip goes to the block proposer, and any margin between that and the max is never charged. Users can set a generous max without overpaying.",
     "tech": "#Ethereum Deep Dive #16: Type-2 txs set maxFeePerGas and maxPriorityFeePerGas. Effective price = base fee + min(tip, maxFee - base fee). The base fee part is burned, the tip goes to the proposer, and the unused margin is never charged. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #16: With EIP-1559 you set a maximum price and a tip. You pay the network's current base fee plus your tip, never more than your max. The rest stays in your wallet. #ETH #SmartContracts",
+    "card": {
+      "title": "Set a max, pay only what's needed",
+      "sub": "You pay base fee plus tip. The margin up to your max is never charged."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-1559",
     "status": "checked"
   },
@@ -133,6 +205,10 @@
     "long": "EIP-1559 uses an elasticity multiplier of 2: the gas target is half the gas limit, and a block can use up to twice the target. The base fee update is proportional to (gas_used - target) / target / 8, so a completely full block raises it by 12.5% and an empty one lowers it by 12.5%. Blocks aim to be half full; bursts are absorbed and the fee climbs until demand eases.",
     "tech": "#Ethereum Deep Dive #17: EIP-1559 elasticity multiplier = 2: gas target = gas limit / 2. A block can use up to 2x target; the base fee update is proportional to (gas_used - target) / target / 8, hence the 12.5% max step. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #17: Ethereum blocks aim to be half full. Busy periods can fill them up to double that target, and the fee goes up until demand calms down. #ETH #SmartContracts",
+    "card": {
+      "title": "Blocks aim to be half full",
+      "sub": "Bursts can fill up to twice the target, and the base fee climbs until demand eases."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-1559",
     "status": "checked"
   },
@@ -141,6 +217,10 @@
     "long": "EIP-2718 (Berlin, Apr 2021) introduced typed transaction envelopes: TransactionType || payload. The first byte says which format follows, so new kinds can be added without breaking old ones. Types today: 0 legacy, 1 access list (EIP-2930), 2 fee market (EIP-1559), 3 blob (EIP-4844), 4 set-code (EIP-7702).",
     "tech": "#Ethereum Deep Dive #18: EIP-2718 (Berlin, Apr 2021) added typed tx envelopes: TransactionType || payload. Types today: 0 legacy, 1 access list (EIP-2930), 2 fee market (EIP-1559), 3 blob (EIP-4844), 4 set-code (EIP-7702). #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #18: Ethereum supports several transaction formats. Since 2021, the first byte of a transaction says which type it is, so new kinds can be added without breaking old ones. #ETH #SmartContracts",
+    "card": {
+      "title": "The first byte names the format",
+      "sub": "Typed envelopes let new transaction kinds arrive without breaking old ones."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2718.md ; https://github.com/ethereum/EIPs/blob/master/EIPS/eip-4844.md ; https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7702.md",
     "status": "checked"
   },
@@ -149,6 +229,10 @@
     "long": "EIP-2930 (Berlin) type-1 transactions can carry an access list of addresses and storage keys they will touch. Listed items are paid for up front, 2,400 gas per address and 1,900 per storage key, and are then treated as warm during execution, so later access uses the cheaper warm price. Declaring access in advance makes it a bit cheaper.",
     "tech": "#Ethereum Deep Dive #19: EIP-2930 (Berlin) type-1 txs carry an access list of addresses and storage keys. Listed items are pre-warmed: 2,400 gas per address and 1,900 per key up front, then warm-access pricing during execution. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #19: A transaction can come with a list of the addresses and storage it will touch. Declaring them up front makes that access a bit cheaper. #ETH #SmartContracts",
+    "card": {
+      "title": "Declare your access up front",
+      "sub": "An access list pre-warms addresses and storage keys, making that access a bit cheaper."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2930.md",
     "status": "checked"
   },
@@ -157,6 +241,11 @@
     "long": "EIP-2929 (Berlin) made the first access to state in a transaction 'cold' and expensive: 2,100 gas for a storage slot (cold SLOAD) and 2,600 for an account. Later accesses in the same transaction are 'warm' at 100 gas. It was a response to DoS attacks that abused cheap state reads, which force nodes to hit disk.",
     "tech": "#Ethereum Deep Dive #20: EIP-2929 (Berlin): first access to a storage slot costs 2,100 gas (cold SLOAD), first touch of an account 2,600; later accesses in the same tx are warm at 100 gas. It was a response to DoS attacks using cheap state reads. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #20: Reading contract data costs much more the first time in a transaction than the second time. The first read is 'cold', later reads are 'warm'. #ETH #SmartContracts",
+    "card": {
+      "big": "2,100 vs 100",
+      "title": "Cold reads cost more than warm ones",
+      "sub": "The first state access in a transaction is expensive. Later ones are cheap."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-2929",
     "status": "checked"
   },
@@ -165,6 +254,11 @@
     "long": "Transaction data (calldata) costs 4 gas per zero byte and 16 per non-zero byte. EIP-2028 (Istanbul, Dec 2019) cut the non-zero price from 68 to 16 gas, which made rollups posting their data to L1 much cheaper. Because zero bytes are cheaper, data with many zeros, like addresses with leading zeros, saves a little gas.",
     "tech": "#Ethereum Deep Dive #21: Calldata pricing: 4 gas per zero byte, 16 per non-zero byte. EIP-2028 (Istanbul, Dec 2019) cut the non-zero price from 68 to 16 gas, which made rollups posting data to L1 much cheaper. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #21: Sending data inside a transaction costs gas per byte. Zero bytes are cheaper than non-zero bytes, which is why addresses with many leading zeros save a little. #ETH #SmartContracts",
+    "card": {
+      "big": "68 → 16 gas",
+      "title": "Calldata got cheaper for rollups",
+      "sub": "EIP-2028 cut the price of non-zero bytes. Zero bytes cost even less."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2028.md",
     "status": "checked"
   },
@@ -173,6 +267,10 @@
     "long": "EIP-7623 (Pectra, May 2025) adds a calldata floor price: if a transaction spends little gas on execution, it pays at least 10 gas per zero byte and 40 per non-zero byte. Normal transactions are mostly unaffected, but data-heavy ones pay more. This caps the worst-case block size and pushes bulk data toward blobs.",
     "tech": "#Ethereum Deep Dive #22: EIP-7623 (Pectra) adds a calldata floor price: if a tx spends little gas on execution, it pays at least 10 gas per zero byte and 40 per non-zero byte. This caps worst-case block size. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #22: Since Pectra (May 2025), transactions that mostly carry data and do little computing pay a higher minimum price. The goal: push bulk data toward blobs. #ETH #SmartContracts",
+    "card": {
+      "title": "A minimum price for data-heavy txs",
+      "sub": "Since Pectra, transactions that mostly carry data pay more. Bulk data goes to blobs."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7623.md",
     "status": "checked"
   },
@@ -181,6 +279,11 @@
     "long": "EIP-7825 (Fusaka, Dec 2025) caps the gas a single transaction can use at 16,777,216 (2^24), about 16.8 million. Blocks can keep growing, but heavy work must be split across transactions, so no single transaction can fill a whole block. This bounds worst-case validation time and helps future parallel execution.",
     "tech": "#Ethereum Deep Dive #23: EIP-7825 (Fusaka) caps gas per tx at 16,777,216 (2^24). Blocks can keep growing, but heavy work must be split across txs, which helps future parallel execution and bounds worst-case validation time. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #23: Since Fusaka (Dec 2025), one transaction can't use more than about 16.8 million gas, however big blocks get. No single transaction can hog a whole block. #ETH #SmartContracts",
+    "card": {
+      "big": "2^24",
+      "title": "No transaction can fill a block",
+      "sub": "Since Fusaka, one transaction is capped at about 16.8 million gas."
+    },
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement",
     "status": "checked"
   },
@@ -189,6 +292,11 @@
     "long": "The EVM is a stack machine with 256-bit words and a maximum stack depth of 1024. Execution is deterministic: every node replays every transaction and must reach exactly the same state root, or it rejects the block. Same input, same result, on every machine, which is what lets thousands of nodes agree without trusting each other.",
     "tech": "#Ethereum Deep Dive #24: The EVM is a stack machine with 256-bit words and a max stack depth of 1024. Execution is deterministic: every node replays every tx and must reach the same state root, or it rejects the block. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #24: The Ethereum Virtual Machine (EVM) is a simple computer every node runs in exactly the same way. Same input, same result, on every machine on Earth. #ETH #SmartContracts",
+    "card": {
+      "big": "256-bit",
+      "title": "Same input, same result everywhere",
+      "sub": "Every node replays every transaction and must reach exactly the same state root."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/evm/index.md",
     "status": "checked"
   },
@@ -197,6 +305,11 @@
     "long": "Each contract has its own storage: a map of 2^256 keys to 32-byte values. Writing a slot from zero to non-zero (SSTORE) costs 20,000 gas, plus 2,100 if the slot is cold, while a warm SLOAD costs 100. Writing new storage is one of the most expensive operations, so saving storage writes is the core of gas optimization.",
     "tech": "#Ethereum Deep Dive #25: Contract storage maps 2^256 keys to 32-byte values. SSTORE from zero to non-zero costs 20,000 gas (plus 2,100 if the slot is cold), while a warm SLOAD is 100. Saving storage writes is the core of gas optimization. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #25: Each contract has its own giant key-value store with 2^256 slots. Writing a new value there is one of the most expensive things you can do on Ethereum. #ETH #SmartContracts",
+    "card": {
+      "big": "20,000 gas",
+      "title": "Storage writes are the big cost",
+      "sub": "Each contract has 2^256 slots. Saving writes is the core of gas optimization."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2200.md ; https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2929.md",
     "status": "checked"
   },
@@ -205,6 +318,10 @@
     "long": "EVM memory is a byte array that lives only for the duration of a call and is wiped afterwards. Its expansion cost is 3*words + words^2/512 (words of 32 bytes). The quadratic term means memory is cheap for a few KB but becomes prohibitive for many MB, which bounds how much memory a transaction can use.",
     "tech": "#Ethereum Deep Dive #26: EVM memory is a byte array that lives only for the call. Expansion cost = 3*words + words^2/512 (words of 32 bytes), so it is quadratic: cheap for KBs, prohibitive for many MBs. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #26: Contracts also get scratch memory that is wiped after each call. It's cheap at first, but the price climbs faster and faster as you use more of it. #ETH #SmartContracts",
+    "card": {
+      "title": "Memory gets pricier as it grows",
+      "sub": "Scratch memory is wiped after each call. Its cost is quadratic in size."
+    },
     "source": "https://github.com/ethereum/yellowpaper/blob/master/Paper.tex",
     "status": "checked"
   },
@@ -213,6 +330,11 @@
     "long": "EIP-1153 (Dencun, March 2024) adds TSTORE and TLOAD: transient storage that persists across calls within one transaction and is cleared at its end. Each costs 100 gas, far below SSTORE. It is a third kind of contract memory between memory and storage, with typical uses like reentrancy locks and single-transaction token approvals.",
     "tech": "#Ethereum Deep Dive #27: EIP-1153 (Dencun) adds TSTORE/TLOAD: transient storage that persists across calls within one tx and is cleared at the end. Each costs 100 gas, far below SSTORE; typical uses: reentrancy locks, single-tx token approvals. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #27: Since March 2024, contracts have a third kind of memory: data that lasts for a whole transaction, then disappears. Handy for locks against reentrancy attacks. #ETH #SmartContracts",
+    "card": {
+      "big": "100 gas",
+      "title": "Storage that lasts one transaction",
+      "sub": "TSTORE and TLOAD clear at the end of the tx. Handy for reentrancy locks."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-1153",
     "status": "checked"
   },
@@ -221,6 +343,10 @@
     "long": "Clearing storage used to earn a large gas refund, so 'GasToken' schemes stored data when gas was cheap and cleared it when gas was expensive, effectively banking gas. EIP-3529 (London, 2021) removed the SELFDESTRUCT refund, lowered the SSTORE clearing refund and capped total refunds at gas_used/5 instead of /2. The trick became worthless.",
     "tech": "#Ethereum Deep Dive #28: EIP-3529 (London) removed the SELFDESTRUCT refund, lowered the SSTORE clear refund and capped refunds at gas_used/5 (was /2). GasToken-style tricks became worthless. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #28: Freeing storage used to earn back a big gas refund, so people 'banked' gas in tokens when it was cheap. A 2021 change cut refunds and killed that trick. #ETH #SmartContracts",
+    "card": {
+      "title": "How the gas banking trick died",
+      "sub": "EIP-3529 cut storage refunds and capped them, so GasToken became worthless."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-3529",
     "status": "checked"
   },
@@ -229,6 +355,11 @@
     "long": "EIP-150 (Tangerine Whistle, Oct 2016): a CALL can forward at most 63/64 of the remaining gas. Each nested call keeps 1/64 back, so gas shrinks with depth, which made the attack that pushed calls to the 1024 call-depth limit impractical. The caller also always keeps some gas to handle a failed call.",
     "tech": "#Ethereum Deep Dive #29: EIP-150 (Tangerine Whistle, Oct 2016): a CALL can forward at most 63/64 of remaining gas. Each nested call keeps 1/64 back, which makes the 1024 call-depth attack impractical and lets callers handle failures. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #29: When a contract calls another, it can't hand over all its remaining gas: it always keeps a small part back. This rule stopped a whole family of attacks. #ETH #SmartContracts",
+    "card": {
+      "big": "63/64",
+      "title": "A call never gets all the gas",
+      "sub": "Each nested call keeps 1/64 back. That stopped the call-depth attack."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-150.md",
     "status": "checked"
   },
@@ -237,6 +368,10 @@
     "long": "REVERT (EIP-140, Byzantium, Oct 2017) lets a contract abort: it rolls back state changes, refunds the remaining gas and returns data such as an error reason. Before, the only ways to abort were running out of gas or hitting an invalid opcode, both of which burned all the gas. Failures became cheaper and easier to debug.",
     "tech": "#Ethereum Deep Dive #30: REVERT (EIP-140, Byzantium, Oct 2017) aborts execution, rolls back state changes, refunds remaining gas and returns data (e.g. a revert reason). Before, aborting meant running out of gas or an invalid opcode, both burning all gas. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #30: If a contract hits a problem, it can cancel everything it did and give back the gas it didn't use, along with a reason. Before 2017 a failure burned all the gas. #ETH #SmartContracts",
+    "card": {
+      "title": "Failing without burning all the gas",
+      "sub": "Since 2017, REVERT rolls back changes, refunds unused gas and returns a reason."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-140.md",
     "status": "checked"
   },
@@ -245,6 +380,10 @@
     "long": "STATICCALL (EIP-214, Byzantium) calls another contract in read-only mode: any state change (SSTORE, LOG, CREATE, value transfer, SELFDESTRUCT) makes the call fail. Solidity uses it for calls to view and pure functions. It lets a contract safely query another, for example for a price, knowing the callee can't modify anything.",
     "tech": "#Ethereum Deep Dive #31: STATICCALL (EIP-214, Byzantium) runs a call where any state change (SSTORE, LOG, CREATE, value transfer, SELFDESTRUCT) makes it fail. Solidity uses it for view and pure function calls. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #31: Contracts can call others in 'read-only' mode. If the called code tries to change anything, the call fails. Useful for price checks and views. #ETH #SmartContracts",
+    "card": {
+      "title": "Read-only calls between contracts",
+      "sub": "With STATICCALL, any state change makes the call fail. Safe for price queries."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-214.md",
     "status": "checked"
   },
@@ -253,6 +392,10 @@
     "long": "DELEGATECALL (EIP-7, Homestead) runs the target contract's code in the caller's context: same storage, same msg.sender and msg.value. A contract borrows another's code and runs it on its own data. It's the basis of libraries and proxy patterns such as EIP-1967 upgradeable proxies: the logic contract can be swapped while data stays in the proxy.",
     "tech": "#Ethereum Deep Dive #32: DELEGATECALL (EIP-7, Homestead) executes the target's code in the caller's context: same storage, msg.sender and msg.value. It's the basis of libraries and proxy patterns like EIP-1967 upgradeable proxies. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #32: A contract can borrow another contract's code and run it on its own data. That's how 'upgradeable' contracts work: the code can be swapped, the data stays. #ETH #SmartContracts",
+    "card": {
+      "title": "Borrow the code, keep the data",
+      "sub": "DELEGATECALL runs another contract's code on your own storage. Proxies rely on it."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7.md",
     "status": "checked"
   },
@@ -261,6 +404,11 @@
     "long": "Nov 6, 2017: the shared library behind Parity multisig wallets was left uninitialized. A user called initWallet to become its owner, then kill(), which ran SELFDESTRUCT. The 587 wallets that relied on that library via DELEGATECALL froze 513,774.16 ETH, about 514,000 ETH, still stuck. A lesson on DELEGATECALL and initialization.",
     "tech": "#Ethereum Deep Dive #33: Parity multisig, Nov 6, 2017: the library behind the wallets was uninitialized. Someone called initWallet to become owner, then kill() (SELFDESTRUCT). The 587 wallets that DELEGATECALLed into it froze ≈513,774 ETH. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #33: In Nov 2017, a user killed a shared library contract that hundreds of Parity wallets relied on. About 514,000 ETH has been stuck in those wallets ever since. #ETH #SmartContracts",
+    "card": {
+      "big": "513,774 ETH",
+      "title": "The Parity library kill switch",
+      "sub": "One user killed a shared library in 2017. 587 wallets have been frozen since."
+    },
     "source": "https://medium.com/paritytech/a-postmortem-on-the-parity-multi-sig-library-self-destruct-63daca3a4cf7 (Nov 6, 2017; 587 wallets; 513,774.16 ETH) ; https://github.com/openethereum/parity-ethereum/blob/v1.8.2/js/src/contracts/snippets/enhanced-wallet.sol (initWallet, kill)",
     "status": "checked"
   },
@@ -269,6 +417,11 @@
     "long": "EIP-170 (Spurious Dragon, Nov 2016) caps deployed contract code at 24,576 bytes (0x6000), about 24 KB. The limit bounds the DoS cost of loading code. It's why large protocols split their logic across several contracts, using libraries, proxies or the diamond pattern.",
     "tech": "#Ethereum Deep Dive #34: EIP-170 (Spurious Dragon, Nov 2016) caps deployed contract code at 24,576 bytes (0x6000). It bounds the DoS cost of loading code; it's why large protocols use libraries, proxies or the diamond pattern. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #34: Smart contracts have a size limit: about 24 KB of code. Big apps have to split their logic across several contracts. #ETH #SmartContracts",
+    "card": {
+      "big": "24,576 bytes",
+      "title": "Contracts have a size limit",
+      "sub": "EIP-170 caps deployed code, so big protocols split logic across contracts."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -277,6 +430,10 @@
     "long": "EIP-3860 (Shanghai, Apr 2023) limits initcode, the code that runs once to set up a new contract, to 49,152 bytes, twice the EIP-170 contract limit. It also charges 2 gas per 32-byte word of initcode, because nodes had to analyze it for jump destinations without being paid for that work.",
     "tech": "#Ethereum Deep Dive #35: EIP-3860 (Shanghai, Apr 2023) limits initcode to 49,152 bytes (2x the EIP-170 limit) and charges 2 gas per 32-byte word of initcode, since nodes had to analyze it for jump destinations without charge. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #35: The code that sets up a new contract also has a size limit, double the contract limit, and it's charged per chunk. #ETH #SmartContracts",
+    "card": {
+      "title": "Setup code has a limit too",
+      "sub": "EIP-3860 caps initcode at twice the contract limit and charges per 32-byte word."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-3860.md",
     "status": "checked"
   },
@@ -285,6 +442,11 @@
     "long": "EIP-3541 (London, 2021) rejects any new contract code that starts with the byte 0xEF. It reserved that prefix so future formats of contract code could be told apart from legacy code, originally for EOF (EVM Object Format). It was later used for EIP-7702 delegation designators, which begin with 0xef0100.",
     "tech": "#Ethereum Deep Dive #36: EIP-3541 (London) rejects new contract code starting with 0xEF. It reserved the prefix for EOF (EVM Object Format) and later used it for EIP-7702 delegation designators, which begin with 0xef0100. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #36: Since 2021, no new contract can start with the byte 0xEF. That byte is reserved so future versions of contract code can be told apart. #ETH #SmartContracts",
+    "card": {
+      "big": "0xEF",
+      "title": "One byte reserved for the future",
+      "sub": "New code can't start with 0xEF, kept for new formats and EIP-7702 delegations."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-3541.md ; https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7702.md",
     "status": "checked"
   },
@@ -293,6 +455,10 @@
     "long": "Contracts deployed with CREATE get the address: last 20 bytes of Keccak-256(RLP([sender, nonce])). For an EOA, the nonce is its transaction count; for a contract, the number of contracts it has created. So a contract's address can be computed before it exists, but it depends on deployment order.",
     "tech": "#Ethereum Deep Dive #37: CREATE address = last 20 bytes of Keccak-256(RLP([sender, nonce])). For an EOA, the nonce is its tx count; for a contract, its creation count. So addresses are predictable but tied to deployment order. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #37: You can know a contract's address before it exists: it's computed from the creator's address and how many contracts it has deployed so far. #ETH #SmartContracts",
+    "card": {
+      "title": "An address known before it exists",
+      "sub": "CREATE derives it from the creator's address and nonce, so order matters."
+    },
     "source": "https://github.com/ethereum/yellowpaper/blob/master/Paper.tex",
     "status": "checked"
   },
@@ -301,6 +467,10 @@
     "long": "CREATE2 (EIP-1014, Constantinople, Feb 2019) computes the address as the last 20 bytes of Keccak-256(0xff ++ sender ++ salt ++ Keccak-256(init_code)). It depends on the salt and code, not on the nonce, so the address is known in advance whatever happens in between. Used for counterfactual wallets that receive funds before deployment, and same addresses on many chains.",
     "tech": "#Ethereum Deep Dive #38: CREATE2 (EIP-1014, Constantinople, Feb 2019): address = last 20 bytes of Keccak-256(0xff ++ sender ++ salt ++ Keccak-256(init_code)). It depends on salt and code, not nonce, so it can be used before deployment. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #38: Since 2019, a contract can be deployed to an address chosen in advance, whatever happens in between. Used for counterfactual wallets and same addresses on many chains. #ETH #SmartContracts",
+    "card": {
+      "title": "Deploy to an address chosen in advance",
+      "sub": "CREATE2 uses a salt and the code, not the nonce. Same address on many chains."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1014.md",
     "status": "checked"
   },
@@ -309,6 +479,10 @@
     "long": "EIP-6780 (Dencun, March 2024) neutered SELFDESTRUCT: it only deletes a contract's code and storage if called in the same transaction that created it. Otherwise it just sends the contract's ETH to the target and the code stays. This ended 'metamorphic contracts' that used SELFDESTRUCT plus CREATE2 to redeploy different code at the same address.",
     "tech": "#Ethereum Deep Dive #39: EIP-6780 (Dencun): SELFDESTRUCT only deletes code and storage if called in the tx that created the contract. Otherwise it just sends the balance to the target. This ended the CREATE2 'metamorphic contract' trick. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #39: Contracts used to be able to delete themselves. Since March 2024, that only works in the same transaction that created them. Otherwise, the ETH is sent away but the code stays. #ETH #SmartContracts",
+    "card": {
+      "title": "SELFDESTRUCT lost its teeth",
+      "sub": "Since 2024 it deletes code only in the creating tx. Metamorphic contracts are over."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-6780.md",
     "status": "checked"
   },
@@ -317,6 +491,11 @@
     "long": "A contract call names its function with a selector: the first 4 bytes of the Keccak-256 hash of the function signature, e.g. transfer(address,uint256) = 0xa9059cbb. The arguments follow, ABI-encoded in 32-byte words. With only 32 bits, two different signatures can share a selector, so clashes are possible.",
     "tech": "#Ethereum Deep Dive #40: Function selector = first 4 bytes of Keccak-256 of the signature, e.g. transfer(address,uint256) = 0xa9059cbb. Arguments follow, ABI-encoded in 32-byte words. With only 32 bits, selector clashes are possible. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #40: How does a contract know which function you're calling? The first 4 bytes of your transaction data name it, derived from a hash of the function's name. #ETH #SmartContracts",
+    "card": {
+      "big": "0xa9059cbb",
+      "title": "Four bytes pick the function",
+      "sub": "The selector is a hash prefix of the function signature. Clashes are possible."
+    },
     "source": "https://github.com/ethereum/solidity/blob/develop/docs/abi-spec.rst",
     "status": "checked"
   },
@@ -325,6 +504,10 @@
     "long": "Contracts emit events with LOG0-LOG4. Each log goes to the transaction receipt with up to 4 indexed 32-byte topics; topic 0 is usually the hash of the event signature. Each block header has a 2048-bit logs bloom filter for quick searching. Wallets and explorers read events to show history, but contracts themselves can't read logs.",
     "tech": "#Ethereum Deep Dive #41: LOG0-LOG4 write events to the tx receipt with up to 4 indexed 32-byte topics; topic 0 is usually the event signature hash. Each block header has a 2048-bit logs bloom for quick filtering. Contracts can't read logs. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #41: When a contract does something worth noticing (a transfer, a swap), it can emit an 'event'. Wallets and explorers read these events to show your history. #ETH #SmartContracts",
+    "card": {
+      "title": "Events tell wallets what happened",
+      "sub": "Logs carry up to 4 indexed topics. Contracts can't read them, explorers can."
+    },
     "source": "https://github.com/ethereum/yellowpaper/blob/master/Paper.tex ; https://github.com/ethereum/solidity/blob/develop/docs/abi-spec.rst",
     "status": "checked"
   },
@@ -333,6 +516,10 @@
     "long": "Precompiles are built-in contracts at low addresses that do heavy cryptography natively, much cheaper than EVM code: 0x01 ecrecover, 0x02 SHA-256, 0x03 RIPEMD-160, 0x04 identity, 0x05 modexp, 0x06-0x08 BN254 operations, 0x09 BLAKE2f, 0x0a KZG point evaluation, 0x0b-0x11 BLS12-381, and 0x100 for secp256r1 (P-256) verification.",
     "tech": "#Ethereum Deep Dive #42: Precompiles: 0x01 ecrecover, 0x02 SHA-256, 0x03 RIPEMD-160, 0x04 identity, 0x05 modexp, 0x06-0x08 BN254 ops, 0x09 BLAKE2f, 0x0a KZG point evaluation, 0x0b-0x11 BLS12-381. 0x100 is secp256r1 (P-256). #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #42: Some built-in contracts live at tiny addresses like 0x01. They do heavy cryptography natively, much cheaper than writing it in contract code. #ETH #SmartContracts",
+    "card": {
+      "title": "Built-in crypto at tiny addresses",
+      "sub": "Precompiles run heavy cryptography natively, far cheaper than EVM code."
+    },
     "source": "https://github.com/ethereum/yellowpaper/blob/master/Paper.tex ; https://github.com/ethereum/EIPs/blob/master/EIPS/eip-4844.md ; https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2537.md ; https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7951.md",
     "status": "checked"
   },
@@ -341,6 +528,10 @@
     "long": "Byzantium (Oct 2017) added precompiles for the BN254 (alt_bn128) curve at 0x06-0x08: point addition and scalar multiplication (EIP-196) and a pairing check (EIP-197). That is enough to verify Groth16 zk-SNARKs on-chain, which made zero-knowledge proofs practical on Ethereum. Istanbul later cut their gas cost (EIP-1108).",
     "tech": "#Ethereum Deep Dive #43: Byzantium (Oct 2017) added BN254 (alt_bn128) precompiles: point addition, scalar multiplication (EIP-196) and pairing check (EIP-197) at 0x06-0x08, enough to verify Groth16 zk-SNARKs on-chain. Istanbul cut their gas (EIP-1108). #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #43: Zero-knowledge proofs on Ethereum became practical in 2017, when built-in operations for a special elliptic curve were added. Many zk apps still rely on them. #ETH #SmartContracts",
+    "card": {
+      "title": "The curve that brought zk to Ethereum",
+      "sub": "BN254 precompiles from 2017 made verifying Groth16 zk-SNARKs practical on-chain."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -349,6 +540,11 @@
     "long": "EIP-2537 (Pectra, May 2025) adds BLS12-381 precompiles at 0x0b-0x11: G1/G2 addition and multi-scalar multiplication, a pairing check and map-to-curve. Per the EIP, it gives 120+ bits of security vs 80 bits for the older BN254 precompile. It's the curve validators sign with, so contracts can verify consensus-layer signatures cheaply.",
     "tech": "#Ethereum Deep Dive #44: EIP-2537 (Pectra) adds BLS12-381 precompiles at 0x0b-0x11: G1/G2 addition and multi-scalar multiplication, pairing check and map-to-curve. Per the EIP: 120+ bits of security, vs 80 bits for the older BN254 precompile. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #44: Since May 2025, contracts can natively check BLS signatures, the same kind Ethereum validators use. That makes it cheaper to verify the consensus layer from inside a contract. #ETH #SmartContracts",
+    "card": {
+      "big": "120+ bits",
+      "title": "Contracts can check BLS signatures",
+      "sub": "EIP-2537 adds the validators' curve, so consensus signatures verify cheaply."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2537.md",
     "status": "checked"
   },
@@ -357,6 +553,10 @@
     "long": "EIP-7951 (Fusaka, Dec 2025) adds a precompile that verifies secp256r1 (P-256) signatures. P-256 is the curve used by FIDO2/WebAuthn passkeys, Apple's Secure Enclave and Android Keystore. Smart wallets can now verify signatures from phone secure chips and passkeys cheaply, a step toward wallets unlocked with Face ID.",
     "tech": "#Ethereum Deep Dive #45: EIP-7951 (Fusaka) adds a secp256r1 (P-256) verification precompile. P-256 is the curve of FIDO2/WebAuthn passkeys, Apple Secure Enclave and Android Keystore, so smart wallets can verify them cheaply. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #45: Since Fusaka (Dec 2025), Ethereum can check signatures from phone secure chips and passkeys natively. A step toward wallets you unlock with Face ID. #ETH #SmartContracts",
+    "card": {
+      "title": "Passkeys meet smart wallets",
+      "sub": "Fusaka adds native P-256 checks: phone secure chips and passkeys, verified cheaply."
+    },
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement",
     "status": "checked"
   },
@@ -365,6 +565,11 @@
     "long": "PUSH0 (EIP-3855, Shanghai, 2023) pushes the value 0 on the stack for 2 gas and 1 byte. Before, compilers used PUSH1 0x00 (3 gas, 2 bytes) or tricks like RETURNDATASIZE. Zero is pushed constantly, so this small instruction saves gas and bytes in almost every contract. Solidity targets it by default since 0.8.20.",
     "tech": "#Ethereum Deep Dive #46: PUSH0 (EIP-3855, Shanghai) pushes 0 on the stack for 2 gas and 1 byte. Before, compilers used PUSH1 0x00 (3 gas, 2 bytes) or tricks like RETURNDATASIZE. Solidity has targeted it by default since 0.8.20. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #46: Sometimes small things matter: in 2023 the EVM got an instruction that just pushes the number zero. It saves a little gas in almost every contract. #ETH #SmartContracts",
+    "card": {
+      "big": "2 gas",
+      "title": "An opcode that just pushes zero",
+      "sub": "PUSH0 saves gas and a byte in almost every contract. Solidity uses it by default."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-3855.md ; https://github.com/ethereum/solidity/blob/develop/Changelog.md",
     "status": "checked"
   },
@@ -373,6 +578,10 @@
     "long": "EIP-7939 (Fusaka, Dec 2025) adds the CLZ opcode: count the leading zero bits of a 256-bit word, returning 256 for 0. Before, contracts used costly bit-by-bit loops or tricks. It speeds up math libraries (log2, sqrt, fixed-point math) and compression code.",
     "tech": "#Ethereum Deep Dive #47: EIP-7939 (Fusaka) adds CLZ: count leading zeros of a 256-bit word (returns 256 for 0). It replaces costly bit-by-bit loops in log2, sqrt and fixed-point math. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #47: Fusaka (Dec 2025) added a new EVM instruction that counts leading zero bits in a number. Useful for math libraries and compression. #ETH #SmartContracts",
+    "card": {
+      "title": "Counting leading zeros natively",
+      "sub": "Fusaka's CLZ opcode replaces bit-by-bit loops in log2, sqrt and fixed-point math."
+    },
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement",
     "status": "checked"
   },
@@ -381,6 +590,11 @@
     "long": "The BLOCKHASH opcode only returns hashes of the 256 most recent blocks, 0 otherwise. EIP-2935 (Pectra, May 2025) also stores the last 8,191 block hashes in a system contract's storage. Contracts and stateless clients can then prove facts against older blocks.",
     "tech": "#Ethereum Deep Dive #48: BLOCKHASH only covers the 256 most recent blocks (0 otherwise). EIP-2935 (Pectra) stores the last 8,191 block hashes in a system contract's storage, so contracts and stateless clients can prove against older blocks. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #48: A contract can only look up the hash of the last 256 blocks. Since Pectra (May 2025), the chain also keeps the last 8,191 block hashes in a system contract. #ETH #SmartContracts",
+    "card": {
+      "big": "8,191 blocks",
+      "title": "Contracts can see further back",
+      "sub": "BLOCKHASH covers only 256 blocks. EIP-2935 keeps older hashes in a system contract."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2935.md",
     "status": "checked"
   },
@@ -389,6 +603,11 @@
     "long": "EIP-4399 (Paris, the Merge) repurposed the DIFFICULTY opcode (0x44) as PREVRANDAO, which returns the beacon chain's RANDAO mix. It gives contracts a random-looking value, but a proposer can only publish or skip its block, giving it about 1 bit of influence. Useful, but not safe on its own for high-value lotteries.",
     "tech": "#Ethereum Deep Dive #49: EIP-4399 (Paris) repurposed the DIFFICULTY opcode (0x44) as PREVRANDAO: the beacon chain's RANDAO mix. A proposer can only publish or skip its block, so it gets about 1 bit of influence. Not safe for high-value lotteries. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #49: Contracts can get a random-looking number from the consensus layer since the Merge. It's useful but not perfect: a block proposer can bias it slightly. #ETH #SmartContracts",
+    "card": {
+      "big": "1 bit",
+      "title": "Randomness with a small catch",
+      "sub": "PREVRANDAO gives a random-looking value, but proposers can bias it slightly."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-4399.md",
     "status": "checked"
   },
@@ -397,6 +616,10 @@
     "long": "EIP-4788 (Dencun, March 2024) stores the parent beacon block root in a system contract, in a ring buffer of 8,191 entries. Contracts can then verify Merkle proofs of beacon state, such as balances, withdrawals or validator status, against it. Staking apps can check validator data without trusting an oracle.",
     "tech": "#Ethereum Deep Dive #50: EIP-4788 (Dencun) stores each parent beacon block root in a system contract (ring buffer of 8,191 entries). Contracts can verify Merkle proofs of beacon state: balances, withdrawals, validator status. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #50: Since March 2024, contracts can read a fingerprint of the consensus layer's latest blocks. That lets staking apps check validator data without trusting an oracle. #ETH #SmartContracts",
+    "card": {
+      "title": "Reading the beacon chain from a contract",
+      "sub": "EIP-4788 stores beacon roots, so staking apps can verify data without an oracle."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-4788.md",
     "status": "checked"
   },
@@ -405,6 +628,11 @@
     "long": "Ethereum stores its state in a Merkle Patricia Trie, keyed by Keccak-256(address). Each block header commits to a stateRoot, transactionsRoot and receiptsRoot: one 32-byte fingerprint summarizes every balance and contract, and changing anything changes it completely. Any account can be proven against a header with a Merkle proof.",
     "tech": "#Ethereum Deep Dive #51: Ethereum stores state in a Merkle Patricia Trie keyed by Keccak-256(address). Each header commits to stateRoot, transactionsRoot and receiptsRoot, so any account can be proven against a header with a Merkle proof. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #51: The whole state of Ethereum (every balance and contract) is summarized by one 32-byte fingerprint in each block header. Change one balance and it changes completely. #ETH #SmartContracts",
+    "card": {
+      "big": "32 bytes",
+      "title": "One fingerprint for the whole state",
+      "sub": "Change one balance and the state root changes completely. Any account can be proven."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/data-structures-and-encoding/patricia-merkle-trie/index.md",
     "status": "checked"
   },
@@ -413,6 +641,10 @@
     "long": "RLP (Recursive Length Prefix) is the execution layer's serialization format. It encodes only byte strings and nested lists; everything else is built from those. The first byte's range says what follows: 0x00-0x7f a single byte, 0x80-0xbf a string, 0xc0-0xff a list. The consensus layer uses a different format, SSZ.",
     "tech": "#Ethereum Deep Dive #52: RLP (Recursive Length Prefix) encodes byte strings and nested lists only. Prefix ranges: 0x00-0x7f single byte, 0x80-0xbf strings, 0xc0-0xff lists. The consensus layer uses a different format, SSZ. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #52: Ethereum has its own simple way to turn data into bytes, called RLP. It only knows two things: strings of bytes and lists. Everything else is built from those. #ETH #SmartContracts",
+    "card": {
+      "title": "RLP knows only two things",
+      "sub": "Byte strings and lists. Everything else on the execution layer is built from those."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/data-structures-and-encoding/rlp/index.md",
     "status": "checked"
   },
@@ -421,6 +653,11 @@
     "long": "In June 2016 The DAO, a huge investment contract, was drained via a reentrancy bug of about 3.6M ETH. The DAO fork at block 1,920,000 (Jul 20, 2016) moved its funds to a contract with a single withdraw function so holders could get ETH back. Miners and users who rejected rewriting history kept the old chain running: Ethereum Classic.",
     "tech": "#Ethereum Deep Dive #53: The DAO was drained via reentrancy in June 2016 (about 3.6M ETH). The DAO fork at block 1,920,000 (Jul 20, 2016) moved its funds to a withdrawal contract. Miners and users who rejected it kept running Ethereum Classic. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #53: In June 2016, a hacker drained ETH from The DAO, a huge investment contract. Ethereum chose to rewrite history to return the funds. Those who refused kept the old chain: Ethereum Classic. #ETH #SmartContracts",
+    "card": {
+      "big": "3.6M ETH",
+      "title": "The DAO hack and the fork",
+      "sub": "Ethereum rewrote history to return funds. Those who refused kept Ethereum Classic."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -429,6 +666,10 @@
     "long": "The difficulty bomb (Ice Age) added an exponentially growing term to proof-of-work difficulty, to make mining harder over time and force the move to proof-of-stake. It was delayed several times: EIP-649 (Byzantium), EIP-1234, EIP-2384 (Muir Glacier), EIP-3554, EIP-4345 (Arrow Glacier) and EIP-5133 (Gray Glacier), until the Merge made it irrelevant.",
     "tech": "#Ethereum Deep Dive #54: The difficulty bomb (Ice Age) added an exponential term to PoW difficulty. It was delayed by EIP-649 (Byzantium), EIP-1234, EIP-2384 (Muir Glacier), EIP-3554, EIP-4345 (Arrow Glacier) and EIP-5133 (Gray Glacier). #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #54: Ethereum had a built-in 'bomb' that made mining harder and harder over time, to force the move to proof-of-stake. It was pushed back several times before the Merge. #ETH #SmartContracts",
+    "card": {
+      "title": "A bomb set to force proof-of-stake",
+      "sub": "The difficulty bomb made mining ever harder. It was delayed several times until the Merge."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -437,6 +678,10 @@
     "long": "Before the Merge, Ethereum was mined with Ethash. Each hash reads pseudo-random pages from a multi-GB dataset, the DAG, which grew every epoch of 30,000 blocks. Memory bandwidth, not raw compute, was the bottleneck: the design aimed to let ordinary GPUs compete with specialized mining machines.",
     "tech": "#Ethereum Deep Dive #55: Ethereum PoW used Ethash: each hash reads pseudo-random pages from a multi-GB dataset (the DAG) that grew every epoch of 30,000 blocks. Memory bandwidth, not raw compute, was the bottleneck, which favored GPUs. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #55: Before 2022, Ethereum was mined. Its mining algorithm needed lots of memory on purpose, so ordinary graphics cards could compete with specialized machines. #ETH #SmartContracts",
+    "card": {
+      "title": "Mining built to favor GPUs",
+      "sub": "Ethash read a multi-GB dataset, so memory bandwidth was the bottleneck, not compute."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/consensus-mechanisms/pow/mining/mining-algorithms/ethash/index.md",
     "status": "checked"
   },
@@ -445,6 +690,11 @@
     "long": "The proof-of-work block reward fell over time: 5 ETH from genesis, 3 ETH at Byzantium (EIP-649, Oct 2017), 2 ETH at Constantinople (EIP-1234, Feb 2019). At the Merge (Sep 2022) mining stopped and rewards moved to validators on the beacon chain.",
     "tech": "#Ethereum Deep Dive #56: PoW block reward: 5 ETH from genesis, 3 ETH at Byzantium (EIP-649, Oct 2017), 2 ETH at Constantinople (EIP-1234, Feb 2019). At the Merge (Sep 2022) rewards moved to validators on the beacon chain. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #56: Miners' reward per block fell over time: 5 ETH at launch, then 3 ETH in 2017, then 2 ETH in 2019. After the Merge, mining rewards stopped completely. #ETH #SmartContracts",
+    "card": {
+      "big": "5 → 3 → 2 ETH",
+      "title": "Mining rewards shrank over time",
+      "sub": "Byzantium and Constantinople cut the block reward. The Merge ended mining."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -453,6 +703,10 @@
     "long": "Proof-of-work Ethereum rewarded ommers (uncles): valid blocks that lost the race but were referenced by a later block within 6 generations. Rewarding them lowered the edge of large, well-connected mining pools. Proof-of-stake removed them; the ommersHash header field is now a constant.",
     "tech": "#Ethereum Deep Dive #57: PoW Ethereum rewarded ommers (uncles): valid stale blocks included by a later block within 6 generations. This lowered the edge of large, well-connected pools. Proof-of-stake removed them; ommersHash is now a constant. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #57: In the mining days, a valid block that lost the race still earned a reward if a later block mentioned it. These were called uncle blocks. #ETH #SmartContracts",
+    "card": {
+      "title": "Uncle blocks still got paid",
+      "sub": "Valid blocks that lost the race earned a reward, cutting the edge of big pools."
+    },
     "source": "https://github.com/ethereum/go-ethereum/blob/v1.10.0/consensus/ethash/consensus.go ; https://github.com/ethereum/yellowpaper/blob/master/Paper.tex",
     "status": "checked"
   },
@@ -461,6 +715,11 @@
     "long": "The Beacon Chain, Ethereum's proof-of-stake chain, launched on Dec 1, 2020 after the deposit contract reached its minimum of 16,384 deposits of 32 ETH. For almost 2 years it ran in parallel with proof-of-work mainnet, only coming to consensus on itself, until the Merge in Sep 2022 joined them.",
     "tech": "#Ethereum Deep Dive #58: Beacon Chain genesis: Dec 1, 2020, after the deposit contract reached the minimum of 16,384 validators of 32 ETH. It ran in parallel with PoW mainnet, only coming to consensus on itself, until the Merge. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #58: Ethereum's proof-of-stake chain started on Dec 1, 2020, running alongside the mined chain for almost 2 years. It needed 16,384 validators of 32 ETH each to start. #ETH #SmartContracts",
+    "card": {
+      "big": "16,384",
+      "title": "The Beacon Chain waited for its quorum",
+      "sub": "It launched on Dec 1, 2020 and ran alongside the mined chain for almost 2 years."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -469,6 +728,10 @@
     "long": "Every validator starts with a deposit to one contract, 0x00000000219ab540356cBB839Cbe05303d7705Fa, deployed Oct 14, 2020 at block 11,052,984; its address starts with eight zeros. The contract keeps an incremental Merkle tree of deposits, which the consensus layer reads to create validators.",
     "tech": "#Ethereum Deep Dive #59: The staking deposit contract 0x00000000219ab540356cBB839Cbe05303d7705Fa was deployed Oct 14, 2020 at block 11,052,984. It keeps an incremental Merkle tree of deposits that the consensus layer reads. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #59: Every Ethereum validator starts with a deposit to one contract, deployed on Oct 14, 2020. Its address starts with eight zeros: 0x00000000219ab5... #ETH #SmartContracts",
+    "card": {
+      "title": "One contract starts every validator",
+      "sub": "The deposit contract's address begins with eight zeros. Deployed Oct 14, 2020."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -477,6 +740,10 @@
     "long": "The Merge was not set at a block number or a date. It was triggered by a Terminal Total Difficulty of 58,750,000,000,000,000,000,000: the first proof-of-work block whose cumulative difficulty passed it became the last proof-of-work block. A block-height trigger could have been gamed: an attacker with a minority of hash power could build a fork reaching that height.",
     "tech": "#Ethereum Deep Dive #60: The Merge was triggered by a Terminal Total Difficulty of 58,750,000,000,000,000,000,000. The first PoW block whose cumulative difficulty passed it became the last PoW block; a block-height trigger could have been gamed. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #60: The Merge wasn't set for a block number or a date. It was triggered when the total mining work ever done on Ethereum crossed a fixed threshold. #ETH #SmartContracts",
+    "card": {
+      "title": "The Merge had no date or block number",
+      "sub": "It fired when total mining difficulty crossed a fixed threshold, harder to game."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-3675.md",
     "status": "checked"
   },
@@ -485,6 +752,11 @@
     "long": "Paris, the Merge, happened on Sep 15, 2022: block 15,537,394 was the first execution block produced under proof-of-stake, without stopping the chain. EIP-3675 removed the proof-of-work validity rules, and the Engine API let the beacon chain's consensus client drive the execution client.",
     "tech": "#Ethereum Deep Dive #61: Paris (the Merge), Sep 15, 2022: block 15,537,394 was the first PoS execution block. EIP-3675 removed PoW validity rules, and the Engine API made the beacon chain drive the execution layer. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #61: On Sep 15, 2022, Ethereum switched from miners to stakers without stopping. Block 15,537,394 was the first one produced by proof-of-stake. #ETH #SmartContracts",
+    "card": {
+      "big": "Sep 15, 2022",
+      "title": "Switching engines without stopping",
+      "sub": "Block 15,537,394 was the first one produced under proof-of-stake."
+    },
     "source": "https://ethereum.org/en/history/",
     "status": "checked"
   },
@@ -493,6 +765,11 @@
     "long": "According to ethereum.org, citing a CCRI estimate, moving from proof-of-work to proof-of-stake cut Ethereum's annualized electricity use by more than 99.98%. Validating needs ordinary computers, not warehouses of mining rigs: security now comes from ETH at stake that can be slashed, not from electricity spent on hashing.",
     "tech": "#Ethereum Deep Dive #62: Per ethereum.org (CCRI estimate), moving from PoW to PoS cut Ethereum's electricity use by more than 99.98%. Security now comes from ETH at stake that can be slashed, not from electricity spent on hashing. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #62: The Merge cut Ethereum's energy use by more than 99.98%. Validating with staked ETH needs ordinary computers, not warehouses of mining rigs. #ETH #SmartContracts",
+    "card": {
+      "big": "99.98%",
+      "title": "The Merge's energy cut",
+      "sub": "Security now comes from ETH at stake that can be slashed, not from electricity."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/energy-consumption/index.md",
     "status": "checked"
   },
@@ -501,6 +778,10 @@
     "long": "Since the Merge, an Ethereum node is two programs: an execution client (Geth, Nethermind, Besu, Erigon, Reth...) that runs transactions and contracts, and a consensus client (Prysm, Lighthouse, Teku, Nimbus, Lodestar, Grandine) that agrees with other nodes on the next block. They talk via the authenticated Engine API.",
     "tech": "#Ethereum Deep Dive #63: Since the Merge, a node pairs an execution client (Geth, Nethermind, Besu, Erigon, Reth...) with a consensus client (Prysm, Lighthouse, Teku, Nimbus, Lodestar, Grandine). They talk via the authenticated Engine API. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #63: An Ethereum node is two programs working together: one runs transactions and contracts, the other agrees with other nodes on which block comes next. #ETH #SmartContracts",
+    "card": {
+      "title": "A node is two programs",
+      "sub": "One runs transactions, the other agrees on the next block. They talk via Engine API."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/nodes-and-clients/index.md ; https://github.com/ethereum/execution-apis/blob/main/src/engine/authentication.md",
     "status": "checked"
   },
@@ -509,6 +790,11 @@
     "long": "Beacon chain time is split into slots and epochs: SECONDS_PER_SLOT = 12 and SLOTS_PER_EPOCH = 32, so an epoch lasts 384 s, or 6.4 min. Each slot gives one proposer the chance to publish a block. If the proposer is offline the slot stays empty; the chain doesn't wait.",
     "tech": "#Ethereum Deep Dive #64: Beacon chain timing: SECONDS_PER_SLOT = 12, SLOTS_PER_EPOCH = 32, so an epoch is 384 s = 6.4 min. A slot can be empty if its proposer is offline; the chain doesn't wait. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #64: Ethereum time runs in 12-second 'slots', each with a chance for one block. 32 slots make an 'epoch' of 6.4 minutes. #ETH #SmartContracts",
+    "card": {
+      "big": "12 s",
+      "title": "Slots and epochs set the clock",
+      "sub": "32 slots make an epoch of 6.4 minutes. Empty slots don't stop the chain."
+    },
     "source": "https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/",
     "status": "checked"
   },
@@ -517,6 +803,11 @@
     "long": "Casper FFG gives finality. An epoch checkpoint is justified when attestations representing 2/3 of total stake vote for it, and finalized when the next checkpoint is justified on top of it. That typically takes about 2 epochs (12.8 min). Reverting a finalized block would require destroying a huge amount of staked ETH.",
     "tech": "#Ethereum Deep Dive #65: Casper FFG finality: an epoch checkpoint is justified when attestations from 2/3 of total stake vote for it, and finalized when the next checkpoint is justified on top. Typically about 2 epochs (12.8 min). #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #65: On Ethereum, a block becomes 'final' (cannot be reversed without destroying a huge amount of staked ETH) after about 13 minutes. #ETH #SmartContracts",
+    "card": {
+      "big": "12.8 min",
+      "title": "When a block becomes final",
+      "sub": "Casper FFG needs votes from 2/3 of stake. Undoing it would destroy huge stake."
+    },
     "source": "https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/",
     "status": "checked"
   },
@@ -525,6 +816,10 @@
     "long": "Ethereum's fork choice rule is LMD-GHOST: starting from the last justified checkpoint, at each fork follow the branch with the most weight from each validator's latest attestation. It picks the head of the chain every slot. Gasper is the combination of LMD-GHOST with Casper FFG finality.",
     "tech": "#Ethereum Deep Dive #66: Fork choice is LMD-GHOST: starting from the last justified checkpoint, at each fork follow the branch with the most weight from each validator's latest attestation. Gasper combines it with Casper FFG. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #66: If two versions of the chain compete, nodes follow the one most validators recently voted for. This rule picks the head of the chain every slot. #ETH #SmartContracts",
+    "card": {
+      "title": "How nodes pick the head of the chain",
+      "sub": "LMD-GHOST follows the branch with the most latest votes. Gasper adds finality."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/consensus-mechanisms/pos/gasper/index.md ; https://github.com/ethereum/consensus-specs/blob/master/specs/phase0/fork-choice.md",
     "status": "checked"
   },
@@ -533,6 +828,10 @@
     "long": "Every active validator attests once per epoch. Each epoch, validators are shuffled into committees spread across the 32 slots, with a target committee size of 128 and up to 64 committees per slot, so the voting load is split. Each attestation votes for a head block plus source and target checkpoints, feeding both fork choice and finality.",
     "tech": "#Ethereum Deep Dive #67: Each epoch, validators are shuffled into committees across the 32 slots (target committee size 128, up to 64 committees per slot). Each attestation votes for a head block and the source and target checkpoints. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #67: Every active validator votes once per epoch (every 6.4 minutes). Validators are randomly split into small groups so no single block gets all the votes at once. #ETH #SmartContracts",
+    "card": {
+      "title": "Everyone votes once per epoch",
+      "sub": "Validators are shuffled into committees across 32 slots to spread the load."
+    },
     "source": "https://github.com/ethereum/consensus-specs/blob/master/specs/phase0/beacon-chain.md",
     "status": "checked"
   },
@@ -541,6 +840,10 @@
     "long": "Block proposers are picked from RANDAO randomness, weighted by effective balance: a random draw weighted by stake. EIP-7917 (Fusaka, Dec 2025) makes the proposer lookahead deterministic and stores it in the beacon state, so the schedule is fixed in advance and visible on-chain, which helps preconfirmation designs.",
     "tech": "#Ethereum Deep Dive #68: Proposers are picked from RANDAO randomness, weighted by effective balance. EIP-7917 (Fusaka) makes the proposer lookahead deterministic and stores it in beacon state, which helps preconfirmation designs. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #68: Who proposes the next block? A random draw weighted by stake. Since Fusaka (Dec 2025), the proposer schedule is fixed in advance and visible on-chain. #ETH #SmartContracts",
+    "card": {
+      "title": "A stake-weighted lottery for proposers",
+      "sub": "Since Fusaka, the proposer schedule is fixed in advance and visible on-chain."
+    },
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement",
     "status": "checked"
   },
@@ -549,6 +852,11 @@
     "long": "The consensus layer signs with BLS12-381. BLS signatures on the same message can be aggregated into one 96-byte signature that verifies against the aggregate public key, so a whole committee's votes cost about one check. That's how Ethereum handles hundreds of thousands of validators voting every epoch.",
     "tech": "#Ethereum Deep Dive #69: The consensus layer signs with BLS12-381. Signatures on the same message aggregate into one 96-byte signature that verifies against the aggregate key, so a committee's votes cost about one check. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #69: Hundreds of thousands of validators vote every few minutes. Ethereum can handle it because their signatures can be squeezed together into one. #ETH #SmartContracts",
+    "card": {
+      "big": "96 bytes",
+      "title": "Many votes squeezed into one signature",
+      "sub": "BLS signatures aggregate, so a whole committee's votes cost about one check."
+    },
     "source": "https://github.com/ethereum/consensus-specs/blob/master/specs/phase0/beacon-chain.md",
     "status": "checked"
   },
@@ -557,6 +865,11 @@
     "long": "Altair (Oct 2021) added sync committees: 512 validators, picked every 256 epochs (about 27 h), sign each beacon block header. A light client only has to verify one aggregate BLS signature to follow the chain, instead of processing the full beacon chain. That lets light wallets follow Ethereum without downloading it.",
     "tech": "#Ethereum Deep Dive #70: Altair (Oct 2021) added sync committees: 512 validators picked every 256 epochs (about 27 h) sign each head. Light clients verify one aggregate BLS signature instead of following the full beacon chain. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #70: Light wallets can follow Ethereum without downloading it, thanks to a small rotating group of 512 validators that sign every block header. #ETH #SmartContracts",
+    "card": {
+      "big": "512",
+      "title": "Light clients follow a small committee",
+      "sub": "A rotating group signs each header. Light wallets verify one aggregate signature."
+    },
     "source": "https://github.com/ethereum/consensus-specs/blob/master/specs/altair/beacon-chain.md",
     "status": "checked"
   },
@@ -565,6 +878,10 @@
     "long": "Validators are slashed, losing part of their stake and being forced out, for signing conflicting messages. There are three slashable offenses: proposing two different blocks for the same slot, double voting (two attestations with the same target epoch) and surround voting (one vote's source-target span contains another's).",
     "tech": "#Ethereum Deep Dive #71: Slashable offenses: proposing two different blocks for the same slot, double voting (two attestations, same target epoch) and surround voting (one vote's source-target span contains another's). #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #71: Validators who cheat get 'slashed': part of their stake is destroyed and they are kicked out. Cheating means signing two conflicting blocks or votes. #ETH #SmartContracts",
+    "card": {
+      "title": "Three ways to get slashed",
+      "sub": "Double proposals, double votes and surround votes. Part of the stake is destroyed."
+    },
     "source": "https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/",
     "status": "checked"
   },
@@ -573,6 +890,11 @@
     "long": "Slashing penalties have two parts. An initial cut, 1/4096 of effective balance since Pectra's EIP-7251 (was 1/32). Then, about 18 days later, a correlation penalty scaled by the total stake slashed around that time. A lone validator slashed by mistake loses little; in a mass slashing each validator can lose everything.",
     "tech": "#Ethereum Deep Dive #72: Slashing: an initial cut (1/4096 of effective balance since Pectra's EIP-7251, was 1/32), then a correlation penalty about 18 days later, scaled by the total stake slashed around that time. Mass slashings can take everything. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #72: A lone validator slashed by mistake loses a small amount. But if many get slashed at the same time, each loses much more, possibly all its stake. #ETH #SmartContracts",
+    "card": {
+      "big": "1/4096",
+      "title": "Slashing hurts most in a crowd",
+      "sub": "A lone mistake costs little. In a mass slashing each validator can lose everything."
+    },
     "source": "https://github.com/ethereum/consensus-specs/blob/master/specs/electra/beacon-chain.md",
     "status": "checked"
   },
@@ -581,6 +903,10 @@
     "long": "If more than 1/3 of stake is offline, the chain can't reach the 2/3 needed to finalize. After 4 epochs without finality, the inactivity leak starts: inactive validators' balances drain faster and faster. Their share of stake shrinks until active validators hold 2/3 again and finality resumes, however many went offline.",
     "tech": "#Ethereum Deep Dive #73: Inactivity leak: after 4 epochs without finality, inactive validators' balances drain faster and faster. Their share of stake shrinks until active validators hold 2/3 again and finality resumes. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #73: If over a third of validators go offline, the chain stops finalizing. The offline ones then slowly lose stake until the active ones are back above two-thirds. #ETH #SmartContracts",
+    "card": {
+      "title": "The inactivity leak restores finality",
+      "sub": "Offline validators drain stake until active ones hold two-thirds again."
+    },
     "source": "https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/",
     "status": "checked"
   },
@@ -589,6 +915,10 @@
     "long": "Validator rewards are built from a base reward proportional to effective_balance / sqrt(total active stake). Total issuance therefore grows with the square root of total stake, much slower than stake itself, and the yield per validator falls as more ETH is staked.",
     "tech": "#Ethereum Deep Dive #74: Rewards are built from a base reward proportional to effective_balance / sqrt(total active stake). Issuance grows with the square root of stake, so per-validator yield falls as more ETH is staked. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #74: The more ETH is staked, the less each validator earns in percentage terms. Total new ETH issued grows much slower than the amount staked. #ETH #SmartContracts",
+    "card": {
+      "title": "More stake, lower yield per validator",
+      "sub": "Rewards scale with one over the square root of total stake, so issuance grows slower."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/consensus-mechanisms/pos/rewards-and-penalties/index.md",
     "status": "checked"
   },
@@ -597,6 +927,11 @@
     "long": "Staked ETH could not be withdrawn at all until Shapella on April 12, 2023 (EIP-4895). Withdrawals need no transaction or gas: a sweep scans validators in order and adds up to 16 withdrawals to each block, either partial (balance above the cap) or full (exited validators). Rewards above the stake are paid out automatically.",
     "tech": "#Ethereum Deep Dive #75: Shapella (Apr 12, 2023) enabled withdrawals (EIP-4895). A sweep scans validators in order and puts up to 16 withdrawals in each block: partial (excess balance) or full (exited). No tx or gas needed. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #75: Staked ETH could not be withdrawn at all until April 12, 2023. Since then, rewards above the stake are paid out to validators' wallets automatically. #ETH #SmartContracts",
+    "card": {
+      "big": "Up to 16",
+      "title": "Withdrawals arrive without a transaction",
+      "sub": "Since Shapella in April 2023, a sweep pays out rewards automatically, no gas needed."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-4895.md ; https://github.com/ethereum/consensus-specs/blob/master/specs/capella/beacon-chain.md",
     "status": "checked"
   },
@@ -605,6 +940,11 @@
     "long": "EIP-7251 (Pectra, May 7, 2025) raises MAX_EFFECTIVE_BALANCE from 32 to 2048 ETH for validators with 0x02 (compounding) withdrawal credentials; the minimum stays 32 ETH. Rewards above 32 can auto-compound, and validators can be consolidated, so large stakers need far fewer validators.",
     "tech": "#Ethereum Deep Dive #76: EIP-7251 (Pectra, May 7, 2025) raises MAX_EFFECTIVE_BALANCE to 2048 ETH for validators with 0x02 credentials; minimum stays 32. Rewards above 32 can auto-compound and validators can be consolidated. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #76: A validator used to be capped at 32 ETH. Since May 2025, one validator can hold up to 2,048 ETH, so big stakers need far fewer of them. #ETH #SmartContracts",
+    "card": {
+      "big": "32 → 2048 ETH",
+      "title": "Bigger validators, fewer of them",
+      "sub": "Since Pectra, rewards can auto-compound and validators can be consolidated."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-7251",
     "status": "checked"
   },
@@ -613,6 +953,10 @@
     "long": "EIP-7002 (Pectra, May 2025) lets the withdrawal credential address trigger a validator's exit, or partial withdrawals, from the execution layer through a system contract, without the validator's signing key. Before, only the signing key could start an exit. Useful for staking pools and contracts that hold the withdrawal rights.",
     "tech": "#Ethereum Deep Dive #77: EIP-7002 (Pectra) lets the withdrawal credential address trigger exits and partial withdrawals from the execution layer via a system contract, without the validator key. Useful for staking pools and contracts. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #77: Since May 2025, the wallet that receives a validator's withdrawals can also force it to exit. Before, only the validator's signing key could. #ETH #SmartContracts",
+    "card": {
+      "title": "Exits without the signing key",
+      "sub": "Since Pectra, the withdrawal address can trigger exits. Useful for staking pools."
+    },
     "source": "https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7002.md",
     "status": "checked"
   },
@@ -621,6 +965,11 @@
     "long": "EIP-6110 (Pectra, May 2025) moves validator deposits in-protocol: the execution layer passes them directly to the consensus layer, replacing the old eth1 data voting. The delay between a deposit transaction and its processing drops from about 12 hours to about 13 minutes.",
     "tech": "#Ethereum Deep Dive #78: EIP-6110 (Pectra) moves deposits in-protocol: the execution layer passes them to the consensus layer directly, instead of the old eth1 data voting. The delay drops from about 12 h to about 13 min. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #78: Starting to stake used to mean waiting about 12 hours just for your deposit to be seen. Since May 2025, it takes about 13 minutes. #ETH #SmartContracts",
+    "card": {
+      "big": "12 h → 13 min",
+      "title": "Deposits seen in minutes, not hours",
+      "sub": "EIP-6110 passes deposits straight from the execution layer to consensus."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-6110",
     "status": "checked"
   },
@@ -629,6 +978,11 @@
     "long": "Churn limits throttle how fast validators can join or leave, keeping the validator set stable and finality safe. EIP-7514 (Dencun) capped activations at 8 validators per epoch. Pectra (EIP-7251) replaced the count with an ETH-based churn, capped at 256 ETH per epoch, since validators can now hold up to 2048 ETH.",
     "tech": "#Ethereum Deep Dive #79: Churn limits throttle entries and exits. EIP-7514 (Dencun) capped activations at 8 validators per epoch. Pectra (EIP-7251) switched to an ETH-based churn, capped at 256 ETH per epoch. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #79: Validators can't all join or leave at once: there's a queue with a cap per epoch. It keeps the validator set stable and finality safe. #ETH #SmartContracts",
+    "card": {
+      "big": "256 ETH",
+      "title": "A queue at the validator door",
+      "sub": "Churn limits cap entries and exits per epoch, keeping finality safe."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-7514",
     "status": "checked"
   },
@@ -637,6 +991,11 @@
     "long": "Ethereum runs on several independent clients written by different teams. Per ethereum.org, a bug in a consensus client used by more than 1/3 of nodes could stop finality, and one with a 2/3 majority could finalize an invalid chain. Ideally no client exceeds 33%. With diversity, if one client has a bug, the others keep the chain going.",
     "tech": "#Ethereum Deep Dive #80: Client diversity matters: a bug in a consensus client run by > 1/3 of nodes could stop finality; with > 2/3, it could finalize an invalid chain. Ideally no client exceeds 33%. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #80: Ethereum runs on many independent software versions written by different teams. If one has a bug, the others keep the chain going. #ETH #SmartContracts",
+    "card": {
+      "big": "33%",
+      "title": "Why client diversity matters",
+      "sub": "A bug in a client used by over 1/3 of nodes could stop finality."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/nodes-and-clients/client-diversity/index.md",
     "status": "checked"
   },
@@ -645,6 +1004,10 @@
     "long": "MEV-Boost (by Flashbots) is out-of-protocol proposer-builder separation. Many validators don't build their own blocks: specialized builders send blocks to relays, relays pick the most profitable one for the proposer, and the proposer's consensus client publishes it. This happens outside the core protocol.",
     "tech": "#Ethereum Deep Dive #81: MEV-Boost (Flashbots) is out-of-protocol proposer-builder separation: builders send blocks to relays, relays pick the most profitable one for the proposer, whose consensus client then publishes it. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #81: Many validators don't build their own blocks. They let specialized 'builders' assemble them and pick the one that pays best. This happens outside the core protocol. #ETH #SmartContracts",
+    "card": {
+      "title": "Who really builds the blocks",
+      "sub": "With MEV-Boost, builders compete via relays and proposers pick the best payer."
+    },
     "source": "https://github.com/flashbots/flashbots-docs/blob/main/docs/flashbots-mev-boost/introduction.md",
     "status": "checked"
   },
@@ -654,6 +1017,11 @@
     "tech": "#Ethereum Deep Dive #82: EIP-4844 (Dencun, Mar 13, 2024): type-3 txs carry blobs of 4,096 field elements x 32 bytes = 131,072 bytes (128 KiB). The EVM can't read blob content, only a versioned hash of its KZG commitment. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #82: Since March 2024, Ethereum has 'blobs': big chunks of cheap data, about 128 KB each, used by rollups to post their transactions. #ETH #SmartContracts",
     "variant": "#Ethereum Deep Dive #82: Layer 2 fees dropped sharply in March 2024. Why? Ethereum added 'blobs', a cheap data lane built for rollups, each about 128 KB. #ETH #SmartContracts",
+    "card": {
+      "big": "128 KiB",
+      "title": "Blobs, a data lane for rollups",
+      "sub": "Since March 2024 rollups post data in blobs. The EVM sees only a commitment."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-4844",
     "status": "checked"
   },
@@ -662,6 +1030,11 @@
     "long": "Blobs are not kept forever. Consensus nodes must serve blob data for 4096 epochs (about 18 days), then may prune it: MIN_EPOCHS_FOR_BLOB_SIDECARS_REQUESTS, and its data column equivalent since Fusaka's PeerDAS. That is long enough for anyone to check the data, while keeping nodes light. Only the commitment stays in blocks permanently.",
     "tech": "#Ethereum Deep Dive #83: Consensus nodes must serve blob data for 4096 epochs (about 18 days), then may prune it: MIN_EPOCHS_FOR_BLOB_SIDECARS_REQUESTS, and its data column twin since Fusaka's PeerDAS. Only the commitment stays in blocks permanently. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #83: Blobs don't stay on Ethereum forever: nodes delete them after about 18 days. That's long enough for anyone to check the data, and keeps nodes light. #ETH #SmartContracts",
+    "card": {
+      "big": "18 days",
+      "title": "Blobs are deleted after a while",
+      "sub": "Long enough for anyone to check the data. Only the commitment stays forever."
+    },
     "source": "https://github.com/ethereum/consensus-specs/blob/master/specs/deneb/p2p-interface.md ; https://github.com/ethereum/consensus-specs/blob/master/specs/fulu/p2p-interface.md",
     "status": "checked"
   },
@@ -670,6 +1043,10 @@
     "long": "EIP-4844 created a separate blob gas market with its own EIP-1559-style base fee, also burned. Each blob uses 2^17 = 131,072 blob gas. At Dencun the target was 3 blobs per block and the max 6. Because the markets are separate, blob fees can be near zero when few rollups need space, even if regular gas is expensive.",
     "tech": "#Ethereum Deep Dive #84: EIP-4844 adds a separate blob gas market with its own 1559-style base fee, also burned. Each blob uses 2^17 = 131,072 blob gas. At Dencun the target was 3 blobs per block, the max 6. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #84: Blobs have their own fee, separate from normal gas. When few rollups need space, blob fees can be close to zero even if regular gas is expensive. #ETH #SmartContracts",
+    "card": {
+      "title": "Blobs have their own fee market",
+      "sub": "Blob fees can be near zero when demand is low, even if regular gas is expensive."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-4844",
     "status": "checked"
   },
@@ -678,6 +1055,11 @@
     "long": "Blob KZG commitments need a trusted setup. The KZG ceremony ran 208 days, from Jan 13 to Aug 8, 2023, and received 141,416 contributions. Its security assumption is 1-of-N: the result is secure as long as at least one participant kept its secret hidden.",
     "tech": "#Ethereum Deep Dive #85: Blob KZG commitments need a trusted setup. The KZG ceremony ran 208 days (Jan 13 - Aug 8, 2023) and got 141,416 contributions. Its security assumption: at least one participant kept its secret hidden. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #85: Blobs rely on special cryptography that needed a one-time setup. Over 141,000 contributions were made in 2023; it's secure if just one contributor was honest. #ETH #SmartContracts",
+    "card": {
+      "big": "141,416",
+      "title": "A trusted setup with a crowd",
+      "sub": "The KZG ceremony ran 208 days in 2023. One honest participant is enough."
+    },
     "source": "https://blog.ethereum.org/2024/01/23/kzg-wrap",
     "status": "checked"
   },
@@ -686,6 +1068,11 @@
     "long": "EIP-7691 (Pectra, May 2025) raised the blob target and max from 3/6 to 6/9 per block, doubling the target and giving rollups more room. That 6/9 was the baseline Fusaka then built on with Blob Parameter Only forks.",
     "tech": "#Ethereum Deep Dive #86: EIP-7691 (Pectra, May 2025) raised the blob target/max from 3/6 to 6/9 per block, the baseline that Fusaka then built on with Blob Parameter Only forks. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #86: Pectra (May 2025) doubled the blob target, from 3 to 6 per block, with a max of 9. More room for rollups. #ETH #SmartContracts",
+    "card": {
+      "big": "3/6 → 6/9",
+      "title": "Pectra doubled the blob target",
+      "sub": "More room for rollups, and the baseline Fusaka built on."
+    },
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement",
     "status": "checked"
   },
@@ -694,6 +1081,10 @@
     "long": "PeerDAS (EIP-7594, Fusaka, activated Dec 3, 2025) is data availability sampling: blob data is erasure-coded and split, and each node only downloads and checks samples instead of every blob. Like spot-checking a book, sampling gives high confidence that the full data was published, without every node fetching all of it.",
     "tech": "#Ethereum Deep Dive #87: PeerDAS (EIP-7594, Fusaka, Dec 3, 2025): blob data is erasure-coded and split so each node only downloads and checks samples. Sampling gives high confidence the full data was published, without every node fetching it all. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #87: Since Fusaka (Dec 2025), nodes don't download every blob. They check random pieces, like spot-checking a book, and are confident the whole data was published. #ETH #SmartContracts",
+    "card": {
+      "title": "Spot-checking instead of downloading",
+      "sub": "PeerDAS lets nodes sample blob data and still be confident it was all published."
+    },
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement",
     "status": "checked"
   },
@@ -702,6 +1093,11 @@
     "long": "EIP-7892 created 'Blob Parameter Only' (BPO) forks: lightweight upgrades that change only blob parameters (target, max, base fee update fraction). Two followed Fusaka: BPO1 (Dec 9, 2025) set target/max to 10/15 and BPO2 (Jan 7, 2026) to 14/21, up from 6/9 at Fusaka activation. Blob capacity can rise without a full upgrade.",
     "tech": "#Ethereum Deep Dive #88: EIP-7892 'Blob Parameter Only' forks change only blob target/max. BPO1 (Dec 9, 2025) set 10/15, BPO2 (Jan 7, 2026) set 14/21, up from 6/9 at Fusaka activation. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #88: Ethereum can now raise blob capacity with mini-upgrades that change only that setting. Two followed Fusaka: Dec 2025 and Jan 2026. #ETH #SmartContracts",
+    "card": {
+      "big": "14/21",
+      "title": "Mini-upgrades for blob capacity",
+      "sub": "BPO forks change only blob parameters. Two followed Fusaka, in Dec 2025 and Jan 2026."
+    },
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement",
     "status": "checked"
   },
@@ -710,6 +1106,10 @@
     "long": "Before Fusaka, the blob base fee could fall to 1 wei when demand was low, and rising again took a long time. EIP-7918 (Fusaka, Dec 2025) bounds the blob base fee by execution cost: when it is too low relative to the execution base fee, it stops falling. Blobs now pay a minimum linked to the price of regular gas.",
     "tech": "#Ethereum Deep Dive #89: EIP-7918 (Fusaka) bounds the blob base fee by execution cost: when the blob base fee is too low relative to the execution base fee, it stops falling. That ends 1-wei blob fees during busy periods. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #89: Blob fees used to fall to almost nothing, even when the network was busy. Since Fusaka (Dec 2025), blobs pay a minimum linked to the price of regular gas. #ETH #SmartContracts",
+    "card": {
+      "title": "A floor under blob fees",
+      "sub": "Blob fees could fall to 1 wei. Now they have a minimum linked to regular gas."
+    },
     "source": "https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement",
     "status": "checked"
   },
@@ -718,6 +1118,10 @@
     "long": "EIP-7702 (Pectra, May 2025) adds type-4 transactions: an EOA signs an authorization that sets its code to 0xef0100 || address, a pointer to a contract. Calls to the EOA then run that code in its context, so a regular wallet can batch transactions, have gas sponsored or add spending rules without changing address. The delegate must be chosen with care.",
     "tech": "#Ethereum Deep Dive #90: EIP-7702 (Pectra) type-4 tx: an EOA signs an authorization that sets its code to 0xef0100 || address, a pointer to a contract. Calls then run that code in the EOA's context, so pick the delegate with care. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #90: Since May 2025, a regular wallet can act like a smart contract wallet: batch transactions, have someone else pay gas, add spending rules, without changing its address. #ETH #SmartContracts",
+    "card": {
+      "title": "Your wallet can borrow contract code",
+      "sub": "EIP-7702 lets an EOA batch, get gas sponsored and add rules, same address."
+    },
     "source": "https://eips.ethereum.org/EIPS/eip-7702",
     "status": "checked"
   },
@@ -726,6 +1130,10 @@
     "long": "Recap of the series: Ethereum's account model, Keccak-based addresses, gas and the EIP-1559 burn, a 256-bit stack EVM, proof-of-stake with 12 s slots, Casper FFG + LMD-GHOST, validators of up to 2048 ETH, and blobs with PeerDAS for rollups. Every post cited a source. Follow @xcryptokeys for one deep dive a day.",
     "tech": "#Ethereum Deep Dive #91: Recap: account model, Keccak addresses, EIP-1559 burn, a 256-bit stack EVM, Casper FFG + LMD-GHOST, 2048 ETH validators, blobs and PeerDAS. Every post cited a source. Follow @xcryptokeys for the next series. #ETH #SmartContracts",
     "simple": "#Ethereum Deep Dive #91: Ethereum in one breath: accounts, gas, a shared virtual machine, proof-of-stake with 12 s slots, blobs for rollups. Follow @xcryptokeys for one deep dive a day. #ETH #SmartContracts",
+    "card": {
+      "title": "Ethereum, one mechanism at a time",
+      "sub": "Accounts, gas, the EVM, proof-of-stake and blobs. Every post cited a source."
+    },
     "source": "https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/history/index.md",
     "status": "checked"
   }
