@@ -67,9 +67,9 @@ Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en 
    - construit l'exécutable et le copie dans `C:\xck-publisher` ;
    - donne au compte LocalService le droit de modifier le clone et d'écrire les logs, et déclare le clone « sûr » pour git ;
    - crée une **clé SSH de déploiement**, propre au service, dans `C:\xck-publisher\ssh\` (lisible seulement par le service et les administrateurs), et les clés d'hôte de GitHub ;
-   - affiche la clé **publique** à ajouter sur GitHub : dépôt > **Settings** > **Deploy keys** > **Add deploy key**, cocher **Allow write access**. Il attend, puis vérifie que le service peut pousser (`git push --dry-run` lancé sous LocalService) ;
+   - affiche la clé **publique** à ajouter sur GitHub : dépôt > **Settings** > **Deploy keys** > **Add deploy key**, cocher **Allow write access**, puis attend Entrée (si la clé est déjà acceptée, il passe directement) ;
    - lance un test à blanc (`--dry-run`), liste les campagnes actives et demande « Démarrer le bot maintenant ? (o/N) » ;
-   - crée le service (démarrage automatique différé, redémarrage s'il plante), le démarre et vérifie que le premier passage a eu lieu (`last-run.txt`).
+   - crée le service (démarrage automatique différé, redémarrage s'il plante) et le démarre. À son démarrage, le service vérifie lui-même son accès à GitHub (`C:\xck-publisher\logs\git-check.txt`) : si GitHub refuse la clé, le script le dit, réaffiche la clé, et Entrée redémarre le service pour réessayer. Tant que l'accès est refusé, rien n'est publié (`last-run.txt` indique l'erreur git). Enfin, il vérifie que le premier passage a eu lieu (`last-run.txt`).
 
    Avec `N`, le service est installé mais arrêté (démarrage manuel) : `sc.exe config XBotsPublisher start= delayed-auto ; Start-Service XBotsPublisher` pour le démarrer. Sans les clés X, on peut répondre `o` : le service tourne mais ne publie rien.
 

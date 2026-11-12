@@ -39,6 +39,7 @@ public static class ServiceHost
         using var cts = new CancellationTokenSource();
         Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
         runner.Report($"Service démarré dans la console, un passage toutes les {runner.Loop.Interval.TotalMinutes} min ; Ctrl+C pour arrêter.");
+        runner.CheckGitAsync(cts.Token).GetAwaiter().GetResult();
         runner.Loop.RunAsync(cts.Token).GetAwaiter().GetResult();
         runner.Report("Service arrêté.");
         return 0;
@@ -59,8 +60,7 @@ public sealed class PassRunner
     public PassRunner(string? settingsPath, Settings settings)
     {
         _settingsPath = settingsPath is null ? null : Path.GetFullPath(settingsPath);
-        string dir = string.IsNullOrWhiteSpace(settings.Log.Directory) ? "logs" : settings.Log.Directory;
-        _logDir = Path.IsPathRooted(dir) ? dir : Path.Combine(AppContext.BaseDirectory, dir);
+        _logDir = Log.ResolveDirectory(string.IsNullOrWhiteSpace(settings.Log.Directory) ? "logs" : settings.Log.Directory)!;
         var interval = TimeSpan.FromMinutes(Math.Clamp(settings.Service.IntervalMinutes, 1, 1440));
         Loop = new ServiceLoop(interval, RunPassAsync, Report);
     }
@@ -76,6 +76,32 @@ public sealed class PassRunner
             File.AppendAllText(Path.Combine(_logDir, "service.log"), line + Environment.NewLine);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
+    }
+
+    /// <summary>
+    /// Au démarrage du service : vérifie l'accès git sous le compte du service (xck-publisher --check-git),
+    /// résultat dans logs/git-check.txt et service.log. Un échec n'empêche pas le service de tourner :
+    /// sans accès git, le passage ne publie rien (git pull impossible).
+    /// </summary>
+    public async Task CheckGitAsync(CancellationToken ct)
+    {
+        try
+        {
+            var psi = PassStartInfo();
+            psi.ArgumentList.Add("--check-git");
+            using var p = Process.Start(psi) ?? throw new InvalidOperationException("Impossible de lancer la vérification git.");
+            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            timeout.CancelAfter(TimeSpan.FromMinutes(2));
+            try { await p.WaitForExitAsync(timeout.Token); }
+            catch (OperationCanceledException) { p.Kill(entireProcessTree: true); Report("vérification git : pas de réponse en 2 min."); return; }
+            string file = Path.Combine(_logDir, GitCheck.ResultFile);
+            string result = File.Exists(file) ? File.ReadAllText(file).Trim() : $"code {p.ExitCode}";
+            Report($"vérification git : {result}");
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            Report($"vérification git impossible : {ex.Message}");
+        }
     }
 
     private ProcessStartInfo PassStartInfo()
@@ -150,7 +176,12 @@ internal sealed class WindowsService : ServiceBase
     protected override void OnStart(string[] args)
     {
         _cts = new CancellationTokenSource();
-        _loop = Task.Run(() => _runner.Loop.RunAsync(_cts.Token));
+        var ct = _cts.Token;
+        _loop = Task.Run(async () =>
+        {
+            await _runner.CheckGitAsync(ct);
+            await _runner.Loop.RunAsync(ct);
+        });
         _runner.Report($"Service démarré, un passage toutes les {_runner.Loop.Interval.TotalMinutes} min.");
     }
 

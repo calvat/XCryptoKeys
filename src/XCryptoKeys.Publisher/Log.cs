@@ -33,10 +33,15 @@ public sealed class Log : IDisposable
 
     /// <param name="directory">Dossier des logs ; null ou vide = console seulement (dry-run, tests).</param>
     /// <param name="verbose">true : chaque passage est écrit dans le fichier, même sans rien à faire.</param>
+    /// <summary>Dossier des logs en chemin complet (relatif = à côté de l'exécutable) ; null si vide.</summary>
+    public static string? ResolveDirectory(string? directory) =>
+        string.IsNullOrWhiteSpace(directory) ? null
+        : Path.IsPathRooted(directory) ? directory : Path.Combine(AppContext.BaseDirectory, directory);
+
     public Log(string? directory, int retentionDays, bool verbose = false)
     {
         if (string.IsNullOrWhiteSpace(directory)) return;
-        _dir = Path.IsPathRooted(directory) ? directory : Path.Combine(AppContext.BaseDirectory, directory);
+        _dir = ResolveDirectory(directory);
         _retentionDays = retentionDays;
         if (verbose) Flush();
     }
@@ -47,7 +52,9 @@ public sealed class Log : IDisposable
     /// <summary>Un post publié : compté pour le résumé et last-run.txt.</summary>
     public void PostPublished(string message) { Posted++; Action(message); }
     public void Warn(string message) { Warnings++; Write("WARN ", message, significant: true); }
-    public void Error(string message) { Errors++; Write("ERROR", message, significant: true); }
+    public void Error(string message) { Errors++; FirstError ??= message; Write("ERROR", message, significant: true); }
+    /// <summary>Première erreur du passage, reprise dans last-run.txt.</summary>
+    public string? FirstError { get; private set; }
 
     /// <summary>Retient le prochain post dû le plus proche, pour last-run.txt.</summary>
     public void NoteNextDue(DateTimeOffset due, string what)
@@ -95,7 +102,7 @@ public sealed class Log : IDisposable
 
     /// <summary>Résultat du passage, pour last-run.txt.</summary>
     public string Result =>
-        Errors > 0 ? $"{Errors} erreur(s){(Posted > 0 ? $", {Posted} post(s) publié(s)" : "")}"
+        Errors > 0 ? $"{Errors} erreur(s){(Posted > 0 ? $", {Posted} post(s) publié(s)" : "")} : {FirstError}"
         : Posted > 0 ? $"{Posted} post(s) publié(s)"
         : HasActivity ? "état mis à jour, aucun post publié"
         : Warnings > 0 ? $"{Warnings} avertissement(s), rien publié"

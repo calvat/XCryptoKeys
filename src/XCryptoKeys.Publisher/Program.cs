@@ -9,6 +9,7 @@ string? only = null;
 string? onlyAccount = null;
 bool dryRun = false;
 bool service = false;
+bool checkGit = false;
 DateTimeOffset now = DateTimeOffset.UtcNow;
 
 for (int i = 0; i < args.Length; i++)
@@ -17,6 +18,7 @@ for (int i = 0; i < args.Length; i++)
     {
         case "--dry-run": dryRun = true; break;
         case "--service": service = true; break;
+        case "--check-git": checkGit = true; break;
         case "--settings" when i + 1 < args.Length: settingsPath = args[++i]; break;
         case "--campaign" when i + 1 < args.Length: only = args[++i]; break;
         case "--account" when i + 1 < args.Length: onlyAccount = args[++i]; break;
@@ -27,6 +29,7 @@ for (int i = 0; i < args.Length; i++)
             Console.WriteLine("""
                 xck-publisher [--dry-run] [--account <compte>] [--campaign <nom>] [--settings <fichier>] [--now <date ISO>]
                 xck-publisher --service [--settings <fichier>]
+                xck-publisher --check-git [--settings <fichier>]
 
                   --dry-run    affiche ce qui serait publié, sans appel à X ni modification du dépôt
                   --account    ne traite qu'un compte (ex. XCryptoKeys, nom du dossier dans accounts/)
@@ -36,6 +39,8 @@ for (int i = 0; i < args.Length; i++)
                   --now        simule l'heure courante (UTC), pour tester le calendrier
                   --service    tourne en continu : un passage toutes les Service.IntervalMinutes minutes
                                (service Windows « XBotsPublisher », ou dans la console : Ctrl+C pour arrêter)
+                  --check-git  vérifie l'accès git (lecture et écriture, sans rien pousser) ;
+                               résultat dans logs/git-check.txt
                 """);
             return 0;
         default:
@@ -45,6 +50,7 @@ for (int i = 0; i < args.Length; i++)
 }
 
 if (service) return ServiceHost.Run(settingsPath);
+if (checkGit) return GitCheck.Run(settingsPath);
 
 // --campaign XCryptoKeys/bitcoin-001 : compte et campagne en une fois.
 if (only is not null && only.Split('/', '\\') is [var accountPart, var campaignPart])

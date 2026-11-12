@@ -230,48 +230,21 @@ if ($PSCmdlet.ShouldProcess($localSettings, "Écrire RepoPath$(if ($serviceMode)
     Write-Host "appsettings.local.json à jour."
 }
 
-# 6. Service : clé de déploiement sur GitHub, testée sous le compte LocalService
-$script:testDiag = ""
-function Test-GitAsLocalService {
-    # Tâche planifiée jetable sous LocalService (sans mot de passe), qui lance un « git push --dry-run » et note le résultat.
-    $out = Join-Path $logsDir "git-test.txt"
-    $cmdFile = Join-Path $logsDir "git-test.cmd"
-    Remove-Item $out -ErrorAction SilentlyContinue
-    $body = "@echo off`r`nset GIT_TERMINAL_PROMPT=0`r`nset GIT_SSH_COMMAND=$sshCommand`r`n`"$($gitCmd.Source)`" -C `"$RepoPath`" push --dry-run $sshUrl HEAD:refs/heads/$branch > `"$out`" 2>&1`r`necho CODE=%ERRORLEVEL%>> `"$out`"`r`n"
-    [IO.File]::WriteAllText($cmdFile, $body, (New-Object Text.ASCIIEncoding))
-    $testTask = "X-Bots test git"
-    $principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\LOCALSERVICE" -LogonType ServiceAccount
-    $action = New-ScheduledTaskAction -Execute "cmd.exe" -Argument "/c `"$cmdFile`""
-    Register-ScheduledTask -TaskName $testTask -Action $action -Principal $principal -Force | Out-Null
-    try {
-        Start-ScheduledTask -TaskName $testTask
-        # Le fichier n'existe qu'une fois la commande lancée : Test-Path d'abord (Select-String s'arrête sur un fichier absent).
-        for ($i = 0; $i -lt 60; $i++) {
-            if ((Test-Path $out) -and (Select-String -Path $out -Pattern '^CODE=' -Quiet)) { break }
-            Start-Sleep -Seconds 1
-        }
-        if (-not (Test-Path $out)) {
-            $info = Get-ScheduledTaskInfo -TaskName $testTask
-            $script:testDiag = "la commande de test n'a rien écrit en 60 s (tâche de test : résultat 0x{0:X}, lancée le {1})." -f $info.LastTaskResult, $info.LastRunTime
-        }
-    }
-    finally {
-        Unregister-ScheduledTask -TaskName $testTask -Confirm:$false
-        Remove-Item $cmdFile -ErrorAction SilentlyContinue
-    }
-    $text = if (Test-Path $out) { Get-Content $out -Raw } else { "$script:testDiag" }
-    Remove-Item $out -ErrorAction SilentlyContinue
-    # Refusé pour retard sur GitHub (« rejected ») : l'accès en écriture marche quand même.
-    $ok = ($text -match 'CODE=0') -or ($text -match 'rejected|up-to-date|->')
-    $ok = $ok -and ($text -notmatch 'Permission denied|read only|Host key verification failed|Could not read|fatal:')
-    return [pscustomobject]@{ Ok = $ok; Text = $text }
-}
-
+# 6. Service : clé de déploiement à ajouter sur GitHub (vérifiée par le service lui-même au démarrage, sous LocalService)
+$gitCheckFile = Join-Path $logsDir "git-check.txt"
 if ($serviceMode -and -not $WhatIfPreference) {
+    # Restes d'une installation précédente (ancien test par tâche planifiée).
+    Unregister-ScheduledTask -TaskName "X-Bots test git" -Confirm:$false -ErrorAction SilentlyContinue
+    Remove-Item (Join-Path $logsDir "git-test.*") -ErrorAction SilentlyContinue
+
     Step "Accès GitHub du service (clé de déploiement)"
-    $test = Test-GitAsLocalService
-    while (-not $test.Ok) {
-        Write-Host "Le service n'a pas encore le droit de pousser sur GitHub. Ajouter cette clé PUBLIQUE au dépôt :" -ForegroundColor Yellow
+    $lastCheck = if (Test-Path $gitCheckFile) { (Get-Content $gitCheckFile -Raw -Encoding UTF8).Trim() } else { "" }
+    if ($lastCheck -match '^\S+ OK ') {
+        Write-Host "Clé déjà acceptée par GitHub lors de la dernière vérification du service :" -ForegroundColor Green
+        Write-Host "  $lastCheck"
+    }
+    else {
+        Write-Host "Le service pousse sur GitHub avec sa propre clé SSH. Ajouter cette clé PUBLIQUE au dépôt (une seule fois) :" -ForegroundColor Yellow
         Write-Host ""
         Write-Host (Get-Content "$keyPath.pub" -Raw).Trim()
         Write-Host ""
@@ -279,15 +252,21 @@ if ($serviceMode -and -not $WhatIfPreference) {
         Write-Host "  2. Title : x-bots service $env:COMPUTERNAME ; Key : coller la ligne ci-dessus"
         Write-Host "  3. Cocher « Allow write access », puis « Add key »"
         Write-Host ""
-        Write-Host "Réponse de git sous LocalService :" -ForegroundColor DarkGray
-        Write-Host $test.Text -ForegroundColor DarkGray
-        $answer = Read-Host "Entrée quand c'est fait (ou « q » pour continuer sans : le service ne pourra pas pousser)"
-        if ($answer -match '^q') { Write-Warning "accès GitHub non vérifié : le service publiera, mais ne pourra pas pousser status.json (erreurs dans le log)."; break }
-        $test = Test-GitAsLocalService
+        Write-Host "Si elle est déjà ajoutée, appuyer directement sur Entrée. L'accès est vérifié par le service à son démarrage."
+        [void](Read-Host "Entrée quand la clé est ajoutée")
     }
-    if ($test.Ok) { Write-Host "Accès GitHub du service : OK (git push --dry-run sous LocalService)." -ForegroundColor Green }
 }
 
+# Lit la vérification git que le service fait à son démarrage (logs\git-check.txt, plus récente que $since).
+function Wait-GitCheck([datetime]$since) {
+    for ($i = 0; $i -lt 90; $i++) {
+        if ((Test-Path $gitCheckFile) -and (Get-Item $gitCheckFile).LastWriteTime -ge $since) {
+            return (Get-Content $gitCheckFile -Raw -Encoding UTF8).Trim()
+        }
+        Start-Sleep -Seconds 1
+    }
+    return $null
+}
 # 7. Test à blanc
 if ((Test-Path $exe) -and -not $WhatIfPreference) {
     Step "Test à blanc (--dry-run : rien n'est publié ni modifié)"
@@ -350,6 +329,20 @@ if ($serviceMode) {
                 if ((Test-Path $lastRun) -and (Get-Item $lastRun).LastWriteTime -ge $startedAt) { break }
                 Start-Sleep -Seconds 1
             }
+            # Accès git vérifié par le service : tant que GitHub refuse la clé, rien n'est publié (git pull impossible).
+            $since = $startedAt
+            while ($true) {
+                $check = Wait-GitCheck $since
+                if ($null -eq $check) { Write-Warning "le service n'a pas écrit de vérification git en 90 s (voir plus bas)."; break }
+                if ($check -match '^\S+ OK ') { Write-Host "Accès GitHub du service : $check" -ForegroundColor Green; break }
+                Write-Host "Accès GitHub du service refusé : $check" -ForegroundColor Yellow
+                Write-Host "Vérifier la clé sur https://github.com/$ghOwner/$ghRepo/settings/keys (« Allow write access » coché). Clé publique :"
+                Write-Host (Get-Content "$keyPath.pub" -Raw).Trim()
+                $answer = Read-Host "Entrée pour réessayer (le service redémarre), « s » pour passer (rien ne sera publié tant que l'accès est refusé)"
+                if ($answer -match '^s') { break }
+                $since = Get-Date
+                Restart-Service -Name $ServiceName -Force
+            }
             if ((Test-Path $lastRun) -and (Get-Item $lastRun).LastWriteTime -ge $startedAt) {
                 Write-Host "Service démarré, premier passage fait :" -ForegroundColor Green
                 Write-Host "  $((Get-Content $lastRun -Raw -Encoding UTF8).Trim())"
@@ -367,6 +360,7 @@ if ($serviceMode) {
         else {
             Write-Host "Service installé, arrêté (démarrage manuel). Pour le démarrer, et au démarrage du PC ensuite :" -ForegroundColor Yellow
             Write-Host "  sc.exe config $ServiceName start= delayed-auto ; Start-Service $ServiceName"
+            Write-Host "L'accès GitHub sera vérifié par le service à son démarrage : résultat dans $gitCheckFile."
         }
     }
 }
