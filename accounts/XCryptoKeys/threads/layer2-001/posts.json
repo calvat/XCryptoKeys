@@ -10,7 +10,10 @@
       "sub": "Who you trust, for what, and how you get out. One fact a day."
     },
     "source": "https://medium.com/l2beat/stages-update-security-council-requirements-4c79cea8ef52 ; https://github.com/lightning/bolts/blob/master/03-transactions.md",
-    "status": "checked"
+    "status": "posted",
+    "posted_at": "2026-11-12T20:00:06Z",
+    "tweet_id": "2120969904643846461",
+    "url": "https://x.com/xcryptokeys/status/2120969904643846461"
   },
   {
     "index": 2,
@@ -763,7 +766,7 @@
     "tech": "Crypto #Layer2 Unlocked #62: EIP-7691, shipped in Pectra on May 7, 2025, moved blob target/max per block from 3/6 to 6/9, doubling the target data capacity available to rollups.",
     "simple": "Crypto #Layer2 Unlocked #62: Ethereum's Pectra upgrade (May 7, 2025) raised blob capacity to a target of 6 and a max of 9 blobs per block, up from 3 and 6. More room for rollup data.",
     "card": {
-      "big": "3/6 \u2192 6/9",
+      "big": "3/6 → 6/9",
       "title": "Pectra doubled the blob target",
       "sub": "EIP-7691, shipped May 7, 2025, gave rollups twice the target data capacity."
     },
