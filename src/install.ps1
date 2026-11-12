@@ -41,8 +41,9 @@ $SidSystem = "*S-1-5-18"
 $SidAdmins = "*S-1-5-32-544"
 
 function Invoke-Native([string]$exe, [string[]]$arguments, [string]$what) {
-    & $exe @arguments
-    if ($LASTEXITCODE -ne 0) { Fail "$what a échoué (code $LASTEXITCODE)." }
+    # Sortie affichée seulement en cas d'échec (icacls écrit une ligne par fichier traité).
+    $output = & $exe @arguments 2>&1
+    if ($LASTEXITCODE -ne 0) { $output | ForEach-Object { Write-Host "  $_" }; Fail "$what a échoué (code $LASTEXITCODE)." }
 }
 
 # Ajoute ou remplace une valeur « A.B » dans un objet venu de ConvertFrom-Json.
@@ -230,6 +231,7 @@ if ($PSCmdlet.ShouldProcess($localSettings, "Écrire RepoPath$(if ($serviceMode)
 }
 
 # 6. Service : clé de déploiement sur GitHub, testée sous le compte LocalService
+$script:testDiag = ""
 function Test-GitAsLocalService {
     # Tâche planifiée jetable sous LocalService (sans mot de passe), qui lance un « git push --dry-run » et note le résultat.
     $out = Join-Path $logsDir "git-test.txt"
@@ -243,13 +245,21 @@ function Test-GitAsLocalService {
     Register-ScheduledTask -TaskName $testTask -Action $action -Principal $principal -Force | Out-Null
     try {
         Start-ScheduledTask -TaskName $testTask
-        for ($i = 0; $i -lt 60 -and -not (Select-String -Path $out -Pattern '^CODE=' -Quiet -ErrorAction SilentlyContinue); $i++) { Start-Sleep -Seconds 1 }
+        # Le fichier n'existe qu'une fois la commande lancée : Test-Path d'abord (Select-String s'arrête sur un fichier absent).
+        for ($i = 0; $i -lt 60; $i++) {
+            if ((Test-Path $out) -and (Select-String -Path $out -Pattern '^CODE=' -Quiet)) { break }
+            Start-Sleep -Seconds 1
+        }
+        if (-not (Test-Path $out)) {
+            $info = Get-ScheduledTaskInfo -TaskName $testTask
+            $script:testDiag = "la commande de test n'a rien écrit en 60 s (tâche de test : résultat 0x{0:X}, lancée le {1})." -f $info.LastTaskResult, $info.LastRunTime
+        }
     }
     finally {
         Unregister-ScheduledTask -TaskName $testTask -Confirm:$false
         Remove-Item $cmdFile -ErrorAction SilentlyContinue
     }
-    $text = if (Test-Path $out) { Get-Content $out -Raw } else { "" }
+    $text = if (Test-Path $out) { Get-Content $out -Raw } else { "$script:testDiag" }
     Remove-Item $out -ErrorAction SilentlyContinue
     # Refusé pour retard sur GitHub (« rejected ») : l'accès en écriture marche quand même.
     $ok = ($text -match 'CODE=0') -or ($text -match 'rejected|up-to-date|->')
