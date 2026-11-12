@@ -115,10 +115,24 @@ public static class XCheck
         if (v.Length != t.Length) notes.Add("espaces ou retour à la ligne autour (retirés automatiquement)");
         if (Settings.IsUnset(t) && t.Length > 0) notes.Add("encore le texte d'exemple");
         if (t.StartsWith("AAAA") && t.Length > 80) notes.Add("ressemble à un Bearer Token (OAuth 2.0 « app-only ») : ce n'est pas la bonne clé");
-        if (t.EndsWith("OjE6Y2k", StringComparison.Ordinal)) notes.Add("ressemble à un Client ID OAuth 2.0 : ce n'est pas la bonne clé");
+        if (LooksLikeOAuth2ClientId(t)) notes.Add("ressemble à un Client ID OAuth 2.0 (34 caractères, « …:1:ci » une fois décodé) : ce n'est pas la bonne clé");
         if (name == "AccessToken" && t.Length > 0 && !System.Text.RegularExpressions.Regex.IsMatch(t, @"^\d+-\w+$"))
             notes.Add("un Access Token commence normalement par l'identifiant numérique du compte suivi d'un tiret");
         yield return $"{name} : {t.Length} caractères{(notes.Count > 0 ? " — " + string.Join(" ; ", notes) : "")}";
+    }
+
+    /// <summary>Un Client ID OAuth 2.0 de X est du base64 de « &lt;id&gt;:1:ci » (34 caractères en général).</summary>
+    public static bool LooksLikeOAuth2ClientId(string value)
+    {
+        if (value.Length < 20 || value.Length > 60) return false;
+        string b64 = value.Replace('-', '+').Replace('_', '/');
+        b64 = b64.PadRight(b64.Length + (4 - b64.Length % 4) % 4, '=');
+        try
+        {
+            string decoded = System.Text.Encoding.ASCII.GetString(Convert.FromBase64String(b64));
+            return decoded.EndsWith(":1:ci", StringComparison.Ordinal);
+        }
+        catch (FormatException) { return false; }
     }
 
     public static async Task<(bool Ok, List<string> Lines)> CheckAccountAsync(Settings settings, Account account, HttpMessageHandler? handler = null)
