@@ -1,0 +1,1791 @@
+{
+ "1": {
+  "type": "big",
+  "k": "Private key range",
+  "big": "1 … n−1",
+  "label": "n ≈ 1.158 × 10^77, just below 2^256",
+  "side": [
+   {
+    "k": "Built on top",
+    "label": "Public keys, addresses, signatures"
+   },
+   {
+    "k": "Assumption",
+    "label": "Picked truly at random",
+    "sub": "far too large to guess",
+    "hl": true
+   }
+  ]
+ },
+ "2": {
+  "type": "compare",
+  "left": {
+   "head": "secp256k1",
+   "items": [
+    "Koblitz curve, SEC 2",
+    "Bitcoin chose it, Ethereum reused it",
+    "Almost unused before Bitcoin"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "NIST P-256",
+   "items": [
+    "What most software relied on",
+    "Not used by Bitcoin or Ethereum"
+   ]
+  }
+ },
+ "3": {
+  "type": "formula",
+  "k": "secp256k1",
+  "expr": "y² = x³ + 7  (mod p)",
+  "terms": [
+   {
+    "k": "a = 0, b = 7",
+    "v": "no a·x term"
+   },
+   {
+    "k": "p",
+    "v": "2^256 − 2^32 − 977, a 78-digit prime"
+   },
+   {
+    "k": "so",
+    "v": "fast implementations"
+   }
+  ]
+ },
+ "4": {
+  "type": "compare",
+  "left": {
+   "head": "secp256k1",
+   "items": [
+    "Predictable, non-random constants",
+    "Less room for a backdoor",
+    "Often > 30% faster when optimized"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "NIST curves",
+   "items": [
+    "Constants not all explainable"
+   ]
+  }
+ },
+ "5": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Private key",
+    "label": "d"
+   },
+   {
+    "k": "Scalar multiplication",
+    "label": "P = d · G",
+    "sub": "fast",
+    "hl": true
+   },
+   {
+    "k": "Public key",
+    "label": "P"
+   }
+  ],
+  "note": {
+   "k": "Going back: P → d",
+   "v": "ECDLP, believed infeasible for classical computers"
+  }
+ },
+ "6": {
+  "type": "segments",
+  "head": "Uncompressed layout: 1 + 32 + 32 = 65 bytes",
+  "total": "",
+  "legend": false,
+  "items": [
+   {
+    "label": "0x04",
+    "value": 4,
+    "alt": true
+   },
+   {
+    "label": "x · 32 bytes",
+    "value": 32,
+    "hl": true
+   },
+   {
+    "label": "y · 32 bytes",
+    "value": 32
+   }
+  ],
+  "cards": [
+   {
+    "k": "Uncompressed",
+    "label": "0x04 + x + y = 65 bytes"
+   },
+   {
+    "k": "Compressed",
+    "label": "0x02/0x03 + x = 33 bytes",
+    "sub": "parity of y; y recomputed from y² = x³ + 7",
+    "hl": true
+   }
+  ]
+ },
+ "7": {
+  "type": "bars",
+  "head": "Key size vs security",
+  "items": [
+   {
+    "label": "Key length",
+    "value": 256,
+    "display": "256 bits"
+   },
+   {
+    "label": "Security level",
+    "value": 128,
+    "display": "≈ 2^128 steps (Pollard's rho, √n)",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Still",
+   "v": "Far beyond any classical computer"
+  }
+ },
+ "8": {
+  "type": "segments",
+  "head": "ECDSA signature (strict DER, low-S)",
+  "total": "≤ 72 bytes · avg ≈ 71.494",
+  "items": [
+   {
+    "label": "DER headers",
+    "value": 6,
+    "display": "≈ 6 B",
+    "short": "6 B"
+   },
+   {
+    "label": "R",
+    "value": 33,
+    "display": "≤ 33 B",
+    "short": "R ≤ 33 B"
+   },
+   {
+    "label": "S",
+    "value": 32,
+    "display": "≤ 32 B (low-S)",
+    "short": "S ≤ 32 B",
+    "hl": true
+   },
+   {
+    "label": "sighash",
+    "value": 1,
+    "display": "1 B"
+   }
+  ],
+  "note": {
+   "k": "BIP62",
+   "v": "Length varies: at most 72 bytes"
+  }
+ },
+ "9": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Two signatures, same k",
+    "sub": "→ same r",
+    "alt": true
+   },
+   {
+    "label": "k = (z1 − z2) / (s1 − s2)"
+   },
+   {
+    "label": "d = (s1·k − z1) / r",
+    "sub": "private key recovered",
+    "hl": true
+   }
+  ],
+  "side": [
+   {
+    "k": "ECDSA",
+    "label": "s = k⁻¹ (z + r·d) mod n"
+   },
+   {
+    "k": "No hacking needed",
+    "label": "Simple algebra",
+    "alt": true
+   }
+  ]
+ },
+ "10": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Sony PS3 code",
+    "label": "Same nonce k reused",
+    "bad": true
+   },
+   {
+    "k": "fail0verflow · 2010",
+    "label": "Nonce-reuse algebra"
+   },
+   {
+    "k": "Result",
+    "label": "Sony's signing key",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Lesson",
+   "v": "One randomness mistake breaks ECDSA"
+  }
+ },
+ "11": {
+  "type": "timeline",
+  "w": 260,
+  "events": [
+   {
+    "t": "2013",
+    "label": "Java SecureRandom flaw",
+    "sub": "colliding values",
+    "bad": true
+   },
+   {
+    "t": "wallets",
+    "label": "Repeated r values",
+    "sub": "reused nonces",
+    "alt": true
+   },
+   {
+    "t": "attackers",
+    "label": "Keys solved",
+    "sub": "funds taken",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Alert of Aug 11, 2013",
+   "v": "Android Bitcoin wallets lost funds"
+  }
+ },
+ "12": {
+  "type": "hash",
+  "fn": "HMAC-DRBG",
+  "fn_k": "RFC 6979",
+  "inputs": [
+   {
+    "label": "Private key"
+   },
+   {
+    "label": "Message hash"
+   }
+  ],
+  "out": {
+   "k": "Deterministic nonce",
+   "label": "k",
+   "lines": [
+    "same msg → same k",
+    "different msg → different k"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "No RNG needed",
+   "v": "The nonce can't repeat by bad luck"
+  }
+ },
+ "13": {
+  "type": "compare",
+  "left": {
+   "head": "Low S · accepted",
+   "big": "s ≤ n/2",
+   "items": [
+    "BIP146 LOW_S",
+    "Relay policy in Core"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Twin · refused",
+   "big": "n − s",
+   "items": [
+    "Also valid ECDSA",
+    "Changed txids of non-SegWit txs"
+   ]
+  }
+ },
+ "14": {
+  "type": "timeline",
+  "w": 260,
+  "events": [
+   {
+    "t": "until 2015",
+    "label": "OpenSSL parses signatures",
+    "sub": "accepts non-DER variants"
+   },
+   {
+    "t": "1.0.0p / 1.0.1k",
+    "label": "Stops accepting some",
+    "sub": "some nodes reject the chain",
+    "bad": true
+   },
+   {
+    "t": "BIP66",
+    "label": "Strict DER",
+    "sub": "Bitcoin defines its own rules",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Lesson",
+   "v": "Consensus can't depend on a library's quirks"
+  }
+ },
+ "15": {
+  "type": "bars",
+  "head": "ECDSA validation speed (Core 0.12.0, Feb 2016)",
+  "items": [
+   {
+    "label": "OpenSSL",
+    "value": 1,
+    "display": "1×"
+   },
+   {
+    "label": "libsecp256k1",
+    "value": 7,
+    "display": "up to 7× faster (64-bit)",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Reindex + block validation",
+   "v": "Less than half the time"
+  }
+ },
+ "16": {
+  "type": "timeline",
+  "w": 250,
+  "events": [
+   {
+    "t": "1991",
+    "label": "Schnorr's paper",
+    "sub": "US patent 4,995,082"
+   },
+   {
+    "t": "Jan 2009",
+    "label": "Bitcoin launches",
+    "sub": "uses ECDSA"
+   },
+   {
+    "t": "Feb 2010",
+    "label": "Patent expires"
+   },
+   {
+    "t": "2021",
+    "label": "Taproot · BIP340",
+    "hl": true
+   }
+  ]
+ },
+ "17": {
+  "type": "compare",
+  "left": {
+   "head": "Schnorr · BIP340",
+   "big": "64 B",
+   "items": [
+    "Fixed: R.x then s",
+    "32-byte x-only keys"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "ECDSA · DER",
+   "big": "≤ 72 B",
+   "items": [
+    "Variable size",
+    "33-byte compressed keys"
+   ]
+  },
+  "note": {
+   "k": "Less data on-chain",
+   "v": "Lower fees"
+  }
+ },
+ "18": {
+  "type": "compare",
+  "left": {
+   "head": "Schnorr",
+   "items": [
+    "Provably SUF-CMA",
+    "Random oracle model",
+    "Only assumes ECDLP is hard"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "ECDSA",
+   "items": [
+    "Best known proofs need stronger assumptions"
+   ]
+  }
+ },
+ "19": {
+  "type": "formula",
+  "k": "Schnorr verification is linear",
+  "expr": "s·G = R + e·P",
+  "terms": [
+   {
+    "k": "s = Σ sᵢ, R = Σ Rᵢ",
+    "v": "signers add nonces and partial signatures"
+   },
+   {
+    "k": "P = Σ Pᵢ",
+    "v": "the equation holds for the aggregate key"
+   },
+   {
+    "k": "Basis of",
+    "v": "MuSig, MuSig2, FROST"
+   }
+  ]
+ },
+ "20": {
+  "type": "hash",
+  "fn": "MuSig2",
+  "fn_k": "BIP327",
+  "inputs": [
+   {
+    "label": "Signer A"
+   },
+   {
+    "label": "Signer B"
+   },
+   {
+    "label": "Signer C"
+   }
+  ],
+  "out": {
+   "k": "On chain",
+   "label": "One key, one 64-byte sig",
+   "sub": "indistinguishable from a single-signer output",
+   "hl": true
+  }
+ },
+ "21": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Round 1 · in advance",
+    "label": "Exchange nonces",
+    "sub": "before the message is known"
+   },
+   {
+    "k": "Round 2",
+    "label": "Partial signatures",
+    "hl": true
+   },
+   {
+    "k": "Done",
+    "label": "No more interaction"
+   }
+  ],
+  "note": {
+   "k": "MuSig1 needed 3 rounds",
+   "v": "MuSig2 needs 2"
+  }
+ },
+ "22": {
+  "type": "compare",
+  "left": {
+   "head": "Schnorr (R, s)",
+   "items": [
+    "No curve ops inside the hash",
+    "Batch verification: many at once, faster"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Standard ECDSA",
+   "items": [
+    "No faster batch check without extra witness data"
+   ]
+  }
+ },
+ "23": {
+  "type": "hash",
+  "fn": "SHA-256",
+  "fn_k": "tagged",
+  "inputs": [
+   {
+    "label": "SHA256(tag)"
+   },
+   {
+    "label": "SHA256(tag)"
+   },
+   {
+    "label": "x",
+    "hl": true
+   }
+  ],
+  "out": {
+   "k": "e.g. 'BIP0340/challenge'",
+   "label": "Tagged hash",
+   "sub": "the 64-byte prefix is one block: precomputable"
+  },
+  "note": {
+   "k": "Domain separation",
+   "v": "A hash for one purpose can't pass for another"
+  }
+ },
+ "24": {
+  "type": "formula",
+  "k": "Taproot output key",
+  "expr": "Q = P + hash(P ‖ m)·G",
+  "terms": [
+   {
+    "k": "P",
+    "v": "internal key"
+   },
+   {
+    "k": "m",
+    "v": "Merkle root of backup scripts"
+   },
+   {
+    "k": "Key path",
+    "v": "plain signature, scripts stay hidden"
+   }
+  ]
+ },
+ "25": {
+  "type": "tree",
+  "leaves": [
+   "script A",
+   "script B",
+   "script C",
+   "script D"
+  ],
+  "hl": [
+   1
+  ],
+  "root": "Merkle root",
+  "x1": 360,
+  "side": [
+   {
+    "k": "Control block",
+    "label": "33 + 32m bytes",
+    "sub": "m = path length, 0 to 128"
+   },
+   {
+    "k": "Here: script B",
+    "label": "m = 2 → 97 bytes",
+    "sub": "dashed: the 2 hashes revealed",
+    "alt": true
+   },
+   {
+    "k": "Revealed",
+    "label": "Only the branch used",
+    "hl": true
+   }
+  ],
+  "proof": true
+ },
+ "26": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "Bitcoin until 2021",
+    "label": "ECDSA only",
+    "at": 0.15
+   },
+   {
+    "t": "Nov 14, 2021 · block 709,632",
+    "label": "Taproot activates",
+    "sub": "Schnorr + SegWit v1 outputs",
+    "hl": true,
+    "at": 0.8
+   }
+  ],
+  "note": {
+   "k": "BIP340 · 341 · 342",
+   "v": "Alongside the existing ECDSA"
+  }
+ },
+ "27": {
+  "type": "segments",
+  "head": "Bitcoin block header",
+  "total": "80 bytes → SHA256(SHA256(·))",
+  "items": [
+   {
+    "label": "version",
+    "value": 4,
+    "display": "4"
+   },
+   {
+    "label": "prev hash",
+    "value": 32,
+    "display": "32"
+   },
+   {
+    "label": "Merkle root",
+    "value": 32,
+    "display": "32"
+   },
+   {
+    "label": "time",
+    "value": 4,
+    "display": "4"
+   },
+   {
+    "label": "nBits",
+    "value": 4,
+    "display": "4"
+   },
+   {
+    "label": "nonce",
+    "value": 4,
+    "display": "4",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Change any bit",
+   "v": "Completely different hash: miners retry until below target"
+  }
+ },
+ "28": {
+  "type": "fields",
+  "struct": {
+   "name": "Genesis block hash",
+   "lines": [
+    {
+     "key": "",
+     "val": "0000000000 19d6689c085ae165",
+     "hl": true
+    },
+    [
+     "",
+     "831e934ff763ae46a2a6c172"
+    ],
+    [
+     "",
+     "b3f1b60a8ce26f"
+    ]
+   ]
+  },
+  "w": 560,
+  "side": [
+   {
+    "k": "Ten leading zeros",
+    "label": "= a number below the target",
+    "hl": true,
+    "from": 0
+   },
+   {
+    "k": "Mining",
+    "label": "A hunt for such hashes"
+   }
+  ]
+ },
+ "29": {
+  "type": "bars",
+  "head": "Work vs hash strength (log2)",
+  "items": [
+   {
+    "label": "Mining by end 2015",
+    "value": 84,
+    "display": "≈ 2^84 hashes",
+    "alt": true
+   },
+   {
+    "label": "20-byte collision",
+    "value": 80,
+    "display": "2^80: 'not infeasible'"
+   },
+   {
+    "label": "32-byte SHA-256",
+    "value": 128,
+    "display": "2^128 · P2WSH",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "BIP141",
+   "v": "Mining work changed which hash sizes are safe"
+  }
+ },
+ "30": {
+  "type": "compare",
+  "left": {
+   "head": "P2WSH · SHA-256",
+   "big": "2^128",
+   "items": [
+    "256-bit commitment",
+    "34-byte scriptPubKey"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "P2SH · 160-bit",
+   "big": "2^80",
+   "items": [
+    "Birthday collision a co-signer could grind",
+    "23-byte scriptPubKey"
+   ]
+  },
+  "note": {
+   "k": "Birthday paradox",
+   "v": "n-bit hash collision ≈ 2^(n/2) tries"
+  }
+ },
+ "31": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Input",
+    "label": "Public key"
+   },
+   {
+    "k": "Hash 1",
+    "label": "SHA-256"
+   },
+   {
+    "k": "Hash 2",
+    "label": "RIPEMD-160"
+   },
+   {
+    "k": "Output",
+    "label": "20-byte HASH160",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "P2PKH / P2WPKH",
+   "v": "Outputs hold the fingerprint, not the key"
+  }
+ },
+ "32": {
+  "type": "compare",
+  "left": {
+   "head": "Base58 alphabet",
+   "big": "58",
+   "items": [
+    "1-9, A-Z, a-z minus O, I, l",
+    "9 digits + 24 upper + 25 lower"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Left out",
+   "big": "`0` `O` `I` `l`",
+   "items": [
+    "zero, capital O, capital I, lowercase L",
+    "Easiest to confuse by hand"
+   ]
+  }
+ },
+ "33": {
+  "type": "segments",
+  "head": "Base58Check encoding",
+  "total": "",
+  "items": [
+   {
+    "label": "version + payload",
+    "value": 21,
+    "display": "data"
+   },
+   {
+    "label": "checksum",
+    "value": 4,
+    "display": "first 4 B of SHA256²",
+    "hl": true
+   }
+  ],
+  "cards": [
+   {
+    "k": "A typo",
+    "label": "Almost always fails"
+   },
+   {
+    "k": "But",
+    "label": "Can't locate the error",
+    "alt": true
+   },
+   {
+    "k": "BIP173",
+    "label": "Slow, no error-detection guarantees"
+   }
+  ]
+ },
+ "34": {
+  "type": "checklist",
+  "head": "Bech32 BCH checksum",
+  "checks": [
+   {
+    "text": "Any error in ≤ 4 characters",
+    "sub": "always detected: a guarantee"
+   },
+   {
+    "text": "Larger errors",
+    "ok": "10⁻⁹",
+    "sub": "< 1 in 10^9 chance to miss"
+   },
+   {
+    "text": "Length",
+    "ok": "90",
+    "sub": "at most 90 characters"
+   }
+  ]
+ },
+ "35": {
+  "type": "checklist",
+  "head": "BIP173: one case only",
+  "checks": [
+   {
+    "text": "bc1q… lowercase",
+    "sub": "preferred for display"
+   },
+   {
+    "text": "BC1Q… uppercase",
+    "sub": "compact QR alphanumeric mode"
+   },
+   {
+    "text": "bC1Q… mixed case",
+    "ok": false,
+    "sub": "decoders MUST NOT accept"
+   }
+  ]
+ },
+ "36": {
+  "type": "compare",
+  "left": {
+   "head": "Valid Bech32",
+   "big": "…xyp",
+   "items": [
+    "Ends in 'p'"
+   ]
+  },
+  "right": {
+   "head": "Also passes!",
+   "big": "…xyqqqp",
+   "items": [
+    "Any number of 'q' inserted or deleted before the final p"
+   ]
+  },
+  "note": {
+   "k": "SegWit v0 safe",
+   "v": "Only two allowed lengths · future uses weren't"
+  }
+ },
+ "37": {
+  "type": "compare",
+  "left": {
+   "head": "Bech32m · BIP350",
+   "big": "0x2bc830a3",
+   "items": [
+    "Witness v1–v16",
+    "Taproot bc1p…"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Bech32",
+   "big": "1",
+   "items": [
+    "SegWit v0",
+    "bc1q… P2WPKH, P2WSH"
+   ]
+  },
+  "note": {
+   "k": "Only change",
+   "v": "The constant XORed into the checksum"
+  }
+ },
+ "38": {
+  "type": "hash",
+  "fn": "Keccak-256",
+  "fn_k": "hash",
+  "inputs": [
+   {
+    "k": "64 bytes",
+    "label": "x ‖ y",
+    "sub": "no 0x04 prefix"
+   }
+  ],
+  "out": {
+   "k": "Last 20 bytes",
+   "label": "0x + 40 hex",
+   "lines": [
+    "Keccak256(pub[1:])[12:]"
+   ],
+   "hl": true
+  }
+ },
+ "39": {
+  "type": "compare",
+  "left": {
+   "head": "Keccak-256 · Ethereum",
+   "items": [
+    "Original padding",
+    "geth: NewLegacyKeccak256"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "SHA3-256 · FIPS 202",
+   "items": [
+    "Same permutation",
+    "Different padding → different output"
+   ]
+  }
+ },
+ "40": {
+  "type": "gauge",
+  "big": "0.0247%",
+  "label": "chance a mistyped address passes",
+  "side": [
+   {
+    "k": "EIP-55",
+    "label": "Letter i uppercase if hash bit 4·i = 1"
+   },
+   {
+    "k": "On average",
+    "label": "15 check bits per address",
+    "hl": true
+   }
+  ]
+ },
+ "41": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Signature",
+    "label": "(v, r, s)",
+    "sub": "no 'from' field"
+   },
+   {
+    "k": "v",
+    "label": "Parity of y",
+    "sub": "picks one of two points with x = r"
+   },
+   {
+    "k": "ecrecover",
+    "label": "Public key → address",
+    "hl": true
+   }
+  ]
+ },
+ "42": {
+  "type": "fields",
+  "struct": {
+   "name": "EIP-155 signed fields",
+   "lines": [
+    [
+     "nonce, gasprice",
+     ""
+    ],
+    [
+     "startgas, to",
+     ""
+    ],
+    [
+     "value, data",
+     ""
+    ],
+    {
+     "key": "chainid, 0, 0",
+     "val": "mainnet = 1",
+     "hl": true
+    }
+   ]
+  },
+  "side": [
+   {
+    "k": "v",
+    "label": "{0,1} + CHAIN_ID·2 + 35"
+   },
+   {
+    "k": "Block 2,675,000",
+    "label": "No replay on another network",
+    "hl": true,
+    "from": 3
+   }
+  ]
+ },
+ "43": {
+  "type": "segments",
+  "head": "EIP-712 signed payload",
+  "total": "",
+  "items": [
+   {
+    "label": "\\x19\\x01",
+    "value": 2,
+    "display": "prefix"
+   },
+   {
+    "label": "domainSeparator",
+    "value": 32,
+    "display": "binds app + contract",
+    "hl": true
+   },
+   {
+    "label": "hashStruct(message)",
+    "value": 32,
+    "display": "hash of the typed fields the wallet shows"
+   }
+  ],
+  "note": {
+   "k": "Still",
+   "v": "Read the fields before signing"
+  }
+ },
+ "44": {
+  "type": "formula",
+  "k": "BIP39, 12 words",
+  "expr": "128 + 4 = 132 bits = 12 × 11",
+  "terms": [
+   {
+    "k": "Checksum",
+    "v": "first ENT/32 bits of SHA256(entropy)"
+   },
+   {
+    "k": "4 bits must match",
+    "v": "2⁴ = 16"
+   },
+   {
+    "k": "So",
+    "v": "only **1 in 16** random phrases is valid"
+   }
+  ]
+ },
+ "45": {
+  "type": "segments",
+  "head": "The 24th word · 11 bits",
+  "total": "only 8 of 2048 words fit",
+  "items": [
+   {
+    "label": "3 entropy bits",
+    "value": 3
+   },
+   {
+    "label": "8 checksum bits",
+    "value": 8,
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "24 words",
+   "v": "256 entropy + 8 checksum = 264 = 24 × 11 bits"
+  }
+ },
+ "46": {
+  "type": "formula",
+  "k": "BIP39 word index",
+  "expr": "2^11 = 2048 words",
+  "terms": [
+   {
+    "k": "11-bit group",
+    "v": "a number 0–2047"
+   },
+   {
+    "k": "12 words",
+    "v": "2048^12 = 2^132 possibilities"
+   }
+  ]
+ },
+ "47": {
+  "type": "table",
+  "head": [
+   "You type",
+   "Only match"
+  ],
+  "hl_col": 0,
+  "rows": [
+   [
+    "`aban`",
+    "abandon"
+   ],
+   [
+    "`abil`",
+    "ability"
+   ],
+   [
+    "`zoo`",
+    "zoo"
+   ]
+  ],
+  "note": {
+   "k": "BIP39 English list",
+   "v": "First 4 letters unique · similar pairs avoided"
+  }
+ },
+ "48": {
+  "type": "bars",
+  "head": "Random errors the checksum misses",
+  "items": [
+   {
+    "label": "12 words · 4 bits",
+    "value": 16,
+    "display": "1 in 16",
+    "alt": true
+   },
+   {
+    "label": "24 words · 8 bits",
+    "value": 1,
+    "display": "1 in 256"
+   }
+  ],
+  "note": {
+   "k": "BIP39's own admission",
+   "v": "Can't correct errors or say which word is wrong"
+  }
+ },
+ "49": {
+  "type": "hash",
+  "fn": "PBKDF2",
+  "fn_k": "HMAC-SHA512 · 2048 rounds",
+  "inputs": [
+   {
+    "k": "password",
+    "label": "Mnemonic (NFKD)"
+   },
+   {
+    "k": "salt",
+    "label": "'mnemonic' + passphrase"
+   }
+  ],
+  "out": {
+   "k": "512 bits",
+   "label": "64-byte seed",
+   "sub": "iterations slow every guess",
+   "hl": true
+  }
+ },
+ "50": {
+  "type": "split",
+  "src": {
+   "k": "Same 24 words",
+   "label": "+ passphrase",
+   "sub": "goes into the PBKDF2 salt"
+  },
+  "to": [
+   {
+    "k": "passphrase A",
+    "label": "Wallet A",
+    "hl": true
+   },
+   {
+    "k": "passphrase B",
+    "label": "Wallet B, also valid"
+   },
+   {
+    "k": "typo",
+    "label": "Empty wallet, no error",
+    "alt": true
+   }
+  ]
+ },
+ "51": {
+  "type": "hash",
+  "fn": "HMAC-SHA512",
+  "fn_k": "key 'Bitcoin seed'",
+  "inputs": [
+   {
+    "label": "Seed"
+   }
+  ],
+  "out": {
+   "k": "64 bytes",
+   "label": "Left: master key",
+   "lines": [
+    "right: chain code"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "BIP32",
+   "v": "One master key → billions of addresses"
+  }
+ },
+ "52": {
+  "type": "segments",
+  "head": "Child indices of one BIP32 key",
+  "total": "2^32 ≈ 4.3 billion",
+  "items": [
+   {
+    "label": "normal · 0 … 2^31−1",
+    "value": 50,
+    "display": "2^31"
+   },
+   {
+    "label": "hardened · 2^31 … 2^32−1",
+    "value": 50,
+    "display": "2^31",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Hardened",
+   "v": "Uses the parent private key: limits damage of a leak"
+  },
+  "legend": false
+ },
+ "53": {
+  "type": "formula",
+  "k": "BIP32 warning",
+  "expr": "parent xpub + 1 non-hardened child private key = parent xprv",
+  "terms": [
+   {
+    "k": "xpub",
+    "v": "seems to reveal only balances"
+   },
+   {
+    "k": "One leaked child key",
+    "v": "exposes the whole branch"
+   },
+   {
+    "k": "Defense",
+    "v": "account levels use hardened derivation"
+   }
+  ]
+ },
+ "54": {
+  "type": "segments",
+  "head": "m / 44' / 0' / 0' / 0 / 0",
+  "total": "' = hardened",
+  "legend": false,
+  "items": [
+   {
+    "label": "purpose' · 44",
+    "value": 1
+   },
+   {
+    "label": "coin' · 0 = BTC",
+    "value": 1
+   },
+   {
+    "label": "account' · 0",
+    "value": 1
+   },
+   {
+    "label": "change · 0",
+    "value": 1
+   },
+   {
+    "label": "index · 0",
+    "value": 1
+   }
+  ],
+  "note": {
+   "k": "Same seed + same path",
+   "v": "Same address in any compatible wallet"
+  }
+ },
+ "55": {
+  "type": "split",
+  "src": {
+   "k": "SLIP-39 · any 3 of 5",
+   "label": "Seed",
+   "sub": "fewer shares reveal nothing · 1024-word list, RS1024 checksum",
+   "hl": true
+  },
+  "to": [
+   {
+    "label": "Share 1",
+    "hl": true
+   },
+   {
+    "label": "Share 2",
+    "hl": true
+   },
+   {
+    "label": "Share 3",
+    "hl": true
+   },
+   {
+    "label": "Share 4"
+   },
+   {
+    "label": "Share 5"
+   }
+  ]
+ },
+ "56": {
+  "type": "formula",
+  "k": "BIP352 · receiver scans for",
+  "expr": "P = B + hash(b·A)·G",
+  "terms": [
+   {
+    "k": "ECDH",
+    "v": "a·B = b·A"
+   },
+   {
+    "k": "A",
+    "v": "sum of the sender's input keys"
+   },
+   {
+    "k": "Result",
+    "v": "one static address, unlinkable outputs"
+   }
+  ]
+ },
+ "57": {
+  "type": "tree",
+  "leaves": [
+   "tx1",
+   "tx2",
+   "tx3"
+  ],
+  "root": "Merkle root",
+  "x1": 360,
+  "side": [
+   {
+    "k": "Odd level",
+    "label": "Last hash duplicated",
+    "alt": true
+   },
+   {
+    "k": "CVE-2012-2459",
+    "label": "Different tx lists, same root",
+    "sub": "Core detects the mutation"
+   }
+  ]
+ },
+ "58": {
+  "type": "tree",
+  "leaves": [
+   "tx",
+   "tx",
+   "tx",
+   "tx",
+   "tx",
+   "tx",
+   "tx",
+   "tx"
+  ],
+  "hl": [
+   5
+  ],
+  "root": "Merkle root",
+  "inner": "#",
+  "x1": 360,
+  "side": [
+   {
+    "k": "Here: 8 txs",
+    "label": "3 sibling hashes",
+    "sub": "dashed: the proof",
+    "alt": true
+   },
+   {
+    "k": "4,096 txs",
+    "label": "12 sibling hashes",
+    "sub": "12 × 32 = 384 bytes",
+    "hl": true
+   },
+   {
+    "k": "SPV wallets",
+    "label": "No need for the whole block"
+   }
+  ],
+  "proof": true
+ },
+ "59": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Memorable phrase",
+    "label": "\"correct horse…\""
+   },
+   {
+    "k": "Brain wallet",
+    "label": "SHA256(passphrase)",
+    "sub": "= private key"
+   },
+   {
+    "k": "Attackers",
+    "label": "Hash phrase lists, sweep",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "DEF CON 23 · Brainflayer",
+   "v": "Humans are bad random generators"
+  }
+ },
+ "60": {
+  "type": "bars",
+  "head": "Possible wallets (log2)",
+  "items": [
+   {
+    "label": "Proper 256-bit key",
+    "value": 256,
+    "display": "2^256"
+   },
+   {
+    "label": "bx seed · clock time",
+    "value": 32,
+    "display": "2^32 ≈ 4 billion",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Milk Sad · CVE-2023-39910",
+   "v": "≈ 29.65 BTC stolen · > $900K moved in total"
+  }
+ },
+ "61": {
+  "type": "split",
+  "src": {
+   "k": "JSBN SecureRandom()",
+   "label": "window.crypto.random?",
+   "sub": "BitcoinJS until March 2014"
+  },
+  "to": [
+   {
+    "k": "expected",
+    "label": "Strong randomness"
+   },
+   {
+    "k": "browsers lacked it",
+    "label": "Silent fallback: Math.random()",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Randstorm",
+   "v": "Browser wallets of ~2011–2015 may have weak keys"
+  }
+ },
+ "62": {
+  "type": "timeline",
+  "w": 260,
+  "events": [
+   {
+    "t": "Nov 2022",
+    "label": "Extension seeds",
+    "sub": "≈ 32 bits of entropy",
+    "bad": true
+   },
+   {
+    "t": "Ledger Donjon",
+    "label": "Finds the flaw"
+   },
+   {
+    "t": "Nov 21, 2022",
+    "label": "Fix committed",
+    "hl": true
+   },
+   {
+    "t": "Apr 22, 2023",
+    "label": "Disclosed"
+   }
+  ],
+  "note": {
+   "k": "Every seed enumerable",
+   "v": "An address was enough to rebuild its key"
+  }
+ },
+ "63": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Profanity brute-forces vanity keys",
+    "sub": "0x0000…"
+   },
+   {
+    "label": "1inch: Profanity keys can be brute-forced",
+    "alt": true
+   },
+   {
+    "label": "Sep 20, 2022: Wintermute vault drained",
+    "sub": "admin was a Profanity address",
+    "hl": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Lost",
+    "label": "$160M",
+    "hl": true
+   }
+  ]
+ },
+ "64": {
+  "type": "split",
+  "src": {
+   "k": "CryptoNote bug · Feb 19, 2017",
+   "label": "Key image + torsion point",
+   "sub": "small-order point on ed25519"
+  },
+  "to": [
+   {
+    "k": "Exploit",
+    "label": "One output spent up to 8 times",
+    "bad": true
+   },
+   {
+    "k": "Fix",
+    "label": "Key image must be in prime-order subgroup",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Patched quietly",
+   "v": "Monero's chain was never exploited"
+  }
+ },
+ "65": {
+  "type": "compare",
+  "left": {
+   "head": "Validators · BLS12-381",
+   "items": [
+    "48-byte G1 public keys",
+    "96-byte G2 signatures",
+    "Pairings · aggregatable"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Accounts · secp256k1",
+   "items": [
+    "ECDSA, not used by consensus"
+   ]
+  }
+ },
+ "66": {
+  "type": "hash",
+  "fn": "aggregate",
+  "fn_k": "BLS",
+  "inputs": [
+   {
+    "label": "Vote 1"
+   },
+   {
+    "label": "Vote 2"
+   },
+   {
+    "label": "…"
+   },
+   {
+    "label": "Vote 512",
+    "sub": "sync committee"
+   }
+  ],
+  "out": {
+   "k": "96 bytes",
+   "label": "One signature",
+   "sub": "one check vs the aggregate public key",
+   "hl": true
+  }
+ },
+ "67": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Parent",
+    "label": "BLS12-381 key"
+   },
+   {
+    "k": "EIP-2333 · intermediate",
+    "label": "Lamport keys",
+    "sub": "hash-based",
+    "hl": true
+   },
+   {
+    "k": "Child",
+    "label": "Validator key"
+   }
+  ],
+  "note": {
+   "k": "Post-quantum backup",
+   "v": "If BLS12-381 ever stops being secure"
+  }
+ },
+ "68": {
+  "type": "split",
+  "src": {
+   "k": "alt_bn128 / BN254",
+   "label": "EIP-196 + EIP-197"
+  },
+  "to": [
+   {
+    "label": "Point addition"
+   },
+   {
+    "label": "Scalar multiplication"
+   },
+   {
+    "label": "Pairing check",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "zkSNARKs",
+   "v": "Verified within the block gas limit"
+  }
+ },
+ "69": {
+  "type": "timeline",
+  "w": 260,
+  "events": [
+   {
+    "t": "Mar 1, 2018",
+    "label": "Gabizon finds the flaw",
+    "sub": "undetectable counterfeiting possible",
+    "bad": true
+   },
+   {
+    "t": "Oct 28, 2018",
+    "label": "Sapling fixes it",
+    "hl": true
+   },
+   {
+    "t": "Feb 5, 2019",
+    "label": "Disclosed",
+    "sub": "no evidence of exploitation"
+   }
+  ]
+ },
+ "70": {
+  "type": "network",
+  "nodes": 40,
+  "hl": 1,
+  "x0": 440,
+  "hl_label": "one honest contributor is enough",
+  "n_label": "other contributors",
+  "side": [
+   {
+    "k": "KZG ceremony",
+    "label": "141,416 contributions",
+    "sub": "208 days, 2023"
+   },
+   {
+    "k": "Trust model",
+    "label": "1-of-N",
+    "hl": true
+   }
+  ]
+ },
+ "71": {
+  "type": "formula",
+  "k": "One EIP-4844 blob",
+  "expr": "4096 × 32 B = 128 KiB",
+  "terms": [
+   {
+    "k": "Commitment",
+    "v": "KZG"
+   },
+   {
+    "k": "Versioned hash",
+    "v": "0x01 ‖ SHA256(commitment)[1:]"
+   }
+  ]
+ },
+ "72": {
+  "type": "compare",
+  "left": {
+   "head": "Classical computer",
+   "items": [
+    "Public key → private key: infeasible"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "CRQC + Shor",
+   "items": [
+    "Discrete log exponentially faster",
+    "Could derive ECDSA / Schnorr keys"
+   ]
+  },
+  "note": {
+   "k": "BIP360",
+   "v": "Unclear when, or if, CRQCs become viable"
+  }
+ },
+ "73": {
+  "type": "compare",
+  "left": {
+   "head": "Long exposure",
+   "items": [
+    "Public key already on-chain",
+    "P2PK, reused addresses, Taproot",
+    "Attackable at leisure"
+   ]
+  },
+  "right": {
+   "head": "Short exposure",
+   "items": [
+    "Key recovered during mempool wait",
+    "Needs much faster machines"
+   ]
+  }
+ },
+ "74": {
+  "type": "table",
+  "head": [
+   "Standard",
+   "Scheme",
+   "Use"
+  ],
+  "rows": [
+   [
+    "FIPS 203",
+    "ML-KEM (Kyber)",
+    "key encapsulation"
+   ],
+   [
+    "FIPS 204",
+    "ML-DSA (Dilithium)",
+    "signatures"
+   ],
+   [
+    "FIPS 205",
+    "SLH-DSA (SPHINCS+)",
+    "signatures"
+   ]
+  ],
+  "note": {
+   "k": "NIST · Aug 13, 2024",
+   "v": "Quantum-safe signatures already exist"
+  }
+ },
+ "75": {
+  "type": "compare",
+  "left": {
+   "head": "Taproot (P2TR)",
+   "items": [
+    "Key path: public key in the output",
+    "Long-exposure risk"
+   ]
+  },
+  "right": {
+   "head": "BIP360 · P2MR (Draft)",
+   "items": [
+    "Key path removed",
+    "Only a Merkle root exposed",
+    "Short exposure: may need PQ signatures"
+   ],
+   "hl": true
+  },
+  "vs": "→"
+ },
+ "76": {
+  "type": "compare",
+  "left": {
+   "head": "The math holds",
+   "items": [
+    "secp256k1 · ECDLP · 128-bit",
+    "SHA-256, Keccak",
+    "ECDSA, Schnorr, BLS",
+    "BIP39/BIP32, ZK proofs"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Where losses came from",
+   "items": [
+    "Nonce reuse",
+    "Weak randomness",
+    "Sloppy code"
+   ]
+  }
+ }
+}

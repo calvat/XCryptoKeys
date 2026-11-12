@@ -1,0 +1,1398 @@
+{
+ "1": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "You",
+    "label": "Sign a transaction"
+   },
+   {
+    "k": "Public mempool",
+    "label": "Waits, visible to all",
+    "bad": true
+   },
+   {
+    "k": "Searcher bots",
+    "label": "Read, simulate, bid",
+    "alt": true
+   },
+   {
+    "k": "Block",
+    "label": "Ordered around you"
+   }
+  ],
+  "note": {
+   "k": "MEV",
+   "v": "The value captured by ordering transactions"
+  }
+ },
+ "2": {
+  "type": "split",
+  "src": {
+   "k": "Block producer",
+   "label": "Three levers",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "1",
+    "label": "Include transactions"
+   },
+   {
+    "k": "2",
+    "label": "Exclude transactions",
+    "alt": true
+   },
+   {
+    "k": "3",
+    "label": "Reorder transactions",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "MEV (ethereum.org)",
+   "v": "Value beyond block reward + gas fees"
+  }
+ },
+ "3": {
+  "type": "big",
+  "k": "Flash Boys 2.0 · arXiv 1904.05234",
+  "big": "April 2019",
+  "label": "\"miner extractable value\" is named",
+  "side": [
+   {
+    "k": "Authors",
+    "label": "Daian, Goldfeder, Kell, Li, Zhao, Bentov, Breidenbach, Juels"
+   },
+   {
+    "k": "Studied",
+    "label": "Frontrunning bots on DEXes"
+   },
+   {
+    "k": "Gave",
+    "label": "A name + a measurable framework",
+    "hl": true
+   }
+  ]
+ },
+ "4": {
+  "type": "compare",
+  "left": {
+   "head": "Proof of work",
+   "items": [
+    "Miner extractable value",
+    "Miners control the levers"
+   ]
+  },
+  "right": {
+   "head": "Proof of stake (after The Merge)",
+   "items": [
+    "Maximal extractable value",
+    "Validators and builders hold the role"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Same mechanics",
+   "v": "Any block producer, any chain"
+  }
+ },
+ "5": {
+  "type": "network",
+  "nodes": 26,
+  "hl": 4,
+  "x0": 440,
+  "hl_label": "pending transactions",
+  "n_label": "nodes gossiping them",
+  "side": [
+   {
+    "k": "Mempool",
+    "label": "Sent, not yet in a block"
+   },
+   {
+    "k": "On Ethereum",
+    "label": "Public: anyone can read calldata and fees",
+    "bad": true
+   },
+   {
+    "k": "Bots",
+    "label": "Simulate the result before it's final",
+    "alt": true
+   }
+  ]
+ },
+ "6": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 260,
+  "events": [
+   {
+    "t": "0 s",
+    "label": "Slot starts",
+    "sub": "pending tx visible",
+    "at": 0.1
+   },
+   {
+    "t": "within seconds",
+    "label": "Bot spots and bids",
+    "sub": "after simulating",
+    "bad": true,
+    "at": 0.5
+   },
+   {
+    "t": "12 s",
+    "label": "Slot ends",
+    "sub": "inclusion deadline",
+    "hl": true,
+    "at": 0.9
+   }
+  ],
+  "span": [
+   0.1,
+   0.9,
+   "one 12-second slot, one proposer"
+  ],
+  "note": {
+   "k": "For a user",
+   "v": "A pending tx is exposed for seconds: enough for bots"
+  }
+ },
+ "7": {
+  "type": "segments",
+  "head": "DEX arbitrage revenue of a searcher",
+  "items": [
+   {
+    "label": "paid as gas to the producer",
+    "value": 90,
+    "display": "≥ 90%",
+    "hl": true
+   },
+   {
+    "label": "kept",
+    "value": 10,
+    "display": "≤ 10%"
+   }
+  ],
+  "cards": [
+   {
+    "k": "Searchers",
+    "label": "Algorithms + bots hunting MEV"
+   },
+   {
+    "k": "Competition",
+    "label": "Pushes profit to the producer",
+    "hl": true
+   },
+   {
+    "k": "Source",
+    "label": "ethereum.org"
+   }
+  ]
+ },
+ "8": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "BOT",
+    "label": "Same trade, first",
+    "sub": "higher priority fee",
+    "bad": true
+   },
+   {
+    "k": "VICTIM",
+    "label": "Executes after",
+    "sub": "worse price",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Front-running",
+   "v": "The bot traded first on the same opportunity"
+  }
+ },
+ "9": {
+  "type": "curve",
+  "curves": [
+   {
+    "expr": "100/x",
+    "label": "AMM curve",
+    "hl": true,
+    "label_at": 0.9
+   }
+  ],
+  "xr": [
+   0,
+   20
+  ],
+  "yr": [
+   0,
+   40
+  ],
+  "xl": "pool reserve of the token bought",
+  "yl": "price ↑",
+  "points": [
+   {
+    "x": 10,
+    "y": 10,
+    "label": "0 · before"
+   },
+   {
+    "x": 7,
+    "y": 14.29,
+    "label": "1 · bot buys first",
+    "bad": true
+   },
+   {
+    "x": 6,
+    "y": 16.67,
+    "label": "3 · bot sells back",
+    "alt": true,
+    "pos": "l"
+   },
+   {
+    "x": 4,
+    "y": 25,
+    "label": "2 · victim buys at a worse price",
+    "bad": true
+   }
+  ],
+  "w": 620,
+  "side": [
+   {
+    "k": "Sandwich",
+    "label": "Front-run + victim + back-run",
+    "bad": true
+   },
+   {
+    "k": "Risk for the bot",
+    "label": "Not atomic (ethereum.org)"
+   }
+  ]
+ },
+ "10": {
+  "type": "gauge",
+  "pct": 100,
+  "mark": 100,
+  "big": "amountOutMin",
+  "label": "the worst price you accept",
+  "side": [
+   {
+    "k": "Attacker",
+    "label": "Sizes the front-run to stay above it",
+    "bad": true
+   },
+   {
+    "k": "Wide slippage",
+    "label": "Bigger budget for the bot",
+    "alt": true
+   },
+   {
+    "k": "Tight slippage",
+    "label": "Smaller gap to extract",
+    "hl": true
+   }
+  ]
+ },
+ "11": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Target",
+    "label": "Large swap or oracle update"
+   },
+   {
+    "k": "Executes",
+    "label": "Unchanged"
+   },
+   {
+    "k": "Back-run",
+    "label": "Captures the new state",
+    "sub": "e.g. arbitrage the moved price",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Milder form",
+   "v": "Basis of the refund schemes"
+  }
+ },
+ "12": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Searcher",
+    "label": "One atomic transaction",
+    "sub": "any leg fails → all reverts",
+    "hl": true
+   },
+   {
+    "k": "1 · DEX A, cheaper",
+    "label": "Buy the token"
+   },
+   {
+    "k": "2 · DEX B, pricier",
+    "label": "Sell it"
+   }
+  ],
+  "note": {
+   "k": "Useful MEV",
+   "v": "Keeps prices aligned across AMMs"
+  }
+ },
+ "13": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Collateral value falls below the ratio",
+    "bad": true
+   },
+   {
+    "label": "Searchers race to be first",
+    "hl": true
+   },
+   {
+    "label": "Winner repays the debt"
+   },
+   {
+    "label": "Liquidator seizes collateral",
+    "sub": "+ part of the borrower's liquidation fee"
+   }
+  ],
+  "side": [
+   {
+    "k": "Aave, Maker",
+    "label": "Rely on this race",
+    "sub": "so lenders get paid back",
+    "hl": true
+   }
+  ]
+ },
+ "14": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "BORROW",
+    "label": "No collateral"
+   },
+   {
+    "k": "USE",
+    "label": "Arbitrage or liquidation"
+   },
+   {
+    "k": "REPAY",
+    "label": "Amount + 0.05%",
+    "sub": "or the whole tx reverts",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Aave V3",
+   "v": "MEV without holding the principal"
+  }
+ },
+ "15": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 260,
+  "events": [
+   {
+    "t": "1 · before the swap",
+    "label": "Mint concentrated position",
+    "sub": "in the swap's tick range",
+    "at": 0.1
+   },
+   {
+    "t": "2",
+    "label": "Large swap",
+    "sub": "LP collects fee share",
+    "hl": true,
+    "at": 0.5
+   },
+   {
+    "t": "3 · right after",
+    "label": "Burn the position",
+    "at": 0.9
+   }
+  ],
+  "note": {
+   "k": "2021–22 (Uniswap Labs)",
+   "v": "> 95% of JIT liquidity from one address"
+  },
+  "span": [
+   0.1,
+   0.9,
+   "all in the same block, often a Flashbots bundle"
+  ]
+ },
+ "16": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Bot A broadcasts a tx with a gas price"
+   },
+   {
+    "label": "Bot B rebroadcasts it higher",
+    "alt": true
+   },
+   {
+    "label": "Bot A outbids again"
+   },
+   {
+    "n": "↻",
+    "label": "Repeat, ever higher, in real time",
+    "alt": true
+   },
+   {
+    "n": "✓",
+    "label": "Highest bid gets the earliest spot",
+    "hl": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Priority gas auction",
+    "label": "Public bidding war"
+   },
+   {
+    "k": "Flash Boys 2.0",
+    "label": "First visible MEV competition",
+    "hl": true
+   }
+  ]
+ },
+ "17": {
+  "type": "checklist",
+  "head": "Public gas auctions caused…",
+  "checks": [
+   {
+    "text": "Network congestion",
+    "ok": false
+   },
+   {
+    "text": "Higher gas for normal users",
+    "ok": false
+   },
+   {
+    "text": "Blocks full of reverted bot txs",
+    "ok": false,
+    "sub": "losers still paid fees"
+   }
+  ],
+  "side": [
+   {
+    "k": "Flashbots Auction",
+    "label": "Private sealed-bid channel",
+    "hl": true
+   }
+  ]
+ },
+ "18": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Pending tx",
+    "label": "Profitable if copied"
+   },
+   {
+    "k": "Bot",
+    "label": "Swaps in its own address",
+    "bad": true
+   },
+   {
+    "k": "Copy",
+    "label": "Sent first",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Generalized frontrunner",
+   "v": "No need to understand the contract"
+  }
+ },
+ "19": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "found",
+    "label": "≈ $12,000 of LP tokens",
+    "sub": "claimable via burn()",
+    "at": 0.1
+   },
+   {
+    "t": "mempool",
+    "label": "Rescue tx spotted",
+    "alt": true,
+    "at": 0.5
+   },
+   {
+    "t": "same block",
+    "label": "Bot copies, takes it first",
+    "bad": true,
+    "at": 0.9
+   }
+  ],
+  "note": {
+   "k": "Paradigm, Aug 28, 2020",
+   "v": "\"Ethereum is a Dark Forest\""
+  }
+ },
+ "20": {
+  "type": "network",
+  "nodes": 28,
+  "hl": 1,
+  "bad": 6,
+  "x0": 440,
+  "seed": 3,
+  "hl_label": "your profitable pending tx",
+  "bad_label": "hidden predators",
+  "side": [
+   {
+    "k": "Liu Cixin, The Dark Forest",
+    "label": "Detected means destroyed"
+   },
+   {
+    "k": "Mempool",
+    "label": "Simulation detects, bots copy",
+    "bad": true
+   },
+   {
+    "k": "Safe move",
+    "label": "Stay hidden",
+    "hl": true
+   }
+  ]
+ },
+ "21": {
+  "type": "compare",
+  "left": {
+   "head": "Public rescue",
+   "items": [
+    "Visible in the mempool",
+    "Could be copied by bots"
+   ]
+  },
+  "right": {
+   "head": "Private submission",
+   "items": [
+    "Sent straight to SparkPool",
+    "Never touched the mempool"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Lien Finance, Sept 2020",
+   "v": "≈ 25,000 ETH (> $9.6M) rescued"
+  }
+ },
+ "22": {
+  "type": "split",
+  "src": {
+   "k": "Mar 12, 2020",
+   "label": "Gas spike",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "Keeper bots",
+    "label": "Fail to bid"
+   },
+   {
+    "k": "Auctions",
+    "label": "Won with 0 DAI",
+    "sub": "≈ $8.32M of ETH",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Reverse of MEV",
+   "v": "No competition, bad liquidations"
+  }
+ },
+ "23": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "BLOCK n",
+    "label": "Past"
+   },
+   {
+    "k": "BLOCK n+1",
+    "label": "Rich in MEV",
+    "alt": true
+   },
+   {
+    "k": "BLOCK n+2",
+    "label": "Head"
+   }
+  ],
+  "branch": {
+   "at": 0,
+   "blocks": [
+    {
+     "k": "REORG",
+     "label": "Re-made to capture that MEV",
+     "sub": "if MEV > reorg cost",
+     "bad": true
+    }
+   ]
+  },
+  "note": {
+   "k": "Time-bandit attack",
+   "v": "MEV becomes a consensus risk"
+  }
+ },
+ "24": {
+  "type": "fields",
+  "struct": {
+   "name": "Flashbots bundle",
+   "lines": [
+    [
+     "tx 1",
+     "searcher's buy"
+    ],
+    [
+     "tx 2",
+     "target tx"
+    ],
+    [
+     "tx 3",
+     "searcher's sell"
+    ],
+    {
+     "key": "bid",
+     "val": "sealed, to the builder",
+     "hl": true
+    }
+   ]
+  },
+  "side": [
+   {
+    "k": "All or nothing",
+    "label": "Would revert? Not included",
+    "hl": true
+   },
+   {
+    "k": "Losing searchers",
+    "label": "Pay nothing"
+   }
+  ]
+ },
+ "25": {
+  "type": "formula",
+  "k": "Fees after EIP-1559 (Aug 2021)",
+  "size": 44,
+  "expr": "paid = base fee + priority fee (+ direct transfer)",
+  "terms": [
+   {
+    "k": "Base fee",
+    "v": "**burned**"
+   },
+   {
+    "k": "Priority fee",
+    "v": "to the fee recipient · MEV raises it"
+   },
+   {
+    "k": "Direct transfer",
+    "v": "MEV paid to the producer · never burned"
+   }
+  ]
+ },
+ "26": {
+  "type": "split",
+  "reverse": true,
+  "src": {
+   "k": "Proposer (validator)",
+   "label": "Picks the highest bid",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Builder A",
+    "label": "Block + bid"
+   },
+   {
+    "k": "Builder B",
+    "label": "Block + bid"
+   },
+   {
+    "k": "Builder C",
+    "label": "Block + bid"
+   }
+  ],
+  "note": {
+   "k": "PBS",
+   "v": "MEV reward reaches any validator, even home stakers"
+  }
+ },
+ "27": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "Sep 15, 2022",
+    "label": "The Merge",
+    "sub": "MEV-Boost from block 15537940",
+    "at": 0.08
+   },
+   {
+    "t": "+1 month",
+    "label": "50% of validators",
+    "at": 0.5
+   },
+   {
+    "t": "+2 months",
+    "label": "≈ 90%",
+    "hl": true,
+    "at": 0.92
+   }
+  ],
+  "note": {
+   "k": "MEV-Boost",
+   "v": "Out-of-protocol PBS sidecar (Flashbots)"
+  }
+ },
+ "28": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Builder sends block + payment to relay"
+   },
+   {
+    "label": "Relay checks and holds it in escrow"
+   },
+   {
+    "label": "Proposer signs a blinded header",
+    "sub": "without seeing contents",
+    "hl": true
+   },
+   {
+    "label": "Relay releases the full payload"
+   }
+  ],
+  "side": [
+   {
+    "k": "Trust",
+    "label": "Builders: relay won't steal MEV"
+   },
+   {
+    "k": "Trust",
+    "label": "Proposers: bids are real",
+    "alt": true
+   }
+  ]
+ },
+ "29": {
+  "type": "gauge",
+  "pct": 90,
+  "mark": 90,
+  "big": "≈ 90%",
+  "label": "market share of the top 6 relays",
+  "side": [
+   {
+    "k": "No single relay",
+    "label": "Above 25%"
+   },
+   {
+    "k": "Top 4 builders",
+    "label": "≈ 90% too",
+    "bad": true
+   },
+   {
+    "k": "Flashbots, Sept 2023",
+    "label": "One year after The Merge"
+   }
+  ]
+ },
+ "30": {
+  "type": "segments",
+  "head": "Ethereum mainnet blocks, first two weeks of Oct 2024",
+  "items": [
+   {
+    "label": "beaverbuild + Titan",
+    "value": 88.7,
+    "display": "88.7%",
+    "hl": true
+   },
+   {
+    "label": "all other builders",
+    "value": 11.3,
+    "display": "11.3%",
+    "alt": true
+   }
+  ],
+  "cards": [
+   {
+    "k": "Their edge",
+    "label": "Exclusive order flow"
+   },
+   {
+    "k": "Thousands of validators",
+    "label": "Very few parties pick the contents",
+    "bad": true
+   },
+   {
+    "k": "Source",
+    "label": "Toni Wahrstätter via Cointelegraph"
+   }
+  ]
+ },
+ "31": {
+  "type": "bars",
+  "head": "ETH paid to proposers, largest episodes",
+  "items": [
+   {
+    "label": "FTX collapse",
+    "value": 14585,
+    "display": "14,585 ETH",
+    "bad": true
+   },
+   {
+    "label": "SVB / USDC depeg",
+    "value": 7694,
+    "display": "7,694 ETH"
+   },
+   {
+    "label": "Vyper exploit",
+    "value": 7187,
+    "display": "7,187 ETH"
+   }
+  ],
+  "note": {
+   "k": "First post-Merge year",
+   "v": "MEV peaks when markets panic"
+  }
+ },
+ "32": {
+  "type": "big",
+  "k": "Largest single MEV payout, year one",
+  "big": "678 ETH",
+  "label": "whitehat tx via beaverbuild, to the proposer",
+  "side": [
+   {
+    "k": "Whole year",
+    "label": "> 300,000 ETH to validators"
+   },
+   {
+    "k": "Distribution",
+    "label": "A few blocks are jackpots",
+    "hl": true
+   }
+  ]
+ },
+ "33": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "Nov 21, 2022",
+    "label": "79% peak",
+    "sub": "blocks from censoring relays",
+    "bad": true,
+    "at": 0.08
+   },
+   {
+    "t": "Apr 2023",
+    "label": "17% low",
+    "hl": true,
+    "at": 0.5
+   },
+   {
+    "t": "Sep 2023",
+    "label": "≈ 30%",
+    "alt": true,
+    "at": 0.92
+   }
+  ],
+  "note": {
+   "k": "After Tornado Cash sanctions",
+   "v": "Some relays filtered OFAC addresses"
+  }
+ },
+ "34": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "BOT",
+    "label": "Buys first"
+   },
+   {
+    "k": "MEMECOIN BUYER",
+    "label": "e.g. a PEPE trader",
+    "alt": true
+   },
+   {
+    "k": "BOT",
+    "label": "Sells after"
+   }
+  ],
+  "note": {
+   "k": "jaredfromsubway.eth, April 2023",
+   "v": "Among the top gas spenders, paying millions"
+  }
+ },
+ "35": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Relay flaw",
+    "label": "Validator sees bundle contents",
+    "bad": true
+   },
+   {
+    "k": "Bait trades",
+    "label": "Lure sandwich bots"
+   },
+   {
+    "k": "Reordered block",
+    "label": "Bots drained ≈ $25M",
+    "sub": "≈ 12 s, one block",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "April 2023",
+   "v": "Exposed the trust placed in relays"
+  }
+ },
+ "36": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "Apr 2023",
+    "label": "$25M MEV-Boost exploit",
+    "bad": true,
+    "at": 0.08
+   },
+   {
+    "t": "2025",
+    "label": "4-week trial, New York",
+    "at": 0.45
+   },
+   {
+    "t": "Nov 2025",
+    "label": "Mistrial",
+    "sub": "jury couldn't agree; retry wanted",
+    "alt": true,
+    "at": 0.92
+   }
+  ],
+  "note": {
+   "k": "US v. Peraire-Bueno (SDNY)",
+   "v": "No retrial date as of March 2026"
+  }
+ },
+ "37": {
+  "type": "compare",
+  "left": {
+   "head": "Default RPC",
+   "items": [
+    "Public mempool",
+    "Can be sandwiched",
+    "Failed swap still pays gas"
+   ]
+  },
+  "right": {
+   "head": "Flashbots Protect RPC",
+   "items": [
+    "Straight to builders",
+    "Not visible to mempool bots",
+    "Reverted tx not included"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "One setting",
+   "v": "Switch your wallet's RPC"
+  }
+ },
+ "38": {
+  "type": "compare",
+  "left": {
+   "head": "Default",
+   "items": [
+    "Flashbots builder only",
+    "Dropped after 25 blocks"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Share with more builders",
+   "items": [
+    "Higher inclusion rate",
+    "Trust each one not to frontrun or leak"
+   ]
+  },
+  "note": {
+   "k": "Private RPCs",
+   "v": "Speed against trust"
+  }
+ },
+ "39": {
+  "type": "cycle",
+  "nodes": [
+   {
+    "k": "Your tx",
+    "label": "Selected hints revealed"
+   },
+   {
+    "k": "Searchers",
+    "label": "Bid to back-run it"
+   },
+   {
+    "k": "Winner",
+    "label": "Back-runs"
+   },
+   {
+    "k": "Refund",
+    "label": "Share of the bid to you",
+    "hl": true
+   }
+  ],
+  "center": {
+   "k": "MEV-Share (2023)",
+   "label": "Order flow auction"
+  }
+ },
+ "40": {
+  "type": "segments",
+  "head": "MEV Blocker: winning back-run bid",
+  "items": [
+   {
+    "label": "to the user",
+    "value": 90,
+    "display": "≥ 90%",
+    "hl": true
+   },
+   {
+    "label": "to the validator",
+    "value": 10,
+    "display": "rest"
+   }
+  ],
+  "cards": [
+   {
+    "k": "Launched",
+    "label": "April 5, 2023"
+   },
+   {
+    "k": "Built by",
+    "label": "CoW Swap, Agnostic Relay, Beaver Build"
+   },
+   {
+    "k": "Shields",
+    "label": "From front-running",
+    "hl": true
+   }
+  ]
+ },
+ "41": {
+  "type": "split",
+  "src": {
+   "k": "Batch auction",
+   "label": "One uniform price per pair",
+   "sub": "solvers compete",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Order 1",
+    "label": "Same price"
+   },
+   {
+    "k": "Order 2",
+    "label": "Same price"
+   },
+   {
+    "k": "Order 3",
+    "label": "Same price"
+   }
+  ],
+  "note": {
+   "k": "CoW Protocol",
+   "v": "No 'before you' to exploit"
+  }
+ },
+ "42": {
+  "type": "network",
+  "nodes": 16,
+  "hl": 3,
+  "hl_links": true,
+  "degree": 4,
+  "x0": 480,
+  "r": 13,
+  "hl_label": "operators: Flashbots, Nethermind, beaverbuild",
+  "n_label": "order flow, inside TEEs",
+  "side": [
+   {
+    "k": "BuilderNet, Dec 2024",
+    "label": "One builder, several operators"
+   },
+   {
+    "k": "TEEs",
+    "label": "Order flow hidden from operators",
+    "hl": true
+   },
+   {
+    "k": "Goal",
+    "label": "Fight builder centralization"
+   }
+  ]
+ },
+ "43": {
+  "type": "stack",
+  "head": "Builder auction",
+  "layers": [
+   {
+    "label": "Proposer"
+   },
+   {
+    "label": "Relay (trusted)",
+    "r": "removed by ePBS",
+    "bad": true
+   },
+   {
+    "label": "Builder"
+   }
+  ],
+  "side": [
+   {
+    "k": "EIP-7732",
+    "label": "PBS enshrined in consensus",
+    "hl": true
+   },
+   {
+    "k": "Glamsterdam headliner",
+    "label": "Not on mainnet as of Nov 10, 2026",
+    "alt": true
+   }
+  ]
+ },
+ "44": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Committee",
+    "label": "Publishes inclusion lists"
+   },
+   {
+    "k": "Builder",
+    "label": "Must include them"
+   },
+   {
+    "k": "Attesters",
+    "label": "Vote only for compliant blocks",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "FOCIL (EIP-7805)",
+   "v": "No more quiet exclusion by one builder"
+  }
+ },
+ "45": {
+  "type": "split",
+  "src": {
+   "k": "Winning builder bid",
+   "label": "Floor set by attesters"
+  },
+  "to": [
+   {
+    "k": "Above the floor",
+    "label": "To the proposer"
+   },
+   {
+    "k": "Floor",
+    "label": "Burned, like the base fee",
+    "sub": "value to all ETH holders",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "MEV burn (Drake, 2023)",
+   "v": "A proposal, not scheduled"
+  }
+ },
+ "46": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "User threshold-encrypts the tx"
+   },
+   {
+    "label": "Order is committed",
+    "hl": true
+   },
+   {
+    "label": "Keypers release the decryption key"
+   },
+   {
+    "label": "Tx decrypted and executed"
+   }
+  ],
+  "note": {
+   "k": "Shutterized Gnosis Chain, July 2024",
+   "v": "Bots can't exploit what they can't read"
+  }
+ },
+ "47": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "0 ms",
+    "label": "Express-lane tx",
+    "sub": "auction winner",
+    "hl": true,
+    "at": 0.1
+   },
+   {
+    "t": "200 ms",
+    "label": "Everyone else",
+    "sub": "delayed",
+    "alt": true,
+    "at": 0.9
+   }
+  ],
+  "span": [
+   0.1,
+   0.9,
+   "head start"
+  ],
+  "note": {
+   "k": "Arbitrum Timeboost, April 2025",
+   "v": "60 s lanes, sealed-bid 2nd price, proceeds to the DAO"
+  }
+ },
+ "48": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Gulf Stream",
+    "label": "Tx forwarded to upcoming leaders",
+    "sub": "no global mempool"
+   },
+   {
+    "k": "Jito block engine",
+    "label": "Searchers send bundles + tips",
+    "hl": true
+   },
+   {
+    "k": "Tips",
+    "label": "To Jito validators + stakers"
+   }
+  ],
+  "note": {
+   "k": "Solana",
+   "v": "MEV runs off-chain through Jito"
+  }
+ },
+ "49": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "before",
+    "label": "Jito mempool stream",
+    "sub": "searchers see pending txs",
+    "bad": true,
+    "at": 0.1
+   },
+   {
+    "t": "Mar 8, 2024",
+    "label": "Stream suspended",
+    "sub": "\"a cat-and-mouse game\"",
+    "hl": true,
+    "at": 0.9
+   }
+  ],
+  "note": {
+   "k": "Remedy chosen",
+   "v": "Remove visibility"
+  }
+ },
+ "50": {
+  "type": "fields",
+  "struct": {
+   "name": "Bitcoin Core 28.0",
+   "lines": [
+    {
+     "key": "-mempoolfullrbf",
+     "val": "0 → 1",
+     "hl": true
+    },
+    [
+     "BIP 125 opt-in signal",
+     "no longer needed"
+    ],
+    [
+     "released",
+     "Oct 2, 2024"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "Nodes relay",
+    "label": "Higher-fee replacement of any unconfirmed tx",
+    "from": 0
+   }
+  ]
+ },
+ "51": {
+  "type": "split",
+  "src": {
+   "k": "Unconfirmed",
+   "label": "Payment to a merchant",
+   "sub": "0-conf, no RBF flag",
+   "alt": true
+  },
+  "to": [
+   {
+    "k": "Original",
+    "label": "Pays the merchant"
+   },
+   {
+    "k": "Replacement, higher fee",
+    "label": "Pays someone else",
+    "sub": "relayed by default now",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Full-RBF by default",
+   "v": "0-conf is a promise until it's in a block"
+  }
+ },
+ "52": {
+  "type": "table",
+  "head": [
+   "Stage",
+   "Key points"
+  ],
+  "cols": "1fr 3fr",
+  "rows": [
+   [
+    "Threat",
+    "Public pending tx: sandwiches, arbitrage, liquidations"
+   ],
+   [
+    "Market",
+    "Gas auctions → bundles → MEV-Boost, few builders"
+   ],
+   [
+    "Defenses",
+    "Private RPCs, order flow auctions, batch auctions"
+   ],
+   [
+    "Protocol",
+    "Encrypted mempools, ePBS"
+   ]
+  ],
+  "note": {
+   "k": "MEV",
+   "v": "Including, excluding and ordering transactions"
+  }
+ }
+}

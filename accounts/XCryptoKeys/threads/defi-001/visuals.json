@@ -1,0 +1,1495 @@
+{
+ "1": {
+  "type": "stack",
+  "head": "DeFi = short public formulas",
+  "layers": [
+   {
+    "label": "Vaults",
+    "r": "ERC-4626 share math"
+   },
+   {
+    "label": "Stablecoins",
+    "r": "redemption paths"
+   },
+   {
+    "label": "Lending",
+    "r": "collateral ratios, health factor"
+   },
+   {
+    "label": "DEX",
+    "r": "x · y = k",
+    "hl": true
+   }
+  ],
+  "side": [
+   {
+    "k": "No order book",
+    "label": "No market maker, nobody in the middle"
+   },
+   {
+    "k": "Anyone",
+    "label": "Can check them on-chain",
+    "hl": true
+   }
+  ]
+ },
+ "2": {
+  "type": "curve",
+  "curves": [
+   {
+    "expr": "100/x",
+    "label": "x · y = k",
+    "hl": true,
+    "label_at": 0.85
+   }
+  ],
+  "xr": [
+   0,
+   20
+  ],
+  "yr": [
+   0,
+   40
+  ],
+  "xl": "reserve x",
+  "yl": "reserve y",
+  "points": [
+   {
+    "x": 5,
+    "y": 20,
+    "label": "before"
+   },
+   {
+    "x": 10,
+    "y": 10,
+    "label": "after: Δx in, Δy out",
+    "hl": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Swap Δx in",
+    "label": "Δy = y · Δx / (x + Δx)"
+   },
+   {
+    "k": "Hyperbola",
+    "label": "Never touches an axis",
+    "sub": "each unit gets more expensive",
+    "hl": true
+   }
+  ]
+ },
+ "3": {
+  "type": "formula",
+  "k": "Spot price",
+  "expr": "price of x = y / x",
+  "terms": [
+   {
+    "k": "Reserves",
+    "v": "100 ETH · 300,000 USDC"
+   },
+   {
+    "k": "So",
+    "v": "1 ETH ≈ **3,000 USDC**"
+   },
+   {
+    "k": "Every trade",
+    "v": "changes reserves, moves the price"
+   }
+  ],
+  "foot": "No price feed: the slope of the curve after the last swap"
+ },
+ "4": {
+  "type": "bars",
+  "head": "Premium paid over spot (before fee)",
+  "items": [
+   {
+    "label": "Buy 1% of reserve",
+    "value": 1.0,
+    "display": "+1.0%"
+   },
+   {
+    "label": "Buy 5%",
+    "value": 5.3,
+    "display": "+5.3%"
+   },
+   {
+    "label": "Buy 10%",
+    "value": 11.1,
+    "display": "+11.1%",
+    "hl": true
+   },
+   {
+    "label": "Buy 25%",
+    "value": 33.3,
+    "display": "+33.3%",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Price impact = x / (x − Δx)",
+   "v": "Deeper pools, smaller impact"
+  }
+ },
+ "5": {
+  "type": "cycle",
+  "nodes": [
+   {
+    "k": "Swap",
+    "label": "Pays 0.30% on input"
+   },
+   {
+    "k": "Fee",
+    "label": "Stays in the reserves"
+   },
+   {
+    "k": "k grows",
+    "label": "Pool holds more"
+   },
+   {
+    "k": "LP share",
+    "label": "Redeems for more tokens",
+    "hl": true
+   }
+  ],
+  "center": {
+   "k": "No claim step",
+   "label": "Fees compound inside the pool"
+  }
+ },
+ "6": {
+  "type": "segments",
+  "head": "0.30% swap fee, protocol fee switched on",
+  "total": "30 bps",
+  "items": [
+   {
+    "label": "liquidity providers",
+    "value": 25,
+    "display": "0.25%"
+   },
+   {
+    "label": "feeTo",
+    "value": 5,
+    "display": "0.05% = 1/6",
+    "hl": true
+   }
+  ],
+  "cards": [
+   {
+    "k": "Default",
+    "label": "Off",
+    "alt": true
+   },
+   {
+    "k": "Collected lazily",
+    "label": "Minted as LP shares",
+    "sub": "when liquidity is added or removed",
+    "hl": true
+   }
+  ]
+ },
+ "7": {
+  "type": "formula",
+  "k": "First deposit",
+  "expr": "shares = √(x · y)",
+  "terms": [
+   {
+    "k": "Geometric mean",
+    "v": "independent of the starting price ratio"
+   },
+   {
+    "k": "Later LPs",
+    "v": "shares in proportion to what they add"
+   },
+   {
+    "k": "Burned",
+    "v": "first **1,000** units to address 0"
+   }
+  ],
+  "foot": "Makes manipulating one share's price costly"
+ },
+ "8": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Pool sends output tokens first"
+   },
+   {
+    "label": "Calls the receiver's contract",
+    "sub": "do anything with them"
+   },
+   {
+    "label": "Check: x · y ≥ k, fees included",
+    "hl": true
+   },
+   {
+    "label": "Missing repayment → whole tx reverts",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Collateral",
+   "v": "The transaction's atomicity"
+  }
+ },
+ "9": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Market",
+    "label": "Price moves on CEX"
+   },
+   {
+    "k": "Pool",
+    "label": "y / x now off",
+    "sub": "by more than fees + gas",
+    "alt": true
+   },
+   {
+    "k": "Arbitrageur",
+    "label": "Trades until it matches",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Cost of each correction",
+   "v": "Paid by liquidity providers"
+  }
+ },
+ "10": {
+  "type": "curve",
+  "curves": [
+   {
+    "expr": "(1-2*sqrt(2**x)/(1+2**x))*100",
+    "label": "loss = 1 − 2√r / (1 + r)",
+    "hl": true,
+    "label_at": 0.82,
+    "label_dx": -300,
+    "label_dy": -30
+   }
+  ],
+  "xr": [
+   -3.5,
+   3.5
+  ],
+  "yr": [
+   0,
+   50
+  ],
+  "xl": "price change r (log scale)",
+  "yl": "loss vs holding, %",
+  "points": [
+   {
+    "x": -1,
+    "y": 5.72,
+    "label": "÷ 2: 5.7%",
+    "pos": "l",
+    "dy": 30
+   },
+   {
+    "x": 1,
+    "y": 5.72,
+    "label": "× 2: 5.7%",
+    "dy": 30
+   },
+   {
+    "x": -3.32,
+    "y": 42.5,
+    "label": "÷ 10: 42.5%",
+    "alt": true
+   },
+   {
+    "x": 3.32,
+    "y": 42.5,
+    "label": "× 10: 42.5%",
+    "alt": true,
+    "pos": "l"
+   }
+  ],
+  "side": [
+   {
+    "k": "Symmetric",
+    "label": "r and 1/r give the same loss",
+    "hl": true
+   },
+   {
+    "k": "Depends on",
+    "label": "Size of the change, not direction"
+   },
+   {
+    "k": "Fees",
+    "label": "Not included",
+    "alt": true
+   }
+  ]
+ },
+ "11": {
+  "type": "table",
+  "head": [
+   "Price change r",
+   "Loss vs holding"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "× 1.5",
+    "−2.0%"
+   ],
+   [
+    "× 2",
+    "**−5.7%**"
+   ],
+   [
+    "× 3",
+    "−13.4%"
+   ],
+   [
+    "× 4",
+    "−20%"
+   ],
+   [
+    "× 5",
+    "≈ −25%"
+   ],
+   [
+    "× 10",
+    "−42.5%"
+   ]
+  ],
+  "note": {
+   "k": "Impermanent",
+   "v": "Only if the price returns to the entry ratio"
+  }
+ },
+ "12": {
+  "type": "compare",
+  "left": {
+   "head": "Impermanent loss",
+   "items": [
+    "Vs simply holding",
+    "Resets if the price returns"
+   ]
+  },
+  "right": {
+   "head": "LVR (2022)",
+   "items": [
+    "Vs rebalancing at CEX prices",
+    "Never decreases",
+    "Grows with volatility σ²"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Measures",
+   "v": "The cost of being picked off by arbitrageurs"
+  }
+ },
+ "13": {
+  "type": "segments",
+  "head": "Price axis: one v3 position",
+  "legend": false,
+  "items": [
+   {
+    "label": "inactive",
+    "value": 3
+   },
+   {
+    "label": "active",
+    "value": 2,
+    "hl": true
+   },
+   {
+    "label": "inactive",
+    "value": 3
+   }
+  ],
+  "cards": [
+   {
+    "k": "Active range [pa, pb]",
+    "label": "Only here it earns fees"
+   },
+   {
+    "k": "Claim",
+    "label": "Up to 4000x vs v2",
+    "sub": "single 0.10% range",
+    "hl": true
+   },
+   {
+    "k": "Trade-off",
+    "label": "Tight range: price leaves more often",
+    "alt": true
+   }
+  ]
+ },
+ "14": {
+  "type": "formula",
+  "k": "Ticks",
+  "expr": "p = 1.0001^i",
+  "terms": [
+   {
+    "k": "Neighbors",
+    "v": "≈ 1 bp (0.01%) apart"
+   },
+   {
+    "k": "Price × 2",
+    "v": "ln 2 / ln 1.0001 ≈ **6,932** ticks"
+   },
+   {
+    "k": "LP picks",
+    "v": "two ticks: range start and end"
+   }
+  ]
+ },
+ "15": {
+  "type": "table",
+  "head": [
+   "Fee tier",
+   "Tick spacing",
+   "Gap between usable ticks"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "0.05%",
+    "10",
+    "≈ 0.10%"
+   ],
+   [
+    "0.30%",
+    "60",
+    "≈ 0.60%"
+   ],
+   [
+    "1%",
+    "200",
+    "≈ 2%"
+   ]
+  ],
+  "note": {
+   "k": "Fewer initializable ticks",
+   "v": "Fewer crossings per swap, less gas"
+  }
+ },
+ "16": {
+  "type": "fields",
+  "struct": {
+   "name": "Pool state (v3)",
+   "lines": [
+    {
+     "key": "sqrtPriceX96",
+     "val": "√P · 2^96 (uint160)",
+     "hl": true
+    },
+    [
+     "liquidity",
+     "L"
+    ],
+    [
+     "tick",
+     "current tick"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "Virtual reserves",
+    "label": "x = L / √P",
+    "lines": [
+     "y = L · √P"
+    ],
+    "from": 0
+   },
+   {
+    "k": "Within a tick",
+    "label": "√P moves linearly with Δy",
+    "sub": "no on-chain square root",
+    "hl": true
+   }
+  ]
+ },
+ "17": {
+  "type": "split",
+  "src": {
+   "k": "Range order",
+   "label": "One token in [pa, pb]",
+   "sub": "above or below the price"
+  },
+  "to": [
+   {
+    "k": "Price crosses the range",
+    "label": "Converted to the other token",
+    "hl": true
+   },
+   {
+    "k": "Average fill",
+    "label": "√(pa · pb)"
+   },
+   {
+    "k": "Price out of range",
+    "label": "No fees, 100% of one token",
+    "alt": true
+   }
+  ]
+ },
+ "18": {
+  "type": "compare",
+  "left": {
+   "head": "v2 LP share",
+   "items": [
+    "Same for everyone",
+    "Fungible ERC-20"
+   ]
+  },
+  "right": {
+   "head": "v3 position",
+   "items": [
+    "Own range [pa, pb]",
+    "Own fee history",
+    "ERC-721 NFT"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Fungible again?",
+   "v": "Needs a separate wrapper contract"
+  }
+ },
+ "19": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "t1",
+    "label": "Read accumulator A1",
+    "at": 0.12
+   },
+   {
+    "t": "t2",
+    "label": "Read accumulator A2",
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "TWAP = (A2 − A1) / (t2 − t1)"
+  ],
+  "note": {
+   "k": "Each block, before the first trade",
+   "v": "Adds price × seconds (UQ112.112)"
+  }
+ },
+ "20": {
+  "type": "big",
+  "k": "Max oracle checkpoints per v3 pool",
+  "big": "65,536",
+  "label": "≈ 9 days of history on Ethereum at launch",
+  "side": [
+   {
+    "k": "Accumulates",
+    "label": "The tick, per second"
+   },
+   {
+    "k": "TWAP",
+    "label": "1.0001^(Δacc / Δt)",
+    "sub": "a geometric mean",
+    "hl": true
+   },
+   {
+    "k": "One call",
+    "label": "Average over any past window"
+   }
+  ]
+ },
+ "21": {
+  "type": "compare",
+  "left": {
+   "head": "Spot y / x",
+   "items": [
+    "Pushed by one swap",
+    "Restored by the next, same tx",
+    "Costs little beyond fees"
+   ]
+  },
+  "right": {
+   "head": "TWAP",
+   "items": [
+    "Must hold the distortion for blocks",
+    "Pays arbitrage losses each block"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Serious protocols",
+   "v": "Averages or external oracle feeds"
+  }
+ },
+ "22": {
+  "type": "split",
+  "src": {
+   "k": "dYdX flash loan",
+   "label": "10,000 ETH",
+   "sub": "Feb 15, 2020, one tx",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "1,300 ETH",
+    "label": "5x short on bZx",
+    "sub": "ETH→WBTC on Uniswap pumps WBTC",
+    "bad": true
+   },
+   {
+    "k": "5,500 ETH",
+    "label": "112 WBTC borrowed on Compound"
+   },
+   {
+    "k": "112 WBTC",
+    "label": "Sold on Uniswap ≈ 6,800 ETH",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "bZx",
+   "v": "Trusted a price one trade could move"
+  }
+ },
+ "23": {
+  "type": "bars",
+  "head": "MNGO spot price, Oct 11, 2022",
+  "items": [
+   {
+    "label": "Perps bought at",
+    "value": 0.0382,
+    "display": "$0.0382"
+   },
+   {
+    "label": "Pushed to",
+    "value": 0.91,
+    "display": "$0.91 (> 20x)",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "≈ $116M borrowed",
+   "v": "Honest oracle, market too thin"
+  }
+ },
+ "24": {
+  "type": "compare",
+  "left": {
+   "head": "v3",
+   "items": [
+    "One contract per pool",
+    "New pool = contract deployment",
+    "Multi-hop: tokens move between pools"
+   ]
+  },
+  "right": {
+   "head": "v4 singleton",
+   "big": "≈ −99.9%",
+   "sub": "reported cost to create a pool, vs v3",
+   "items": [
+    "PoolManager holds every pool",
+    "New pool = state update"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Jan 31, 2025",
+   "v": "Launched on 10 networks"
+  }
+ },
+ "25": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "before hook",
+    "label": "beforeSwap",
+    "sub": "or before add / remove liquidity",
+    "hl": true
+   },
+   {
+    "k": "Pool action",
+    "label": "Swap",
+    "sub": "or add / remove liquidity"
+   },
+   {
+    "k": "after hook",
+    "label": "afterSwap",
+    "sub": "or after add / remove liquidity",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Active hooks",
+   "v": "Flagged by bits of the hook address. Uses: dynamic fees, custom pricing, rewards"
+  }
+ },
+ "26": {
+  "type": "fields",
+  "struct": {
+   "name": "unlock() deltas (transient)",
+   "lines": [
+    [
+     "swap A→B",
+     "−100 A · +98 B"
+    ],
+    [
+     "swap B→C",
+     "−98 B · +97 C"
+    ],
+    {
+     "key": "net owed",
+     "val": "−100 A · +97 C",
+     "hl": true
+    },
+    {
+     "key": "at return",
+     "val": "all settled to 0",
+     "hl": true
+    }
+   ]
+  },
+  "side": [
+   {
+    "k": "No transfer per step",
+    "label": "A running tab",
+    "from": 2
+   },
+   {
+    "k": "Must be zero at return",
+    "label": "Otherwise the tx reverts",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "EIP-1153",
+   "v": "Cleared at the end of the tx"
+  }
+ },
+ "27": {
+  "type": "curve",
+  "curves": [
+   {
+    "expr": "10-x",
+    "label": "x + y = k",
+    "alt": true,
+    "label_at": 0.8,
+    "label_dx": -110,
+    "label_dy": 40
+   },
+   {
+    "expr": "25/x",
+    "label": "x · y = k",
+    "hl": true,
+    "label_at": 0.12,
+    "label_dx": 14,
+    "label_dy": 0
+   }
+  ],
+  "xr": [
+   0,
+   10
+  ],
+  "yr": [
+   0,
+   10
+  ],
+  "xl": "reserve x",
+  "yl": "reserve y",
+  "side": [
+   {
+    "k": "Constant sum",
+    "label": "Zero slippage at 1:1",
+    "sub": "a depeg drains one side",
+    "bad": true
+   },
+   {
+    "k": "Constant product",
+    "label": "Never empty",
+    "sub": "but slippage even near 1:1"
+   },
+   {
+    "k": "StableSwap",
+    "label": "Blends the two",
+    "hl": true
+   }
+  ]
+ },
+ "28": {
+  "type": "formula",
+  "k": "StableSwap (Egorov, 2019)",
+  "expr": "A·nⁿ·Σxᵢ + D = A·D·nⁿ + Dⁿ⁺¹ / (nⁿ·Πxᵢ)",
+  "terms": [
+   {
+    "k": "D",
+    "v": "total when all coins are at par"
+   },
+   {
+    "k": "Near balance",
+    "v": "like constant **sum**: flat"
+   },
+   {
+    "k": "Far from balance",
+    "v": "like constant product"
+   }
+  ]
+ },
+ "29": {
+  "type": "big",
+  "k": "Amplification coefficient",
+  "big": "A = 100",
+  "label": "used in the StableSwap paper's slippage example",
+  "side": [
+   {
+    "k": "Higher A",
+    "label": "Flatter prices around 1:1",
+    "hl": true
+   },
+   {
+    "k": "Imbalanced pool",
+    "label": "Effective leverage falls toward 0"
+   },
+   {
+    "k": "A → 0",
+    "label": "Constant product, like Uniswap",
+    "alt": true
+   }
+  ]
+ },
+ "30": {
+  "type": "segments",
+  "head": "Balancer weighted pool, 80/20",
+  "items": [
+   {
+    "label": "Token A",
+    "value": 80,
+    "display": "80%",
+    "hl": true
+   },
+   {
+    "label": "Token B",
+    "value": 20,
+    "display": "20%"
+   }
+  ],
+  "cards": [
+   {
+    "k": "Invariant",
+    "label": "Π Bᵢ^wᵢ constant"
+   },
+   {
+    "k": "Spot price",
+    "label": "(Bᵢ / wᵢ) / (Bₒ / wₒ)"
+   },
+   {
+    "k": "2 tokens, 50/50",
+    "label": "= x · y = k",
+    "hl": true
+   }
+  ]
+ },
+ "31": {
+  "type": "split",
+  "src": {
+   "k": "Collateral",
+   "label": "$10,000 of ETH",
+   "sub": "no credit check",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Max LTV",
+    "label": "What you may borrow",
+    "sub": "less than $10,000"
+   },
+   {
+    "k": "Liquidation threshold",
+    "label": "≥ LTV: where liquidation starts",
+    "alt": true
+   },
+   {
+    "k": "Gap between them",
+    "label": "Safety margin at opening",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Aave",
+   "v": "Loans are overcollateralized"
+  }
+ },
+ "32": {
+  "type": "formula",
+  "k": "Aave health factor",
+  "expr": "HF = Σ(collateral × threshold) / debt",
+  "terms": [
+   {
+    "k": "Example",
+    "v": "10,000 × 80% / 7,000 ≈ **1.14**"
+   },
+   {
+    "k": "Collateral −12.5%",
+    "v": "$8,750 → HF = 1"
+   },
+   {
+    "k": "HF < 1",
+    "v": "anyone can liquidate at a discount"
+   }
+  ]
+ },
+ "33": {
+  "type": "split",
+  "src": {
+   "k": "HF < 1",
+   "label": "Liquidation",
+   "sub": "Aave v3.3, governance param"
+  },
+  "to": [
+   {
+    "k": "HF > 0.95 and reserves ≥ $2,000",
+    "label": "Up to 50% of total debt",
+    "hl": true
+   },
+   {
+    "k": "HF ≤ 0.95 or a reserve < $2,000",
+    "label": "Up to 100% of that debt reserve",
+    "bad": true
+   }
+  ]
+ },
+ "34": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Liquidator",
+    "label": "Repays debt D"
+   },
+   {
+    "k": "Receives",
+    "label": "Collateral worth D × (1 + bonus)",
+    "hl": true
+   },
+   {
+    "k": "Protocol",
+    "label": "Stays solvent"
+   }
+  ],
+  "note": {
+   "k": "For the borrower",
+   "v": "The bonus is the cost of a bad loan"
+  }
+ },
+ "35": {
+  "type": "curve",
+  "curves": [
+   {
+    "expr": "2+x*0.06 if x<80 else 6.8+(x-80)*1.2",
+    "label": "borrow rate",
+    "hl": true,
+    "label_at": 0.45,
+    "label_dy": -45
+   }
+  ],
+  "xr": [
+   0,
+   100
+  ],
+  "yr": [
+   0,
+   32
+  ],
+  "xl": "utilization U",
+  "yl": "rate",
+  "vlines": [
+   {
+    "x": 80,
+    "label": "kink"
+   }
+  ],
+  "side": [
+   {
+    "k": "Utilization",
+    "label": "U = borrows / (cash + borrows − reserves)"
+   },
+   {
+    "k": "Above the kink",
+    "label": "Rate jumps: repay, keep cash for lenders",
+    "hl": true
+   }
+  ]
+ },
+ "36": {
+  "type": "formula",
+  "k": "Compound v2 supply rate · U = utilization",
+  "size": 44,
+  "expr": "supply = borrow × U × (1 − reserve factor)",
+  "terms": [
+   {
+    "k": "Example",
+    "v": "5% borrow × 80% U × (1 − 10%)"
+   },
+   {
+    "k": "Lenders earn",
+    "v": "**3.6%**"
+   },
+   {
+    "k": "Why less",
+    "v": "unlent cash + protocol reserves"
+   }
+  ]
+ },
+ "37": {
+  "type": "compare",
+  "left": {
+   "head": "Aave aToken",
+   "items": [
+    "Rebases",
+    "balanceOf = scaled × liquidity index",
+    "Token count rises"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Compound v2 cToken",
+   "items": [
+    "No rebase",
+    "Token count fixed",
+    "Exchange rate rises"
+   ]
+  },
+  "note": {
+   "k": "Result",
+   "v": "Aave: more tokens · Compound v2: same tokens, each worth more"
+  }
+ },
+ "38": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "SEND",
+    "label": "Funds, no collateral"
+   },
+   {
+    "k": "executeOperation()",
+    "label": "Borrower's code runs"
+   },
+   {
+    "k": "PULL BACK",
+    "label": "amount + 0.05%",
+    "sub": "or the whole tx reverts",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Aave v3 flashLoan()",
+   "v": "The loan exists within one transaction"
+  }
+ },
+ "39": {
+  "type": "split",
+  "src": {
+   "k": "Euler, Mar 13, 2023",
+   "label": "Flaw in a new function",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "Flash loan",
+    "label": "Supplied the capital, repaid",
+    "sub": "same transaction"
+   },
+   {
+    "k": "Lenders",
+    "label": "≈ $197M taken",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Flash loans",
+   "v": "Don't create bugs, they scale them"
+  }
+ },
+ "40": {
+  "type": "cycle",
+  "nodes": [
+   {
+    "k": "Lock",
+    "label": "ETH in a vault"
+   },
+   {
+    "k": "Mint",
+    "label": "New DAI",
+    "hl": true
+   },
+   {
+    "k": "Accrue",
+    "label": "Stability fee"
+   },
+   {
+    "k": "Repay",
+    "label": "Burn DAI, free collateral"
+   }
+  ],
+  "center": {
+   "k": "Below min ratio",
+   "label": "Liquidated, collateral auctioned"
+  }
+ },
+ "41": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Mar 12–13, 2020",
+    "label": "ETH crash, gas spike",
+    "bad": true
+   },
+   {
+    "k": "Keepers",
+    "label": "Stop bidding",
+    "sub": "oracle updates delayed too"
+   },
+   {
+    "k": "0 DAI bids win",
+    "label": "62,892.93 ETH ≈ $8.32M",
+    "sub": "to four addresses",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Assumption broken",
+   "v": "Bidders can always get a tx in"
+  }
+ },
+ "42": {
+  "type": "fields",
+  "struct": {
+   "name": "Liquity v1 Trove",
+   "lines": [
+    {
+     "key": "min ratio",
+     "val": "110%",
+     "hl": true
+    },
+    [
+     "min debt",
+     "2,000 LUSD"
+    ],
+    [
+     "borrow fee",
+     "0.5% to 5%, one-off"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "Redemption",
+    "label": "1 LUSD → $1 of ETH",
+    "sub": "lowest-ratio Troves first",
+    "hl": true
+   },
+   {
+    "k": "Result",
+    "label": "Hard floor near $1"
+   }
+  ]
+ },
+ "43": {
+  "type": "table",
+  "head": [
+   "Design",
+   "Example",
+   "Main risk"
+  ],
+  "hl_col": 2,
+  "rows": [
+   [
+    "Fiat-backed",
+    "USDC",
+    "Custody"
+   ],
+   [
+    "Crypto-collateralized",
+    "DAI, LUSD",
+    "Liquidation"
+   ],
+   [
+    "Algorithmic",
+    "UST",
+    "Reflexivity"
+   ]
+  ],
+  "note": {
+   "k": "Three designs",
+   "v": "Three ways to fail"
+  }
+ },
+ "44": {
+  "type": "split",
+  "src": {
+   "k": "Silicon Valley Bank fails",
+   "label": "$3.3B of ≈ $40B reserves",
+   "sub": "≈ 8%",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "USDC",
+    "label": "≈ $0.877",
+    "bad": true
+   },
+   {
+    "k": "DAI",
+    "label": "Followed it down",
+    "sub": "heavily backed by USDC",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Mar 11, 2023",
+   "v": "Custody risk passes to everything built on it"
+  }
+ },
+ "45": {
+  "type": "cycle",
+  "nodes": [
+   {
+    "k": "Run",
+    "label": "UST sold below $1",
+    "bad": true
+   },
+   {
+    "k": "Redeem",
+    "label": "Burn UST, mint LUNA"
+   },
+   {
+    "k": "Dilution",
+    "label": "LUNA supply explodes"
+   },
+   {
+    "k": "LUNA falls",
+    "label": "Confidence falls",
+    "bad": true
+   }
+  ],
+  "center": {
+   "k": "May 2022",
+   "label": "≈ 1B → ≈ 6T LUNA, ≈ $80 → ≈ 0"
+  }
+ },
+ "46": {
+  "type": "split",
+  "reverse": true,
+  "src": {
+   "k": "Peg",
+   "label": "$1",
+   "sub": "as tight as its exits",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Below $1",
+    "label": "Buy, redeem for $1 of backing"
+   },
+   {
+    "k": "Above $1",
+    "label": "Mint and sell"
+   },
+   {
+    "k": "Maker PSM",
+    "label": "USDC ↔ DAI 1:1 + fee"
+   }
+  ]
+ },
+ "47": {
+  "type": "formula",
+  "k": "ERC-4626 vault",
+  "expr": "shares = assets × totalSupply / totalAssets",
+  "terms": [
+   {
+    "k": "Redeem",
+    "v": "assets = shares × totalAssets / totalSupply"
+   },
+   {
+    "k": "Vault earns",
+    "v": "totalAssets ↑ → each share worth more"
+   },
+   {
+    "k": "Rounding",
+    "v": "favors the **vault**, not the user"
+   }
+  ]
+ },
+ "48": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Empty vault: attacker deposits 1 wei",
+    "sub": "gets 1 share",
+    "alt": true
+   },
+   {
+    "label": "Donates D tokens directly",
+    "sub": "1 share now worth D + 1",
+    "bad": true
+   },
+   {
+    "label": "Victim deposits less than D + 1",
+    "sub": "rounds to 0 shares",
+    "bad": true
+   },
+   {
+    "label": "Attacker's share captures it"
+   }
+  ],
+  "note": {
+   "k": "OpenZeppelin fix",
+   "v": "Virtual shares and assets (decimals offset)"
+  }
+ },
+ "49": {
+  "type": "split",
+  "src": {
+   "k": "Perp vs index",
+   "label": "Funding payment",
+   "sub": "every hour on dYdX v4",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Perp above index",
+    "label": "Longs pay shorts"
+   },
+   {
+    "k": "Perp below index",
+    "label": "Shorts pay longs",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "No expiry",
+   "v": "Funding keeps the perp near the index"
+  }
+ },
+ "50": {
+  "type": "compare",
+  "left": {
+   "head": "Holds",
+   "items": [
+    "Mostly crypto collateral",
+    "Some stablecoins"
+   ]
+  },
+  "right": {
+   "head": "Hedge",
+   "items": [
+    "Short futures, same notional",
+    "Net delta ≈ 0",
+    "Part of yield: funding + basis (variable)"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Ethena USDe",
+   "v": "Not fiat-backed: different risks"
+  },
+  "vs": "+"
+ },
+ "51": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "last update",
+    "label": "Price posted",
+    "at": 0.12
+   },
+   {
+    "t": "next update",
+    "label": "Deviation OR heartbeat",
+    "sub": "whichever comes first",
+    "hl": true,
+    "at": 0.75
+   }
+  ],
+  "span": [
+   0.12,
+   0.75,
+   "contracts read the last posted value"
+  ],
+  "note": {
+   "k": "Chainlink Data Feeds",
+   "v": "An on-chain price can be slightly stale by design"
+  }
+ },
+ "52": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "FRONT-RUN",
+    "label": "Bot buys",
+    "sub": "moves y / x",
+    "bad": true
+   },
+   {
+    "k": "VICTIM",
+    "label": "Fills at a worse price",
+    "sub": "capped by amountOutMin",
+    "hl": true
+   },
+   {
+    "k": "BACK-RUN",
+    "label": "Bot sells",
+    "sub": "captures the move",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Prevent it",
+   "v": "Commit-reveal or fair ordering"
+  }
+ },
+ "53": {
+  "type": "table",
+  "head": [
+   "Area",
+   "Formula",
+   "Edge case"
+  ],
+  "cols": "1fr 1.4fr 1.3fr",
+  "rows": [
+   [
+    "DEX",
+    "x · y = k, ticks, StableSwap A",
+    "Thin pools, manipulable spot"
+   ],
+   [
+    "Lending",
+    "Health factor",
+    "Price crash, liquidation cascade"
+   ],
+   [
+    "Stablecoins",
+    "Redemption paths",
+    "Bank run, depeg"
+   ],
+   [
+    "Vaults",
+    "ERC-4626 shares",
+    "First-deposit inflation"
+   ],
+   [
+    "Flash loans, TWAP",
+    "Borrow and repay in one tx",
+    "One-block manipulation"
+   ]
+  ],
+  "note": {
+   "k": "Lesson",
+   "v": "Most famous incidents happened at a formula's edge case"
+  }
+ }
+}

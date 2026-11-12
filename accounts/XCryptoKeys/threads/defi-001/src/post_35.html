@@ -1,33 +1,178 @@
-<!doctype html><html><head><meta charset="utf-8"><!-- auto-card -->
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;800&display=block" rel="stylesheet">
-<style>body{margin:0;background:#040823}.t{font-family:'Exo 2',Inter,sans-serif}.m{font-family:'JetBrains Mono',monospace}</style></head><body>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Inter,sans-serif">
-<defs>
- <radialGradient id="bg" cx="70%" cy="50%" r="85%"><stop offset="0" stop-color="#10235b"/><stop offset=".55" stop-color="#081039"/><stop offset="1" stop-color="#040823"/></radialGradient>
- <linearGradient id="edgeT" x1="0" x2="1"><stop offset="0" stop-color="#5cfcfa"/><stop offset="1" stop-color="#ad59e9"/></linearGradient>
- <linearGradient id="cubeA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5cfcfa" stop-opacity=".35"/><stop offset="1" stop-color="#2169af" stop-opacity=".15"/></linearGradient>
- <linearGradient id="cubeB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ad59e9" stop-opacity=".35"/><stop offset="1" stop-color="#4a7ce1" stop-opacity=".15"/></linearGradient>
- <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<!doctype html><html><head><meta charset="utf-8"><!-- auto-diagram -->
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=block" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#040823;width:1200px;height:675px;overflow:hidden;font-family:Inter,sans-serif;color:#eaf6ff}
+.page{position:relative;width:1200px;height:675px;overflow:hidden}
+.bgsvg,.ov{position:absolute;left:0;top:0}
+.t{font-family:'Exo 2',Inter,sans-serif}
+.m,.ml,.k,.ck,.cv,.sig,.pre{font-family:'JetBrains Mono',monospace}
+.pre{position:absolute;left:60px;top:50px;color:#5cfcfa;font-size:20px;font-weight:700;letter-spacing:2px;text-shadow:0 0 10px rgba(92,252,250,.7)}
+.ttl{position:absolute;left:60px;top:80px;width:1080px;font-family:'Exo 2',sans-serif;font-weight:800;font-size:44px;line-height:1.1;white-space:nowrap}
+.sig{position:absolute;right:60px;top:624px;color:#488fdb;font-size:15px}
+.area{position:absolute;left:60px;top:165px;width:1080px;height:440px;display:flex}
+.fill{width:100%;height:100%}
+.ax{font-family:'JetBrains Mono',monospace;font-size:15px;fill:#8fa8dd}.ax.v{fill:#ad59e9}
+.cl{font-family:Inter,sans-serif;font-size:18px;font-weight:700}
+.abs{position:relative}
+.row{display:flex;flex-direction:row}
+.col{display:flex;flex-direction:column}
+.grow{flex:1;min-width:0;min-height:0}
+.center{align-items:center}
+.gap-arrow{gap:70px}
+.rowsb{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.card{background:linear-gradient(180deg,rgba(23,38,103,.85),rgba(11,32,83,.7));border:1.5px solid #2169af;border-radius:14px;padding:16px 20px;position:relative}
+.card.hl{border:2.5px solid transparent;background:linear-gradient(#0b2053,#0b2053) padding-box,linear-gradient(90deg,#5cfcfa,#ad59e9) border-box;box-shadow:0 0 22px rgba(92,252,250,.28),0 0 30px rgba(173,89,233,.18)}
+.card.alt{border:1.5px dashed #8565e4}
+.card.bad{border:2px solid #ad59e9;box-shadow:0 0 18px rgba(173,89,233,.35)}
+.card.dim{opacity:.55}
+.k{font-size:14px;letter-spacing:2.5px;color:#488fdb;margin-bottom:6px}
+.card.hl .k,.k.c{color:#5cfcfa}
+.k.v,.card.alt .k,.card.bad .k{color:#ad59e9}
+.lbl{font-family:'Exo 2',Inter,sans-serif;font-weight:700;font-size:23px;line-height:1.2;color:#eaf6ff}
+.lbl.sm{font-size:21px}
+.card.hl>.lbl{color:#5cfcfa}
+.card.bad>.lbl{color:#c98af5}
+.sub{font-size:16px;line-height:1.35;color:#8fa8dd;margin-top:5px}
+.sub.lg{font-size:20px}
+.ml{font-size:16px;line-height:1.55;color:#d6e8ff}
+.bigv{font-family:'Exo 2',sans-serif;font-weight:800;font-size:44px;line-height:1.05;color:#5cfcfa;text-shadow:0 0 14px rgba(92,252,250,.45)}
+b.c{color:#5cfcfa;font-weight:700}
+.c{color:#5cfcfa}.v{color:#ad59e9}
+.dimtxt{color:#7f9cd6;font-size:15px}
+.note{margin-top:22px;padding:14px 22px}
+.note .nv{font-family:'Exo 2',sans-serif;font-weight:800;font-size:26px;line-height:1.2}
+.side{flex:1;padding:24px 28px}
+.side .bigv{font-size:60px;margin:6px 0 4px}
+.side.alt .bigv{color:#c98af5;text-shadow:0 0 14px rgba(173,89,233,.45)}
+.side ul{margin:10px 0 0;padding:0;list-style:none}
+.side li{font-size:19px;line-height:1.35;margin:9px 0;padding-left:24px;position:relative;color:#dbe8ff}
+.side li:before{content:'';position:absolute;left:0;top:8px;width:10px;height:10px;border-radius:50%}
+li.c:before{background:#5cfcfa;box-shadow:0 0 8px #5cfcfa}
+li.v:before{background:#ad59e9;box-shadow:0 0 8px #ad59e9}
+.vs{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#081039;border:2px solid #4a7ce1;font-family:'JetBrains Mono';font-weight:700;font-size:15px;color:#8fa8dd}
+.fl{min-height:150px;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:20px 22px}
+.fl .lbl{font-size:25px}
+.layer{padding:11px 18px}
+.layer .lbl{font-size:20px}
+.segbar{display:flex;height:96px;border-radius:14px;overflow:hidden;border:1.5px solid #2169af;gap:3px;background:#2169af}
+.seg{display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:15px;color:#eaf6ff;white-space:nowrap;overflow:hidden;padding:0 4px}
+.seg.s0{background:#172667}.seg.s1{background:#1d3a80}.seg.s2{background:#11285f}
+.seg.hl{background:linear-gradient(90deg,rgba(92,252,250,.55),rgba(173,89,233,.55));color:#fff;font-weight:700}
+.seg.alt{background:rgba(173,89,233,.4)}
+.segleg{display:flex;flex-wrap:wrap;gap:12px 34px}
+.legi{display:flex;align-items:center;gap:10px}
+.dot{width:12px;height:12px;border-radius:50%;background:#488fdb;flex:none}
+.dot.c{background:#5cfcfa;box-shadow:0 0 8px #5cfcfa}.dot.v{background:#ad59e9;box-shadow:0 0 8px #ad59e9}
+.tl{position:relative}
+.axis{position:absolute;left:0;right:0;top:50%;height:3px;background:linear-gradient(90deg,#2169af,#5cfcfa,#ad59e9);box-shadow:0 0 10px rgba(92,252,250,.5)}
+.pt{position:absolute;top:50%;width:18px;height:18px;margin:-8px 0 0 -9px;border-radius:50%;background:#081039;border:3px solid #46b6e9}
+.pt.hl{background:#5cfcfa;border-color:#5cfcfa;box-shadow:0 0 14px #5cfcfa}
+.pt.alt{border-color:#ad59e9}
+.ev{position:absolute;display:flex;flex-direction:column;align-items:center;text-align:center}
+.ev.up{bottom:calc(50% + 20px)}.ev.dn{top:calc(50% + 20px);flex-direction:column-reverse}
+.tick{margin:6px 0;color:#46b6e9;font-size:16px}
+.tick.hl{color:#5cfcfa}.tick.alt{color:#ad59e9}
+.evc{padding:12px 14px;width:100%}
+.span{position:absolute;top:calc(50% + 22px);height:46px;border:1.5px dashed #ad59e9;border-top:none;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:center}
+.span span{font-family:'JetBrains Mono';font-size:16px;color:#c98af5;padding:0 10px}
+.stem{position:absolute;width:2px;margin-left:-1px;height:20px;background:#46b6e9;opacity:.8}
+.stem.up{bottom:50%}.stem.dn{top:50%}
+.stem.hl{background:#5cfcfa}.stem.alt{background:#ad59e9}
+.barrow{display:flex;align-items:center;gap:20px}
+.bl{width:280px;font-size:22px;text-align:right;flex:none}
+.bt{flex:1;display:flex;align-items:center;gap:14px}
+.bar{flex:none;height:46px;border-radius:8px;background:linear-gradient(90deg,#2169af,#488fdb)}
+.dense .bar{height:32px}.dense .note{margin-top:10px}
+.bar.hl{background:linear-gradient(90deg,#5cfcfa,#ad59e9);box-shadow:0 0 16px rgba(92,252,250,.45)}
+.bar.alt{background:linear-gradient(90deg,#8565e4,#ad59e9)}
+.bv{font-size:21px;color:#d6e8ff;white-space:nowrap}
+.formula{text-align:center;padding:30px 30px}
+.expr{font-family:'Exo 2',sans-serif;font-weight:800;font-size:54px;line-height:1.15}
+.term{padding:16px 20px}
+.sym{font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:#5cfcfa}
+.center{text-align:center}
+.code{padding:20px 24px;align-self:center}
+.cl{display:flex;gap:16px;font-size:17px;line-height:1.5;padding:3px 10px;margin:0 -10px;border-radius:6px}
+.ck{color:#46b6e9;min-width:var(--kw,12ch);flex:none}.cv{color:#d6e8ff}
+.cl.hlln{background:rgba(92,252,250,.12);box-shadow:inset 3px 0 #5cfcfa}.cl.hlln .cv{color:#5cfcfa}
+.cl.altln{background:rgba(173,89,233,.14);box-shadow:inset 3px 0 #ad59e9}.cl.altln .cv{color:#c98af5}
+.ctr{position:absolute;transform:translateY(-50%)}
+.tn{position:absolute;transform:translate(-50%,-50%);padding:7px 12px;font-family:'JetBrains Mono';font-size:15px;white-space:nowrap;text-align:center}
+.tn.root{font-family:'Exo 2';font-weight:800;font-size:20px;color:#5cfcfa;padding:10px 20px}
+.tn.inner{color:#8fa8dd;font-size:14px}
+.gauge{position:relative;width:380px;height:380px;flex:none}
+.gin{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 70px}
+.gbig{white-space:nowrap;font-family:'Exo 2';font-weight:800;font-size:58px;color:#5cfcfa;text-shadow:0 0 14px rgba(92,252,250,.5);line-height:1}
+.chk{display:flex;gap:18px;align-items:flex-start}
+.mk{width:38px;height:38px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:21px}
+.mk.ok{color:#040823;background:#5cfcfa;box-shadow:0 0 12px rgba(92,252,250,.6)}
+.mk.no{color:#fff;background:#ad59e9;box-shadow:0 0 12px rgba(173,89,233,.6)}
+.mk.q{color:#eaf6ff;border:2px solid #488fdb;font-size:16px;font-family:'JetBrains Mono'}
+.fn{width:200px;height:200px;flex:none;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:2.5px solid transparent;background:radial-gradient(#172667,#0b2053) padding-box,linear-gradient(135deg,#5cfcfa,#ad59e9) border-box;box-shadow:0 0 30px rgba(92,252,250,.3);padding:20px}
+.fnl{font-family:'Exo 2';font-weight:800;font-size:24px;color:#eaf6ff;line-height:1.15}
+.inp{padding:12px 18px}.inp .lbl{font-size:19px}
+.blk{padding:0 0 14px;overflow:hidden}
+.blk .bh{background:rgba(33,105,175,.35);padding:7px 16px;font-size:14px;letter-spacing:2px;color:#8fa8dd;margin-bottom:10px;min-height:32px}
+.blk.hl .bh{background:linear-gradient(90deg,rgba(92,252,250,.25),rgba(173,89,233,.25));color:#5cfcfa}
+.blk.alt .bh,.blk.bad .bh{background:rgba(173,89,233,.25);color:#c98af5}
+.blk>.lbl,.blk>.sub,.blk>.ml{padding:0 16px}
+.steps{gap:0}
+.st{display:flex;gap:20px;position:relative;padding-bottom:20px}
+.st:not(:last-child):after{content:'';position:absolute;left:21px;top:46px;bottom:2px;width:2px;background:linear-gradient(#46b6e9,rgba(70,182,233,.2))}
+.num{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-weight:700;font-size:18px;color:#5cfcfa;border:2px solid #2169af;background:#081039}
+.num.hl{background:#5cfcfa;color:#040823;border-color:#5cfcfa;box-shadow:0 0 14px rgba(92,252,250,.6)}
+.num.alt{border-color:#ad59e9;color:#ad59e9}
+.stb{padding-top:7px}
+.tbl{display:grid;padding:6px 0;gap:0}
+.th{font-family:'JetBrains Mono';font-size:14px;letter-spacing:2px;color:#488fdb;padding:12px 18px;border-bottom:1.5px solid #2169af}
+.td{font-size:18px;padding:11px 18px;border-bottom:1px solid rgba(33,105,175,.35);color:#dbe8ff}
+.td.first{font-family:'Exo 2';font-weight:700;color:#eaf6ff}
+.hlc{background:rgba(92,252,250,.07)}.th.hlc{color:#5cfcfa}
+.ok{color:#5cfcfa;font-weight:800;font-size:22px;text-shadow:0 0 8px rgba(92,252,250,.6)}
+.no{color:#ad59e9;font-weight:800;font-size:22px}
+.huge{white-space:nowrap;font-family:'Exo 2';font-weight:800;font-size:110px;line-height:1;background:linear-gradient(90deg,#5cfcfa,#ad59e9);-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(92,252,250,.35))}
+.pad{padding:0 6px}
+</style></head><body><div class="page">
+<svg class="bgsvg" width="1200" height="675"><defs>
+ <radialGradient id="bg" cx="60%" cy="35%" r="85%"><stop offset="0" stop-color="#10235b"/><stop offset=".55" stop-color="#081039"/><stop offset="1" stop-color="#040823"/></radialGradient>
+ <linearGradient id="edgeD" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#5cfcfa"/><stop offset="1" stop-color="#ad59e9"/></linearGradient>
+ <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
  <filter id="soft" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="60"/></filter>
  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#2169af" stroke-opacity=".12"/></pattern>
- <g id="cube"><path d="M0,30 L52,0 L104,30 L104,92 L52,122 L0,92Z" stroke-width="2"/><path d="M0,30 L52,60 L104,30 M52,60 V122" fill="none" stroke-width="1.5" stroke-opacity=".7"/></g>
-</defs>
-<rect width="1200" height="675" fill="url(#bg)"/><rect width="1200" height="675" fill="url(#grid)"/>
-<circle cx="930" cy="360" r="190" fill="#2169af" opacity=".35" filter="url(#soft)"/>
-<circle cx="1080" cy="160" r="140" fill="#8565e4" opacity=".3" filter="url(#soft)"/>
-<g fill="none" stroke="#46b6e9" stroke-opacity=".35" stroke-width="1.5"><path d="M1200 600H1100L1070 572H960"/><path d="M1200 130H1150L1120 100H1010"/><path d="M700 675V640L730 610H820"/></g>
-<g fill="#5cfcfa" opacity=".6"><circle cx="960" cy="572" r="3"/><circle cx="1010" cy="100" r="3"/><circle cx="820" cy="610" r="3"/></g>
-<g filter="url(#glow)">
- <path d="M790,395 L870,350 M950,305 L1020,265" stroke="#5cfcfa" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
- <use href="#cube" x="700" y="360" fill="url(#cubeA)" stroke="#5cfcfa"/>
- <use href="#cube" x="860" y="270" fill="url(#cubeB)" stroke="#ad59e9"/>
- <use href="#cube" x="1020" y="180" fill="url(#cubeA)" stroke="#46b6e9"/>
-</g>
-<g class="m" font-size="12" fill="#5cfcfa" opacity=".55" text-anchor="middle"><text x="726" y="420">0x23</text><text x="886" y="330">1011</text><text x="1046" y="240">0xf5</text></g>
-<text class="m" x="60" y="92" fill="#5cfcfa" font-size="22" font-weight="700" letter-spacing="2" filter="url(#glow)">#DEFI MECHANICS #35</text>
-<text class="t" x="60" y="215" font-size="50" font-weight="800" fill="#eaf6ff">Interest rates set by</text>
-<text class="t" x="60" y="275" font-size="50" font-weight="800" fill="#eaf6ff">a formula</text>
-<text x="60" y="345" font-size="24" fill="#8fa8dd">Borrowing costs rise slowly with</text>
-<text x="60" y="379" font-size="24" fill="#8fa8dd">utilization, then steeply above a kink.</text>
-<text class="m" x="1140" y="640" fill="#488fdb" font-size="16" text-anchor="end">@xcryptokeys</text>
-</svg></body></html>
+ <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#5cfcfa"/></marker>
+ <marker id="av" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#ad59e9"/></marker>
+</defs><rect width="1200" height="675" fill="url(#bg)"/><rect width="1200" height="675" fill="url(#grid)"/><circle cx="180" cy="300" r="170" fill="#2169af" opacity=".33" filter="url(#soft)"/><circle cx="1000" cy="200" r="160" fill="#8565e4" opacity=".28" filter="url(#soft)"/><g fill="none" stroke="#46b6e9" stroke-opacity=".3" stroke-width="1.5"><path d="M1200 140H1150L1120 110H1010"/><path d="M700 675V650L725 625H840"/><path d="M0 150H30L55 175"/></g><g fill="#5cfcfa" opacity=".55"><circle cx="1010" cy="110" r="3"/><circle cx="840" cy="625" r="3"/><circle cx="55" cy="175" r="3"/></g><g font-family="JetBrains Mono,monospace" font-size="13" fill="#46b6e9" opacity=".2"><text x="1140" y="36" text-anchor="end">h = H(l ‖ r)</text><text x="40" y="662">0x9f2c 0110 01</text></g></svg>
+<div class="pre">#DEFI MECHANICS #35</div>
+<div class="ttl" style="font-size:44px">Interest rates set by a formula</div>
+<div class="area"><div class="row fill" style="gap:50px;align-items:center"><div style="width:600px;height:440px;flex:none"><svg width="600" height="440" style="overflow:visible"><line x1="56" y1="396" x2="580" y2="396" stroke="#488fdb" stroke-width="2"/><line x1="56" y1="40" x2="56" y2="396" stroke="#488fdb" stroke-width="2"/><text x="580" y="428" text-anchor="end" class="ax">utilization U</text><text x="48" y="24" class="ax">rate</text><line x1="475.2" y1="40" x2="475.2" y2="396" stroke="#ad59e9" stroke-width="2" stroke-dasharray="7 6"/><text x="483.2" y="54" class="ax v">kink</text><polyline points="56.0,373.8 57.3,373.6 58.6,373.4 59.9,373.2 61.2,373.1 62.5,372.9 63.9,372.7 65.2,372.6 66.5,372.4 67.8,372.2 69.1,372.1 70.4,371.9 71.7,371.7 73.0,371.6 74.3,371.4 75.7,371.2 77.0,371.1 78.3,370.9 79.6,370.7 80.9,370.6 82.2,370.4 83.5,370.2 84.8,370.1 86.1,369.9 87.4,369.7 88.8,369.6 90.1,369.4 91.4,369.2 92.7,369.1 94.0,368.9 95.3,368.7 96.6,368.6 97.9,368.4 99.2,368.2 100.5,368.1 101.8,367.9 103.2,367.7 104.5,367.6 105.8,367.4 107.1,367.2 108.4,367.1 109.7,366.9 111.0,366.7 112.3,366.6 113.6,366.4 115.0,366.2 116.3,366.1 117.6,365.9 118.9,365.7 120.2,365.6 121.5,365.4 122.8,365.2 124.1,365.1 125.4,364.9 126.7,364.7 128.1,364.6 129.4,364.4 130.7,364.2 132.0,364.1 133.3,363.9 134.6,363.7 135.9,363.6 137.2,363.4 138.5,363.2 139.8,363.1 141.2,362.9 142.5,362.7 143.8,362.6 145.1,362.4 146.4,362.2 147.7,362.1 149.0,361.9 150.3,361.7 151.6,361.6 152.9,361.4 154.2,361.2 155.6,361.1 156.9,360.9 158.2,360.7 159.5,360.6 160.8,360.4 162.1,360.2 163.4,360.1 164.7,359.9 166.0,359.7 167.3,359.6 168.7,359.4 170.0,359.2 171.3,359.1 172.6,358.9 173.9,358.7 175.2,358.6 176.5,358.4 177.8,358.2 179.1,358.1 180.4,357.9 181.8,357.7 183.1,357.6 184.4,357.4 185.7,357.2 187.0,357.1 188.3,356.9 189.6,356.7 190.9,356.6 192.2,356.4 193.6,356.2 194.9,356.1 196.2,355.9 197.5,355.7 198.8,355.6 200.1,355.4 201.4,355.2 202.7,355.1 204.0,354.9 205.3,354.7 206.6,354.6 208.0,354.4 209.3,354.2 210.6,354.1 211.9,353.9 213.2,353.7 214.5,353.6 215.8,353.4 217.1,353.2 218.4,353.1 219.8,352.9 221.1,352.7 222.4,352.6 223.7,352.4 225.0,352.2 226.3,352.1 227.6,351.9 228.9,351.7 230.2,351.6 231.5,351.4 232.9,351.2 234.2,351.1 235.5,350.9 236.8,350.7 238.1,350.6 239.4,350.4 240.7,350.2 242.0,350.1 243.3,349.9 244.6,349.7 245.9,349.6 247.3,349.4 248.6,349.2 249.9,349.1 251.2,348.9 252.5,348.7 253.8,348.6 255.1,348.4 256.4,348.2 257.7,348.1 259.1,347.9 260.4,347.7 261.7,347.6 263.0,347.4 264.3,347.2 265.6,347.1 266.9,346.9 268.2,346.7 269.5,346.5 270.8,346.4 272.1,346.2 273.5,346.0 274.8,345.9 276.1,345.7 277.4,345.5 278.7,345.4 280.0,345.2 281.3,345.0 282.6,344.9 283.9,344.7 285.2,344.5 286.6,344.4 287.9,344.2 289.2,344.0 290.5,343.9 291.8,343.7 293.1,343.5 294.4,343.4 295.7,343.2 297.0,343.0 298.4,342.9 299.7,342.7 301.0,342.5 302.3,342.4 303.6,342.2 304.9,342.0 306.2,341.9 307.5,341.7 308.8,341.5 310.1,341.4 311.4,341.2 312.8,341.0 314.1,340.9 315.4,340.7 316.7,340.5 318.0,340.4 319.3,340.2 320.6,340.0 321.9,339.9 323.2,339.7 324.5,339.5 325.9,339.4 327.2,339.2 328.5,339.0 329.8,338.9 331.1,338.7 332.4,338.5 333.7,338.4 335.0,338.2 336.3,338.0 337.6,337.9 339.0,337.7 340.3,337.5 341.6,337.4 342.9,337.2 344.2,337.0 345.5,336.9 346.8,336.7 348.1,336.5 349.4,336.4 350.8,336.2 352.1,336.0 353.4,335.9 354.7,335.7 356.0,335.5 357.3,335.4 358.6,335.2 359.9,335.0 361.2,334.9 362.5,334.7 363.9,334.5 365.2,334.4 366.5,334.2 367.8,334.0 369.1,333.9 370.4,333.7 371.7,333.5 373.0,333.4 374.3,333.2 375.6,333.0 377.0,332.9 378.3,332.7 379.6,332.5 380.9,332.4 382.2,332.2 383.5,332.0 384.8,331.9 386.1,331.7 387.4,331.5 388.7,331.4 390.0,331.2 391.4,331.0 392.7,330.9 394.0,330.7 395.3,330.5 396.6,330.4 397.9,330.2 399.2,330.0 400.5,329.9 401.8,329.7 403.1,329.5 404.5,329.4 405.8,329.2 407.1,329.0 408.4,328.9 409.7,328.7 411.0,328.5 412.3,328.4 413.6,328.2 414.9,328.0 416.2,327.9 417.6,327.7 418.9,327.5 420.2,327.4 421.5,327.2 422.8,327.0 424.1,326.9 425.4,326.7 426.7,326.5 428.0,326.4 429.4,326.2 430.7,326.0 432.0,325.9 433.3,325.7 434.6,325.5 435.9,325.4 437.2,325.2 438.5,325.0 439.8,324.9 441.1,324.7 442.5,324.5 443.8,324.4 445.1,324.2 446.4,324.0 447.7,323.9 449.0,323.7 450.3,323.5 451.6,323.4 452.9,323.2 454.2,323.0 455.5,322.9 456.9,322.7 458.2,322.5 459.5,322.4 460.8,322.2 462.1,322.0 463.4,321.9 464.7,321.7 466.0,321.5 467.3,321.4 468.6,321.2 470.0,321.0 471.3,320.9 472.6,320.7 473.9,320.5 475.2,320.4 476.5,317.0 477.8,313.7 479.1,310.3 480.4,307.0 481.8,303.7 483.1,300.3 484.4,297.0 485.7,293.6 487.0,290.3 488.3,287.0 489.6,283.6 490.9,280.3 492.2,277.0 493.5,273.6 494.9,270.3 496.2,267.0 497.5,263.6 498.8,260.3 500.1,256.9 501.4,253.6 502.7,250.3 504.0,246.9 505.3,243.6 506.6,240.2 508.0,236.9 509.3,233.6 510.6,230.2 511.9,226.9 513.2,223.6 514.5,220.2 515.8,216.9 517.1,213.6 518.4,210.2 519.7,206.9 521.0,203.5 522.4,200.2 523.7,196.9 525.0,193.5 526.3,190.2 527.6,186.8 528.9,183.5 530.2,180.2 531.5,176.8 532.8,173.5 534.1,170.2 535.5,166.8 536.8,163.5 538.1,160.2 539.4,156.8 540.7,153.5 542.0,150.1 543.3,146.8 544.6,143.5 545.9,140.1 547.2,136.8 548.6,133.4 549.9,130.1 551.2,126.8 552.5,123.4 553.8,120.1 555.1,116.8 556.4,113.4 557.7,110.1 559.0,106.8 560.4,103.4 561.7,100.1 563.0,96.7 564.3,93.4 565.6,90.1 566.9,86.7 568.2,83.4 569.5,80.1 570.8,76.7 572.1,73.4 573.5,70.0 574.8,66.7 576.1,63.4 577.4,60.0 578.7,56.7 580.0,53.3" fill="none" stroke="#5cfcfa" stroke-width="4"  filter="url(#glowL)"/><text x="301.8" y="298.7" class="cl" fill="#5cfcfa">borrow rate</text></svg></div><div class="col grow" style="gap:18px;justify-content:center"><div class="card"  style=""><div class="k">UTILIZATION</div><div class="lbl">U = borrows / (cash + borrows − reserves)</div></div><div class="card hl"  style=""><div class="k">ABOVE THE KINK</div><div class="lbl">Rate jumps: repay, keep cash for lenders</div></div></div></div></div>
+<svg class="ov" width="1200" height="675" style="pointer-events:none"><defs><filter id="glowL" filterUnits="userSpaceOnUse" x="0" y="0" width="1200" height="675"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g id="links" fill="none" stroke-width="2.5" filter="url(#glowL)"></g></svg>
+<div class="sig">@xcryptokeys</div>
+</div><script>
+document.fonts.ready.then(()=>{
+ const L = []; const ov = document.getElementById('links'); const P = document.querySelector('.page').getBoundingClientRect();
+ for (const [a,b,kind,dir] of L){
+  const A=document.getElementById(a), B=document.getElementById(b); if(!A||!B) continue;
+  const ra=A.getBoundingClientRect(), rb=B.getBoundingClientRect(); let d;
+  if (dir==='down'){ const x1=ra.left+ra.width/2-P.left, y1=ra.bottom-P.top+4, x2=rb.left-P.left-6, y2=rb.top+rb.height/2-P.top;
+    d=`M${x1},${y1} C${x1},${y2} ${x1},${y2} ${x2},${y2}`; }
+  else if (dir==='loop'){ const x1=ra.left+ra.width/2-P.left, y1=ra.bottom-P.top+4, x2=rb.left+rb.width/2-P.left, y2=rb.bottom-P.top+8;
+    const yy=Math.max(y1,y2)+38; d=`M${x1},${y1} C${x1},${yy} ${x2},${yy} ${x2},${y2}`; }
+  else if (rb.right < ra.left) { const x1=ra.left-P.left-2, y1=ra.top+ra.height/2-P.top, x2=rb.right-P.left+6, y2=rb.top+rb.height/2-P.top, m=(x1+x2)/2;
+    d=`M${x1},${y1} C${m},${y1} ${m},${y2} ${x2},${y2}`; }
+  else { const x1=ra.right-P.left+2, y1=ra.top+ra.height/2-P.top, x2=rb.left-P.left-6, y2=rb.top+rb.height/2-P.top, m=(x1+x2)/2;
+    d=`M${x1},${y1} C${m},${y1} ${m},${y2} ${x2},${y2}`; }
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path'); p.setAttribute('d',d);
+  p.setAttribute('stroke', kind==='alt'?'#ad59e9':'#5cfcfa'); if(kind==='alt') p.setAttribute('stroke-dasharray','7 6');
+  p.setAttribute('marker-end', kind==='alt'?'url(#av)':'url(#a)'); ov.appendChild(p);
+ }
+ // contrôle de débordement, lu par render.js
+ const bad=[]; const ar=document.querySelector('.area').getBoundingClientRect();
+ const ttl=document.querySelector('.ttl'); if (ttl.scrollWidth>ttl.clientWidth+1) bad.push('title too long');
+ document.querySelectorAll('.area *').forEach(e=>{const r=e.getBoundingClientRect(); if(!r.width) return;
+   if(r.right>ar.right+12||r.bottom>ar.bottom+14||r.left<ar.left-12||r.top<ar.top-14) bad.push('outside: '+(e.className||e.tagName)+' '+(e.textContent||'').slice(0,30));
+   if((e.classList.contains('card'))&&(e.scrollHeight>e.clientHeight+2||e.scrollWidth>e.clientWidth+2)) bad.push('card overflow: '+e.textContent.slice(0,30)); });
+ document.body.dataset.overflow = [...new Set(bad)].slice(0,5).join(' | ');
+ document.body.dataset.ready='1';
+});
+</script></body></html>

@@ -10,7 +10,7 @@
       "sub": "Nothing new is ever created. Half sits in a treasury that pays block rewards."
     },
     "source": "pactus code: genesis/mainnet.json, genesis/genesis.go",
-    "status": "posted"
+    "status": "checked"
   },
   {
     "index": 2,
@@ -23,7 +23,7 @@
       "sub": "Block times always land on the same 10-second marks of each minute."
     },
     "source": "pactus code: genesis/genesis_params.go, state/state.go (validateBlockTime)",
-    "status": "posted"
+    "status": "checked"
   },
   {
     "index": 3,
@@ -36,7 +36,7 @@
       "sub": "Paid from the 21M PAC treasury, lasting until around block 44M."
     },
     "source": "pactus code: state/param/param.go (RewardCoefficient, BlockReward)",
-    "status": "posted"
+    "status": "checked"
   },
   {
     "index": 4,
@@ -49,7 +49,7 @@
       "sub": "About 2.5 years in theory. Later in practice: missed blocks are never made up."
     },
     "source": "pactus code: state/param/param.go, state/state.go (proposeNextBlockTime)",
-    "status": "posted"
+    "status": "checked"
   },
   {
     "index": 5,
@@ -62,7 +62,7 @@
       "sub": "Each block pays a small share to one of them. That share halves with the reward."
     },
     "source": "pactus code: state/param/param.go (FoundationAddress, FoundationReward)",
-    "status": "posted"
+    "status": "checked"
   },
   {
     "index": 6,
@@ -74,8 +74,7 @@
       "sub": "Total must equal block reward plus fees."
     },
     "source": "pactus code: state/execution.go (checkSubsidy, executeBlock), types/tx/factory.go",
-    "status": "posted",
-    "posted_at": "2026-11-11T08:43:00Z"
+    "status": "checked"
   },
   {
     "index": 7,

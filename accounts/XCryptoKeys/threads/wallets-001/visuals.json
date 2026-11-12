@@ -1,0 +1,1824 @@
+{
+ "1": {
+  "type": "split",
+  "src": {
+   "k": "Wallet",
+   "label": "Private keys / seed",
+   "sub": "no coins inside",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Signs",
+    "label": "Transactions",
+    "sub": "whoever signs controls the funds"
+   },
+   {
+    "k": "Keys lost",
+    "label": "Access lost",
+    "alt": true
+   },
+   {
+    "k": "Keys leaked",
+    "label": "Coins lost",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Two jobs",
+   "v": "Guard the key, know exactly what you sign"
+  }
+ },
+ "2": {
+  "type": "segments",
+  "head": "12-word phrase (BIP39)",
+  "total": "132 bits = 12 × 11 bits",
+  "items": [
+   {
+    "label": "entropy",
+    "value": 128,
+    "display": "128 bits"
+   },
+   {
+    "label": "checksum",
+    "value": 4,
+    "display": "4 bits",
+    "hl": true
+   }
+  ],
+  "cards": [
+   {
+    "k": "Checksum",
+    "label": "ENT / 32 bits of SHA-256(entropy)"
+   },
+   {
+    "k": "Each 11-bit chunk",
+    "label": "Index into 2048 words",
+    "hl": true
+   },
+   {
+    "k": "24 words",
+    "label": "256 bits + 8-bit checksum"
+   }
+  ],
+  "note": {
+   "k": "So",
+   "v": "Words must come from real randomness"
+  }
+ },
+ "3": {
+  "type": "gauge",
+  "pct": 6.25,
+  "mark": 6.25,
+  "big": "1 in 16",
+  "label": "random 12-word combinations are valid",
+  "side": [
+   {
+    "k": "Last word",
+    "label": "7 entropy bits + 4 checksum bits"
+   },
+   {
+    "k": "24 words",
+    "label": "8-bit checksum: 1 in 256"
+   },
+   {
+    "k": "Lesson",
+    "label": "Let a trusted wallet generate the seed",
+    "hl": true
+   }
+  ]
+ },
+ "4": {
+  "type": "table",
+  "head": [
+   "Word",
+   "Prefix stored"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "`abandon`",
+    "`aban`"
+   ],
+   [
+    "`ability`",
+    "`abil`"
+   ],
+   [
+    "`zebra`",
+    "`zebr`"
+   ],
+   [
+    "`zone`",
+    "`zone`"
+   ]
+  ],
+  "note": {
+   "k": "English BIP39 list",
+   "v": "First 4 letters identify each word"
+  }
+ },
+ "5": {
+  "type": "hash",
+  "fn": "PBKDF2",
+  "fn_k": "HMAC-SHA512 · 2048 rounds",
+  "inputs": [
+   "Mnemonic (NFKD)",
+   {
+    "label": "Salt: \"mnemonic\" + passphrase",
+    "hl": true
+   }
+  ],
+  "out": {
+   "k": "512-bit seed",
+   "label": "Input to BIP32",
+   "sub": "every key and address comes from it"
+  },
+  "note": {
+   "k": "Back up",
+   "v": "The exact words, and the passphrase if any"
+  }
+ },
+ "6": {
+  "type": "split",
+  "src": {
+   "k": "Same 24 words",
+   "label": "+ passphrase",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "\"correct\"",
+    "label": "Your wallet, with funds",
+    "hl": true
+   },
+   {
+    "k": "\"corect\" (typo)",
+    "label": "Valid but empty, no error",
+    "bad": true
+   },
+   {
+    "k": "no passphrase",
+    "label": "Yet another wallet",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "No wrong-passphrase error",
+   "v": "Back it up as carefully as the words"
+  }
+ },
+ "7": {
+  "type": "compare",
+  "left": {
+   "head": "Same entropy, English",
+   "items": [
+    "Sentence A",
+    "Seed A"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Translated to Spanish",
+   "items": [
+    "Sentence B",
+    "Seed B: a different wallet"
+   ]
+  },
+  "note": {
+   "k": "BIP39 hashes the sentence",
+   "v": "Keep the original language and wordlist"
+  }
+ },
+ "8": {
+  "type": "tree",
+  "flat": true,
+  "leaves": [
+   "m/0",
+   "m/1",
+   "m/2",
+   "m/3"
+  ],
+  "root": "master key m",
+  "x1": 330,
+  "side": [
+   {
+    "k": "HMAC-SHA512(\"Bitcoin seed\", seed)",
+    "label": "Left 256 bits: master key",
+    "hl": true
+   },
+   {
+    "k": "Right 256 bits",
+    "label": "Chain code",
+    "sub": "used to derive every child"
+   }
+  ],
+  "note": {
+   "k": "One backup",
+   "v": "Restores every address, past and future"
+  }
+ },
+ "9": {
+  "type": "checklist",
+  "head": "An xpub can…",
+  "checks": [
+   {
+    "text": "Spend funds",
+    "ok": false,
+    "sub": "needs private keys"
+   },
+   {
+    "text": "Derive non-hardened child public keys",
+    "ok": true
+   },
+   {
+    "text": "Reveal every address in the account",
+    "ok": true
+   },
+   {
+    "text": "Reveal full balance and history",
+    "ok": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Privacy decision",
+    "label": "Only to tools you trust",
+    "sub": "e.g. your own watch-only app",
+    "hl": true
+   }
+  ]
+ },
+ "10": {
+  "type": "formula",
+  "k": "Parent key recovery",
+  "expr": "k_parent = k_child − IL",
+  "terms": [
+   {
+    "k": "k_child",
+    "v": "one leaked non-hardened child key"
+   },
+   {
+    "k": "IL",
+    "v": "computable from xpub + chain code"
+   },
+   {
+    "k": "Result",
+    "v": "parent xprv, then **every key below**"
+   }
+  ],
+  "foot": "Treat xpubs as sensitive"
+ },
+ "11": {
+  "type": "compare",
+  "left": {
+   "head": "Non-hardened (< 2^31)",
+   "items": [
+    "Derived from the parent public key",
+    "Computable from an xpub",
+    "xpub + leaked child private key = parent key"
+   ]
+  },
+  "right": {
+   "head": "Hardened (≥ 2^31, i')",
+   "items": [
+    "Derived from the parent private key",
+    "Not computable from an xpub",
+    "Leak can't climb the tree"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "m/84'/0'/0'",
+   "v": "Hardened steps at the top"
+  }
+ },
+ "12": {
+  "type": "fields",
+  "struct": {
+   "name": "BIP44 path",
+   "lines": [
+    [
+     "m",
+     "master"
+    ],
+    {
+     "key": "purpose'",
+     "val": "44'"
+    },
+    {
+     "key": "coin_type'",
+     "val": "0 Bitcoin · 60 Ethereum",
+     "hl": true
+    },
+    [
+     "account'",
+     "0', 1' …"
+    ],
+    {
+     "key": "change",
+     "val": "0 receive · 1 change"
+    },
+    [
+     "address_index",
+     "0, 1, 2 …"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "SLIP-44",
+    "label": "Registry of coin types",
+    "from": 2
+   },
+   {
+    "k": "Other path",
+    "label": "Same seed, different addresses",
+    "alt": true
+   }
+  ]
+ },
+ "13": {
+  "type": "table",
+  "head": [
+   "Purpose",
+   "Address type",
+   "Prefix"
+  ],
+  "hl_col": 0,
+  "rows": [
+   [
+    "44'",
+    "Legacy",
+    "`1…`"
+   ],
+   [
+    "49'",
+    "Nested SegWit",
+    "`3…`"
+   ],
+   [
+    "84'",
+    "Native SegWit",
+    "`bc1q…`"
+   ],
+   [
+    "86'",
+    "Taproot",
+    "`bc1p…`"
+   ]
+  ],
+  "note": {
+   "k": "Zero after restore?",
+   "v": "Wrong path. Never type the seed into a website"
+  }
+ },
+ "14": {
+  "type": "segments",
+  "head": "Receiving addresses scanned on restore",
+  "legend": false,
+  "items": [
+   {
+    "label": "used",
+    "value": 3,
+    "hl": true
+   },
+   {
+    "label": "20 unused in a row",
+    "value": 20,
+    "alt": true
+   },
+   {
+    "label": "past the gap: not scanned",
+    "short": "past the gap",
+    "value": 6
+   }
+  ],
+  "cards": [
+   {
+    "k": "Used",
+    "label": "e.g. addresses 0–2"
+   },
+   {
+    "k": "Gap limit",
+    "label": "20 unused → scan stops",
+    "hl": true
+   },
+   {
+    "k": "Funds past the gap",
+    "label": "Still yours, invisible after restore",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Fix",
+   "v": "Tell the wallet to scan further"
+  }
+ },
+ "15": {
+  "type": "split",
+  "src": {
+   "k": "UTXO",
+   "label": "0.5 BTC"
+  },
+  "to": [
+   {
+    "k": "Payment",
+    "label": "0.2 BTC to the merchant"
+   },
+   {
+    "k": "Change, chain 1",
+    "label": "0.3 BTC back to you",
+    "sub": "internal chain: change = 1",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Tool scans only chain 0?",
+   "v": "Change funds missing, balance looks wrong"
+  }
+ },
+ "16": {
+  "type": "compare",
+  "left": {
+   "head": "BIP39",
+   "items": [
+    "Checksum from SHA-256(entropy)",
+    "Salt: \"mnemonic\" + passphrase"
+   ]
+  },
+  "right": {
+   "head": "Electrum 2.0+",
+   "items": [
+    "Version prefix in a hash of the phrase",
+    "Salt: \"electrum\" + passphrase"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Wrong app",
+   "v": "Different, empty wallet: note which app made the seed"
+  }
+ },
+ "17": {
+  "type": "tree",
+  "flat": true,
+  "leaves": [
+   "Phone seed",
+   "Laptop seed",
+   "Spare seed",
+   "App key"
+  ],
+  "root": "Master seed",
+  "x1": 330,
+  "side": [
+   {
+    "k": "BIP85 · hardened paths",
+    "label": "under m/83696968'"
+   },
+   {
+    "k": "No new randomness",
+    "label": "Nothing new to back up"
+   },
+   {
+    "k": "Child leaked",
+    "label": "Parent stays safe"
+   },
+   {
+    "k": "Master lost or leaked",
+    "label": "Every child with it",
+    "bad": true
+   }
+  ]
+ },
+ "18": {
+  "type": "network",
+  "nodes": 5,
+  "hl": 3,
+  "hl_label": "any 3 shares: secret restored",
+  "n_label": "shares lost or stolen",
+  "x0": 520,
+  "r": 22,
+  "degree": 4,
+  "side": [
+   {
+    "k": "SLIP-39",
+    "label": "Split into N shares, any T restore",
+    "hl": true
+   },
+   {
+    "k": "Fewer than T",
+    "label": "Reveal nothing about the secret"
+   },
+   {
+    "k": "Example 3 of 5",
+    "label": "Lose 2, still recover"
+   }
+  ]
+ },
+ "19": {
+  "type": "split",
+  "src": {
+   "k": "Group threshold",
+   "label": "Any 2 of 3 groups",
+   "sub": "restore the secret",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Group 1 · family",
+    "label": "Any 2 of 3 members",
+    "hl": true
+   },
+   {
+    "k": "Group 2",
+    "label": "Its own member threshold"
+   },
+   {
+    "k": "Group 3",
+    "label": "Its own member threshold"
+   }
+  ],
+  "note": {
+   "k": "Same first words per set",
+   "v": "Shares from different sets can't be mixed"
+  }
+ },
+ "20": {
+  "type": "table",
+  "head": [
+   "",
+   "BIP39",
+   "SLIP-39 share"
+  ],
+  "hl_col": 2,
+  "rows": [
+   [
+    "Wordlist",
+    "2048 words",
+    "1024 words"
+   ],
+   [
+    "Bits per word",
+    "11",
+    "10"
+   ],
+   [
+    "Checksum",
+    "SHA-256 bits",
+    "3-word RS1024"
+   ],
+   [
+    "Length (256-bit secret)",
+    "24 words",
+    "33 words"
+   ]
+  ],
+  "note": {
+   "k": "Before relying on it",
+   "v": "Check your restore wallet supports SLIP-39"
+  }
+ },
+ "21": {
+  "type": "bars",
+  "head": "Unknown bits left to an attacker",
+  "items": [
+   {
+    "label": "Full 24-word seed",
+    "value": 256,
+    "display": "256 bits"
+   },
+   {
+    "label": "Holds 2 of 3 piles",
+    "value": 88,
+    "display": "≤ 88 bits",
+    "bad": true
+   },
+   {
+    "label": "SLIP-39, below threshold",
+    "value": 256,
+    "display": "still 256: learns nothing",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Lose one pile",
+   "v": "Recovery can be blocked too"
+  }
+ },
+ "22": {
+  "type": "checklist",
+  "head": "To restore a 2-of-3 multisig",
+  "checks": [
+   {
+    "text": "2 of the 3 seeds",
+    "ok": true
+   },
+   {
+    "text": "All 3 xpubs",
+    "ok": true
+   },
+   {
+    "text": "Script type",
+    "ok": true
+   },
+   {
+    "text": "Seeds alone",
+    "ok": false,
+    "sub": "not enough"
+   }
+  ],
+  "side": [
+   {
+    "k": "Output descriptor",
+    "label": "Back it up with every key",
+    "hl": true
+   },
+   {
+    "k": "Each key",
+    "label": "Different device, different place"
+   }
+  ]
+ },
+ "23": {
+  "type": "hash",
+  "fn": "MuSig2",
+  "fn_k": "BIP327",
+  "inputs": [
+   "Pubkey A",
+   "Pubkey B",
+   "Pubkey C"
+  ],
+  "out": {
+   "k": "One Schnorr key",
+   "label": "Looks like a single signer",
+   "sub": "on-chain, in a Taproot output"
+  },
+  "note": {
+   "k": "n-of-n only",
+   "v": "Other thresholds need script paths or other schemes"
+  }
+ },
+ "24": {
+  "type": "tree",
+  "leaves": [
+   "2-of-3 recovery",
+   "Timelock inheritance",
+   "Backup key",
+   "Emergency"
+  ],
+  "root": "Taproot output",
+  "inner": "script tree",
+  "x1": 330,
+  "side": [
+   {
+    "k": "Key-path spend",
+    "label": "Reveals no script",
+    "hl": true
+   },
+   {
+    "k": "Script-path spend",
+    "label": "Reveals only the branch used"
+   }
+  ],
+  "note": {
+   "k": "BIP341, Nov 2021",
+   "v": "Unused rules stay private"
+  }
+ },
+ "25": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Host computer",
+    "label": "Builds unsigned tx",
+    "sub": "PSBT, BIP174"
+   },
+   {
+    "k": "Hardware signer",
+    "label": "Checks and signs",
+    "sub": "key never leaves",
+    "hl": true
+   },
+   {
+    "k": "Out",
+    "label": "Signature only"
+   }
+  ],
+  "note": {
+   "k": "Malware",
+   "v": "Can't copy the key, but can push a bad tx"
+  }
+ },
+ "26": {
+  "type": "compare",
+  "left": {
+   "head": "Compromised laptop",
+   "items": [
+    "Shows what the attacker wants",
+    "Address, amount, action can be faked"
+   ]
+  },
+  "right": {
+   "head": "Hardware wallet screen",
+   "items": [
+    "Last honest view of the tx",
+    "Clear-signing exposes malicious data"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Rule",
+   "v": "Check full address, amount and action on the device"
+  }
+ },
+ "27": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "You copy",
+    "label": "Your friend's address"
+   },
+   {
+    "k": "Clipper malware",
+    "label": "Swaps it in the clipboard",
+    "bad": true
+   },
+   {
+    "k": "You paste",
+    "label": "Attacker's address",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Feb 2019, ESET",
+   "v": "First clipper on Google Play, posing as MetaMask"
+  }
+ },
+ "28": {
+  "type": "cycle",
+  "nodes": [
+   {
+    "k": "Online",
+    "label": "Watch-only wallet builds PSBT"
+   },
+   {
+    "k": "QR / memory card",
+    "label": "Unsigned in"
+   },
+   {
+    "k": "Air-gapped",
+    "label": "Device signs",
+    "hl": true
+   },
+   {
+    "k": "QR / memory card",
+    "label": "Signature out"
+   },
+   {
+    "k": "Online",
+    "label": "Finalize and broadcast"
+   }
+  ],
+  "center": {
+   "k": "PSBT",
+   "label": "Key never goes online"
+  }
+ },
+ "29": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "start",
+    "label": "Physical access",
+    "sub": "Trezor One / Model T",
+    "at": 0.1
+   },
+   {
+    "t": "voltage glitching",
+    "label": "Attack on the chip",
+    "bad": true,
+    "at": 0.5
+   },
+   {
+    "t": "< 15 min",
+    "label": "Encrypted seed extracted",
+    "sub": "hardware flaw, no software fix",
+    "alt": true,
+    "at": 0.9
+   }
+  ],
+  "span": [
+   0.1,
+   0.9,
+   "under 15 minutes · Kraken Security Labs, Jan 2020"
+  ],
+  "note": {
+   "k": "Mitigation",
+   "v": "A strong BIP39 passphrase still protects funds"
+  }
+ },
+ "30": {
+  "type": "split",
+  "src": {
+   "k": "One recovery phrase",
+   "label": "Two wallets"
+  },
+  "to": [
+   {
+    "k": "No passphrase",
+    "label": "Decoy wallet",
+    "sub": "small balance, shown if forced",
+    "alt": true
+   },
+   {
+    "k": "Secret passphrase",
+    "label": "Hidden wallet",
+    "sub": "real savings",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "BIP39",
+   "v": "Plausible deniability against coercion"
+  }
+ },
+ "31": {
+  "type": "bars",
+  "head": "Ledger e-commerce leak, Dec 2020 · wallets and funds not affected",
+  "items": [
+   {
+    "label": "Email addresses",
+    "value": 1000000,
+    "display": "≈ 1M"
+   },
+   {
+    "label": "Names + postal addresses + phones",
+    "value": 272852,
+    "display": "272,852",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Real support",
+   "v": "Never asks for your recovery words"
+  }
+ },
+ "32": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Connect (EIP-1102)",
+    "sub": "only shares your address"
+   },
+   {
+    "label": "Transaction",
+    "sub": "moves assets",
+    "hl": true
+   },
+   {
+    "label": "Token approval",
+    "sub": "lets a spender move tokens",
+    "hl": true
+   },
+   {
+    "label": "Typed-data signature",
+    "sub": "e.g. ERC-2612 permit via EIP-712",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Before every signature",
+   "v": "Check the spender and the amount"
+  }
+ },
+ "33": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Phished NPMJS account",
+    "label": "Former employee",
+    "bad": true
+   },
+   {
+    "k": "Connect Kit 1.1.5–1.1.7",
+    "label": "Malicious library"
+   },
+   {
+    "k": "Many dApps",
+    "label": "Show drainer prompts",
+    "sub": "live ≈ 5 h",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Dec 14, 2023",
+   "v": "Reading what you sign was the last defense"
+  }
+ },
+ "34": {
+  "type": "big",
+  "k": "Trust Wallet extension v2.68",
+  "big": "≈ $7M",
+  "label": "stolen from 2,596 wallets (company figure)",
+  "side": [
+   {
+    "k": "Dec 24, 2025",
+    "label": "Published outside the release process"
+   },
+   {
+    "k": "Likely path",
+    "label": "Leaked Chrome Web Store API key",
+    "alt": true
+   },
+   {
+    "k": "Lesson",
+    "label": "Updates are a supply-chain path",
+    "hl": true
+   }
+  ]
+ },
+ "35": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "User",
+    "label": "Enters seed phrase"
+   },
+   {
+    "k": "Slope app",
+    "label": "Logs it in plain text",
+    "bad": true
+   },
+   {
+    "k": "Sentry",
+    "label": "Third-party monitoring service",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "August 2022",
+   "v": "Linked to thousands of drained Solana wallets"
+  }
+ },
+ "36": {
+  "type": "hash",
+  "fn": "SHA-256",
+  "fn_k": "brainwallet",
+  "inputs": [
+   {
+    "label": "\"a sentence I made up\"",
+    "hl": true
+   }
+  ],
+  "out": {
+   "k": "Private key",
+   "label": "Guessable",
+   "sub": "brainflayer tests huge phrase lists fast",
+   "bad": true
+  },
+  "note": {
+   "k": "DEF CON 23, 2015",
+   "v": "Human-chosen phrases aren't random enough"
+  }
+ },
+ "37": {
+  "type": "compare",
+  "left": {
+   "head": "Milk Sad: bx seed",
+   "big": "2^32",
+   "items": [
+    "Mersenne Twister, 32-bit seed",
+    "≈ 4.3 billion possible wallets",
+    "Enumerable by a computer"
+   ]
+  },
+  "right": {
+   "head": "Proper seed",
+   "big": "2^128+",
+   "items": [
+    "Cryptographic random generator",
+    "Can't be enumerated"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "CVE-2023-39910",
+   "v": "Thefts began July 12, 2023"
+  }
+ },
+ "38": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "Sep 15, 2022",
+    "label": "1inch warning",
+    "sub": "Profanity keys can be brute-forced",
+    "at": 0.12
+   },
+   {
+    "t": "Sep 20, 2022",
+    "label": "Wintermute loses ≈ $160M",
+    "sub": "0x0000000 vanity address",
+    "bad": true,
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "5 days"
+  ],
+  "note": {
+   "k": "Lesson",
+   "v": "A nice address is worthless if its key is weak"
+  }
+ },
+ "39": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "2011",
+    "label": "BitcoinJS-era web wallets",
+    "at": 0.08
+   },
+   {
+    "t": "2015",
+    "label": "End of the risky period",
+    "at": 0.34
+   },
+   {
+    "t": "Nov 2023",
+    "label": "Randstorm disclosed",
+    "sub": "Unciphered",
+    "hl": true,
+    "at": 0.92
+   }
+  ],
+  "span": [
+   0.08,
+   0.34,
+   "weak browser randomness"
+  ],
+  "note": {
+   "k": "Created then?",
+   "v": "Consider moving funds to a fresh seed"
+  },
+  "w": 260
+ },
+ "40": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Android SecureRandom",
+    "label": "Repeated values",
+    "bad": true
+   },
+   {
+    "k": "Bitcoin apps",
+    "label": "Reuse ECDSA nonce k"
+   },
+   {
+    "k": "Two signatures",
+    "label": "Private key revealed",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "August 2013",
+   "v": "Apps shipped fixes and moved users to new keys"
+  }
+ },
+ "41": {
+  "type": "formula",
+  "k": "Nonce reuse",
+  "expr": "k = (z1 − z2) / (s1 − s2)",
+  "terms": [
+   {
+    "k": "Signing",
+    "v": "s = k⁻¹(z + r·d)"
+   },
+   {
+    "k": "Then",
+    "v": "solve for the private key **d**"
+   },
+   {
+    "k": "Fix",
+    "v": "RFC 6979: k derived from key + message"
+   }
+  ],
+  "foot": "fail0verflow, 2010: Sony's PS3 key, static k"
+ },
+ "42": {
+  "type": "bars",
+  "log": true,
+  "head": "Keys an attacker must search (log scale)",
+  "items": [
+   {
+    "label": "Random 256-bit key",
+    "value": 1.16e+77,
+    "display": "≈ 1.16 × 10^77",
+    "hl": true
+   },
+   {
+    "label": "Milk Sad (32-bit seed)",
+    "value": 4300000000.0,
+    "display": "≈ 4.3 × 10^9",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "In practice",
+   "v": "Weak entropy and nonce reuse, not broken math"
+  },
+  "log_min": 1
+ },
+ "43": {
+  "type": "hash",
+  "fn": "Keccak-256",
+  "fn_k": "EIP-55",
+  "inputs": [
+   {
+    "label": "lowercase address"
+   }
+  ],
+  "out": {
+   "k": "Mixed-case address",
+   "label": "`0x5aAeb6053F3E94C9b9A0…`",
+   "sub": "letter case = checksum, ≈ 15 bits"
+  },
+  "note": {
+   "k": "Typo passes",
+   "v": "≈ 0.0247% of the time, but a valid scam address passes"
+  }
+ },
+ "44": {
+  "type": "checklist",
+  "head": "Bech32 / Bech32m checksum",
+  "checks": [
+   {
+    "text": "Any error in ≤ 4 characters",
+    "ok": true,
+    "sub": "guaranteed detection"
+   },
+   {
+    "text": "Larger errors",
+    "ok": true,
+    "sub": "very low odds of a miss"
+   },
+   {
+    "text": "A valid lookalike scam address",
+    "ok": false,
+    "sub": "not a typo, checksum can't help"
+   }
+  ],
+  "side": [
+   {
+    "k": "bc1q",
+    "label": "Bech32, BIP173"
+   },
+   {
+    "k": "bc1p (Taproot)",
+    "label": "Bech32m, BIP350",
+    "hl": true
+   }
+  ]
+ },
+ "45": {
+  "type": "compare",
+  "left": {
+   "head": "Address you pay",
+   "items": [
+    "`0x7a3f…` middle `…9e1c`"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Attacker's lookalike",
+   "items": [
+    "`0x7a3f…` different `…9e1c`",
+    "Planted in your history"
+   ]
+  },
+  "note": {
+   "k": "Defense",
+   "v": "Saved address book, check every character"
+  }
+ },
+ "46": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Mimicking 0.05 ETH transfer lands in history",
+    "sub": "from a lookalike address",
+    "alt": true
+   },
+   {
+    "label": "User copies the address from history",
+    "bad": true
+   },
+   {
+    "label": "1,155 WBTC sent (≈ $68M)",
+    "sub": "first and last 6 characters matched",
+    "bad": true
+   },
+   {
+    "label": "After negotiations, nearly all returned",
+    "sub": "very rare",
+    "hl": true
+   }
+  ]
+ },
+ "47": {
+  "type": "gauge",
+  "pct": 100,
+  "mark": 100,
+  "big": "2^256 − 1",
+  "label": "unlimited ERC-20 allowance",
+  "side": [
+   {
+    "k": "approve(spender, amount)",
+    "label": "Spender uses transferFrom any time"
+   },
+   {
+    "k": "Stays active",
+    "label": "Until revoked, even years later",
+    "alt": true
+   },
+   {
+    "k": "Do",
+    "label": "Review and revoke old approvals",
+    "hl": true
+   }
+  ]
+ },
+ "48": {
+  "type": "split",
+  "src": {
+   "k": "One signature",
+   "label": "setApprovalForAll",
+   "sub": "(operator, true)",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "Now",
+    "label": "Every NFT in the collection"
+   },
+   {
+    "k": "Later",
+    "label": "Every NFT you'll get there"
+   },
+   {
+    "k": "Until",
+    "label": "Revoked",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Fake mint site asks for it",
+   "v": "Classic drainer sign"
+  }
+ },
+ "49": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "You sign off-chain",
+    "label": "EIP-2612 permit",
+    "sub": "no gas, nothing on-chain",
+    "alt": true
+   },
+   {
+    "k": "Drainer submits",
+    "label": "permit()"
+   },
+   {
+    "k": "Drainer calls",
+    "label": "transferFrom()",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Free to sign",
+   "v": "Does not mean safe to sign"
+  }
+ },
+ "50": {
+  "type": "big",
+  "k": "Stolen by wallet drainers in 2024",
+  "big": "≈ $494M",
+  "label": "from ≈ 332,000 addresses (ScamSniffer, Jan 2025)",
+  "side": [
+   {
+    "k": "Step 1",
+    "label": "Fake site or airdrop: connect"
+   },
+   {
+    "k": "Step 2",
+    "label": "Asks for the most valuable approval or permit",
+    "bad": true
+   },
+   {
+    "k": "Warning sign",
+    "label": "Pressure to sign quickly",
+    "hl": true
+   }
+  ]
+ },
+ "51": {
+  "type": "fields",
+  "struct": {
+   "name": "personal_sign (EIP-191)",
+   "lines": [
+    {
+     "key": "prefix",
+     "val": "0x19 \"Ethereum Signed Message:\\n\"",
+     "hl": true
+    },
+    [
+     "length",
+     "len(message)"
+    ],
+    [
+     "message",
+     "your text"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "RLP transactions",
+    "label": "Never start with 0x19",
+    "sub": "text can't pass as a tx",
+    "from": 0,
+    "hl": true
+   },
+   {
+    "k": "Raw hash signing",
+    "label": "No such guard",
+    "bad": true
+   }
+  ]
+ },
+ "52": {
+  "type": "fields",
+  "struct": {
+   "name": "EIP-712 permit",
+   "lines": [
+    [
+     "domain",
+     "name, version, chainId, verifyingContract"
+    ],
+    [
+     "token",
+     "USDC"
+    ],
+    {
+     "key": "spender",
+     "val": "0x…  who gets access",
+     "hl": true
+    },
+    {
+     "key": "amount",
+     "val": "how much",
+     "hl": true
+    },
+    [
+     "deadline",
+     "until when"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "Domain",
+    "label": "Bound to one app and chain",
+    "from": 0
+   },
+   {
+    "k": "Read it",
+    "label": "The spender is who gets access",
+    "hl": true,
+    "from": 2
+   }
+  ]
+ },
+ "53": {
+  "type": "compare",
+  "left": {
+   "head": "Blind signing",
+   "items": [
+    "`0x6a761202000000…`",
+    "Only a hash or raw hex",
+    "You approve without knowing"
+   ]
+  },
+  "right": {
+   "head": "Clear signing",
+   "items": [
+    "Action: transfer",
+    "To: full address",
+    "Amount: readable"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Do",
+   "v": "Decode calldata independently before approving"
+  }
+ },
+ "54": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Safe{Wallet} UI",
+    "label": "Malicious JavaScript",
+    "bad": true
+   },
+   {
+    "k": "Signers",
+    "label": "See the original tx",
+    "sub": "devices show raw data"
+   },
+   {
+    "k": "Signed instead",
+    "label": "delegatecall → new implementation",
+    "bad": true
+   },
+   {
+    "k": "Feb 21, 2025",
+    "label": "401,347 ETH ≈ $1.5B gone",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "FBI",
+   "v": "Attributed to North Korea"
+  }
+ },
+ "55": {
+  "type": "network",
+  "nodes": 11,
+  "hl": 0,
+  "bad": 3,
+  "r": 18,
+  "degree": 3,
+  "x0": 480,
+  "bad_label": "compromised signers",
+  "n_label": "other multisig signers",
+  "side": [
+   {
+    "k": "Threshold 3 of 11",
+    "label": "3 compromised signers were enough",
+    "bad": true
+   },
+   {
+    "k": "Their screens",
+    "label": "Safe UI + Tenderly showed legit data"
+   },
+   {
+    "k": "Oct 16, 2024",
+    "label": "Radiant Capital: ≈ $50M"
+   }
+  ]
+ },
+ "56": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "User",
+    "label": "UserOperation"
+   },
+   {
+    "k": "Alt mempool",
+    "label": "Bundlers collect"
+   },
+   {
+    "k": "EntryPoint",
+    "label": "handleOps",
+    "sub": "deployed Mar 1, 2023",
+    "hl": true
+   },
+   {
+    "k": "Smart wallet",
+    "label": "Its own rules"
+   }
+  ],
+  "note": {
+   "k": "ERC-4337",
+   "v": "No consensus-layer change needed"
+  }
+ },
+ "57": {
+  "type": "split",
+  "reverse": true,
+  "src": {
+   "k": "Signing key",
+   "label": "One key for daily use",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Guardian 1",
+    "label": "Approves replacement"
+   },
+   {
+    "k": "Guardian 2",
+    "label": "Approves replacement"
+   },
+   {
+    "k": "Guardian 3+",
+    "label": "A majority can replace the key",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Guardians don't sign payments",
+   "v": "A colluding majority could take over: pick people unlikely to collude"
+  }
+ },
+ "58": {
+  "type": "fields",
+  "struct": {
+   "name": "Tx type 0x04 (EIP-7702)",
+   "lines": [
+    [
+     "authorization",
+     "[chain_id, address, nonce]"
+    ],
+    {
+     "key": "account code",
+     "val": "0xef0100 + address",
+     "hl": true
+    }
+   ]
+  },
+  "side": [
+   {
+    "k": "Calls",
+    "label": "Run the delegate's code",
+    "from": 1
+   },
+   {
+    "k": "Address",
+    "label": "Unchanged",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Pectra, May 7, 2025",
+   "v": "A normal account gains smart-wallet features"
+  }
+ },
+ "59": {
+  "type": "split",
+  "src": {
+   "k": "One signed authorization",
+   "label": "chain_id 0",
+   "sub": "valid on every chain",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "Delegate code",
+    "label": "Unrestricted access to the account",
+    "bad": true
+   },
+   {
+    "k": "Spec",
+    "label": "Apps must not ask users to sign this"
+   },
+   {
+    "k": "Wallets",
+    "label": "Must audit delegate code",
+    "hl": true
+   }
+  ]
+ },
+ "60": {
+  "type": "cycle",
+  "nodes": [
+   {
+    "k": "Plain account",
+    "label": "No code",
+    "hl": true
+   },
+   {
+    "k": "Authorization",
+    "label": "Delegate to contract A"
+   },
+   {
+    "k": "New authorization",
+    "label": "Overwrites, e.g. contract B"
+   },
+   {
+    "k": "Delegate to 0x0",
+    "label": "Code cleared"
+   }
+  ],
+  "center": {
+   "k": "With the account key",
+   "label": "Delegations are reversible"
+  }
+ },
+ "61": {
+  "type": "split",
+  "src": {
+   "k": "Leaked key",
+   "label": "Attacker installs a sweeper",
+   "sub": "\"CrimeEnjoyor\" (Wintermute)",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "Any funds sent in",
+    "label": "Swept to the attacker",
+    "bad": true
+   },
+   {
+    "k": "Most early 7702 delegations",
+    "label": "Copy-pasted sweepers"
+   }
+  ],
+  "note": {
+   "k": "Once a key leaks",
+   "v": "The address is burned"
+  }
+ },
+ "62": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "Feb 2014",
+    "label": "Mt. Gox halts",
+    "sub": "≈ 850,000 BTC missing",
+    "bad": true,
+    "at": 0.08
+   },
+   {
+    "t": "later",
+    "label": "≈ 200,000 BTC found",
+    "sub": "in old wallets",
+    "at": 0.45
+   },
+   {
+    "t": "July 2024",
+    "label": "Repayments begin",
+    "hl": true,
+    "at": 0.92
+   }
+  ],
+  "span": [
+   0.08,
+   0.92,
+   "a decade"
+  ],
+  "note": {
+   "k": "Not your keys",
+   "v": "Not your coins"
+  },
+  "title": "Repayments began a decade later"
+ },
+ "63": {
+  "type": "compare",
+  "left": {
+   "head": "Hot wallet · pocket",
+   "items": [
+    "Phone app, browser extension",
+    "Keys on networked devices",
+    "Only what you need soon"
+   ]
+  },
+  "right": {
+   "head": "Cold storage · safe",
+   "items": [
+    "Keys never online",
+    "Savings"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Bitcoin Wiki",
+   "v": "Spending without the keys ever being online"
+  }
+ },
+ "64": {
+  "type": "tree",
+  "flat": true,
+  "leaves": [
+   "Address 1",
+   "Address 2",
+   "Address 3",
+   "Address 4"
+  ],
+  "root": "HD wallet (BIP32)",
+  "x1": 330,
+  "side": [
+   {
+    "k": "Whitepaper, section 10",
+    "label": "New key pair for each transaction",
+    "hl": true
+   },
+   {
+    "k": "One payment",
+    "label": "One fresh address"
+   },
+   {
+    "k": "Address reuse",
+    "label": "A privacy leak",
+    "bad": true
+   }
+  ]
+ },
+ "65": {
+  "type": "split",
+  "reverse": true,
+  "src": {
+   "k": "Multi-input tx",
+   "label": "Spends dust + your coins",
+   "sub": "addresses tied to one owner",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "Your address A",
+    "label": "Your coins"
+   },
+   {
+    "k": "Address B",
+    "label": "Tiny dust deposit",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Coin control",
+   "v": "Freeze unexpected dust as do-not-spend"
+  }
+ },
+ "66": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "now",
+    "label": "Owner's key spends",
+    "hl": true,
+    "at": 0.1
+   },
+   {
+    "t": "timelock expires",
+    "label": "Heir's key unlocks",
+    "sub": "CLTV (BIP65) or CSV (BIP112)",
+    "at": 0.9
+   }
+  ],
+  "span": [
+   0.1,
+   0.9,
+   "only the owner can spend"
+  ],
+  "note": {
+   "k": "With Taproot",
+   "v": "That path stays hidden unless used"
+  }
+ },
+ "67": {
+  "type": "checklist",
+  "head": "What protects a wallet",
+  "checks": [
+   {
+    "text": "Back up offline",
+    "ok": true
+   },
+   {
+    "text": "Verify on a trusted screen",
+    "ok": true
+   },
+   {
+    "text": "Read every signature",
+    "ok": true
+   },
+   {
+    "text": "Revoke old approvals",
+    "ok": true
+   }
+  ],
+  "side": [
+   {
+    "k": "What drained wallets",
+    "label": "Weak keys, leaked seeds, what users signed",
+    "bad": true
+   },
+   {
+    "k": "Not",
+    "label": "Broken cryptography"
+   }
+  ]
+ }
+}
