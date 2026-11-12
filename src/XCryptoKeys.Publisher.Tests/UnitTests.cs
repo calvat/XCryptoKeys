@@ -560,3 +560,75 @@ public class LogTests
         Assert.Null(log.LastRunPath);
     }
 }
+
+public class ServiceLoopTests
+{
+    [Fact]
+    public void Next_pass_is_aligned_on_the_interval()
+    {
+        var i = TimeSpan.FromMinutes(15);
+        Assert.Equal(new DateTimeOffset(2026, 11, 12, 8, 30, 0, TimeSpan.Zero), ServiceLoop.NextAligned(new(2026, 11, 12, 8, 17, 42, TimeSpan.Zero), i));
+        Assert.Equal(new DateTimeOffset(2026, 11, 12, 8, 45, 0, TimeSpan.Zero), ServiceLoop.NextAligned(new(2026, 11, 12, 8, 30, 0, TimeSpan.Zero), i));
+        // Heure locale : l'alignement se fait en UTC.
+        Assert.Equal(new DateTimeOffset(2026, 11, 12, 9, 0, 0, TimeSpan.Zero), ServiceLoop.NextAligned(new(2026, 11, 12, 9, 59, 0, TimeSpan.FromHours(1)), i));
+    }
+
+    /// <summary>Horloge simulée : chaque attente fait avancer l'heure ; arrêt après <paramref name="maxPasses"/> passages.</summary>
+    private static (ServiceLoop Loop, List<TimeSpan> Waits, List<string> Reports) Make(Func<int, Task> pass, int maxPasses, CancellationTokenSource cts)
+    {
+        var clock = new DateTimeOffset(2026, 11, 12, 8, 17, 0, TimeSpan.Zero);
+        var waits = new List<TimeSpan>();
+        var reports = new List<string>();
+        int n = 0;
+        ServiceLoop? loop = null;
+        loop = new ServiceLoop(TimeSpan.FromMinutes(15),
+            async ct => { n++; clock = clock.AddSeconds(40); if (n >= maxPasses) cts.Cancel(); await pass(n); },
+            reports.Add,
+            () => clock,
+            (d, ct) => { waits.Add(d); clock += d; ct.ThrowIfCancellationRequested(); return Task.CompletedTask; });
+        return (loop, waits, reports);
+    }
+
+    [Fact]
+    public async Task Runs_a_pass_at_start_then_on_each_quarter_hour()
+    {
+        using var cts = new CancellationTokenSource();
+        var (loop, waits, _) = Make(_ => Task.CompletedTask, 3, cts);
+        await loop.RunAsync(cts.Token);
+        Assert.Equal(3, loop.Passes);
+        // 08:17:40 -> 08:30, puis 08:30:40 -> 08:45 : pas de dérive malgré la durée du passage.
+        Assert.Equal(TimeSpan.FromSeconds(740), waits[0]);
+        Assert.Equal(TimeSpan.FromSeconds(860), waits[1]);
+    }
+
+    [Fact]
+    public async Task A_failing_pass_does_not_stop_the_loop()
+    {
+        using var cts = new CancellationTokenSource();
+        var (loop, _, reports) = Make(n => n == 1 ? throw new InvalidOperationException("boum") : Task.CompletedTask, 3, cts);
+        await loop.RunAsync(cts.Token);
+        Assert.Equal(3, loop.Passes);
+        Assert.Contains(reports, r => r.Contains("boum"));
+    }
+
+    [Fact]
+    public async Task Stop_during_a_pass_ends_the_loop_without_error()
+    {
+        using var cts = new CancellationTokenSource();
+        var (loop, _, reports) = Make(_ => { cts.Token.ThrowIfCancellationRequested(); return Task.CompletedTask; }, 1, cts);
+        await loop.RunAsync(cts.Token);
+        Assert.Equal(1, loop.Passes);
+        Assert.Empty(reports);
+    }
+
+    [Fact]
+    public async Task Each_pass_is_a_new_call_so_settings_are_reread()
+    {
+        // Chaque passage du service est un nouveau processus qui relit les réglages : la boucle rappelle le passage à chaque fois.
+        using var cts = new CancellationTokenSource();
+        var seen = new List<int>();
+        var (loop, _, _) = Make(n => { seen.Add(n); return Task.CompletedTask; }, 4, cts);
+        await loop.RunAsync(cts.Token);
+        Assert.Equal([1, 2, 3, 4], seen);
+    }
+}

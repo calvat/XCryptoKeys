@@ -27,29 +27,26 @@ Le format de `posts.json` et de `status.json` est décrit dans le README de chaq
 
 ## Installation (Windows)
 
-Le bot est un programme qui fait un passage puis s'arrête. Une tâche planifiée Windows le lance toutes les 15 minutes : à chaque passage, il publie les posts dus des campagnes `active` de chaque compte, puis commit et pousse les `status.json` sur GitHub.
+Le bot tourne comme **service Windows** « X-Bots Publisher » (`XBotsPublisher`), sous le compte **LocalService** : pas de mot de passe, pas besoin de session ouverte, il redémarre avec le PC. Toutes les 15 minutes (à :00, :15, :30, :45), il fait un passage : il publie les posts dus des campagnes `active` de chaque compte, puis commit et pousse les `status.json` sur GitHub.
 
 On peut l'installer **avant d'avoir les clés de l'API X** : tant que `account.local.json` n'existe pas ou n'est pas rempli, le bot ne publie rien pour ce compte (sans erreur ; rien n'est écrit dans le log, et `C:\xck-publisher\logs\last-run.txt` indique « en attente des clés X : XCryptoKeys »). Il suffit ensuite de remplir ce fichier : le passage suivant publie, sans rien réinstaller.
 
 ### Ce qu'il faut sur le PC
 
-- **Git for Windows**, avec le droit de **pousser** sur le dépôt (`git push` doit marcher sans rien demander) ;
+- **Git for Windows** ;
 - le **SDK .NET 10**, pour construire l'exécutable : `winget install Microsoft.DotNet.SDK.10`. Sans lui : copier le dossier `src\publish\win-x64\` construit sur un autre PC au même endroit du clone, et ajouter `-SkipBuild` aux commandes `install.cmd` ;
-- un compte Windows avec mot de passe : la tâche tourne sous ce compte, même sans session ouverte.
+- le clone du dépôt sur un **disque local** (pas un lecteur réseau : le service ne le verrait pas).
 
 ### Installation
 
 Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en tant qu'administrateur), dans le clone du dépôt (par exemple `C:\x-bots`) :
 
-1. Mettre le dépôt à jour et vérifier que git peut pousser :
+1. Mettre le dépôt à jour :
 
    ```powershell
    cd C:\x-bots
    git pull
-   git push --dry-run
    ```
-
-   Si `git push` demande de se connecter, le faire une fois, **avec le compte Windows qui lancera la tâche** : Git for Windows retient les identifiants.
 
 2. Vérifier sans rien changer (pas besoin d'être administrateur pour cette étape) :
 
@@ -59,21 +56,26 @@ Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en 
 
    Passer par `install.cmd` évite l'erreur « l'exécution de scripts est désactivée sur ce système », sans changer le réglage du PC. Équivalent : `powershell -ExecutionPolicy Bypass -File .\src\install.ps1 -WhatIf`.
 
-3. Installer, dans le PowerShell **administrateur** :
+3. Installer :
 
    ```powershell
    .\src\install.cmd
    ```
 
-   Le script construit l'exécutable, le copie dans `C:\xck-publisher`, y crée `appsettings.local.json` (chemin du dépôt), lance un test à blanc (`--dry-run`), liste les campagnes actives et demande s'il faut activer la tâche. Il demande ensuite le mot de passe Windows, pour que la tâche tourne même sans session ouverte ; il n'est enregistré dans aucun fichier.
+   Le script :
 
-   Sans les clés X, on peut répondre `o` : la tâche tourne mais ne publie rien.
+   - construit l'exécutable et le copie dans `C:\xck-publisher` ;
+   - donne au compte LocalService le droit de modifier le clone et d'écrire les logs, et déclare le clone « sûr » pour git ;
+   - crée une **clé SSH de déploiement**, propre au service, dans `C:\xck-publisher\ssh\` (lisible seulement par le service et les administrateurs), et les clés d'hôte de GitHub ;
+   - affiche la clé **publique** à ajouter sur GitHub : dépôt > **Settings** > **Deploy keys** > **Add deploy key**, cocher **Allow write access**. Il attend, puis vérifie que le service peut pousser (`git push --dry-run` lancé sous LocalService) ;
+   - lance un test à blanc (`--dry-run`), liste les campagnes actives et demande « Démarrer le bot maintenant ? (o/N) » ;
+   - crée le service (démarrage automatique différé, redémarrage s'il plante), le démarre et vérifie que le premier passage a eu lieu (`last-run.txt`).
 
-   À la fin, le script lance un premier passage et vérifie que Windows a bien démarré la tâche. S'il signale « Windows n'a pas lancé la tâche » (résultat `0x41303`, jamais lancée), le mot de passe a été refusé : si la session Windows utilise un compte Microsoft ou un code PIN, il faut le mot de passe du compte Microsoft. Sinon, sans mot de passe, la tâche peut tourner seulement quand la session est ouverte :
+   Avec `N`, le service est installé mais arrêté (démarrage manuel) : `sc.exe config XBotsPublisher start= delayed-auto ; Start-Service XBotsPublisher` pour le démarrer. Sans les clés X, on peut répondre `o` : le service tourne mais ne publie rien.
 
-   ```powershell
-   .\src\install.cmd -SkipBuild -RunOnlyWhenLoggedOn
-   ```
+   Le clone garde son adresse et ses réglages : seul le service utilise la clé de déploiement (réglages `Git.Remote` et `Git.SshCommand` de `C:\xck-publisher\appsettings.local.json`). Ton `git pull` / `git push` habituel marche comme avant.
+
+   S'il restait une tâche planifiée « X-Bots Publisher » d'une installation précédente, le script la supprime : le bot ne tourne jamais deux fois. L'ancien mode reste possible avec `.\src\install.cmd -ScheduledTask` (voir [`src/README.md`](src/README.md#lancer-toutes-les-15-minutes)).
 
 ### Ajouter les clés X (plus tard)
 
@@ -95,19 +97,19 @@ Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en 
 
 3. C'est tout : le passage suivant (dans les 15 minutes) publie les posts dus.
 
-**Attention :** au premier passage avec les clés, le bot rattrape tous les posts du jour dont l'heure est passée (un toutes les 30 secondes). Les campagnes sont réparties de 07:00 à 22:00 UTC (08:00 à 23:00 à Paris en hiver). Pour garder cet étalement dès le premier jour, ajouter les clés **avant 07:00 UTC**, ou désactiver la tâche jusque-là (voir plus bas).
+**Attention :** au premier passage avec les clés, le bot rattrape tous les posts du jour dont l'heure est passée (un toutes les 30 secondes). Les campagnes sont réparties de 07:00 à 22:00 UTC (08:00 à 23:00 à Paris en hiver). Pour garder cet étalement dès le premier jour, ajouter les clés **avant 07:00 UTC**, ou arrêter le service jusque-là (`Stop-Service XBotsPublisher`, voir plus bas).
 
 ### Au quotidien
 
 | Pour… | Commande (PowerShell administrateur) |
 |---|---|
 | Voir ce qui a été fait | ouvrir `C:\xck-publisher\logs\publisher-AAAA-MM-JJ.log` : seuls les passages où il s'est passé quelque chose (post publié, erreur…) y sont écrits |
-| Vérifier que la tâche tourne | ouvrir `C:\xck-publisher\logs\last-run.txt` : heure et résultat du dernier passage, et prochain post dû |
+| Vérifier que le bot tourne | `Get-Service XBotsPublisher` (doit être `Running`), et `C:\xck-publisher\logs\last-run.txt` : heure et résultat du dernier passage, prochain post dû. Démarrages et arrêts du service : `C:\xck-publisher\logs\service.log` |
 | Tester ce qui partirait maintenant | `C:\xck-publisher\xck-publisher.exe --dry-run` |
-| Lancer un passage tout de suite | `Start-ScheduledTask -TaskName 'X-Bots Publisher'` |
-| Mettre en pause / reprendre | `Disable-ScheduledTask -TaskName 'X-Bots Publisher'` / `Enable-ScheduledTask -TaskName 'X-Bots Publisher'` |
-| Mettre à jour après un `git pull` | relancer `.\src\install.cmd` |
-| Désinstaller | `.\src\uninstall.cmd` (ajouter `-RemoveFiles` pour supprimer aussi `C:\xck-publisher`) |
+| Lancer un passage tout de suite | `Restart-Service XBotsPublisher` (le service fait un passage dès qu'il démarre) |
+| Mettre en pause / reprendre | `Stop-Service XBotsPublisher` / `Start-Service XBotsPublisher` |
+| Mettre à jour après un `git pull` | relancer `.\src\install.cmd` : il arrête le service, remplace l'exécutable et le redémarre (la clé de déploiement est gardée) |
+| Désinstaller | `.\src\uninstall.cmd` (ajouter `-RemoveFiles` pour supprimer aussi `C:\xck-publisher`, et `-RemoveDeployKey` pour la clé de déploiement ; la supprimer aussi sur GitHub > Settings > Deploy keys) |
 
 Pour mettre une campagne en pause, passer son `status.json` en `inactive`, puis commit et push. Depuis un autre PC, faire un `git pull` avant de modifier un `status.json` ou un `posts.json`, puisque le bot y écrit.
 

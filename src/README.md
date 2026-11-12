@@ -72,6 +72,8 @@ Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, 
 | `Git.Enabled` | `true` | Pull, commit et push automatiques |
 | `Git.Remote` / `Git.Branch` | `origin` / branche courante | Où pousser |
 | `Git.UserName` / `Git.UserEmail` | | Auteur des commits du serveur |
+| `Git.SshCommand` | | Commande ssh de git pour le bot (`GIT_SSH_COMMAND`) : la clé de déploiement du service, réglée par `install.ps1` |
+| `Service.IntervalMinutes` | `15` | Mode `--service` : un passage toutes les N minutes, aligné sur l'heure |
 | `X.ApiBaseUrl` | `https://api.x.com` | Adresse de l'API X, commune à tous les comptes |
 | `enabled` (`account.json`) | `true` | `false` : le compte est ignoré, sans erreur |
 | `x.username` (`account.json`) | nom du dossier | Nom du compte sur X, sert à construire l'URL des posts (`xcryptokeys` pour XCryptoKeys) |
@@ -142,34 +144,35 @@ De ton côté, fais un `git pull` avant de modifier un `status.json` ou un `post
 
 Le programme écrit lui-même son log dans `logs/`.
 
-**Windows : script d'installation.** Le programme fait un passage puis s'arrête : sous Windows, le « service » est une tâche planifiée qui le lance toutes les 15 minutes. `install.ps1` fait tout, dans un PowerShell **administrateur**, depuis le clone du dépôt :
+**Windows : service.** `xck-publisher --service` tourne en continu et fait un passage toutes les `Service.IntervalMinutes` minutes, aligné sur l'heure (:00, :15, :30, :45 pour 15), plus un passage dès le démarrage. Chaque passage est un processus `xck-publisher` à part, comme lancé à la main : les réglages, les `account.local.json` et le dépôt sont relus à chaque passage, et un passage qui plante n'arrête pas le service. À l'arrêt du service, le passage en cours s'arrête entre deux campagnes, jamais au milieu de l'écriture d'un `status.json`. Lancé dans une console, `--service` fait la même chose jusqu'à Ctrl+C. Démarrages, arrêts et passages anormaux sont notés dans `logs/service.log` (et le démarrage / l'arrêt dans le journal Application de Windows).
+
+`install.ps1` installe le service, dans un PowerShell **administrateur**, depuis le clone du dépôt :
 
 ```powershell
-.\src\install.cmd                  # installation ou mise à jour
+.\src\install.cmd                  # installation ou mise à jour (service Windows)
 .\src\install.cmd -WhatIf          # montre ce qui serait fait, sans rien changer (sans droits administrateur)
-.\src\uninstall.cmd                # supprime la tâche (garde les fichiers)
-.\src\uninstall.cmd -RemoveFiles   # supprime aussi C:\xck-publisher
+.\src\install.cmd -NoStart         # service installé mais arrêté (démarrage manuel)
+.\src\install.cmd -ScheduledTask   # ancien mode : tâche planifiée sous le compte de l'utilisateur
+.\src\uninstall.cmd                # arrête et supprime le service (et la tâche), garde les fichiers
+.\src\uninstall.cmd -RemoveFiles   # supprime aussi C:\xck-publisher (sauf la clé ssh\, -RemoveDeployKey pour elle)
 ```
 
 `install.cmd` et `uninstall.cmd` lancent `install.ps1` et `uninstall.ps1` avec `-ExecutionPolicy Bypass` : ils marchent même quand Windows bloque les scripts PowerShell (« l'exécution de scripts est désactivée sur ce système »), sans changer ce réglage. Les options sont transmises telles quelles.
 
-`install.ps1` :
+Le service tourne sous **LocalService** (pas de mot de passe, pas de session ouverte). Ce compte n'a ni les droits sur le clone ni les identifiants GitHub de l'utilisateur, donc `install.ps1` :
 
-1. vérifie les droits administrateur, git, et que le dépôt contient `accounts/` ;
-2. construit l'exécutable (comme `publish.ps1` ; `-SkipBuild` pour réutiliser `src/publish/win-x64/`) ;
-3. le copie dans `C:\xck-publisher` (`-InstallDir`), sans jamais écraser `appsettings.local.json` ni `logs/`, et crée `appsettings.local.json` avec `RepoPath` s'il n'existe pas ;
-4. signale chaque compte sans `account.local.json` (ses clés X ne sont jamais créées ni affichées par le script) ;
-5. lance un `--dry-run` et l'affiche ;
-6. liste les campagnes en `active` (leur prochain post partira au premier passage) et demande confirmation (`-Force` pour ne pas demander, `-NoStart` pour créer la tâche désactivée) ;
-7. crée ou met à jour la tâche « X-Bots Publisher » (`-TaskName`) : toutes les 15 minutes (`-IntervalMinutes`), sans fin, que la session soit ouverte ou non, un seul passage à la fois, rattrapage après un arrêt, 10 minutes maximum par passage.
+1. vérifie les droits administrateur, git, que le clone est sur un disque local (LocalService ne voit pas les lecteurs réseau) et que `origin` est un dépôt GitHub ;
+2. construit l'exécutable (comme `publish.ps1` ; `-SkipBuild` pour réutiliser `src/publish/win-x64/`) et le copie dans `C:\xck-publisher` (`-InstallDir`), sans jamais écraser `appsettings.local.json`, `logs/` ni `ssh/` ;
+3. donne à LocalService (par son SID, quelle que soit la langue de Windows) le droit de modifier le clone et `logs/`, la lecture de `C:\xck-publisher`, et ajoute le clone à `safe.directory` dans la configuration git du système ;
+4. crée une clé SSH ed25519 sans phrase de passe dans `C:\xck-publisher\ssh\` (droits : Administrateurs, SYSTEM et LocalService seulement), et `known_hosts` avec les clés d'hôte publiées par GitHub (`api.github.com/meta`, vérification stricte) ;
+5. complète `appsettings.local.json` : `RepoPath`, `Service.IntervalMinutes`, et pour git `Remote` (adresse SSH du dépôt, déduite de `origin`), `Branch`, `SshCommand` (la clé du service) et `UserEmail` (auteur des commits : celui de la configuration git de l'utilisateur, sinon l'adresse noreply de GitHub). Le clone lui-même n'est pas modifié : l'utilisateur garde son `origin` et ses identifiants ;
+6. teste l'accès en écriture **sous LocalService** (une tâche planifiée jetable lance `git push --dry-run`) ; tant que ça échoue, affiche la clé **publique** à ajouter sur GitHub (dépôt > Settings > Deploy keys, « Allow write access ») et attend. La clé privée n'est jamais affichée ;
+7. lance un `--dry-run`, liste les campagnes en `active` et demande confirmation (`-Force` pour ne pas demander, `-NoStart` pour un service arrêté en démarrage manuel) ;
+8. supprime une éventuelle tâche planifiée « X-Bots Publisher », crée ou met à jour le service `XBotsPublisher` (démarrage automatique différé, redémarrage après 1 min s'il plante), le démarre et vérifie que `last-run.txt` a été réécrit ; sinon, affiche l'état du service, `service.log` et le journal Windows.
 
-La tâche tourne avec le compte qui a les **identifiants git** permettant de pousser (par défaut l'utilisateur courant, `-User` pour un autre). Windows demande son mot de passe pour lancer la tâche sans session ouverte : il n'est jamais écrit dans un fichier. Si la session Windows utilise un compte Microsoft ou un code PIN, c'est le mot de passe du compte Microsoft qu'il faut.
+Relancer `install.cmd` met à jour l'exécutable et le service (par exemple après un `git pull`).
 
-Avec `-RunOnlyWhenLoggedOn`, aucun mot de passe n'est demandé : la tâche ne tourne que pendant que la session de ce compte est ouverte (le PC doit rester connecté, écran verrouillé possible).
-
-Après l'enregistrement, le script lance un premier passage et vérifie que Windows a démarré la tâche. Une tâche jamais lancée garde le résultat `0x41303` : c'est en général un mot de passe refusé ; relancer avec le bon mot de passe ou avec `-RunOnlyWhenLoggedOn`.
-
-Relancer `install.ps1` met à jour l'exécutable et la tâche (par exemple après un `git pull`).
+**Ancien mode : tâche planifiée** (`-ScheduledTask`), sous le compte de l'utilisateur, qui doit avoir les identifiants git permettant de pousser (par défaut l'utilisateur courant, `-User` pour un autre). Windows demande son mot de passe pour lancer la tâche sans session ouverte : il n'est jamais écrit dans un fichier ; si la session Windows utilise un compte Microsoft ou un code PIN, c'est le mot de passe du compte Microsoft qu'il faut. Avec `-RunOnlyWhenLoggedOn`, aucun mot de passe : la tâche ne tourne que pendant que la session est ouverte. Une tâche jamais lancée garde le résultat `0x41303` (mot de passe refusé, en général). Installer la tâche supprime le service, et inversement.
 
 À la main, sans le script, dans une invite de commandes administrateur :
 
@@ -177,7 +180,7 @@ Relancer `install.ps1` met à jour l'exécutable et la tâche (par exemple aprè
 schtasks /Create /TN "X-Bots Publisher" /TR "C:\xck-publisher\xck-publisher.exe" /SC MINUTE /MO 15 /RU "%USERNAME%" /RP *
 ```
 
-Un verrou empêche deux passages en même temps.
+Un verrou, dans le `.git` du dépôt, empêche deux passages en même temps, même lancés par deux comptes Windows différents (service et ligne de commande).
 
 ## Tester avant de publier
 

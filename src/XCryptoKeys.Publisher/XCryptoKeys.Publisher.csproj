@@ -14,6 +14,8 @@
     <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
     <None Update="appsettings.local.example.json" CopyToOutputDirectory="PreserveNewest" />
     <InternalsVisibleTo Include="XCryptoKeys.Publisher.Tests" />
+    <!-- Mode service sous Windows (ServiceBase). -->
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="10.0.0" />
   </ItemGroup>
 
 </Project>

@@ -21,6 +21,8 @@ public sealed class Git(string repoPath, Settings.GitSettings settings, Log log)
         };
         // Pas de prompt interactif : sans identifiants, git échoue au lieu de rester bloqué.
         psi.Environment["GIT_TERMINAL_PROMPT"] = "0";
+        // Clé SSH propre au bot (service LocalService) : le clone de l'utilisateur garde ses propres réglages.
+        if (!string.IsNullOrWhiteSpace(settings.SshCommand)) psi.Environment["GIT_SSH_COMMAND"] = settings.SshCommand;
         if (!string.IsNullOrWhiteSpace(settings.UserName))
         {
             psi.ArgumentList.Add("-c");

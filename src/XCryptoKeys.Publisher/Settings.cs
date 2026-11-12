@@ -18,6 +18,7 @@ public sealed class Settings
     public int DelayBetweenPostsSeconds { get; set; } = 30;
     public LogSettings Log { get; set; } = new();
     public GitSettings Git { get; set; } = new();
+    public ServiceSettings Service { get; set; } = new();
     /// <summary>Réglages communs de l'API X (ApiBaseUrl). Les identifiants sont par compte, dans Accounts.</summary>
     public XSettings X { get; set; } = new();
     /// <summary>Réglages par compte, indexés par le nom du dossier dans accounts/ (ex. « XCryptoKeys »).</summary>
@@ -149,6 +150,14 @@ public sealed class Settings
         public string UserName { get; set; } = "";
         public string UserEmail { get; set; } = "";
         public int PushRetries { get; set; } = 3;
+        /// <summary>Commande ssh pour git (GIT_SSH_COMMAND), ex. la clé de déploiement du service ; vide = réglages git habituels.</summary>
+        public string SshCommand { get; set; } = "";
+    }
+
+    public sealed class ServiceSettings
+    {
+        /// <summary>Mode --service : un passage toutes les N minutes, aligné sur l'heure (:00, :15, :30, :45 pour 15).</summary>
+        public int IntervalMinutes { get; set; } = 15;
     }
 
     public sealed class XSettings

@@ -2,12 +2,13 @@ using System.Globalization;
 using XCryptoKeys.Publisher;
 
 // xck-publisher : publie sur X les posts dus des campagnes actives de chaque compte de accounts/.
-// À lancer toutes les 15 minutes (cron ou Planificateur de tâches). Voir src/README.md.
+// À lancer toutes les 15 minutes (service Windows avec --service, cron ou Planificateur de tâches). Voir src/README.md.
 
 string? settingsPath = null;
 string? only = null;
 string? onlyAccount = null;
 bool dryRun = false;
+bool service = false;
 DateTimeOffset now = DateTimeOffset.UtcNow;
 
 for (int i = 0; i < args.Length; i++)
@@ -15,6 +16,7 @@ for (int i = 0; i < args.Length; i++)
     switch (args[i])
     {
         case "--dry-run": dryRun = true; break;
+        case "--service": service = true; break;
         case "--settings" when i + 1 < args.Length: settingsPath = args[++i]; break;
         case "--campaign" when i + 1 < args.Length: only = args[++i]; break;
         case "--account" when i + 1 < args.Length: onlyAccount = args[++i]; break;
@@ -24,6 +26,7 @@ for (int i = 0; i < args.Length; i++)
         case "-h" or "--help":
             Console.WriteLine("""
                 xck-publisher [--dry-run] [--account <compte>] [--campaign <nom>] [--settings <fichier>] [--now <date ISO>]
+                xck-publisher --service [--settings <fichier>]
 
                   --dry-run    affiche ce qui serait publié, sans appel à X ni modification du dépôt
                   --account    ne traite qu'un compte (ex. XCryptoKeys, nom du dossier dans accounts/)
@@ -31,6 +34,8 @@ for (int i = 0; i < args.Length; i++)
                   --settings   fichier de settings (défaut : appsettings.json à côté de l'exécutable,
                                puis appsettings.local.json par-dessus)
                   --now        simule l'heure courante (UTC), pour tester le calendrier
+                  --service    tourne en continu : un passage toutes les Service.IntervalMinutes minutes
+                               (service Windows « XBotsPublisher », ou dans la console : Ctrl+C pour arrêter)
                 """);
             return 0;
         default:
@@ -38,6 +43,8 @@ for (int i = 0; i < args.Length; i++)
             return 2;
     }
 }
+
+if (service) return ServiceHost.Run(settingsPath);
 
 // --campaign XCryptoKeys/bitcoin-001 : compte et campagne en une fois.
 if (only is not null && only.Split('/', '\\') is [var accountPart, var campaignPart])
@@ -72,8 +79,12 @@ if (problems.Count > 0)
     return 2;
 }
 
-// Un seul passage à la fois (si un passage dure plus que l'intervalle du planificateur).
-string lockPath = Path.Combine(Path.GetTempPath(), "xck-publisher.lock");
+// Un seul passage à la fois sur ce dépôt, quel que soit le compte Windows qui le lance (service, tâche, à la main) :
+// le verrou est dans le .git du dépôt.
+string gitDir = Path.Combine(settings.RepoPath, ".git");
+string lockPath = Directory.Exists(gitDir)
+    ? Path.Combine(gitDir, "xck-publisher.lock")
+    : Path.Combine(Path.GetTempPath(), "xck-publisher.lock");
 FileStream lockFile;
 try
 {
@@ -126,6 +137,10 @@ using (lockFile)
     int calls = 0;
     using var cts = new CancellationTokenSource();
     Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
+    // Lancé par le service : il demande l'arrêt en créant ce fichier ; le passage s'arrête entre deux campagnes.
+    string? stopFile = Environment.GetEnvironmentVariable(ServiceHost.StopFileVariable);
+    using var stopWatch = string.IsNullOrEmpty(stopFile) ? null
+        : new Timer(_ => { if (File.Exists(stopFile)) cts.Cancel(); }, null, 1000, 1000);
     try
     {
         foreach (var account in accounts)
@@ -177,6 +192,10 @@ using (lockFile)
                 calls += x?.Calls ?? 0;
             }
         }
+    }
+    catch (OperationCanceledException) when (cts.IsCancellationRequested)
+    {
+        log.Info("Arrêt demandé : passage interrompu entre deux campagnes (rien n'est laissé à moitié écrit).");
     }
     finally
     {
