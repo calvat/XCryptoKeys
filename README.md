@@ -106,7 +106,15 @@ Un changement fait ailleurs n'arrive au bot qu'après un `sync.cmd` sur son PC. 
 
    Ce fichier est ignoré par git : les clés ne partent jamais sur GitHub.
 
-3. C'est tout : le passage suivant (dans les 15 minutes) publie les posts dus.
+3. Vérifier les clés, sans rien publier (PowerShell administrateur) :
+
+   ```powershell
+   C:\xck-publisher\xck-publisher.exe --check-x
+   ```
+
+   Il doit afficher `OK`, le compte `@xcryptokeys` et des droits `read-write`. Sinon, il explique la cause probable (voir [Vérifier les clés](src/README.md#vérifier-les-clés---check-x)).
+
+4. C'est tout : le passage suivant (dans les 15 minutes) publie les posts dus. Si X refuse les clés pendant un passage, le compte est mis en pause jusqu'à la modification de `account.local.json` (pas d'appels inutiles toutes les 15 minutes).
 
 **Attention :** au premier passage avec les clés, le bot rattrape tous les posts du jour dont l'heure est passée (un toutes les 30 secondes). Les campagnes sont réparties de 07:00 à 22:00 UTC (08:00 à 23:00 à Paris en hiver). Pour garder cet étalement dès le premier jour, ajouter les clés **avant 07:00 UTC**, ou arrêter le service jusque-là (`Stop-Service XBotsPublisher`, voir plus bas).
 

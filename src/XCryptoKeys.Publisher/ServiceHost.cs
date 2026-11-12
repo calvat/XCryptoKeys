@@ -62,6 +62,8 @@ public sealed class PassRunner
         _settingsPath = settingsPath is null ? null : Path.GetFullPath(settingsPath);
         _logDir = Log.ResolveDirectory(string.IsNullOrWhiteSpace(settings.Log.Directory) ? "logs" : settings.Log.Directory)!;
         var interval = TimeSpan.FromMinutes(Math.Clamp(settings.Service.IntervalMinutes, 1, 1440));
+        // Redémarrage du service : les comptes mis en pause pour clés refusées sont réessayés.
+        XAuthBlock.ClearAll(_logDir);
         Loop = new ServiceLoop(interval, RunPassAsync, Report);
     }
 

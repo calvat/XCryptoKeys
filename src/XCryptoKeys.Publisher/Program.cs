@@ -10,6 +10,7 @@ string? onlyAccount = null;
 bool dryRun = false;
 bool service = false;
 bool checkGit = false;
+bool checkX = false;
 DateTimeOffset now = DateTimeOffset.UtcNow;
 
 for (int i = 0; i < args.Length; i++)
@@ -19,6 +20,7 @@ for (int i = 0; i < args.Length; i++)
         case "--dry-run": dryRun = true; break;
         case "--service": service = true; break;
         case "--check-git": checkGit = true; break;
+        case "--check-x": checkX = true; break;
         case "--settings" when i + 1 < args.Length: settingsPath = args[++i]; break;
         case "--campaign" when i + 1 < args.Length: only = args[++i]; break;
         case "--account" when i + 1 < args.Length: onlyAccount = args[++i]; break;
@@ -30,6 +32,7 @@ for (int i = 0; i < args.Length; i++)
                 xck-publisher [--dry-run] [--account <compte>] [--campaign <nom>] [--settings <fichier>] [--now <date ISO>]
                 xck-publisher --service [--settings <fichier>]
                 xck-publisher --check-git [--settings <fichier>]
+                xck-publisher --check-x [--account <compte>] [--settings <fichier>]
 
                   --dry-run    affiche ce qui serait publié, sans appel à X ni modification du dépôt
                   --account    ne traite qu'un compte (ex. XCryptoKeys, nom du dossier dans accounts/)
@@ -41,6 +44,7 @@ for (int i = 0; i < args.Length; i++)
                                (service Windows « XBotsPublisher », ou dans la console : Ctrl+C pour arrêter)
                   --check-git  vérifie l'accès git (lecture et écriture, sans rien pousser) ;
                                résultat dans logs/git-check.txt
+                  --check-x    vérifie les clés X de chaque compte (GET /2/users/me, rien n'est publié)
                 """);
             return 0;
         default:
@@ -51,6 +55,7 @@ for (int i = 0; i < args.Length; i++)
 
 if (service) return ServiceHost.Run(settingsPath);
 if (checkGit) return GitCheck.Run(settingsPath);
+if (checkX) return XCheck.Run(settingsPath, onlyAccount);
 
 // --campaign XCryptoKeys/bitcoin-001 : compte et campagne en une fois.
 if (only is not null && only.Split('/', '\\') is [var accountPart, var campaignPart])
@@ -71,6 +76,7 @@ catch (Exception ex)
 }
 
 // Le dry-run n'écrit que dans la console : ni fichier de log, ni last-run.txt.
+string? logDir = dryRun ? null : Log.ResolveDirectory(settings.Log.Directory);
 using var log = new Log(dryRun ? null : settings.Log.Directory, settings.Log.RetentionDays, settings.Log.Verbose);
 // Une erreur inattendue est écrite dans le fichier avec tout le passage avant l'arrêt du programme.
 AppDomain.CurrentDomain.UnhandledException += (_, e) =>
@@ -194,12 +200,33 @@ try
                 continue;
             }
             else if (!dryRun)
+            {
+                // Clés refusées par X à un passage précédent, et pas modifiées depuis : on ne refait pas l'appel.
+                if (XAuthBlock.Blocked(logDir, account) is { } reason)
+                {
+                    log.Info($"[{account.Name}] clés X refusées au passage précédent ({reason}) ; compte en pause jusqu'à la modification de {keysFile} (ou un --check-x réussi, ou le redémarrage du service).");
+                    log.NoteAuthBlocked(account.Name);
+                    continue;
+                }
                 x = new XClient(settings.XFor(account.Name), log);
+            }
 
             using (x)
             {
-                published += await new Publisher(settings, account, log, x, git, options).RunAsync(cts.Token);
-                calls += x?.Calls ?? 0;
+                var publisher = new Publisher(settings, account, log, x, git, options);
+                try
+                {
+                    published += await publisher.RunAsync(cts.Token);
+                }
+                finally
+                {
+                    calls += x?.Calls ?? 0;
+                    if (publisher.AuthFailure is { } fail)
+                    {
+                        XAuthBlock.Block(logDir, account, $"HTTP {(int)fail.Status}");
+                        log.NoteAuthBlocked(account.Name);
+                    }
+                }
             }
         }
     }

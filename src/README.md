@@ -123,6 +123,26 @@ Avant, les clés étaient dans la section `X` et les campagnes dans `threads/`. 
 2. Dans **Keys and tokens** : copier l'**API Key** et l'**API Key Secret**, puis **générer** l'**Access Token** et l'**Access Token Secret**, connecté en tant que ce compte. Si les tokens ont été générés avant le passage en Read and write, il faut les régénérer, sinon X refuse les posts (403).
 3. Sur le serveur, mettre les 4 valeurs dans `accounts/<Compte>/account.local.json` (à partir de `accounts/XCryptoKeys/account.local.example.json`). Ce fichier est ignoré par git : ne jamais le committer.
 
+### Vérifier les clés : `--check-x`
+
+```powershell
+C:\xck-publisher\xck-publisher.exe --check-x                 # tous les comptes
+C:\xck-publisher\xck-publisher.exe --check-x --account XCryptoKeys
+```
+
+Un seul appel en lecture (`GET /2/users/me`), rien n'est publié. Pour chaque compte : la forme des 4 clés (longueur, espaces autour, ressemblance avec un Bearer Token ou un Client ID OAuth 2.0 ; jamais les clés elles-mêmes), l'écart d'horloge avec X (OAuth 1.0a refuse une horloge trop décalée), le compte X auquel les clés appartiennent (comparé à `x.username`) et les droits du jeton (`read-write` attendu). Code de sortie 0 si tout va bien, 1 sinon.
+
+Sur un **401** (clés refusées), les causes habituelles :
+
+- mauvaise paire de clés : il faut l'**API Key** et l'**API Key Secret** (« Consumer Keys ») avec l'**Access Token** et l'**Access Token Secret** ; pas le Bearer Token, ni le Client ID / Client Secret OAuth 2.0 ;
+- clés d'une autre app, ou régénérées depuis : recopier les 4 valeurs actuelles ;
+- API Key et API Key Secret inversés, ou Access Token et Access Token Secret inversés ;
+- horloge du PC décalée.
+
+Sur un **403** : l'app n'est pas en « Read and write » (la passer en Read and write, puis **régénérer** l'Access Token et son secret), ou le projet n'a pas accès à l'offre de l'API.
+
+Quand X refuse les clés d'un compte pendant un passage (401, ou 403 de droits), le bot arrête ce compte tout de suite (les autres continuent) et le **met en pause** : plus d'appel à l'API toutes les 15 minutes. Il reprend dès que `account.local.json` est modifié, après un `--check-x` réussi, ou au redémarrage du service. `last-run.txt` indique « clés X refusées par X (compte en pause, voir xck-publisher --check-x) ».
+
 Appels utilisés : `POST /2/media/upload` (image), `POST /2/media/metadata` (texte alternatif), `POST /2/tweets`. En pay-per-use, chaque passage écrit dans le log le nombre d'appels envoyés : 3 par post avec image, 2 avec `AltText: false`, 1 sans image.
 
 ## Accès git du serveur

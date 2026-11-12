@@ -749,3 +749,124 @@ public class GitLocalModeTests
         finally { Delete(dir); }
     }
 }
+
+public class XAuthTests
+{
+    private sealed class Handler(Func<HttpRequestMessage, HttpResponseMessage> respond) : HttpMessageHandler
+    {
+        public List<string> Paths { get; } = [];
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+        {
+            Assert.StartsWith("OAuth ", request.Headers.GetValues("Authorization").Single());
+            Paths.Add(request.RequestUri!.AbsolutePath);
+            return Task.FromResult(respond(request));
+        }
+    }
+
+    /// <summary>Dépôt temporaire : un compte Demo (clés factices) avec deux campagnes dues.</summary>
+    private static (string Repo, Account Account) MakeRepo()
+    {
+        string repo = Path.Combine(Path.GetTempPath(), "xck-auth-" + Guid.NewGuid().ToString("N"));
+        string acc = Path.Combine(repo, "accounts", "Demo");
+        foreach (string c in new[] { "a-001", "b-001" })
+        {
+            string dir = Path.Combine(acc, "threads", c);
+            Directory.CreateDirectory(dir);
+            File.WriteAllText(Path.Combine(dir, "status.json"), """{"status": "active", "last_posted_index": 0, "last_posted_at": null, "interval_days": 1, "post_time": "09:00"}""");
+            File.WriteAllText(Path.Combine(dir, "posts.json"), """[{"index": 1, "simple": "Demo #1: first", "status": "checked"}]""");
+        }
+        File.WriteAllText(Path.Combine(acc, Settings.AccountFile), """{"x": {"username": "demoaccount"}}""");
+        File.WriteAllText(Path.Combine(acc, Settings.AccountLocalFile), """{"x": {"apiKey": "k", "apiKeySecret": "s", "accessToken": "1-t", "accessTokenSecret": "ts"}}""");
+        return (repo, new Account(acc));
+    }
+
+    private static Settings MakeSettings(string repo, Account account)
+    {
+        var s = new Settings { RepoPath = repo, DelayBetweenPostsSeconds = 0, Git = new Settings.GitSettings { Enabled = false }, X = new Settings.XSettings { ApiBaseUrl = "https://api.example" } };
+        s.LoadAccountFiles(account);
+        return s;
+    }
+
+    [Fact]
+    public async Task A_401_stops_the_account_at_the_first_call()
+    {
+        var (repo, account) = MakeRepo();
+        try
+        {
+            var settings = MakeSettings(repo, account);
+            var handler = new Handler(_ => new HttpResponseMessage(HttpStatusCode.Unauthorized) { Content = new StringContent("""{"title":"Unauthorized","status":401}""") });
+            using var log = new Log(null, 0);
+            using var x = new XClient(settings.XFor("Demo"), log, handler);
+            var publisher = new Publisher(settings, account, log, x, null, new RunOptions(false, new DateTimeOffset(2026, 11, 12, 9, 5, 0, TimeSpan.Zero), null));
+            int n = await publisher.RunAsync(default);
+            Assert.Equal(0, n);
+            Assert.Single(handler.Paths);              // la 2e campagne n'a pas été tentée
+            Assert.NotNull(publisher.AuthFailure);
+            Assert.Equal(1, log.Errors);
+            Assert.Contains("--check-x", log.FirstError);
+        }
+        finally { Directory.Delete(repo, true); }
+    }
+
+    [Fact]
+    public void A_refused_account_stays_paused_until_its_keys_change()
+    {
+        var (repo, account) = MakeRepo();
+        string logs = Path.Combine(repo, "logs");
+        try
+        {
+            Assert.Null(XAuthBlock.Blocked(logs, account));
+            XAuthBlock.Block(logs, account, "HTTP 401");
+            Assert.Contains("HTTP 401", XAuthBlock.Blocked(logs, account));
+            // Nouvelles clés : le fichier change, le compte est réessayé.
+            File.WriteAllText(Path.Combine(account.Directory, Settings.AccountLocalFile), """{"x": {"apiKey": "k2", "apiKeySecret": "s2", "accessToken": "1-t2", "accessTokenSecret": "ts2"}}""");
+            Assert.Null(XAuthBlock.Blocked(logs, account));
+        }
+        finally { Directory.Delete(repo, true); }
+    }
+
+    [Fact]
+    public async Task Check_x_reports_the_account_rights_and_clock()
+    {
+        var (repo, account) = MakeRepo();
+        try
+        {
+            var settings = MakeSettings(repo, account);
+            var ok = new Handler(_ =>
+            {
+                var r = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("""{"data":{"id":"1","username":"DemoAccount"}}""") };
+                r.Headers.Add("x-access-level", "read-write");
+                r.Headers.Date = DateTimeOffset.UtcNow;
+                return r;
+            });
+            var (good, lines) = await XCheck.CheckAccountAsync(settings, account, ok);
+            Assert.True(good, string.Join("\n", lines));
+            Assert.Equal(["/2/users/me"], ok.Paths);
+            Assert.Contains(lines, l => l.Contains("@DemoAccount") && !l.Contains("DIFFÉRENT"));
+            Assert.DoesNotContain(lines, l => l.Contains("ts") && l.Contains("AccessTokenSecret :") && l.Contains("ts2"));
+
+            var refused = new Handler(_ =>
+            {
+                var r = new HttpResponseMessage(HttpStatusCode.Unauthorized) { Content = new StringContent("""{"title":"Unauthorized"}""") };
+                r.Headers.Date = DateTimeOffset.UtcNow.AddMinutes(-5);
+                return r;
+            });
+            var (bad, badLines) = await XCheck.CheckAccountAsync(settings, account, refused);
+            Assert.False(bad);
+            Assert.Contains(badLines, l => l.Contains("HTTP 401"));
+            Assert.Contains(badLines, l => l.Contains("TROP GRAND"));
+            Assert.Contains(badLines, l => l.Contains("Bearer Token"));  // l'explication des causes
+        }
+        finally { Directory.Delete(repo, true); }
+    }
+
+    [Fact]
+    public void Key_description_never_shows_the_key()
+    {
+        string secret = "AAAAAAAAAAAAAAAAAAAAAMLheAAAAAAA0%2BuSeid%2BULvsea4JtiGRiSDSJSI%3DEUifiRBkKG5E2XzMDjRfl76ZC9Ub0wnz4XsNiRVBChTYbJcE3F";
+        var d = XCheck.DescribeKey("AccessToken", " " + secret + "\n").Single();
+        Assert.DoesNotContain(secret[10..30], d);
+        Assert.Contains("Bearer Token", d);
+        Assert.Contains("espaces", d);
+    }
+}

@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json.Nodes;
 
 namespace XCryptoKeys.Publisher;
@@ -162,6 +163,13 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
                 }
                 tweetId = await x!.CreatePostAsync(text, media, ct);
             }
+            catch (XApiException ex) when (IsAuthFailure(ex))
+            {
+                // Clés refusées : problème du compte, pas du post. On arrête le compte pour ce passage (pas d'appels inutiles).
+                AuthFailure = ex;
+                log.Error($"[{account.Name}] X refuse les clés du compte (HTTP {(int)ex.Status}) ; compte arrêté. Vérifier avec : xck-publisher --check-x --account {account.Name}. Détail : {ex.Message}");
+                return published;
+            }
             catch (Exception ex) when (ex is XApiException or HttpRequestException or TaskCanceledException or IOException or InvalidOperationException)
             {
                 log.Error($"{Tag(campaign)} échec de publication du post #{next} : {ex.Message}");
@@ -189,6 +197,18 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
 
         return published;
     }
+
+    /// <summary>Clés X refusées pendant ce passage (401, ou 403 de droits / d'offre) ; null sinon.</summary>
+    public XApiException? AuthFailure { get; private set; }
+
+    /// <summary>401 : clés refusées. 403 : seulement s'il s'agit des droits de l'app ou de l'offre (pas d'un post refusé, ex. doublon).</summary>
+    public static bool IsAuthFailure(XApiException ex) =>
+        ex.Status == HttpStatusCode.Unauthorized
+        || (ex.Status == HttpStatusCode.Forbidden &&
+            (ex.Body.Contains("oauth1-permissions", StringComparison.OrdinalIgnoreCase)
+             || ex.Body.Contains("client-not-enrolled", StringComparison.OrdinalIgnoreCase)
+             || ex.Body.Contains("not permitted", StringComparison.OrdinalIgnoreCase)
+             || ex.Body.Contains("access level", StringComparison.OrdinalIgnoreCase)));
 
     private string Tag(Campaign campaign) => $"[{account.Name}/{campaign.Name}]";
 

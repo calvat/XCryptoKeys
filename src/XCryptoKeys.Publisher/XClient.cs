@@ -52,8 +52,8 @@ public sealed class XClient : IDisposable
         var file = new ByteArrayContent(await File.ReadAllBytesAsync(path, ct));
         file.Headers.ContentType = new MediaTypeHeaderValue(mime);
         content.Add(file, "media", Path.GetFileName(path));
+        // Champs du schéma de POST /2/media/upload : media et media_category (pas de champ media_type).
         content.Add(new StringContent("tweet_image"), "media_category");
-        content.Add(new StringContent(mime), "media_type");
 
         var json = await SendAsync(HttpMethod.Post, "/2/media/upload", content, ct);
         string? id = (string?)json["data"]?["id"] ?? (string?)json["media_id_string"];
@@ -81,6 +81,23 @@ public sealed class XClient : IDisposable
         var json = await SendAsync(HttpMethod.Post, "/2/tweets", Json(body), ct);
         return (string?)json["data"]?["id"]
             ?? throw new XApiException("Réponse de création de post sans id.", HttpStatusCode.OK, json.ToJsonString());
+    }
+
+    /// <summary>Réponse brute de GET /2/users/me (lecture seule), pour --check-x.</summary>
+    public sealed record MeResponse(HttpStatusCode Status, string Body, DateTimeOffset? ServerDate, string? AccessLevel);
+
+    /// <summary>GET /2/users/me : vérifie les clés sans rien publier.</summary>
+    public async Task<MeResponse> GetMeAsync(CancellationToken ct)
+    {
+        var uri = new Uri(_base + "/2/users/me");
+        using var req = new HttpRequestMessage(HttpMethod.Get, uri);
+        req.Headers.TryAddWithoutValidation("Authorization", _oauth.BuildHeader("GET", uri));
+        Calls++;
+        using var resp = await _http.SendAsync(req, ct);
+        string text = await resp.Content.ReadAsStringAsync(ct);
+        _log.Info($"API X GET /2/users/me -> {(int)resp.StatusCode}");
+        string? level = resp.Headers.TryGetValues("x-access-level", out var v) ? v.FirstOrDefault() : null;
+        return new MeResponse(resp.StatusCode, text, resp.Headers.Date, level);
     }
 
     private static StringContent Json(JsonNode body) =>

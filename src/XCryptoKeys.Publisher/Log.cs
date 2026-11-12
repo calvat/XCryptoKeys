@@ -65,6 +65,13 @@ public sealed class Log : IDisposable
         }
     }
 
+    private readonly List<string> _authBlocked = [];
+    /// <summary>Compte dont X refuse les clés, signalé dans last-run.txt.</summary>
+    public void NoteAuthBlocked(string account)
+    {
+        lock (_lock) { if (!_authBlocked.Contains(account)) _authBlocked.Add(account); }
+    }
+
     /// <summary>Compte en attente de ses clés X, signalé dans last-run.txt.</summary>
     public void NoteWaitingForKeys(string account)
     {
@@ -125,7 +132,8 @@ public sealed class Log : IDisposable
                 Directory.CreateDirectory(_dir);
                 string next = _nextDue is null ? "" : $" ; prochain post dû : {_nextDueWhat} le {_nextDue:yyyy-MM-dd HH:mm} UTC";
                 string waiting = _waitingForKeys.Count == 0 ? "" : $" ; en attente des clés X : {string.Join(", ", _waitingForKeys)}";
-                File.WriteAllText(LastRunPath!, $"{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ} {Result}{next}{waiting}{Environment.NewLine}");
+                string refused = _authBlocked.Count == 0 ? "" : $" ; clés X refusées par X (compte en pause, voir xck-publisher --check-x) : {string.Join(", ", _authBlocked)}";
+                File.WriteAllText(LastRunPath!, $"{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ} {Result}{next}{waiting}{refused}{Environment.NewLine}");
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {

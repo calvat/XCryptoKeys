@@ -108,10 +108,11 @@ public sealed class Settings
         {
             ApiBaseUrl = X.ApiBaseUrl,
             Username = string.IsNullOrWhiteSpace(a.Username) ? account : a.Username,
-            ApiKey = a.ApiKey,
-            ApiKeySecret = a.ApiKeySecret,
-            AccessToken = a.AccessToken,
-            AccessTokenSecret = a.AccessTokenSecret,
+            // Espaces et retours à la ligne d'un copier-coller retirés : ils rendent la signature fausse (401).
+            ApiKey = a.ApiKey.Trim(),
+            ApiKeySecret = a.ApiKeySecret.Trim(),
+            AccessToken = a.AccessToken.Trim(),
+            AccessTokenSecret = a.AccessTokenSecret.Trim(),
         };
     }
 
