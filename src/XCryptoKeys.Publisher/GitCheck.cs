@@ -46,8 +46,10 @@ public static class GitCheck
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(settings.RepoPath) || !Directory.Exists(Path.Combine(settings.RepoPath, ".git")))
-                return (false, $"dépôt introuvable ou pas un clone git : « {settings.RepoPath} »");
+            if (string.IsNullOrWhiteSpace(settings.RepoPath) || !Directory.Exists(settings.RepoPath))
+                return (false, $"répertoire du dépôt inaccessible pour ce compte ({Environment.UserName}) : « {settings.RepoPath} » (lecteur réseau, ou droits manquants)");
+            if (!Directory.Exists(Path.Combine(settings.RepoPath, ".git")))
+                return (false, $"« {settings.RepoPath} » n'est pas un clone git");
             using var log = new Log(null, 0);
             var git = new Git(settings.RepoPath, settings.Git, log);
             string remote = settings.Git.Remote;

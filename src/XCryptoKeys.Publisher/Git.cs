@@ -12,7 +12,8 @@ public sealed class Git(string repoPath, Settings.GitSettings settings, Log log)
 
     public Result Run(params string[] args)
     {
-        var psi = new ProcessStartInfo("git")
+        string exe = string.IsNullOrWhiteSpace(settings.Executable) ? "git" : settings.Executable;
+        var psi = new ProcessStartInfo(exe)
         {
             WorkingDirectory = repoPath,
             RedirectStandardOutput = true,
@@ -35,7 +36,19 @@ public sealed class Git(string repoPath, Settings.GitSettings settings, Log log)
         }
         foreach (string a in args) psi.ArgumentList.Add(a);
 
-        using var p = Process.Start(psi) ?? throw new InvalidOperationException("Impossible de lancer git.");
+        Process? started;
+        try
+        {
+            started = Process.Start(psi);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            // git absent du PATH de ce compte (service LocalService…) : une erreur claire, pas un plantage.
+            var missing = new Result(127, "", $"git introuvable ou impossible à lancer (« {exe} », réglage Git.Executable) : {ex.Message}");
+            log.Warn($"git {string.Join(' ', args)} a échoué : {missing.Error}");
+            return missing;
+        }
+        using var p = started ?? throw new InvalidOperationException("Impossible de lancer git.");
         var stdout = p.StandardOutput.ReadToEndAsync();
         var stderr = p.StandardError.ReadToEndAsync();
         p.WaitForExit();

@@ -165,6 +165,20 @@ if ($serviceMode) {
         $keygen = Join-Path $gitRoot "usr\bin\ssh-keygen.exe"
     }
     if (-not (Test-Path $sshExe)) { Fail "client SSH introuvable (ni OpenSSH de Windows, ni celui de Git for Windows)." }
+    # Le service (LocalService) n'a pas le PATH de l'utilisateur : git et ssh sont donnés par leur chemin complet,
+    # et ne doivent pas être sous un profil utilisateur (C:\Users\…), que LocalService ne peut pas lire.
+    $gitExe = $gitCmd.Source
+    $usersDir = Split-Path -Parent $env:USERPROFILE
+    foreach ($tool in @($gitExe, $sshExe)) {
+        if ($tool.StartsWith($usersDir + '\', [StringComparison]::OrdinalIgnoreCase)) {
+            $msg = "$tool est installé dans un profil utilisateur : le service (LocalService) ne pourra pas le lancer.`n" +
+                "  Installer Git for Windows pour tous les utilisateurs (dans C:\Program Files), puis relancer ce script :`n" +
+                "  winget install --id Git.Git -e --scope machine"
+            if ($WhatIfPreference) { Write-Warning $msg } else { Fail $msg }
+        }
+    }
+    Write-Host "git du service : $gitExe"
+    Write-Host "ssh du service : $sshExe"
 
     if ($PSCmdlet.ShouldProcess($RepoPath, "Donner à LocalService le droit de modifier le dépôt (icacls)")) {
         Invoke-Native icacls @($RepoPath, "/grant", "$($SidLocalService):(OI)(CI)M", "/Q") "icacls (dépôt)"
@@ -215,6 +229,7 @@ if ($serviceMode) {
     Set-JsonValue $cfg "Git.Remote" $sshUrl
     Set-JsonValue $cfg "Git.Branch" $branch
     Set-JsonValue $cfg "Git.SshCommand" $sshCommand
+    Set-JsonValue $cfg "Git.Executable" $gitExe
     $email = $null
     if ($cfg.PSObject.Properties.Name -contains "Git" -and $cfg.Git.PSObject.Properties.Name -contains "UserEmail") { $email = $cfg.Git.UserEmail }
     if (-not $email) {
@@ -224,7 +239,7 @@ if ($serviceMode) {
         Set-JsonValue $cfg "Git.UserEmail" "$email".Trim()
     }
 }
-if ($PSCmdlet.ShouldProcess($localSettings, "Écrire RepoPath$(if ($serviceMode) { ', Git.Remote, Git.Branch, Git.SshCommand, Git.UserEmail' }) et Service.IntervalMinutes")) {
+if ($PSCmdlet.ShouldProcess($localSettings, "Écrire RepoPath$(if ($serviceMode) { ', Git.Remote, Git.Branch, Git.SshCommand, Git.Executable, Git.UserEmail' }) et Service.IntervalMinutes")) {
     New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
     [IO.File]::WriteAllText($localSettings, ($cfg | ConvertTo-Json -Depth 10) + "`r`n", (New-Object Text.UTF8Encoding $false))
     Write-Host "appsettings.local.json à jour."

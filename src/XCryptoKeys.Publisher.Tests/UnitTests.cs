@@ -632,3 +632,53 @@ public class ServiceLoopTests
         Assert.Equal([1, 2, 3, 4], seen);
     }
 }
+
+public class GitExecutableTests
+{
+    private static string? RepoRoot()
+    {
+        string? dir = AppContext.BaseDirectory;
+        while (dir is not null && !Directory.Exists(Path.Combine(dir, ".git"))) dir = Path.GetDirectoryName(dir);
+        return dir;
+    }
+
+    [Fact]
+    public void Missing_git_is_an_error_not_a_crash()
+    {
+        string? repo = RepoRoot();
+        if (repo is null) return;
+        using var log = new Log(null, 0);
+        var git = new Git(repo, new Settings.GitSettings { Executable = @"C:\nexiste\pas\git.exe" }, log);
+        var r = git.Run("status");
+        Assert.False(r.Ok);
+        Assert.Contains("git introuvable", r.Error);
+        Assert.Equal(1, log.Warnings);
+    }
+
+    [Fact]
+    public void Configured_git_executable_is_used()
+    {
+        string? repo = RepoRoot();
+        if (repo is null) return;
+        using var log = new Log(null, 0);
+        var r = new Git(repo, new Settings.GitSettings { Executable = "git" }, log).Run("--version");
+        Assert.True(r.Ok);
+        Assert.StartsWith("git version", r.Output);
+    }
+
+    [Fact]
+    public void Check_git_says_why_it_fails()
+    {
+        string? repo = RepoRoot();
+        if (repo is null) return;
+        var bogus = new Settings { RepoPath = repo, Git = new Settings.GitSettings { Executable = @"C:\nexiste\pas\git.exe" } };
+        var (ok, message) = GitCheck.Check(bogus);
+        Assert.False(ok);
+        Assert.Contains("git introuvable", message);
+
+        var noRepo = new Settings { RepoPath = Path.Combine(Path.GetTempPath(), "xck-nexiste-" + Guid.NewGuid().ToString("N")) };
+        (ok, message) = GitCheck.Check(noRepo);
+        Assert.False(ok);
+        Assert.Contains("répertoire du dépôt inaccessible", message);
+    }
+}

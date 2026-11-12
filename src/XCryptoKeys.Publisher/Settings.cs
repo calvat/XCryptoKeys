@@ -152,6 +152,8 @@ public sealed class Settings
         public int PushRetries { get; set; } = 3;
         /// <summary>Commande ssh pour git (GIT_SSH_COMMAND), ex. la clé de déploiement du service ; vide = réglages git habituels.</summary>
         public string SshCommand { get; set; } = "";
+        /// <summary>Chemin de git ; « git » = celui du PATH. Le service LocalService n'a pas le PATH de l'utilisateur : install.ps1 met le chemin complet.</summary>
+        public string Executable { get; set; } = "git";
     }
 
     public sealed class ServiceSettings

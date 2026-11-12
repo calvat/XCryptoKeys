@@ -103,6 +103,7 @@ catch (IOException)
 }
 
 using (lockFile)
+try
 {
     log.Info($"Début du passage{(dryRun ? " (dry-run)" : "")}, heure de référence {now:yyyy-MM-ddTHH:mm:ssZ}, version par défaut « {settings.DefaultVersion} ».");
 
@@ -211,4 +212,10 @@ using (lockFile)
 
     log.Info($"Fin du passage : {published} post(s) {(dryRun ? "à publier" : "publié(s)")}, {calls} appel(s) à l'API X, {log.Errors} erreur(s), {log.Warnings} avertissement(s).");
     return log.Errors > 0 ? 1 : 0;
+}
+catch (Exception ex) when (ex is not OperationCanceledException)
+{
+    // Jamais de plantage du programme (code 0xE0434352) : l'erreur et sa pile vont dans le log, code 1.
+    log.Error($"Erreur inattendue, passage interrompu : {ex}");
+    return 1;
 }
