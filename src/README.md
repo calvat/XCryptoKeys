@@ -163,7 +163,11 @@ Le programme écrit lui-même son log dans `logs/`.
 6. liste les campagnes en `active` (leur prochain post partira au premier passage) et demande confirmation (`-Force` pour ne pas demander, `-NoStart` pour créer la tâche désactivée) ;
 7. crée ou met à jour la tâche « X-Bots Publisher » (`-TaskName`) : toutes les 15 minutes (`-IntervalMinutes`), sans fin, que la session soit ouverte ou non, un seul passage à la fois, rattrapage après un arrêt, 10 minutes maximum par passage.
 
-La tâche tourne avec le compte qui a les **identifiants git** permettant de pousser (par défaut l'utilisateur courant, `-User` pour un autre). Windows demande son mot de passe pour lancer la tâche sans session ouverte : il n'est jamais écrit dans un fichier.
+La tâche tourne avec le compte qui a les **identifiants git** permettant de pousser (par défaut l'utilisateur courant, `-User` pour un autre). Windows demande son mot de passe pour lancer la tâche sans session ouverte : il n'est jamais écrit dans un fichier. Si la session Windows utilise un compte Microsoft ou un code PIN, c'est le mot de passe du compte Microsoft qu'il faut.
+
+Avec `-RunOnlyWhenLoggedOn`, aucun mot de passe n'est demandé : la tâche ne tourne que pendant que la session de ce compte est ouverte (le PC doit rester connecté, écran verrouillé possible).
+
+Après l'enregistrement, le script lance un premier passage et vérifie que Windows a démarré la tâche. Une tâche jamais lancée garde le résultat `0x41303` : c'est en général un mot de passe refusé ; relancer avec le bon mot de passe ou avec `-RunOnlyWhenLoggedOn`.
 
 Relancer `install.ps1` met à jour l'exécutable et la tâche (par exemple après un `git pull`).
 

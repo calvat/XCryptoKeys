@@ -69,6 +69,12 @@ Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en 
 
    Sans les clés X, on peut répondre `o` : la tâche tourne mais ne publie rien.
 
+   À la fin, le script lance un premier passage et vérifie que Windows a bien démarré la tâche. S'il signale « Windows n'a pas lancé la tâche » (résultat `0x41303`, jamais lancée), le mot de passe a été refusé : si la session Windows utilise un compte Microsoft ou un code PIN, il faut le mot de passe du compte Microsoft. Sinon, sans mot de passe, la tâche peut tourner seulement quand la session est ouverte :
+
+   ```powershell
+   .\src\install.cmd -SkipBuild -RunOnlyWhenLoggedOn
+   ```
+
 ### Ajouter les clés X (plus tard)
 
 1. Sur [developer.x.com](https://developer.x.com), dans l'app du compte (@xcryptokeys) : activer OAuth 1.0a avec les permissions **Read and write**, puis récupérer l'**API Key**, l'**API Key Secret**, et générer l'**Access Token** et l'**Access Token Secret** (après le passage en Read and write ; détails dans [Clés de l'API X](src/README.md#clés-de-lapi-x)).

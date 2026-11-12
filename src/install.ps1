@@ -18,6 +18,8 @@ param(
     [string]$User = "$env:USERDOMAIN\$env:USERNAME",
     [switch]$SkipBuild,
     [switch]$NoStart,
+    # La tâche ne tourne que pendant que l'utilisateur a une session ouverte : pas de mot de passe à donner.
+    [switch]$RunOnlyWhenLoggedOn,
     # Pas de demande de confirmation pour les campagnes actives.
     [switch]$Force
 )
@@ -140,14 +142,37 @@ $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -Repetiti
 $settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -StartWhenAvailable `
     -ExecutionTimeLimit (New-TimeSpan -Minutes 10) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 if ($PSCmdlet.ShouldProcess($TaskName, "Créer ou mettre à jour la tâche (compte $User)")) {
-    # La tâche tourne que l'utilisateur soit connecté ou non : Windows demande son mot de passe.
-    # Il n'est gardé qu'en mémoire le temps de l'enregistrement, jamais écrit dans un fichier.
-    $cred = Get-Credential -UserName $User -Message "Mot de passe de $User, pour lancer la tâche même sans session ouverte"
-    if (-not $cred) { Fail "pas de mot de passe : tâche non créée." }
-    Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings `
-        -User $cred.UserName -Password $cred.GetNetworkCredential().Password -RunLevel Limited `
-        -Description "Publie sur X les posts dus des comptes de $accountsDir (voir src\README.md)." -Force | Out-Null
-    if ($enable) { Enable-ScheduledTask -TaskName $TaskName | Out-Null; Write-Host "Tâche active : premier passage dans une minute." -ForegroundColor Green }
+    $description = "Publie sur X les posts dus des comptes de $accountsDir (voir src\README.md)."
+    if ($RunOnlyWhenLoggedOn) {
+        # Seulement quand la session est ouverte : aucun mot de passe enregistré.
+        $principal = New-ScheduledTaskPrincipal -UserId $User -LogonType Interactive -RunLevel Limited
+        Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings `
+            -Principal $principal -Description $description -Force | Out-Null
+    }
+    else {
+        # La tâche tourne que l'utilisateur soit connecté ou non : Windows demande son mot de passe
+        # (celui du compte Microsoft si la session Windows en utilise un, pas le code PIN).
+        # Il n'est gardé qu'en mémoire le temps de l'enregistrement, jamais écrit dans un fichier.
+        $cred = Get-Credential -UserName $User -Message "Mot de passe Windows de $User (celui du compte Microsoft, pas le code PIN), pour lancer la tâche même sans session ouverte"
+        if (-not $cred) { Fail "pas de mot de passe : tâche non créée." }
+        Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings `
+            -User $cred.UserName -Password $cred.GetNetworkCredential().Password -RunLevel Limited `
+            -Description $description -Force | Out-Null
+    }
+    if ($enable) {
+        Enable-ScheduledTask -TaskName $TaskName | Out-Null
+        # Vérifie tout de suite que Windows arrive à lancer la tâche (sinon le résultat reste 0x41303, « jamais lancée »).
+        Start-ScheduledTask -TaskName $TaskName
+        Start-Sleep -Seconds 10
+        $info = Get-ScheduledTaskInfo -TaskName $TaskName
+        if ($info.LastTaskResult -eq 0x41303 -or $info.LastRunTime.Year -lt 2000) {
+            Write-Warning "Windows n'a pas lancé la tâche. En général : mot de passe refusé (session avec compte Microsoft ou code PIN)."
+            Write-Warning "Relancer avec le bon mot de passe, ou sans mot de passe : .\src\install.cmd -SkipBuild -RunOnlyWhenLoggedOn (la tâche tourne alors seulement quand la session est ouverte)."
+        }
+        else {
+            Write-Host ("Tâche active, premier passage lancé (résultat 0x{0:X} ; 0 = OK, 0x41301 = en cours). Ensuite toutes les $IntervalMinutes minutes." -f $info.LastTaskResult) -ForegroundColor Green
+        }
+    }
     else { Disable-ScheduledTask -TaskName $TaskName | Out-Null; Write-Host "Tâche créée, désactivée." -ForegroundColor Yellow }
 }
 
