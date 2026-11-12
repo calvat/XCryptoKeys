@@ -69,7 +69,9 @@ Toute clé peut aussi venir d'une variable d'environnement `XCK__Section__Cle`, 
 | `Log.Directory` | `logs` | Dossier des logs, relatif à l'exécutable s'il n'est pas absolu |
 | `Log.RetentionDays` | `30` | Les logs plus vieux sont supprimés |
 | `Log.Verbose` | `false` | `true` : chaque passage est écrit dans le log, même sans rien à faire (pour vérifier la tâche planifiée) ; sinon seulement ceux où il s'est passé quelque chose |
-| `Git.Enabled` | `true` | Pull, commit et push automatiques |
+| `Git.Enabled` | `true` | Commits automatiques de `status.json` / `posts.json` ; `false` : pas de git du tout |
+| `Git.Sync` | `true` | `true` : pull au début du passage, push à la fin. `false` : **git local** (commits locaux, jamais de pull ni de push ; synchronisation à la main avec `src\sync.cmd`). Le service Windows est installé en `false` |
+| `Git.Executable` | `git` | Chemin de git ; le service (LocalService) n'a pas le PATH de l'utilisateur : `install.ps1` met le chemin complet |
 | `Git.Remote` / `Git.Branch` | `origin` / branche courante | Où pousser |
 | `Git.UserName` / `Git.UserEmail` | | Auteur des commits du serveur |
 | `Git.SshCommand` | | Commande ssh de git pour le bot (`GIT_SSH_COMMAND`) : la clé de déploiement du service, réglée par `install.ps1` |
@@ -159,7 +161,9 @@ Le programme écrit lui-même son log dans `logs/`.
 
 `install.cmd` et `uninstall.cmd` lancent `install.ps1` et `uninstall.ps1` avec `-ExecutionPolicy Bypass` : ils marchent même quand Windows bloque les scripts PowerShell (« l'exécution de scripts est désactivée sur ce système »), sans changer ce réglage. Les options sont transmises telles quelles.
 
-Le service tourne sous **LocalService** (pas de mot de passe, pas de session ouverte). Ce compte n'a ni les droits sur le clone ni les identifiants GitHub de l'utilisateur, donc `install.ps1` :
+Le service tourne sous **LocalService** (pas de mot de passe, pas de session ouverte), par défaut en **git local** (`Git.Sync` à `false`) : il commit dans le clone, ne contacte jamais GitHub, et l'utilisateur synchronise avec `src\sync.cmd` (pull --rebase puis push, avec ses identifiants, en prenant le verrou du bot ; voir le README à la racine). Ce compte n'a pas les droits sur le clone, ni git dans son PATH : `install.ps1` donne les droits, le chemin complet de git (`Git.Executable`, qui ne doit pas être sous `C:\Users`, sinon il faut Git for Windows pour tous les utilisateurs : `winget install --id Git.Git -e --scope machine`) et ajoute le clone à `safe.directory`.
+
+Avec `-GitHubSync`, le service se synchronise lui-même avec GitHub (`Git.Sync` à `true`) grâce à une clé SSH de déploiement ; `install.ps1` fait alors en plus les étapes 4 à 6 ci-dessous :
 
 1. vérifie les droits administrateur, git, que le clone est sur un disque local (LocalService ne voit pas les lecteurs réseau) et que `origin` est un dépôt GitHub ;
 2. construit l'exécutable (comme `publish.ps1` ; `-SkipBuild` pour réutiliser `src/publish/win-x64/`) et le copie dans `C:\xck-publisher` (`-InstallDir`), sans jamais écraser `appsettings.local.json`, `logs/` ni `ssh/` ;

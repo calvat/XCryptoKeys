@@ -54,6 +54,20 @@ public static class GitCheck
             var git = new Git(settings.RepoPath, settings.Git, log);
             string remote = settings.Git.Remote;
 
+            if (!settings.Git.Sync)
+            {
+                // Git local : git doit tourner et le dépôt être modifiable par ce compte ; aucun accès réseau.
+                var status = git.Run("status", "--porcelain");
+                if (!status.Ok) return (false, $"git local inutilisable : {FirstLine(status)}");
+                string probe = Path.Combine(settings.RepoPath, ".git", $"xck-write-test-{Environment.ProcessId}");
+                try { File.WriteAllText(probe, "ok"); File.Delete(probe); }
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+                {
+                    return (false, $"pas le droit d'écrire dans {Path.Combine(settings.RepoPath, ".git")} pour ce compte ({Environment.UserName}) : {ex.Message}");
+                }
+                return (true, "git local (pas de synchronisation avec GitHub : à faire avec src\\sync.cmd)");
+            }
+
             var read = git.Run("ls-remote", "--heads", remote);
             if (!read.Ok) return (false, $"lecture impossible sur {remote} : {FirstLine(read)}");
 

@@ -5,6 +5,30 @@ namespace XCryptoKeys.Publisher;
 /// <summary>Appels à la commande git dans le dépôt.</summary>
 public sealed class Git(string repoPath, Settings.GitSettings settings, Log log)
 {
+    private readonly List<string> _commands = [];
+    /// <summary>Commandes git lancées (premier argument), pour les tests.</summary>
+    public IReadOnlyList<string> Commands => _commands;
+
+    /// <summary>
+    /// Début du passage. Avec Sync : pull (après un commit de récupération). Sans Sync : seulement le commit de
+    /// récupération, aucun accès au dépôt distant. Faux = le passage ne doit rien publier.
+    /// </summary>
+    public bool StartPass(string stateFolder)
+    {
+        // Synchronisation manuelle pas terminée (conflit de rebase ou de merge) : ne rien commiter par-dessus.
+        string gitDir = Path.Combine(repoPath, ".git");
+        if (new[] { "rebase-merge", "rebase-apply" }.Any(d => Directory.Exists(Path.Combine(gitDir, d)))
+            || File.Exists(Path.Combine(gitDir, "MERGE_HEAD")))
+        {
+            log.Warn("rebase ou merge en cours dans le dépôt (synchronisation pas terminée ?) : le terminer avec git rebase --continue, ou l'annuler avec git rebase --abort.");
+            return false;
+        }
+        return settings.Sync ? Pull(stateFolder) : CommitPendingState(stateFolder, "Publication : récupération d'un état non commité");
+    }
+
+    /// <summary>Fin du passage : push avec Sync, rien sinon (les commits restent locaux).</summary>
+    public bool EndPass() => !settings.Sync || Push();
+
     public sealed record Result(int ExitCode, string Output, string Error)
     {
         public bool Ok => ExitCode == 0;
@@ -35,6 +59,7 @@ public sealed class Git(string repoPath, Settings.GitSettings settings, Log log)
             psi.ArgumentList.Add($"user.email={settings.UserEmail}");
         }
         foreach (string a in args) psi.ArgumentList.Add(a);
+        if (args.Length > 0) _commands.Add(args[0]);
 
         Process? started;
         try

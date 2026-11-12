@@ -98,7 +98,8 @@ try
 }
 catch (IOException)
 {
-    log.Warn("Un autre passage est en cours ; abandon.");
+    // Un passage, ou une synchronisation faite avec sync.cmd, tient le verrou : on passe notre tour, sans bruit.
+    log.Info("Un autre passage ou une synchronisation est en cours ; passage suivant dans quelques minutes.");
     return 0;
 }
 
@@ -111,10 +112,12 @@ try
     if (settings.Git.Enabled && !dryRun)
     {
         git = new Git(settings.RepoPath, settings.Git, log);
-        if (!git.Pull(settings.AccountsFolder))
+        if (!git.StartPass(settings.AccountsFolder))
         {
-            // Sans dépôt à jour on risque de republier un post : on ne publie rien.
-            log.Error("git pull impossible ; aucun post publié pendant ce passage.");
+            // Sans dépôt à jour (ou sans état commité) on risque de republier un post : on ne publie rien.
+            log.Error(settings.Git.Sync
+                ? "git pull impossible ; aucun post publié pendant ce passage."
+                : "git local inutilisable (commit de récupération impossible) ; aucun post publié pendant ce passage.");
             return 1;
         }
     }
@@ -206,7 +209,7 @@ try
     }
     finally
     {
-        if (git is not null && !git.Push())
+        if (git is not null && !git.EndPass())
             log.Error("git push impossible ; les commits seront poussés au prochain passage.");
     }
 

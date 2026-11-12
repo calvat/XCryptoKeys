@@ -27,7 +27,7 @@ Le format de `posts.json` et de `status.json` est décrit dans le README de chaq
 
 ## Installation (Windows)
 
-Le bot tourne comme **service Windows** « X-Bots Publisher » (`XBotsPublisher`), sous le compte **LocalService** : pas de mot de passe, pas besoin de session ouverte, il redémarre avec le PC. Toutes les 15 minutes (à :00, :15, :30, :45), il fait un passage : il publie les posts dus des campagnes `active` de chaque compte, puis commit et pousse les `status.json` sur GitHub.
+Le bot tourne comme **service Windows** « X-Bots Publisher » (`XBotsPublisher`), sous le compte **LocalService** : pas de mot de passe, pas besoin de session ouverte, il redémarre avec le PC. Toutes les 15 minutes (à :00, :15, :30, :45), il fait un passage : il publie les posts dus des campagnes `active` de chaque compte, et commit les `status.json` / `posts.json` **dans le clone local**. Il ne contacte jamais GitHub : la synchronisation se fait à la main, avec `.\src\sync.cmd` (voir [Synchroniser avec GitHub](#synchroniser-avec-github)).
 
 On peut l'installer **avant d'avoir les clés de l'API X** : tant que `account.local.json` n'existe pas ou n'est pas rempli, le bot ne publie rien pour ce compte (sans erreur ; rien n'est écrit dans le log, et `C:\xck-publisher\logs\last-run.txt` indique « en attente des clés X : XCryptoKeys »). Il suffit ensuite de remplir ce fichier : le passage suivant publie, sans rien réinstaller.
 
@@ -66,16 +66,27 @@ Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en 
 
    - construit l'exécutable et le copie dans `C:\xck-publisher` ;
    - donne au compte LocalService le droit de modifier le clone et d'écrire les logs, et déclare le clone « sûr » pour git ;
-   - crée une **clé SSH de déploiement**, propre au service, dans `C:\xck-publisher\ssh\` (lisible seulement par le service et les administrateurs), et les clés d'hôte de GitHub ;
-   - affiche la clé **publique** à ajouter sur GitHub : dépôt > **Settings** > **Deploy keys** > **Add deploy key**, cocher **Allow write access**, puis attend Entrée (si la clé est déjà acceptée, il passe directement) ;
+   - indique au service le chemin complet de git (le service n'a pas le PATH de l'utilisateur) et le règle en **git local** (`Git.Sync` à `false` dans `C:\xck-publisher\appsettings.local.json`) ;
    - lance un test à blanc (`--dry-run`), liste les campagnes actives et demande « Démarrer le bot maintenant ? (o/N) » ;
-   - crée le service (démarrage automatique différé, redémarrage s'il plante) et le démarre. À son démarrage, le service vérifie lui-même son accès à GitHub (`C:\xck-publisher\logs\git-check.txt`) : si GitHub refuse la clé, le script le dit, réaffiche la clé, et Entrée redémarre le service pour réessayer. Tant que l'accès est refusé, rien n'est publié (`last-run.txt` indique l'erreur git). Enfin, il vérifie que le premier passage a eu lieu (`last-run.txt`).
+   - crée le service (démarrage automatique différé, redémarrage s'il plante) et le démarre. À son démarrage, le service vérifie qu'il peut utiliser git dans le clone (`C:\xck-publisher\logs\git-check.txt`) ; le script affiche le résultat et vérifie que le premier passage a eu lieu (`last-run.txt`).
 
    Avec `N`, le service est installé mais arrêté (démarrage manuel) : `sc.exe config XBotsPublisher start= delayed-auto ; Start-Service XBotsPublisher` pour le démarrer. Sans les clés X, on peut répondre `o` : le service tourne mais ne publie rien.
 
-   Le clone garde son adresse et ses réglages : seul le service utilise la clé de déploiement (réglages `Git.Remote` et `Git.SshCommand` de `C:\xck-publisher\appsettings.local.json`). Ton `git pull` / `git push` habituel marche comme avant.
+   Le clone garde son adresse et tes identifiants git : c'est toi qui synchronises avec GitHub. Si une installation précédente avait créé une clé de déploiement (`C:\xck-publisher\ssh\`), le script le signale : elle ne sert plus, on peut la supprimer sur GitHub (Settings > Deploy keys) et sur le PC. La synchronisation par le service lui-même reste possible avec `.\src\install.cmd -GitHubSync` (clé de déploiement, voir [`src/README.md`](src/README.md#lancer-toutes-les-15-minutes)).
 
    S'il restait une tâche planifiée « X-Bots Publisher » d'une installation précédente, le script la supprime : le bot ne tourne jamais deux fois. L'ancien mode reste possible avec `.\src\install.cmd -ScheduledTask` (voir [`src/README.md`](src/README.md#lancer-toutes-les-15-minutes)).
+
+### Synchroniser avec GitHub
+
+Le service commit ses publications dans le clone, sans les pousser. Pour envoyer ces commits sur GitHub et récupérer tes changements (nouvelles campagnes, `status.json` modifiés ailleurs), sur le PC du bot, dans le clone (PowerShell normal) :
+
+```powershell
+.\src\sync.cmd
+```
+
+Le script attend la fin d'un passage en cours et bloque le suivant le temps de la synchronisation (même verrou que le bot), puis fait `git pull --rebase` et `git push` avec tes identifiants. À lancer après avoir poussé des changements depuis un autre PC, et de temps en temps pour envoyer les publications du bot (une fois par jour suffit).
+
+Un changement fait ailleurs n'arrive au bot qu'après un `sync.cmd` sur son PC. Si un `status.json` a été modifié des deux côtés, le pull peut s'arrêter sur un conflit : garder la version du bot pour `last_posted_index`, `last_posted_at` et les champs des posts publiés (`status`, `posted_at`, `tweet_id`, `url`), c'est ce qui est vraiment en ligne ; puis `git add <fichier>`, `git rebase --continue` et relancer `sync.cmd` (ou `git rebase --abort` pour tout annuler). Tant que le rebase n'est pas terminé, le bot ne publie rien.
 
 ### Ajouter les clés X (plus tard)
 
@@ -108,7 +119,8 @@ Dans un **PowerShell administrateur** (clic droit sur PowerShell > Exécuter en 
 | Tester ce qui partirait maintenant | `C:\xck-publisher\xck-publisher.exe --dry-run` |
 | Lancer un passage tout de suite | `Restart-Service XBotsPublisher` (le service fait un passage dès qu'il démarre) |
 | Mettre en pause / reprendre | `Stop-Service XBotsPublisher` / `Start-Service XBotsPublisher` |
-| Mettre à jour après un `git pull` | relancer `.\src\install.cmd` : il arrête le service, remplace l'exécutable et le redémarre (la clé de déploiement est gardée) |
+| Synchroniser avec GitHub | `.\src\sync.cmd` dans le clone (PowerShell normal) : envoie les publications du bot, récupère tes changements |
+| Mettre à jour après un `git pull` | relancer `.\src\install.cmd` : il arrête le service, remplace l'exécutable et le redémarre |
 | Désinstaller | `.\src\uninstall.cmd` (ajouter `-RemoveFiles` pour supprimer aussi `C:\xck-publisher`, et `-RemoveDeployKey` pour la clé de déploiement ; la supprimer aussi sur GitHub > Settings > Deploy keys) |
 
 Pour mettre une campagne en pause, passer son `status.json` en `inactive`, puis commit et push. Depuis un autre PC, faire un `git pull` avant de modifier un `status.json` ou un `posts.json`, puisque le bot y écrit.

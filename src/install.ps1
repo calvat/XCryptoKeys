@@ -26,7 +26,10 @@ param(
     # Mode -ScheduledTask : compte qui lance la tâche (il doit avoir les identifiants git qui permettent de pousser).
     [string]$User = "$env:USERDOMAIN\$env:USERNAME",
     # Mode -ScheduledTask : la tâche ne tourne que pendant que la session est ouverte (pas de mot de passe).
-    [switch]$RunOnlyWhenLoggedOn
+    [switch]$RunOnlyWhenLoggedOn,
+    # Service : synchronisation avec GitHub par le service lui-même (clé SSH de déploiement). Sans cette option, le service
+    # travaille en git local (commits locaux) et la synchronisation se fait à la main avec src\sync.cmd.
+    [switch]$GitHubSync
 )
 $ErrorActionPreference = "Stop"
 $scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
@@ -88,17 +91,18 @@ if ($serviceMode) {
     $disk = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='$driveId'" -ErrorAction SilentlyContinue
     if ($disk -and $disk.DriveType -notin 2, 3) { Fail "le dépôt est sur $driveId, qui n'est pas un disque local (lecteur réseau ?) : le service (LocalService) ne peut pas y accéder. Cloner le dépôt sur un disque local, ou utiliser -ScheduledTask." }
     # Adresse SSH du dépôt GitHub, déduite du remote du clone (le clone de l'utilisateur n'est pas modifié).
-    $originUrl = (& git -C $RepoPath remote get-url origin).Trim()
+    $originUrl = "$(& git -C $RepoPath remote get-url origin 2>$null)".Trim()
     if ($originUrl -match '^(?:https://github\.com/|git@github\.com:|ssh://git@github\.com/)([^/]+)/(.+?)(?:\.git)?/?$') {
         $ghOwner = $Matches[1]; $ghRepo = $Matches[2]
         $sshUrl = "git@github.com:$ghOwner/$ghRepo.git"
     }
-    else { Fail "le remote origin ($originUrl) n'est pas un dépôt GitHub : la clé de déploiement du service ne peut pas être configurée. Utiliser -ScheduledTask." }
+    elseif ($GitHubSync) { Fail "le remote origin ($originUrl) n'est pas un dépôt GitHub : la clé de déploiement du service ne peut pas être configurée." }
 }
 
 Write-Host "Dépôt       : $RepoPath (branche $branch)"
 Write-Host "Installation: $InstallDir"
-if ($serviceMode) { Write-Host "Mode        : service Windows « $ServiceName », compte LocalService, un passage toutes les $IntervalMinutes min ; git par SSH ($sshUrl)" }
+if ($serviceMode -and $GitHubSync) { Write-Host "Mode        : service Windows « $ServiceName », compte LocalService, un passage toutes les $IntervalMinutes min ; synchronisation GitHub par SSH ($sshUrl)" }
+elseif ($serviceMode) { Write-Host "Mode        : service Windows « $ServiceName », compte LocalService, un passage toutes les $IntervalMinutes min ; git local (synchronisation avec GitHub à la main : src\sync.cmd)" }
 else { Write-Host "Mode        : tâche planifiée « $TaskName », toutes les $IntervalMinutes min, compte $User" }
 
 # Clés X : seulement un avertissement, les clés ne sont jamais créées ni affichées ici.
@@ -156,6 +160,7 @@ $knownHosts = Join-Path $sshDir "known_hosts"
 # 4. Service : droits de LocalService, git « safe.directory », clé SSH de déploiement
 if ($serviceMode) {
     Step "Compte LocalService : droits et accès git"
+    $gitExe = $gitCmd.Source
     $sshExe = "$env:WINDIR\System32\OpenSSH\ssh.exe"
     $keygen = "$env:WINDIR\System32\OpenSSH\ssh-keygen.exe"
     if (-not (Test-Path $sshExe)) {
@@ -164,12 +169,11 @@ if ($serviceMode) {
         $sshExe = Join-Path $gitRoot "usr\bin\ssh.exe"
         $keygen = Join-Path $gitRoot "usr\bin\ssh-keygen.exe"
     }
-    if (-not (Test-Path $sshExe)) { Fail "client SSH introuvable (ni OpenSSH de Windows, ni celui de Git for Windows)." }
+    if ($GitHubSync -and -not (Test-Path $sshExe)) { Fail "client SSH introuvable (ni OpenSSH de Windows, ni celui de Git for Windows)." }
     # Le service (LocalService) n'a pas le PATH de l'utilisateur : git et ssh sont donnés par leur chemin complet,
     # et ne doivent pas être sous un profil utilisateur (C:\Users\…), que LocalService ne peut pas lire.
-    $gitExe = $gitCmd.Source
     $usersDir = Split-Path -Parent $env:USERPROFILE
-    foreach ($tool in @($gitExe, $sshExe)) {
+    foreach ($tool in @($gitExe) + @(if ($GitHubSync) { $sshExe })) {
         if ($tool.StartsWith($usersDir + '\', [StringComparison]::OrdinalIgnoreCase)) {
             $msg = "$tool est installé dans un profil utilisateur : le service (LocalService) ne pourra pas le lancer.`n" +
                 "  Installer Git for Windows pour tous les utilisateurs (dans C:\Program Files), puis relancer ce script :`n" +
@@ -178,7 +182,7 @@ if ($serviceMode) {
         }
     }
     Write-Host "git du service : $gitExe"
-    Write-Host "ssh du service : $sshExe"
+    if ($GitHubSync) { Write-Host "ssh du service : $sshExe" }
 
     if ($PSCmdlet.ShouldProcess($RepoPath, "Donner à LocalService le droit de modifier le dépôt (icacls)")) {
         Invoke-Native icacls @($RepoPath, "/grant", "$($SidLocalService):(OI)(CI)M", "/Q") "icacls (dépôt)"
@@ -194,6 +198,7 @@ if ($serviceMode) {
         Invoke-Native git @("config", "--system", "--add", "safe.directory", $safeDir) "git config safe.directory"
     }
 
+  if ($GitHubSync) {
     # Clé de déploiement : lisible seulement par LocalService, SYSTEM et Administrateurs ; la clé privée n'est jamais affichée.
     if (-not (Test-Path $keyPath) -and $PSCmdlet.ShouldProcess($keyPath, "Créer la clé SSH de déploiement (ed25519, sans phrase de passe)")) {
         New-Item -ItemType Directory -Force -Path $sshDir | Out-Null
@@ -217,6 +222,7 @@ if ($serviceMode) {
         Invoke-Native icacls @($knownHosts, "/inheritance:r", "/grant:r", "$($SidAdmins):F", "$($SidSystem):F", "$($SidLocalService):RX", "/Q") "icacls (known_hosts)"
     }
     $sshCommand = "`"$($sshExe -replace '\\','/')`" -i `"$($keyPath -replace '\\','/')`" -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=`"$($knownHosts -replace '\\','/')`""
+  }
 }
 
 # 5. appsettings.local.json : créé ou complété (les réglages déjà là sont gardés)
@@ -226,20 +232,27 @@ if (-not $cfg) { $cfg = [pscustomobject]@{} }
 Set-JsonValue $cfg "RepoPath" $RepoPath
 Set-JsonValue $cfg "Service.IntervalMinutes" $IntervalMinutes
 if ($serviceMode) {
-    Set-JsonValue $cfg "Git.Remote" $sshUrl
-    Set-JsonValue $cfg "Git.Branch" $branch
-    Set-JsonValue $cfg "Git.SshCommand" $sshCommand
     Set-JsonValue $cfg "Git.Executable" $gitExe
+    Set-JsonValue $cfg "Git.Sync" ([bool]$GitHubSync)
+    if ($GitHubSync) {
+        Set-JsonValue $cfg "Git.Remote" $sshUrl
+        Set-JsonValue $cfg "Git.Branch" $branch
+        Set-JsonValue $cfg "Git.SshCommand" $sshCommand
+    }
+    elseif ($cfg.PSObject.Properties.Name -contains "Git") {
+        # Git local : on retire ce qu'une installation avec synchronisation avait mis (adresse SSH, clé).
+        foreach ($k in "Remote", "SshCommand", "Branch") { $cfg.Git.PSObject.Properties.Remove($k) }
+    }
     $email = $null
     if ($cfg.PSObject.Properties.Name -contains "Git" -and $cfg.Git.PSObject.Properties.Name -contains "UserEmail") { $email = $cfg.Git.UserEmail }
     if (-not $email) {
         # LocalService n'a pas de configuration git : l'auteur des commits du bot doit être donné.
         $email = (& git -C $RepoPath config user.email 2>$null)
-        if (-not $email) { $email = "$ghOwner@users.noreply.github.com" }
+        if (-not $email) { $email = if ($ghOwner) { "$ghOwner@users.noreply.github.com" } else { "x-bots@$env:COMPUTERNAME" } }
         Set-JsonValue $cfg "Git.UserEmail" "$email".Trim()
     }
 }
-if ($PSCmdlet.ShouldProcess($localSettings, "Écrire RepoPath$(if ($serviceMode) { ', Git.Remote, Git.Branch, Git.SshCommand, Git.Executable, Git.UserEmail' }) et Service.IntervalMinutes")) {
+if ($PSCmdlet.ShouldProcess($localSettings, "Écrire RepoPath$(if ($serviceMode -and $GitHubSync) { ', Git.Sync=true, Git.Remote, Git.Branch, Git.SshCommand, Git.Executable, Git.UserEmail' } elseif ($serviceMode) { ', Git.Sync=false (git local), Git.Executable, Git.UserEmail' }) et Service.IntervalMinutes")) {
     New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
     [IO.File]::WriteAllText($localSettings, ($cfg | ConvertTo-Json -Depth 10) + "`r`n", (New-Object Text.UTF8Encoding $false))
     Write-Host "appsettings.local.json à jour."
@@ -252,6 +265,15 @@ if ($serviceMode -and -not $WhatIfPreference) {
     Unregister-ScheduledTask -TaskName "X-Bots test git" -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item (Join-Path $logsDir "git-test.*") -ErrorAction SilentlyContinue
 
+  if (-not $GitHubSync) {
+    if (Test-Path $sshDir) {
+        Write-Host ""
+        Write-Host "Git local : la clé de déploiement d'une installation précédente ($sshDir) ne sert plus." -ForegroundColor Yellow
+        Write-Host "  On peut la supprimer sur GitHub (dépôt > Settings > Deploy keys, « x-bots service $env:COMPUTERNAME »)"
+        Write-Host "  et sur ce PC : Remove-Item -Recurse -Force $sshDir"
+    }
+  }
+  else {
     Step "Accès GitHub du service (clé de déploiement)"
     $lastCheck = if (Test-Path $gitCheckFile) { (Get-Content $gitCheckFile -Raw -Encoding UTF8).Trim() } else { "" }
     if ($lastCheck -match '^\S+ OK ') {
@@ -270,6 +292,7 @@ if ($serviceMode -and -not $WhatIfPreference) {
         Write-Host "Si elle est déjà ajoutée, appuyer directement sur Entrée. L'accès est vérifié par le service à son démarrage."
         [void](Read-Host "Entrée quand la clé est ajoutée")
     }
+  }
 }
 
 # Lit la vérification git que le service fait à son démarrage (logs\git-check.txt, plus récente que $since).
@@ -349,10 +372,12 @@ if ($serviceMode) {
             while ($true) {
                 $check = Wait-GitCheck $since
                 if ($null -eq $check) { Write-Warning "le service n'a pas écrit de vérification git en 90 s (voir plus bas)."; break }
-                if ($check -match '^\S+ OK ') { Write-Host "Accès GitHub du service : $check" -ForegroundColor Green; break }
-                Write-Host "Accès GitHub du service refusé : $check" -ForegroundColor Yellow
-                Write-Host "Vérifier la clé sur https://github.com/$ghOwner/$ghRepo/settings/keys (« Allow write access » coché). Clé publique :"
-                Write-Host (Get-Content "$keyPath.pub" -Raw).Trim()
+                if ($check -match '^\S+ OK ') { Write-Host "Accès git du service : $check" -ForegroundColor Green; break }
+                Write-Host "Accès git du service refusé : $check" -ForegroundColor Yellow
+                if ($GitHubSync) {
+                    Write-Host "Vérifier la clé sur https://github.com/$ghOwner/$ghRepo/settings/keys (« Allow write access » coché). Clé publique :"
+                    Write-Host (Get-Content "$keyPath.pub" -Raw).Trim()
+                }
                 $answer = Read-Host "Entrée pour réessayer (le service redémarre), « s » pour passer (rien ne sera publié tant que l'accès est refusé)"
                 if ($answer -match '^s') { break }
                 $since = Get-Date
@@ -432,3 +457,4 @@ if ($waiting.Count -gt 0 -and -not $WhatIfPreference) {
 }
 Write-Host "Ce qui a été fait : $logsDir\publisher-AAAA-MM-JJ.log ; dernier passage : $logsDir\last-run.txt"
 if ($serviceMode) { Write-Host "Service : Get-Service $ServiceName ; Stop-Service $ServiceName ; Start-Service $ServiceName" }
+if ($serviceMode -and -not $GitHubSync) { Write-Host "Synchronisation avec GitHub (publications du bot, tes changements) : .\src\sync.cmd dans le clone" }

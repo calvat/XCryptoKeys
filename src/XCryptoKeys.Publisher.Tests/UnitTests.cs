@@ -682,3 +682,70 @@ public class GitExecutableTests
         Assert.Contains("répertoire du dépôt inaccessible", message);
     }
 }
+
+public class GitLocalModeTests
+{
+    private static readonly string[] RemoteCommands = ["pull", "push", "fetch", "ls-remote", "clone"];
+
+    /// <summary>Dépôt temporaire avec un remote inaccessible et un status.json modifié non commité.</summary>
+    private static string TempRepo()
+    {
+        string dir = Path.Combine(Path.GetTempPath(), "xck-gitlocal-" + Guid.NewGuid().ToString("N"));
+        string camp = Path.Combine(dir, "accounts", "Demo", "threads", "demo-001");
+        Directory.CreateDirectory(camp);
+        File.WriteAllText(Path.Combine(camp, "status.json"), "{\"last_posted_index\": 0}\n");
+        using var log = new Log(null, 0);
+        var g = new Git(dir, new Settings.GitSettings { UserName = "Test", UserEmail = "test@example.com" }, log);
+        g.Run("init", "-q", "-b", "main");
+        g.Run("add", "-A");
+        g.Run("commit", "-q", "-m", "init");
+        g.Run("remote", "add", "origin", Path.Combine(dir, "nexiste", "remote.git"));
+        File.WriteAllText(Path.Combine(camp, "status.json"), "{\"last_posted_index\": 1}\n");
+        return dir;
+    }
+
+    private static void Delete(string dir)
+    {
+        foreach (var f in Directory.GetFiles(dir, "*", SearchOption.AllDirectories)) File.SetAttributes(f, FileAttributes.Normal);
+        Directory.Delete(dir, true);
+    }
+
+    [Fact]
+    public void Local_mode_never_contacts_the_remote_and_still_commits_the_state()
+    {
+        if (!new Git(Path.GetTempPath(), new Settings.GitSettings(), new Log(null, 0)).Run("--version").Ok) return;
+        string dir = TempRepo();
+        try
+        {
+            using var log = new Log(null, 0);
+            var git = new Git(dir, new Settings.GitSettings { Sync = false, UserName = "Bot", UserEmail = "bot@example.com" }, log);
+            Assert.True(git.StartPass("accounts"));   // commit de récupération du status.json modifié
+            Assert.True(git.EndPass());               // pas de push
+            Assert.DoesNotContain(git.Commands, c => RemoteCommands.Contains(c));
+            Assert.Contains("commit", git.Commands);
+            var status = git.Run("status", "--porcelain");
+            Assert.Equal("", status.Output);
+            Assert.Equal(0, log.Errors);
+
+            var (ok, message) = GitCheck.Check(new Settings { RepoPath = dir, Git = new Settings.GitSettings { Sync = false } });
+            Assert.True(ok, message);
+            Assert.Contains("git local", message);
+        }
+        finally { Delete(dir); }
+    }
+
+    [Fact]
+    public void Sync_mode_refuses_the_pass_when_the_remote_is_unreachable()
+    {
+        if (!new Git(Path.GetTempPath(), new Settings.GitSettings(), new Log(null, 0)).Run("--version").Ok) return;
+        string dir = TempRepo();
+        try
+        {
+            using var log = new Log(null, 0);
+            var git = new Git(dir, new Settings.GitSettings { Sync = true, UserName = "Bot", UserEmail = "bot@example.com" }, log);
+            Assert.False(git.StartPass("accounts"));
+            Assert.Contains("pull", git.Commands);
+        }
+        finally { Delete(dir); }
+    }
+}

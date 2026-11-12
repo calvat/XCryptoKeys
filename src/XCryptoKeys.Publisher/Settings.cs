@@ -144,6 +144,11 @@ public sealed class Settings
     public sealed class GitSettings
     {
         public bool Enabled { get; set; } = true;
+        /// <summary>
+        /// true : pull au début du passage, push à la fin. false : git local seulement (commits locaux, jamais de pull ni de
+        /// push) ; la synchronisation avec GitHub se fait à la main (src\sync.cmd). Le service Windows est installé en false.
+        /// </summary>
+        public bool Sync { get; set; } = true;
         public string Remote { get; set; } = "origin";
         /// <summary>Branche à pousser ; vide = branche courante.</summary>
         public string Branch { get; set; } = "";
