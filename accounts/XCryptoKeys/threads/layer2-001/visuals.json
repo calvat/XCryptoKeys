@@ -1,0 +1,1717 @@
+{
+ "1": {
+  "type": "table",
+  "head": [
+   "Type",
+   "Leans on L1 for",
+   "Exit if operator vanishes?"
+  ],
+  "rows": [
+   [
+    "Lightning",
+    "disputes",
+    "✓ unilateral close, in time"
+   ],
+   [
+    "Optimistic rollup",
+    "fraud proofs + data",
+    "only with a forced L1 exit"
+   ],
+   [
+    "ZK rollup",
+    "validity proofs + data",
+    "only with a forced L1 exit"
+   ],
+   [
+    "Sidechain",
+    "nothing",
+    "✗"
+   ]
+  ],
+  "note": {
+   "k": "\"Layer 2\" is a label",
+   "v": "Who you trust, for what, and how you get out"
+  }
+ },
+ "2": {
+  "type": "split",
+  "src": {
+   "k": "L1 block cap",
+   "label": "4,000,000 WU",
+   "sub": "BIP141 · every node checks every tx"
+  },
+  "to": [
+   {
+    "k": "Layer 2",
+    "label": "Most txs off-chain",
+    "hl": true
+   },
+   {
+    "k": "Touches L1 only to",
+    "label": "Settle, publish data, resolve disputes"
+   }
+  ],
+  "note": {
+   "k": "The trade",
+   "v": "More throughput, no more work per node"
+  }
+ },
+ "3": {
+  "type": "fields",
+  "struct": {
+   "name": "Funding output · P2WSH",
+   "lines": [
+    [
+     "2",
+     ""
+    ],
+    {
+     "key": "<pubkey1>",
+     "val": "peer A",
+     "hl": true
+    },
+    {
+     "key": "<pubkey2>",
+     "val": "peer B",
+     "hl": true
+    },
+    [
+     "2",
+     "OP_CHECKMULTISIG"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "BOLT 3",
+    "label": "2-of-2: both signatures needed",
+    "hl": true
+   },
+   {
+    "k": "Every payment",
+    "label": "A new agreed split of it"
+   }
+  ]
+ },
+ "4": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "ON-CHAIN",
+    "label": "Funding tx"
+   },
+   {
+    "k": "STATE 41",
+    "label": "A 0.6 · B 0.4",
+    "dim": true
+   },
+   {
+    "k": "STATE 42",
+    "label": "A 0.5 · B 0.5",
+    "sub": "signed, held by each peer",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Until a close",
+   "v": "Nothing hits the chain: instant and cheap"
+  }
+ },
+ "5": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Each update",
+    "label": "Old state revoked",
+    "sub": "secret revealed"
+   },
+   {
+    "k": "Cheater",
+    "label": "Broadcasts old state",
+    "bad": true
+   },
+   {
+    "k": "Victim",
+    "label": "Sweeps every output",
+    "sub": "penalty tx (BOLT 3)",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Deterrent",
+   "v": "Cheating risks the whole channel balance"
+  }
+ },
+ "6": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "close",
+    "label": "Commitment broadcast",
+    "at": 0.12
+   },
+   {
+    "t": "+ to_self_delay",
+    "label": "Broadcaster can spend",
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "window to use the revocation path"
+  ],
+  "note": {
+   "k": "CSV timelock",
+   "v": "Time for an honest peer to punish a cheater"
+  }
+ },
+ "7": {
+  "type": "segments",
+  "head": "Channel total · reserve = 1% per peer (not to scale)",
+  "total": "",
+  "items": [
+   {
+    "label": "Spendable balance",
+    "value": 97
+   },
+   {
+    "label": "1% reserve",
+    "value": 3,
+    "display": "can't spend",
+    "short": "1%",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "channel_reserve_satoshis",
+   "v": "Always something to lose if you cheat"
+  }
+ },
+ "8": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "You go offline"
+   },
+   {
+    "label": "Tower holds encrypted justice txs",
+    "sub": "learns nothing yet"
+   },
+   {
+    "label": "Revoked commitment appears on-chain",
+    "alt": true
+   },
+   {
+    "label": "Tower decrypts + broadcasts the penalty",
+    "hl": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Altruist towers",
+    "label": "All funds back, minus fees"
+   }
+  ]
+ },
+ "9": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "PAYER",
+    "label": "HTLC",
+    "lines": [
+     "payment_hash"
+    ]
+   },
+   {
+    "k": "HOP",
+    "label": "HTLC",
+    "lines": [
+     "same hash"
+    ]
+   },
+   {
+    "k": "PAYEE",
+    "label": "Reveals preimage",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Preimage flows back",
+   "v": "Each middleman paid only if the payee is"
+  }
+ },
+ "10": {
+  "type": "bars",
+  "head": "Outgoing HTLC cltv_expiry along the route",
+  "items": [
+   {
+    "label": "Payer → hop 1",
+    "value": 100,
+    "display": "latest deadline"
+   },
+   {
+    "label": "Hop 1 → hop 2",
+    "value": 75,
+    "display": "− cltv_expiry_delta"
+   },
+   {
+    "label": "Hop 2 → payee",
+    "value": 50,
+    "display": "− cltv_expiry_delta",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "The margin",
+   "v": "Time to claim upstream before your own HTLC expires"
+  }
+ },
+ "11": {
+  "type": "stack",
+  "head": "Sphinx onion (BOLT 4)",
+  "w": 480,
+  "layers": [
+   {
+    "label": "Layer for hop 1",
+    "hl": true
+   },
+   {
+    "label": "Layer for hop 2"
+   },
+   {
+    "label": "Layer for hop 3"
+   },
+   {
+    "label": "Payee"
+   }
+  ],
+  "side": [
+   {
+    "k": "Each hop learns",
+    "label": "Previous + next hop only"
+   },
+   {
+    "k": "Never learns",
+    "label": "Route length or its position",
+    "hl": true
+   }
+  ]
+ },
+ "12": {
+  "type": "segments",
+  "head": "Onion packet · always",
+  "total": "1366 bytes",
+  "legend": false,
+  "items": [
+   {
+    "label": "version + key · 34 B",
+    "value": 34,
+    "short": "34 B"
+   },
+   {
+    "label": "hop_payloads · 1300 B",
+    "value": 1300,
+    "hl": true
+   },
+   {
+    "label": "HMAC · 32 B",
+    "value": 32,
+    "short": "32 B"
+   }
+  ],
+  "cards": [
+   {
+    "k": "Front",
+    "label": "version 1 B + public key 33 B"
+   },
+   {
+    "k": "Each hop",
+    "label": "Removes its data, refills the end with random bytes",
+    "hl": true
+   },
+   {
+    "k": "End",
+    "label": "HMAC 32 B"
+   }
+  ],
+  "note": {
+   "k": "Fixed size",
+   "v": "Nobody can tell where they are on the path"
+  }
+ },
+ "13": {
+  "type": "network",
+  "nodes": 26,
+  "hl": 5,
+  "x0": 440,
+  "hl_label": "route the sender picked",
+  "n_label": "public channel map (gossip)",
+  "side": [
+   {
+    "k": "BOLT 7",
+    "label": "channel_announcement + channel_update"
+   },
+   {
+    "k": "short_channel_id",
+    "label": "Points to a real funding tx",
+    "hl": true
+   }
+  ],
+  "path": true
+ },
+ "14": {
+  "type": "formula",
+  "k": "Forwarding fee (msat)",
+  "expr": "base + amount × prop ÷ 10^6",
+  "terms": [
+   {
+    "k": "fee_base_msat",
+    "v": "fixed part"
+   },
+   {
+    "k": "fee_proportional_millionths",
+    "v": "grows with the amount"
+   },
+   {
+    "k": "Set",
+    "v": "per node, per channel"
+   }
+  ]
+ },
+ "15": {
+  "type": "compare",
+  "left": {
+   "head": "Inside Lightning",
+   "big": "1,000 msat",
+   "items": [
+    "= 1 sat"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "On-chain output",
+   "big": "whole sats",
+   "items": [
+    "Fractions rounded down on close"
+   ]
+  }
+ },
+ "16": {
+  "type": "split",
+  "src": {
+   "k": "In-flight HTLC",
+   "label": "Below the dust limit",
+   "sub": "trimmed (BOLT 3)"
+  },
+  "to": [
+   {
+    "k": "No output",
+    "label": "Value goes to fees"
+   },
+   {
+    "k": "Force close",
+    "label": "Ends as miner fees",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Tiny payments",
+   "v": "Protected by peer behaviour, not script"
+  }
+ },
+ "17": {
+  "type": "fields",
+  "struct": {
+   "name": "BOLT 11 invoice (bech32)",
+   "lines": [
+    {
+     "key": "prefix",
+     "val": "lnbc · lntb · lnbcrt",
+     "hl": true
+    },
+    [
+     "amount",
+     "optional, with multiplier"
+    ],
+    [
+     "timestamp",
+     "Unix seconds"
+    ],
+    [
+     "tags",
+     "payment_hash, expiry…"
+    ],
+    [
+     "signature",
+     "by the payee node"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "If no expiry tag",
+    "label": "3600 s = 1 hour",
+    "hl": true,
+    "from": 3
+   }
+  ]
+ },
+ "18": {
+  "type": "split",
+  "src": {
+   "k": "HTLC arrives",
+   "label": "Payee online?"
+  },
+  "to": [
+   {
+    "k": "yes",
+    "label": "Reveals preimage: paid",
+    "hl": true
+   },
+   {
+    "k": "no",
+    "label": "HTLCs time out",
+    "sub": "funds go back to the sender",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Failed payment",
+   "v": "No money lost, it just doesn't happen"
+  }
+ },
+ "19": {
+  "type": "segments",
+  "head": "Channel capacity (fixed)",
+  "total": "",
+  "items": [
+   {
+    "label": "Your side → can send",
+    "value": 30,
+    "hl": true
+   },
+   {
+    "label": "Peer's side → you can receive",
+    "value": 70
+   }
+  ],
+  "note": {
+   "k": "New wallet",
+   "v": "May need inbound liquidity before it can be paid"
+  }
+ },
+ "20": {
+  "type": "split",
+  "src": {
+   "k": "One payment",
+   "label": "Same payment_hash",
+   "sub": "+ total_msat in the onion"
+  },
+  "to": [
+   {
+    "label": "Part 1 · route A"
+   },
+   {
+    "label": "Part 2 · route B"
+   },
+   {
+    "label": "Part 3 · route C"
+   }
+  ],
+  "note": {
+   "k": "Payee waits for the total",
+   "v": "Claims all parts or none"
+  }
+ },
+ "21": {
+  "type": "compare",
+  "left": {
+   "head": "Default cap",
+   "big": "2^24 sat",
+   "items": [
+    "16,777,216 sat ≈ 0.168 BTC",
+    "Temporary self-imposed limit"
+   ]
+  },
+  "right": {
+   "head": "option_support_large_channel",
+   "big": "no cap",
+   "items": [
+    "Opt-in feature lifts it"
+   ],
+   "hl": true
+  }
+ },
+ "22": {
+  "type": "split",
+  "src": {
+   "k": "Signed in advance",
+   "label": "Commitment tx",
+   "sub": "fee may be too low later"
+  },
+  "to": [
+   {
+    "k": "Anchor A",
+    "label": "330 sat · CPFP bump"
+   },
+   {
+    "k": "Anchor B",
+    "label": "330 sat · CPFP bump"
+   }
+  ],
+  "note": {
+   "k": "option_anchors",
+   "v": "Set the fee at broadcast time, not signing time"
+  }
+ },
+ "23": {
+  "type": "compare",
+  "left": {
+   "head": "Mutual close",
+   "items": [
+    "shutdown → closing_complete / closing_sig",
+    "One tx pays both",
+    "No timelock"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Force close",
+   "items": [
+    "Latest commitment broadcast alone",
+    "Works without the partner",
+    "Own output waits to_self_delay"
+   ]
+  }
+ },
+ "24": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "splice_init / ack",
+    "label": "New funding tx",
+    "sub": "add or remove funds"
+   },
+   {
+    "k": "Once signed",
+    "label": "Channel works again"
+   },
+   {
+    "k": "splice_locked",
+    "label": "Resized",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Splicing (BOLT 2)",
+   "v": "Resize without closing"
+  }
+ },
+ "25": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Public map",
+    "label": "Payer finds the route"
+   },
+   {
+    "k": "Invoice r fields",
+    "label": "Route hint",
+    "hl": true
+   },
+   {
+    "k": "Unannounced channel",
+    "label": "Payee reached"
+   }
+  ]
+ },
+ "26": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "SENDER SEES",
+    "label": "Route to introduction point"
+   },
+   {
+    "k": "INTRODUCTION POINT",
+    "label": "Blinded path starts",
+    "hl": true
+   },
+   {
+    "k": "HIDDEN",
+    "label": "Payee node + channels",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Route blinding (BOLT 4)",
+   "v": "Privacy for the person getting paid"
+  }
+ },
+ "27": {
+  "type": "checklist",
+  "head": "Lightning security holds if…",
+  "checks": [
+   {
+    "text": "Latest commitment kept"
+   },
+   {
+    "text": "Old states revoked"
+   },
+   {
+    "text": "Your txs confirm before timelocks expire",
+    "ok": "!",
+    "sub": "the catch during fee spikes"
+   }
+  ],
+  "side": [
+   {
+    "k": "Mitigations",
+    "label": "Anchor outputs + watchtowers",
+    "hl": true
+   }
+  ]
+ },
+ "28": {
+  "type": "compare",
+  "left": {
+   "head": "Lightning",
+   "items": [
+    "State known only to peers",
+    "Enforced on-chain only in disputes",
+    "More private"
+   ]
+  },
+  "right": {
+   "head": "Rollup",
+   "items": [
+    "All data / diffs posted to L1",
+    "Anyone can rebuild state",
+    "Fraud or validity proofs"
+   ],
+   "hl": true
+  }
+ },
+ "29": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Rollup chain",
+    "label": "Executes txs"
+   },
+   {
+    "k": "Batches",
+    "label": "Data posted to L1"
+   },
+   {
+    "k": "L1 contract",
+    "label": "Accepts state via proof",
+    "sub": "bridge escrows the assets",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Final judge",
+   "v": "The Ethereum contract holding your funds"
+  }
+ },
+ "30": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "L1",
+    "label": "Posted data"
+   },
+   {
+    "k": "Open-source software",
+    "label": "Rebuild state"
+   },
+   {
+    "k": "Compare",
+    "label": "vs proposed state roots",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "L2BEAT Stage 0 minimum",
+   "v": "Operator gone? Anyone can rebuild balances"
+  }
+ },
+ "31": {
+  "type": "compare",
+  "left": {
+   "head": "Rollup",
+   "items": [
+    "Data on L1"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Validium / optimium",
+   "items": [
+    "Data with a committee or external DA",
+    "Withheld data → exits can freeze"
+   ]
+  },
+  "note": {
+   "k": "Not rollups",
+   "v": "You trust the committee to share the data"
+  }
+ },
+ "32": {
+  "type": "split",
+  "src": {
+   "k": "Sidechain",
+   "label": "Own consensus",
+   "sub": "no data posted to L1"
+  },
+  "to": [
+   {
+    "k": "Bridge trusts",
+    "label": "Sidechain validators"
+   },
+   {
+    "k": "Malicious quorum",
+    "label": "Can steal; L1 can't help",
+    "bad": true
+   }
+  ]
+ },
+ "33": {
+  "type": "gauge",
+  "pct": 55.6,
+  "mark": 55.6,
+  "big": "5 of 9",
+  "label": "Ronin validator keys controlled by the attacker",
+  "side": [
+   {
+    "k": "March 2022",
+    "label": "≈ $625M drained",
+    "sub": "ETH + USDC",
+    "bad": true
+   },
+   {
+    "k": "Rollup bridge",
+    "label": "Would also need an L1-checked proof",
+    "hl": true
+   }
+  ]
+ },
+ "34": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "posted",
+    "label": "State claim + bond",
+    "at": 0.12
+   },
+   {
+    "t": "period ends",
+    "label": "Confirmed",
+    "sub": "if no challenge succeeded",
+    "hl": true,
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "challenge period"
+  ],
+  "note": {
+   "k": "Fraud proof wins",
+   "v": "Claim rejected, bond lost"
+  }
+ },
+ "35": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Initiate on L2",
+    "sub": "withdrawal message sent"
+   },
+   {
+    "label": "Prove on L1",
+    "sub": "OptimismPortal, against a dispute game · then wait 7 days to let anyone challenge"
+   },
+   {
+    "label": "Finalize on L1",
+    "sub": "after the 7-day proof maturity delay",
+    "hl": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Official bridge",
+    "label": "About a week",
+    "sub": "the window to challenge a fake withdrawal",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "With fault proofs",
+   "v": "Users may re‑prove at any time"
+  }
+ },
+ "36": {
+  "type": "big",
+  "k": "Minimum assertion bond",
+  "big": "3,600 ETH",
+  "label": "to propose a new state on Arbitrum One",
+  "side": [
+   {
+    "k": "Challenge window",
+    "label": "45,818 L1 blocks",
+    "sub": "≈ 6.4 days",
+    "hl": true
+   },
+   {
+    "k": "Consequence",
+    "label": "Native withdrawals ≈ 1 week"
+   },
+   {
+    "k": "Chain parameters",
+    "label": "Governance can change them",
+    "alt": true
+   }
+  ]
+ },
+ "37": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Your pending withdrawal",
+    "label": "Taken over by a liquidity provider"
+   },
+   {
+    "k": "Provider pays you",
+    "label": "On L1 right away",
+    "sub": "minus a fee",
+    "hl": true
+   },
+   {
+    "k": "Provider waits",
+    "label": "Out the 7-day challenge",
+    "sub": "checks validity by running the chain"
+   }
+  ],
+  "note": {
+   "k": "Fast exit",
+   "v": "The 7 days still run: someone else waits them out"
+  }
+ },
+ "38": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Dispute",
+    "label": "History commitments"
+   },
+   {
+    "k": "Bisect",
+    "label": "Down to one block"
+   },
+   {
+    "k": "Bisect",
+    "label": "Range of 2^23 WASM steps"
+   },
+   {
+    "k": "One-step proof",
+    "label": "L1 executes 1 instruction",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Ethereum",
+   "v": "Never re-runs the batch, only one step"
+  }
+ },
+ "39": {
+  "type": "compare",
+  "left": {
+   "head": "Normal operation",
+   "big": "native",
+   "items": [
+    "Geth core compiled into Arbitrum",
+    "Validators and nodes run it fast"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Fraud proof",
+   "big": "WASM",
+   "items": [
+    "Same code, WASM build",
+    "One disputed step checked on Ethereum"
+   ]
+  },
+  "note": {
+   "k": "Nitro",
+   "v": "Arbitrum One migrated on Aug 31, 2022"
+  }
+ },
+ "40": {
+  "type": "network",
+  "nodes": 30,
+  "hl": 1,
+  "bad": 8,
+  "cluster": true,
+  "hl_label": "one honest defender",
+  "bad_label": "dishonest assertions",
+  "n_label": "other validators",
+  "side": [
+   {
+    "k": "BoLD, Feb 2025",
+    "label": "Anyone can validate",
+    "sub": "bonds attach to assertions, not parties"
+   },
+   {
+    "k": "Time-bound disputes",
+    "label": "One honest party is enough",
+    "hl": true
+   }
+  ]
+ },
+ "41": {
+  "type": "table",
+  "head": [
+   "",
+   "Stage 1",
+   "Stage 2"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "Anyone can challenge withdrawals",
+    "✓",
+    "✓"
+   ],
+   [
+    "No trusted party for proofs",
+    "✓",
+    "✓"
+   ],
+   [
+    "Council can revert to permissioned mode",
+    "✓",
+    "✗"
+   ]
+  ],
+  "note": {
+   "k": "OP Mainnet, June 10, 2024",
+   "v": "Cannon fault proofs live, still Stage 1"
+  }
+ },
+ "42": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "invalid assertion",
+    "label": "Many validators lie",
+    "at": 0.1,
+    "bad": true
+   },
+   {
+    "t": "during the window",
+    "label": "1 honest challenger",
+    "sub": "data + bond + L1 access",
+    "hl": true,
+    "at": 0.5
+   },
+   {
+    "t": "window closes",
+    "label": "Honest side censored?",
+    "sub": "then the lie stands",
+    "alt": true,
+    "at": 0.9
+   }
+  ],
+  "span": [
+   0.1,
+   0.9,
+   "challenge window"
+  ],
+  "note": {
+   "k": "Real attack",
+   "v": "Not outvoting the honest party: censoring it on L1"
+  }
+ },
+ "43": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "STATE N",
+    "label": "State root",
+    "lines": [
+     "validity proof ✓"
+    ]
+   },
+   {
+    "k": "STATE N+1",
+    "label": "State root",
+    "lines": [
+     "SNARK / STARK"
+    ],
+    "sub": "accepted only if the proof checks",
+    "hl": true
+   },
+   {
+    "k": "WITHDRAW",
+    "label": "No week-long wait",
+    "sub": "no fraud-proof window",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "ZK rollup",
+   "v": "Shown correct up front, not assumed"
+  }
+ },
+ "44": {
+  "type": "hash",
+  "fn": "SHARP",
+  "fn_k": "shared prover",
+  "inputs": [
+   "Cairo program A",
+   "Cairo program B",
+   "Cairo program C",
+   {
+    "label": "… many more",
+    "hl": true
+   }
+  ],
+  "out": {
+   "k": "One STARK proof",
+   "label": "Verified on Ethereum",
+   "sub": "verification cost shared by all apps"
+  },
+  "note": {
+   "k": "Exponential asymmetry",
+   "v": "Proving is heavy, checking is cheap"
+  }
+ },
+ "45": {
+  "type": "compare",
+  "left": {
+   "head": "STARKs",
+   "items": [
+    "Transparent: no trusted setup",
+    "Collision-resistant hashes only",
+    "Seen as post-quantum secure",
+    "Larger proofs"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "SNARKs (Groth16)",
+   "big": "3 elements",
+   "items": [
+    "Tiny proofs: 3 group elements",
+    "Need a trusted setup ceremony"
+   ]
+  },
+  "note": {
+   "k": "No free lunch",
+   "v": "Each proof family trades something"
+  }
+ },
+ "46": {
+  "type": "bars",
+  "head": "zkEVM types (Vitalik, Aug 2022)",
+  "items": [
+   {
+    "label": "Type 1 · Ethereum-equivalent",
+    "value": 5,
+    "display": "most compatible",
+    "hl": true
+   },
+   {
+    "label": "Type 2 · EVM-equivalent",
+    "value": 4,
+    "display": ""
+   },
+   {
+    "label": "Type 2.5 · same, except gas costs",
+    "value": 3.5,
+    "display": ""
+   },
+   {
+    "label": "Type 3 · almost EVM-equivalent",
+    "value": 2.5,
+    "display": ""
+   },
+   {
+    "label": "Type 4 · high-level language",
+    "value": 1,
+    "display": "fastest to prove",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Bar = compatibility (illustrative)",
+   "v": "Lower types prove slower"
+  }
+ },
+ "47": {
+  "type": "checklist",
+  "head": "A single sequencer…",
+  "checks": [
+   {
+    "text": "Forge state",
+    "ok": false,
+    "sub": "blocked by proofs"
+   },
+   {
+    "text": "Steal funds",
+    "ok": false,
+    "sub": "blocked by proofs"
+   },
+   {
+    "text": "Reorder or delay txs",
+    "ok": true,
+    "sub": "for a while"
+   },
+   {
+    "text": "Censor txs",
+    "ok": true,
+    "sub": "for a while"
+   }
+  ],
+  "side": [
+   {
+    "k": "Escape hatch",
+    "label": "Forced inclusion through L1",
+    "hl": true
+   }
+  ]
+ },
+ "48": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "< 1 s",
+    "label": "Sequencer feed",
+    "sub": "soft finality: a promise",
+    "alt": true,
+    "at": 0.1
+   },
+   {
+    "t": "later",
+    "label": "Batch posted on Ethereum",
+    "at": 0.5
+   },
+   {
+    "t": "L1 finality",
+    "label": "Strong guarantee",
+    "sub": "that L1 block finalizes",
+    "hl": true,
+    "at": 0.9
+   }
+  ],
+  "note": {
+   "k": "Instant confirmation",
+   "v": "Relies on the sequencer behaving honestly"
+  }
+ },
+ "49": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Sequencer",
+    "label": "Ignores your tx",
+    "bad": true
+   },
+   {
+    "k": "L1 delayed inbox",
+    "label": "You send it as a message"
+   },
+   {
+    "k": "After 24 h",
+    "label": "Anyone forces it in",
+    "sub": "7,200 L1 blocks",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Arbitrum One",
+   "v": "Force-include period, a chain parameter"
+  }
+ },
+ "50": {
+  "type": "gauge",
+  "pct": 100,
+  "mark": 100,
+  "big": "12 h",
+  "label": "sequencing window: 3,600 L1 blocks",
+  "side": [
+   {
+    "k": "Forced tx",
+    "label": "Deposit to OptimismPortal on L1"
+   },
+   {
+    "k": "Past the window",
+    "label": "Nodes derive blocks with only forced deposits",
+    "hl": true
+   },
+   {
+    "k": "Sequencer stalled or censoring",
+    "label": "Can't keep you out",
+    "alt": true
+   }
+  ]
+ },
+ "51": {
+  "type": "compare",
+  "left": {
+   "head": "Usual rollup",
+   "items": [
+    "One central sequencer",
+    "Orders txs and posts batches"
+   ]
+  },
+  "right": {
+   "head": "Based rollup",
+   "items": [
+    "Ethereum block proposers include batches",
+    "Ordering and censorship resistance from L1",
+    "Taiko Alethia"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Taiko",
+   "v": "Calls itself the first based rollup"
+  }
+ },
+ "52": {
+  "type": "split",
+  "src": {
+   "k": "Upgradeable L1 contract",
+   "label": "Rollup bridge",
+   "sub": "behind an admin multisig"
+  },
+  "to": [
+   {
+    "k": "Instant upgrade",
+    "label": "Swap verifier or bridge logic",
+    "sub": "proofs bypassed",
+    "bad": true
+   },
+   {
+    "k": "Delayed upgrade",
+    "label": "Exit window",
+    "sub": "users can leave first",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Ask",
+   "v": "Who holds the keys, and how fast can they act?"
+  }
+ },
+ "53": {
+  "type": "stack",
+  "head": "L2BEAT (now ETHBEAT) Stages",
+  "layers": [
+   {
+    "label": "Stage 2",
+    "r": "no training wheels",
+    "hl": true
+   },
+   {
+    "label": "Stage 1",
+    "r": "limited training wheels"
+   },
+   {
+    "label": "Stage 0",
+    "r": "full training wheels",
+    "alt": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Measures",
+    "label": "Power operators and admins keep over funds"
+   },
+   {
+    "k": "Inspired by",
+    "label": "Vitalik's training-wheels milestones"
+   }
+  ]
+ },
+ "54": {
+  "type": "checklist",
+  "head": "Stage 1 requirements",
+  "checks": [
+   {
+    "text": "Security Council ≥ 8 members",
+    "ok": true
+   },
+   {
+    "text": "≥ 50% outside the core organization",
+    "ok": true
+   },
+   {
+    "text": "75% threshold to act",
+    "ok": true
+   },
+   {
+    "text": "Non-Council upgrades: ≥ 7 days to exit",
+    "ok": true
+   },
+   {
+    "text": "Fully functional proof system",
+    "ok": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Threshold",
+    "label": "75%",
+    "hl": true
+   }
+  ]
+ },
+ "55": {
+  "type": "fields",
+  "struct": {
+   "name": "Stage 2",
+   "lines": [
+    [
+     "proof system",
+     "permissionless"
+    ],
+    {
+     "key": "security council",
+     "val": "on-chain soundness errors only",
+     "hl": true
+    },
+    {
+     "key": "exit window",
+     "val": "≥ 30 days",
+     "hl": true
+    }
+   ]
+  },
+  "side": [
+   {
+    "k": "Unwanted upgrade",
+    "label": "Takes effect after users can leave",
+    "from": 2
+   }
+  ]
+ },
+ "56": {
+  "type": "formula",
+  "k": "Exit window",
+  "expr": "exit window = upgrade delay − withdrawal time",
+  "terms": [
+   {
+    "k": "Upgrade delay",
+    "v": "13 days"
+   },
+   {
+    "k": "Withdrawal time",
+    "v": "≈ 7 days"
+   },
+   {
+    "k": "Left to exit",
+    "v": "≈ **6 days**"
+   }
+  ],
+  "foot": "No window at all: users simply trust the admins"
+ },
+ "57": {
+  "type": "formula",
+  "k": "Blob size",
+  "expr": "4096 × 32 bytes = 128 KiB",
+  "terms": [
+   {
+    "k": "4096",
+    "v": "field elements of 32 bytes each"
+   },
+   {
+    "k": "Shipped",
+    "v": "Dencun, March 13, 2024"
+   },
+   {
+    "k": "At launch",
+    "v": "target 3, max 6 blobs per block"
+   }
+  ]
+ },
+ "58": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "day 0",
+    "label": "Blob published",
+    "sub": "sidecar served by consensus nodes",
+    "at": 0.08
+   },
+   {
+    "t": "≈ 18 days",
+    "label": "Sidecar pruned",
+    "sub": "4096 epochs",
+    "alt": true,
+    "at": 0.92
+   }
+  ],
+  "span": [
+   0.08,
+   0.92,
+   "anyone can download, check or challenge"
+  ],
+  "note": {
+   "k": "Stays on-chain",
+   "v": "KZG commitment, via a versioned hash"
+  }
+ },
+ "59": {
+  "type": "split",
+  "reverse": true,
+  "src": {
+   "k": "Contract (EVM)",
+   "label": "Sees a fingerprint only",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "BLOBHASH opcode",
+    "label": "Blob's versioned hash"
+   },
+   {
+    "k": "Precompile `0x0A`",
+    "label": "KZG point evaluation",
+    "sub": "value is part of the blob?"
+   },
+   {
+    "k": "Blob contents",
+    "label": "Not accessible",
+    "bad": true
+   }
+  ]
+ },
+ "60": {
+  "type": "compare",
+  "left": {
+   "head": "Execution gas",
+   "items": [
+    "Swaps, NFT mints, transfers",
+    "EIP-1559 base fee"
+   ]
+  },
+  "right": {
+   "head": "Blob gas",
+   "big": "131,072",
+   "items": [
+    "Per blob: GAS_PER_BLOB",
+    "Own base fee, driven by blob usage vs target"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Separate markets",
+   "v": "Rollup data no longer competes head-on"
+  }
+ },
+ "61": {
+  "type": "bars",
+  "log": true,
+  "head": "Fee before → after Dencun (log scale)",
+  "items": [
+   {
+    "label": "Base median, before",
+    "value": 0.5,
+    "display": "≈ $0.5"
+   },
+   {
+    "label": "Base median, after",
+    "value": 0.0012,
+    "display": "≈ $0.0012",
+    "hl": true
+   },
+   {
+    "label": "Starknet swap, before",
+    "value": 6.8,
+    "display": "> $6.8"
+   },
+   {
+    "label": "Starknet swap, after",
+    "value": 0.04,
+    "display": "≈ $0.04",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Source",
+   "v": "The Block, March 2024"
+  }
+ },
+ "62": {
+  "type": "bars",
+  "head": "Blobs per block (EIP-7691)",
+  "items": [
+   {
+    "label": "Before Pectra · target",
+    "value": 3,
+    "display": "3"
+   },
+   {
+    "label": "Before Pectra · max",
+    "value": 6,
+    "display": "6"
+   },
+   {
+    "label": "Pectra · target",
+    "value": 6,
+    "display": "6",
+    "hl": true
+   },
+   {
+    "label": "Pectra · max",
+    "value": 9,
+    "display": "9",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "May 7, 2025",
+   "v": "Target data capacity doubled"
+  }
+ },
+ "63": {
+  "type": "compare",
+  "left": {
+   "head": "Before",
+   "items": [
+    "Every node downloads every blob in full",
+    "Bandwidth grows with blob count"
+   ]
+  },
+  "right": {
+   "head": "PeerDAS (EIP-7594)",
+   "items": [
+    "Nodes sample parts of blobs",
+    "More blobs, no matching rise per node"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Fusaka",
+   "v": "Activated Dec 3, 2025"
+  }
+ },
+ "64": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "May 2025",
+    "label": "Pectra",
+    "sub": "6 / 9",
+    "at": 0.1
+   },
+   {
+    "t": "Dec 9, 2025",
+    "label": "BPO1",
+    "sub": "10 / 15",
+    "at": 0.5
+   },
+   {
+    "t": "Jan 7, 2026",
+    "label": "BPO2",
+    "sub": "14 / 21 · in force",
+    "hl": true,
+    "at": 0.9
+   }
+  ],
+  "note": {
+   "k": "Blob Parameter Only forks",
+   "v": "Change blob target / max, nothing else"
+  }
+ },
+ "65": {
+  "type": "formula",
+  "k": "OP Stack fee",
+  "expr": "fee = gas × (base + priority) + L1 data fee + operator fee",
+  "terms": [
+   {
+    "k": "Execution",
+    "v": "gas × (base fee + priority fee)"
+   },
+   {
+    "k": "L1 data fee",
+    "v": "compressed tx data; set mostly by the **blob base fee**"
+   },
+   {
+    "k": "Operator fee",
+    "v": "since Isthmus"
+   }
+  ]
+ },
+ "66": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Transactions",
+    "label": "Many, one by one"
+   },
+   {
+    "k": "ArbOS",
+    "label": "Batch + compress",
+    "hl": true
+   },
+   {
+    "k": "Ethereum",
+    "label": "Compressed batches",
+    "sub": "fewer bytes paid for"
+   }
+  ],
+  "note": {
+   "k": "Every byte costs",
+   "v": "Smaller data, smaller fees"
+  }
+ },
+ "67": {
+  "type": "table",
+  "head": [
+   "L2",
+   "You rely on"
+  ],
+  "cols": "1fr 3fr",
+  "rows": [
+   [
+    "Lightning",
+    "Timelocks + penalties; watch the chain or a watchtower"
+   ],
+   [
+    "Optimistic rollup",
+    "One honest challenger + data on L1 + safe upgrades"
+   ],
+   [
+    "ZK rollup",
+    "Validity proofs + data on L1 + safe upgrades"
+   ],
+   [
+    "Sidechain",
+    "Its own validators"
+   ]
+  ],
+  "note": {
+   "k": "What an L2 really means",
+   "v": "Knowing which assumption you accept"
+  }
+ }
+}

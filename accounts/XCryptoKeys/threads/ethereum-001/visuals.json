@@ -1,0 +1,2366 @@
+{
+ "1": {
+  "type": "timeline",
+  "w": 250,
+  "events": [
+   {
+    "t": "July 30, 2015",
+    "label": "Frontier launch",
+    "sub": "a chain that runs programs",
+    "hl": true
+   },
+   {
+    "t": "≈ 20 upgrades",
+    "label": "Network upgrades"
+   },
+   {
+    "t": "the Merge",
+    "label": "PoW → PoS"
+   },
+   {
+    "t": "blobs",
+    "label": "Cheap data for rollups"
+   }
+  ],
+  "note": {
+   "k": "This series",
+   "v": "Accounts, gas, EVM, consensus, staking, blobs: one per post"
+  }
+ },
+ "2": {
+  "type": "fields",
+  "struct": {
+   "name": "Ethereum account",
+   "lines": [
+    [
+     "nonce",
+     "tx count"
+    ],
+    {
+     "key": "balance",
+     "val": "in wei",
+     "hl": true
+    },
+    [
+     "storageRoot",
+     "root of its storage trie"
+    ],
+    [
+     "codeHash",
+     "hash of its code"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "vs Bitcoin",
+    "label": "Balances, not unspent coins",
+    "hl": true,
+    "from": 1
+   },
+   {
+    "k": "Plain wallet",
+    "label": "codeHash = hash of empty code",
+    "from": 3
+   }
+  ]
+ },
+ "3": {
+  "type": "compare",
+  "left": {
+   "head": "Externally owned (EOA)",
+   "items": [
+    "secp256k1 private key",
+    "Your wallet",
+    "Can originate a transaction"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Contract account",
+   "items": [
+    "Controlled by EVM code",
+    "Never acts on its own",
+    "Runs only when called"
+   ]
+  },
+  "note": {
+   "k": "So",
+   "v": "Every on-chain action starts with a key holder's signature"
+  }
+ },
+ "4": {
+  "type": "hash",
+  "fn": "Keccak-256",
+  "fn_k": "hash",
+  "inputs": [
+   {
+    "k": "64 bytes",
+    "label": "Public key",
+    "sub": "uncompressed, no 0x04"
+   }
+  ],
+  "out": {
+   "k": "Keep the last 20 bytes",
+   "label": "Address",
+   "lines": [
+    "0x + 40 hex chars"
+   ],
+   "hl": true
+  }
+ },
+ "5": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Step 1",
+    "label": "keccak256(lowercase address)"
+   },
+   {
+    "k": "Step 2",
+    "label": "Hash nibble ≥ 8?",
+    "sub": "→ uppercase that letter",
+    "hl": true
+   },
+   {
+    "k": "Result",
+    "label": "0x5aAeb6…",
+    "sub": "mixed case = checksum"
+   }
+  ],
+  "note": {
+   "k": "Typo",
+   "v": "Breaks the pattern: wallets catch it"
+  }
+ },
+ "6": {
+  "type": "compare",
+  "left": {
+   "head": "Keccak-256 · Ethereum",
+   "big": "0x01",
+   "items": [
+    "Original Keccak padding",
+    "Solidity's keccak256()"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "SHA3-256 · FIPS 202",
+   "big": "0x06",
+   "items": [
+    "Same permutation, new padding",
+    "Same input → different hash"
+   ]
+  },
+  "note": {
+   "k": "Calling it SHA-3 is wrong",
+   "v": "Mixing them breaks signatures and addresses"
+  }
+ },
+ "7": {
+  "type": "bars",
+  "head": "Units, in wei (log scale)",
+  "log": true,
+  "items": [
+   {
+    "label": "wei",
+    "value": 1,
+    "display": "1"
+   },
+   {
+    "label": "gwei",
+    "value": 1000000000.0,
+    "display": "10^9 · gas prices",
+    "hl": true
+   },
+   {
+    "label": "szabo",
+    "value": 1000000000000.0,
+    "display": "10^12"
+   },
+   {
+    "label": "finney",
+    "value": 1000000000000000.0,
+    "display": "10^15"
+   },
+   {
+    "label": "ETH",
+    "value": 1e+18,
+    "display": "10^18"
+   }
+  ],
+  "note": {
+   "k": "Protocol",
+   "v": "Only knows wei: integers, no rounding errors"
+  }
+ },
+ "8": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Signed tx",
+    "label": "Signature (v, r, s)",
+    "sub": "no 'from' field"
+   },
+   {
+    "k": "Recover",
+    "label": "Public key"
+   },
+   {
+    "k": "Derive",
+    "label": "Sender address",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Can't be faked",
+   "v": "Whoever signed is the sender · ecrecover at 0x01"
+  }
+ },
+ "9": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "NONCE 41",
+    "label": "Sent",
+    "dim": true
+   },
+   {
+    "k": "NONCE 42",
+    "label": "Pending · low fee",
+    "alt": true
+   },
+   {
+    "k": "NONCE 42",
+    "label": "Same nonce, higher fee",
+    "sub": "speeds up or cancels",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Exact nonce required",
+   "v": "Strict order, no replay of old txs"
+  }
+ },
+ "10": {
+  "type": "split",
+  "src": {
+   "k": "EIP-155 · Nov 2016",
+   "label": "Signed with chain ID 1",
+   "lines": [
+    "v = chainId × 2 + 35/36"
+   ],
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Ethereum mainnet",
+    "label": "Valid",
+    "hl": true
+   },
+   {
+    "k": "Ethereum Classic",
+    "label": "Invalid",
+    "bad": true
+   },
+   {
+    "k": "Testnet",
+    "label": "Invalid",
+    "bad": true
+   }
+  ]
+ },
+ "11": {
+  "type": "compare",
+  "left": {
+   "head": "Low s · accepted",
+   "big": "(r, s)",
+   "items": [
+    "s ≤ secp256k1n / 2"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "High twin · rejected",
+   "big": "(r, n − s)",
+   "items": [
+    "Also a valid ECDSA signature",
+    "EIP-2 refuses it"
+   ]
+  },
+  "note": {
+   "k": "Homestead, 2016",
+   "v": "No tweaking a signature to change the tx hash"
+  }
+ },
+ "12": {
+  "type": "formula",
+  "k": "Transaction cost",
+  "expr": "gas used × gas price",
+  "terms": [
+   {
+    "k": "Plain transfer",
+    "v": "21,000 gas intrinsic"
+   },
+   {
+    "k": "Contract call",
+    "v": "more, by what it does"
+   },
+   {
+    "k": "Out of gas",
+    "v": "changes reverted, gas still paid"
+   }
+  ]
+ },
+ "13": {
+  "type": "bars",
+  "head": "Block gas limit, voted by proposers",
+  "items": [
+   {
+    "label": "April 2025",
+    "value": 36,
+    "display": "36M gas"
+   },
+   {
+    "label": "EIP-7935 default, before Fusaka",
+    "value": 60,
+    "display": "60M gas",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Per block",
+   "v": "Moves < 1/1024 of the parent's limit · no hard fork"
+  }
+ },
+ "14": {
+  "type": "bars",
+  "head": "Frontier, July 30, 2015",
+  "items": [
+   {
+    "label": "Block gas limit",
+    "value": 5000,
+    "display": "5,000 gas",
+    "alt": true
+   },
+   {
+    "label": "One transfer needs",
+    "value": 21000,
+    "display": "21,000 gas"
+   }
+  ],
+  "note": {
+   "k": "Block 200,000 · Sep 7, 2015",
+   "v": "\"Thawing\": limit lifted, default price 51 gwei"
+  }
+ },
+ "15": {
+  "type": "split",
+  "src": {
+   "k": "EIP-1559 · London",
+   "label": "Transaction fee",
+   "sub": "Aug 5, 2021"
+  },
+  "to": [
+   {
+    "k": "Base fee",
+    "label": "Burned 🔥",
+    "sub": "adjusts by up to ±12.5% per block: up if the parent used more gas than the target, down if less",
+    "hl": true
+   },
+   {
+    "k": "Tip",
+    "label": "Block producer"
+   }
+  ]
+ },
+ "16": {
+  "type": "segments",
+  "head": "maxFeePerGas",
+  "total": "set generously",
+  "items": [
+   {
+    "label": "Base fee · burned",
+    "value": 50,
+    "display": "burned",
+    "hl": true
+   },
+   {
+    "label": "Tip · proposer",
+    "value": 15,
+    "display": "min(tip, max − base)"
+   },
+   {
+    "label": "Margin · never charged",
+    "value": 35,
+    "display": "kept",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Price per gas",
+   "v": "base fee + min(tip, maxFee − base fee)"
+  }
+ },
+ "17": {
+  "type": "gauge",
+  "pct": 50,
+  "mark": 50,
+  "big": "50%",
+  "label": "gas target = half the gas limit",
+  "side": [
+   {
+    "k": "Full block",
+    "label": "Base fee +12.5%"
+   },
+   {
+    "k": "Empty block",
+    "label": "Base fee −12.5%"
+   },
+   {
+    "k": "Update",
+    "label": "∝ (used − target) / target / 8",
+    "hl": true
+   }
+  ]
+ },
+ "18": {
+  "type": "table",
+  "head": [
+   "Type byte",
+   "Format",
+   "EIP"
+  ],
+  "hl_col": 0,
+  "rows": [
+   [
+    "0",
+    "Legacy",
+    "—"
+   ],
+   [
+    "1",
+    "Access list",
+    "2930"
+   ],
+   [
+    "2",
+    "Fee market",
+    "1559"
+   ],
+   [
+    "3",
+    "Blob",
+    "4844"
+   ],
+   [
+    "4",
+    "Set-code",
+    "7702"
+   ]
+  ],
+  "note": {
+   "k": "EIP-2718 · Berlin",
+   "v": "TransactionType ‖ payload"
+  }
+ },
+ "19": {
+  "type": "fields",
+  "struct": {
+   "name": "Type-1 tx · accessList",
+   "lines": [
+    {
+     "key": "address",
+     "val": "2,400 gas up front",
+     "hl": true
+    },
+    {
+     "key": "storage key",
+     "val": "1,900 gas up front",
+     "hl": true
+    }
+   ]
+  },
+  "side": [
+   {
+    "k": "During execution",
+    "label": "Listed items are warm",
+    "sub": "later access at the cheap warm price",
+    "hl": true
+   }
+  ]
+ },
+ "20": {
+  "type": "bars",
+  "head": "Gas per access (EIP-2929)",
+  "items": [
+   {
+    "label": "Cold account",
+    "value": 2600,
+    "display": "2,600",
+    "alt": true
+   },
+   {
+    "label": "Cold SLOAD",
+    "value": 2100,
+    "display": "2,100",
+    "alt": true
+   },
+   {
+    "label": "Warm access",
+    "value": 100,
+    "display": "100",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Why",
+   "v": "DoS attacks abused cheap reads that hit disk"
+  }
+ },
+ "21": {
+  "type": "bars",
+  "head": "Calldata gas per byte",
+  "items": [
+   {
+    "label": "Non-zero · before",
+    "value": 68,
+    "display": "68"
+   },
+   {
+    "label": "Non-zero · Istanbul",
+    "value": 16,
+    "display": "16",
+    "hl": true
+   },
+   {
+    "label": "Zero byte",
+    "value": 4,
+    "display": "4"
+   }
+  ],
+  "note": {
+   "k": "EIP-2028 · Dec 2019",
+   "v": "Rollups posting data to L1 got much cheaper"
+  }
+ },
+ "22": {
+  "type": "compare",
+  "left": {
+   "head": "Normal calldata price",
+   "big": "4 / 16",
+   "items": [
+    "gas per zero / non-zero byte"
+   ]
+  },
+  "right": {
+   "head": "EIP-7623 floor",
+   "big": "10 / 40",
+   "items": [
+    "When little gas goes to execution",
+    "Data-heavy txs pay more"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Pectra, May 2025",
+   "v": "Caps worst-case block size, pushes bulk data to blobs"
+  }
+ },
+ "23": {
+  "type": "segments",
+  "head": "One block (60M gas example)",
+  "total": "EIP-7825 · Fusaka",
+  "items": [
+   {
+    "label": "tx ≤ 2^24",
+    "value": 16.8,
+    "display": "16,777,216 gas max",
+    "hl": true
+   },
+   {
+    "label": "other txs",
+    "value": 43.2,
+    "display": "the rest"
+   }
+  ],
+  "note": {
+   "k": "No single tx fills a block",
+   "v": "Bounds validation time, helps parallel execution"
+  }
+ },
+ "24": {
+  "type": "stack",
+  "head": "EVM stack · 256-bit words",
+  "w": 460,
+  "layers": [
+   {
+    "label": "0x…ff",
+    "r": "top"
+   },
+   {
+    "label": "0x…2a"
+   },
+   {
+    "label": "…"
+   },
+   {
+    "label": "max depth 1024",
+    "dim": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Deterministic",
+    "label": "Every node replays every tx"
+   },
+   {
+    "k": "Must match",
+    "label": "Same state root, or block rejected",
+    "hl": true
+   }
+  ]
+ },
+ "25": {
+  "type": "bars",
+  "head": "Gas per storage operation",
+  "items": [
+   {
+    "label": "SSTORE 0 → non-zero",
+    "value": 20000,
+    "display": "20,000 (+2,100 if cold)",
+    "hl": true
+   },
+   {
+    "label": "Warm SLOAD",
+    "value": 100,
+    "display": "100"
+   }
+  ],
+  "note": {
+   "k": "Gas optimization",
+   "v": "Mostly: write less storage"
+  }
+ },
+ "26": {
+  "type": "formula",
+  "k": "Memory expansion cost",
+  "expr": "3·w + w² ÷ 512",
+  "terms": [
+   {
+    "k": "w",
+    "v": "32-byte words"
+   },
+   {
+    "k": "few KB",
+    "v": "cheap"
+   },
+   {
+    "k": "many MB",
+    "v": "prohibitive (quadratic)"
+   }
+  ],
+  "foot": "Memory lives only for one call and is wiped afterwards"
+ },
+ "27": {
+  "type": "table",
+  "head": [
+   "Kind",
+   "Lives",
+   "Cost"
+  ],
+  "hl_col": 0,
+  "rows": [
+   [
+    "Memory",
+    "one call",
+    "cheap, grows"
+   ],
+   [
+    "**Transient** (TSTORE/TLOAD)",
+    "one transaction",
+    "100 gas"
+   ],
+   [
+    "Storage (SSTORE)",
+    "forever",
+    "20,000+ gas"
+   ]
+  ],
+  "note": {
+   "k": "EIP-1153 · Dencun",
+   "v": "Reentrancy locks, single-tx approvals"
+  }
+ },
+ "28": {
+  "type": "compare",
+  "left": {
+   "head": "GasToken trick",
+   "items": [
+    "Store data when gas is cheap",
+    "Clear it when gas is expensive",
+    "Pocket the refund"
+   ]
+  },
+  "right": {
+   "head": "EIP-3529 · London",
+   "items": [
+    "SELFDESTRUCT refund removed",
+    "SSTORE clear refund lowered",
+    "Refund cap: gas_used/5 (was /2)"
+   ],
+   "hl": true
+  },
+  "vs": "→"
+ },
+ "29": {
+  "type": "bars",
+  "head": "Gas left at each call depth (63/64 rule)",
+  "items": [
+   {
+    "label": "Depth 0",
+    "value": 100,
+    "display": "100%"
+   },
+   {
+    "label": "Depth 1",
+    "value": 98.4,
+    "display": "98.4%"
+   },
+   {
+    "label": "Depth 10",
+    "value": 85.4,
+    "display": "85%"
+   },
+   {
+    "label": "Depth 100",
+    "value": 20.7,
+    "display": "21%",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "EIP-150 · Oct 2016",
+   "v": "The 1024-depth attack became impractical"
+  }
+ },
+ "30": {
+  "type": "compare",
+  "left": {
+   "head": "Before · out of gas / invalid op",
+   "items": [
+    "Abort burns all the gas",
+    "No reason given"
+   ]
+  },
+  "right": {
+   "head": "REVERT · EIP-140",
+   "items": [
+    "State rolled back",
+    "Remaining gas refunded",
+    "Returns an error reason"
+   ],
+   "hl": true
+  },
+  "vs": "→"
+ },
+ "31": {
+  "type": "checklist",
+  "head": "Inside a STATICCALL",
+  "checks": [
+   {
+    "text": "Read state, compute, return",
+    "sub": "view / pure functions"
+   },
+   {
+    "text": "SSTORE, LOG, CREATE",
+    "ok": false
+   },
+   {
+    "text": "Value transfer, SELFDESTRUCT",
+    "ok": false,
+    "sub": "any state change → call fails"
+   }
+  ],
+  "side": [
+   {
+    "k": "EIP-214 · Byzantium",
+    "label": "Query a price safely",
+    "sub": "the callee can't modify anything",
+    "hl": true
+   }
+  ]
+ },
+ "32": {
+  "type": "split",
+  "src": {
+   "k": "Proxy (caller)",
+   "label": "DELEGATECALL",
+   "lines": [
+    "storage: proxy's",
+    "msg.sender: unchanged"
+   ],
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Logic contract",
+    "label": "Only its code is borrowed"
+   },
+   {
+    "k": "Upgrade",
+    "label": "Swap logic, keep the data",
+    "sub": "EIP-1967 proxies"
+   }
+  ]
+ },
+ "33": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Shared library left uninitialized",
+    "alt": true
+   },
+   {
+    "label": "A user calls initWallet → owner"
+   },
+   {
+    "label": "Then kill() → SELFDESTRUCT",
+    "bad": true,
+    "alt": true
+   },
+   {
+    "label": "587 wallets relied on it via DELEGATECALL",
+    "sub": "frozen",
+    "hl": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Nov 6, 2017 · still stuck",
+    "label": "513,774.16 ETH",
+    "hl": true
+   }
+  ]
+ },
+ "34": {
+  "type": "big",
+  "k": "Max deployed code (EIP-170)",
+  "big": "24,576 B",
+  "label": "0x6000 ≈ 24 KB · Nov 2016",
+  "side": [
+   {
+    "k": "Why",
+    "label": "Bounds the DoS cost of loading code"
+   },
+   {
+    "k": "So big protocols",
+    "label": "Split logic",
+    "sub": "libraries, proxies, diamond pattern",
+    "hl": true
+   }
+  ]
+ },
+ "35": {
+  "type": "bars",
+  "head": "Code size limits",
+  "items": [
+   {
+    "label": "Initcode · EIP-3860",
+    "value": 49152,
+    "display": "49,152 bytes",
+    "hl": true
+   },
+   {
+    "label": "Deployed code · EIP-170",
+    "value": 24576,
+    "display": "24,576 bytes"
+   }
+  ],
+  "note": {
+   "k": "Plus 2 gas per 32-byte word",
+   "v": "Pays nodes for jump-destination analysis"
+  }
+ },
+ "36": {
+  "type": "split",
+  "src": {
+   "k": "New contract code",
+   "label": "Starts with 0xEF?",
+   "sub": "EIP-3541 · London"
+  },
+  "to": [
+   {
+    "k": "Rejected",
+    "label": "Prefix reserved",
+    "sub": "originally for EOF",
+    "alt": true
+   },
+   {
+    "k": "Later used by",
+    "label": "EIP-7702 designators",
+    "sub": "0xef0100…",
+    "hl": true
+   }
+  ]
+ },
+ "37": {
+  "type": "hash",
+  "fn": "Keccak-256",
+  "fn_k": "of RLP",
+  "inputs": [
+   {
+    "label": "sender"
+   },
+   {
+    "label": "nonce",
+    "sub": "tx count, or contracts created",
+    "hl": true
+   }
+  ],
+  "out": {
+   "k": "Last 20 bytes",
+   "label": "CREATE address",
+   "sub": "known before it exists, but depends on deployment order"
+  }
+ },
+ "38": {
+  "type": "hash",
+  "fn": "Keccak-256",
+  "fn_k": "CREATE2",
+  "inputs": [
+   {
+    "label": "0xff"
+   },
+   {
+    "label": "sender"
+   },
+   {
+    "label": "salt",
+    "hl": true
+   },
+   {
+    "label": "keccak256(init_code)"
+   }
+  ],
+  "out": {
+   "k": "No nonce involved",
+   "label": "Address known in advance",
+   "sub": "counterfactual wallets, same address on many chains",
+   "hl": true
+  }
+ },
+ "39": {
+  "type": "split",
+  "src": {
+   "k": "EIP-6780 · Dencun",
+   "label": "SELFDESTRUCT called"
+  },
+  "to": [
+   {
+    "k": "Same tx that created it",
+    "label": "Code + storage deleted"
+   },
+   {
+    "k": "Any later tx",
+    "label": "Only sends the ETH",
+    "sub": "code stays",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Ended",
+   "v": "Metamorphic contracts (SELFDESTRUCT + CREATE2)"
+  }
+ },
+ "40": {
+  "type": "hash",
+  "fn": "Keccak-256",
+  "fn_k": "first 4 bytes",
+  "inputs": [
+   {
+    "label": "transfer(address,uint256)"
+   }
+  ],
+  "out": {
+   "k": "Selector",
+   "label": "0xa9059cbb",
+   "sub": "then args in 32-byte ABI words",
+   "hl": true
+  },
+  "note": {
+   "k": "Only 32 bits",
+   "v": "Two signatures can share a selector"
+  }
+ },
+ "41": {
+  "type": "fields",
+  "struct": {
+   "name": "Log in the receipt",
+   "lines": [
+    {
+     "key": "topic 0",
+     "val": "keccak(event signature)",
+     "hl": true
+    },
+    [
+     "topic 1–3",
+     "indexed 32-byte values"
+    ],
+    [
+     "data",
+     "the rest"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "Header",
+    "label": "2048-bit logs bloom",
+    "sub": "quick search"
+   },
+   {
+    "k": "Readers",
+    "label": "Wallets, explorers",
+    "hl": true
+   },
+   {
+    "k": "Not",
+    "label": "Contracts can't read logs",
+    "alt": true
+   }
+  ]
+ },
+ "42": {
+  "type": "table",
+  "cols": "0.7fr 1.3fr 0.7fr 1.3fr",
+  "head": [
+   "Addr",
+   "Precompile",
+   "Addr",
+   "Precompile"
+  ],
+  "rows": [
+   [
+    "0x01",
+    "ecrecover",
+    "0x06–08",
+    "BN254"
+   ],
+   [
+    "0x02",
+    "SHA-256",
+    "0x09",
+    "BLAKE2f"
+   ],
+   [
+    "0x03",
+    "RIPEMD-160",
+    "0x0a",
+    "KZG point eval"
+   ],
+   [
+    "0x04",
+    "identity",
+    "0x0b–11",
+    "BLS12-381"
+   ],
+   [
+    "0x05",
+    "modexp",
+    "0x100",
+    "secp256r1"
+   ]
+  ]
+ },
+ "43": {
+  "type": "split",
+  "src": {
+   "k": "Byzantium · Oct 2017",
+   "label": "BN254 (alt_bn128)",
+   "sub": "0x06–0x08"
+  },
+  "to": [
+   {
+    "k": "EIP-196",
+    "label": "Point add + scalar mul"
+   },
+   {
+    "k": "EIP-197",
+    "label": "Pairing check"
+   },
+   {
+    "k": "Together",
+    "label": "Groth16 zk-SNARKs on-chain",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Later",
+   "v": "Istanbul cut their gas cost (EIP-1108)"
+  }
+ },
+ "44": {
+  "type": "bars",
+  "head": "Security of pairing precompiles",
+  "items": [
+   {
+    "label": "BLS12-381 · EIP-2537",
+    "value": 120,
+    "display": "120+ bits",
+    "hl": true
+   },
+   {
+    "label": "BN254 · older",
+    "value": 80,
+    "display": "80 bits"
+   }
+  ],
+  "note": {
+   "k": "Validators' curve",
+   "v": "Contracts verify consensus signatures cheaply"
+  }
+ },
+ "45": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Passkey / secure chip",
+    "label": "P-256 signature",
+    "sub": "FIDO2, Secure Enclave, Keystore"
+   },
+   {
+    "k": "EIP-7951 · Fusaka",
+    "label": "secp256r1 precompile",
+    "hl": true
+   },
+   {
+    "k": "Smart wallet",
+    "label": "Verified cheaply"
+   }
+  ],
+  "note": {
+   "k": "A step toward",
+   "v": "Wallets unlocked with Face ID"
+  }
+ },
+ "46": {
+  "type": "compare",
+  "left": {
+   "head": "PUSH0 · EIP-3855",
+   "big": "2 gas",
+   "items": [
+    "1 byte",
+    "Solidity default since 0.8.20"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "PUSH1 0x00 · before",
+   "big": "3 gas",
+   "items": [
+    "2 bytes",
+    "or RETURNDATASIZE tricks"
+   ]
+  }
+ },
+ "47": {
+  "type": "fields",
+  "struct": {
+   "name": "CLZ · EIP-7939",
+   "lines": [
+    [
+     "CLZ(0x80…00)",
+     "0"
+    ],
+    [
+     "CLZ(0x00…01)",
+     "255"
+    ],
+    {
+     "key": "CLZ(0)",
+     "val": "256",
+     "hl": true
+    }
+   ]
+  },
+  "side": [
+   {
+    "k": "Before",
+    "label": "Bit-by-bit loops or tricks",
+    "alt": true
+   },
+   {
+    "k": "Speeds up",
+    "label": "log2, sqrt, fixed-point, compression",
+    "hl": true
+   }
+  ]
+ },
+ "48": {
+  "type": "bars",
+  "head": "Block hashes a contract can reach",
+  "items": [
+   {
+    "label": "BLOCKHASH opcode",
+    "value": 256,
+    "display": "256 recent"
+   },
+   {
+    "label": "EIP-2935 system contract",
+    "value": 8191,
+    "display": "8,191",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Pectra",
+   "v": "Prove facts against older blocks"
+  }
+ },
+ "49": {
+  "type": "split",
+  "src": {
+   "k": "0x44 · PREVRANDAO",
+   "label": "Beacon RANDAO mix",
+   "sub": "was DIFFICULTY (EIP-4399)"
+  },
+  "to": [
+   {
+    "k": "Proposer option 1",
+    "label": "Publish the block"
+   },
+   {
+    "k": "Proposer option 2",
+    "label": "Skip it",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "≈ 1 bit of influence",
+   "v": "Not safe alone for high-value lotteries"
+  }
+ },
+ "50": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Each block",
+    "label": "Parent beacon root",
+    "sub": "stored by EIP-4788"
+   },
+   {
+    "k": "System contract",
+    "label": "Ring buffer · 8,191"
+   },
+   {
+    "k": "Contract",
+    "label": "Verify Merkle proofs",
+    "sub": "balances, withdrawals, status",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Staking apps",
+   "v": "Check validator data without an oracle"
+  }
+ },
+ "51": {
+  "type": "stack",
+  "head": "Block header commits to",
+  "w": 460,
+  "layers": [
+   {
+    "label": "stateRoot",
+    "r": "32 bytes",
+    "hl": true
+   },
+   {
+    "label": "transactionsRoot"
+   },
+   {
+    "label": "receiptsRoot"
+   }
+  ],
+  "side": [
+   {
+    "k": "Merkle Patricia Trie",
+    "label": "Keyed by keccak256(address)"
+   },
+   {
+    "k": "Any change",
+    "label": "Whole fingerprint changes"
+   },
+   {
+    "k": "Merkle proof",
+    "label": "Any account vs a header",
+    "hl": true
+   }
+  ]
+ },
+ "52": {
+  "type": "segments",
+  "head": "RLP · first byte range",
+  "total": "only strings and lists",
+  "items": [
+   {
+    "label": "0x00–0x7f · single byte",
+    "value": 128
+   },
+   {
+    "label": "0x80–0xbf · string",
+    "value": 64,
+    "hl": true
+   },
+   {
+    "label": "0xc0–0xff · list",
+    "value": 64,
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Consensus layer",
+   "v": "Uses a different format: SSZ"
+  }
+ },
+ "53": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "JUNE 2016",
+    "label": "The DAO drained",
+    "sub": "reentrancy · ≈ 3.6M ETH",
+    "bad": true
+   },
+   {
+    "k": "BLOCK 1,920,000",
+    "label": "DAO fork",
+    "sub": "funds → withdraw contract",
+    "hl": true
+   },
+   {
+    "k": "AFTER",
+    "label": "Ethereum"
+   }
+  ],
+  "branch": {
+   "at": 1,
+   "blocks": [
+    {
+     "k": "OLD RULES",
+     "label": "Ethereum Classic",
+     "sub": "rejected rewriting history"
+    }
+   ]
+  }
+ },
+ "54": {
+  "type": "timeline",
+  "w": 200,
+  "events": [
+   {
+    "t": "Byzantium",
+    "label": "EIP-649"
+   },
+   {
+    "t": "Constantinople",
+    "label": "EIP-1234"
+   },
+   {
+    "t": "Muir Glacier",
+    "label": "EIP-2384"
+   },
+   {
+    "t": "London",
+    "label": "EIP-3554"
+   },
+   {
+    "t": "Arrow Glacier",
+    "label": "EIP-4345"
+   },
+   {
+    "t": "Gray Glacier",
+    "label": "EIP-5133"
+   }
+  ],
+  "note": {
+   "k": "Each delayed the difficulty bomb",
+   "v": "Until the Merge made it irrelevant"
+  }
+ },
+ "55": {
+  "type": "split",
+  "src": {
+   "k": "Ethash",
+   "label": "Each hash",
+   "sub": "reads pseudo-random pages"
+  },
+  "to": [
+   {
+    "k": "Multi-GB",
+    "label": "The DAG",
+    "sub": "grew every 30,000-block epoch",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Bottleneck: memory bandwidth",
+   "v": "Ordinary GPUs could compete"
+  }
+ },
+ "56": {
+  "type": "bars",
+  "head": "PoW block reward",
+  "items": [
+   {
+    "label": "Genesis",
+    "value": 5,
+    "display": "5 ETH"
+   },
+   {
+    "label": "Byzantium · Oct 2017",
+    "value": 3,
+    "display": "3 ETH"
+   },
+   {
+    "label": "Constantinople · Feb 2019",
+    "value": 2,
+    "display": "2 ETH"
+   },
+   {
+    "label": "Merge · Sep 2022",
+    "value": 0,
+    "display": "mining stopped",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Since",
+   "v": "Rewards go to beacon chain validators"
+  }
+ },
+ "57": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "BLOCK N",
+    "label": "Main chain"
+   },
+   {
+    "k": "BLOCK N+1",
+    "label": "Main chain"
+   },
+   {
+    "k": "BLOCK N+2",
+    "label": "References the uncle",
+    "sub": "within 6 generations",
+    "hl": true
+   }
+  ],
+  "branch": {
+   "at": 0,
+   "blocks": [
+    {
+     "k": "OMMER",
+     "label": "Lost the race, still paid"
+    }
+   ]
+  },
+  "note": {
+   "k": "Proof-of-stake",
+   "v": "No more uncles: ommersHash is a constant"
+  }
+ },
+ "58": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "Dec 1, 2020",
+    "label": "Beacon Chain launch",
+    "sub": "16,384 deposits of 32 ETH",
+    "hl": true,
+    "at": 0.12
+   },
+   {
+    "t": "Sep 2022",
+    "label": "The Merge",
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "≈ 2 years in parallel with PoW"
+  ]
+ },
+ "59": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "32 ETH",
+    "label": "Deposit"
+   },
+   {
+    "k": "0x00000000219ab5…",
+    "label": "Deposit contract",
+    "sub": "block 11,052,984 · Oct 14, 2020",
+    "hl": true
+   },
+   {
+    "k": "Consensus layer",
+    "label": "New validator"
+   }
+  ],
+  "note": {
+   "k": "Inside",
+   "v": "Incremental Merkle tree of deposits"
+  }
+ },
+ "60": {
+  "type": "gauge",
+  "pct": 100,
+  "big": "TTD",
+  "label": "58,750,000,000,000,000,000,000",
+  "side": [
+   {
+    "k": "Trigger",
+    "label": "First PoW block past the TTD",
+    "sub": "became the last PoW block",
+    "hl": true
+   },
+   {
+    "k": "Not a height",
+    "label": "Height could be gamed",
+    "sub": "a minority fork could reach it",
+    "alt": true
+   }
+  ]
+ },
+ "61": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "PROOF OF WORK",
+    "label": "…last PoW blocks"
+   },
+   {
+    "k": "BLOCK 15,537,394",
+    "label": "First PoS execution block",
+    "sub": "Sep 15, 2022",
+    "hl": true
+   },
+   {
+    "k": "PROOF OF STAKE",
+    "label": "Chain never stopped"
+   }
+  ],
+  "note": {
+   "k": "EIP-3675 + Engine API",
+   "v": "Consensus client now drives the execution client"
+  }
+ },
+ "62": {
+  "type": "gauge",
+  "pct": 99.98,
+  "big": "−99.98%",
+  "label": "annualized electricity (CCRI, via ethereum.org)",
+  "side": [
+   {
+    "k": "Before",
+    "label": "Warehouses of mining rigs",
+    "alt": true
+   },
+   {
+    "k": "Now",
+    "label": "Ordinary computers",
+    "hl": true
+   },
+   {
+    "k": "Security",
+    "label": "Slashable stake, not electricity"
+   }
+  ]
+ },
+ "63": {
+  "type": "compare",
+  "left": {
+   "head": "Execution client",
+   "items": [
+    "Runs transactions, contracts",
+    "Geth, Nethermind, Besu, Erigon, Reth…"
+   ]
+  },
+  "right": {
+   "head": "Consensus client",
+   "items": [
+    "Agrees on the next block",
+    "Prysm, Lighthouse, Teku, Nimbus, Lodestar, Grandine"
+   ],
+   "hl": true
+  },
+  "vs": "⇄",
+  "note": {
+   "k": "One node = both",
+   "v": "Talking over the authenticated Engine API"
+  }
+ },
+ "64": {
+  "type": "segments",
+  "head": "One epoch = 32 slots × 12 s",
+  "total": "384 s = 6.4 min",
+  "items": [
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1,
+    "alt": true
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1,
+    "hl": true
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   }
+  ],
+  "cards": [
+   {
+    "k": "Each slot",
+    "label": "One proposer, one chance",
+    "hl": true
+   },
+   {
+    "k": "Proposer offline",
+    "label": "Slot stays empty",
+    "sub": "the chain doesn't wait",
+    "alt": true
+   }
+  ],
+  "legend": false
+ },
+ "65": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "EPOCH N",
+    "label": "Finalized",
+    "sub": "next one justified on top",
+    "hl": true
+   },
+   {
+    "k": "EPOCH N+1",
+    "label": "Justified",
+    "sub": "2/3 of stake voted"
+   },
+   {
+    "k": "EPOCH N+2",
+    "label": "Being voted"
+   }
+  ],
+  "note": {
+   "k": "≈ 2 epochs = 12.8 min",
+   "v": "Reverting would destroy a huge amount of staked ETH"
+  }
+ },
+ "66": {
+  "type": "tree",
+  "leaves": [
+   "branch A",
+   "branch B · heavier"
+  ],
+  "hl": [
+   1
+  ],
+  "root": "justified checkpoint",
+  "x1": 380,
+  "side": [
+   {
+    "k": "LMD-GHOST",
+    "label": "At each fork, follow the heaviest branch",
+    "sub": "weight = validators' latest attestations"
+   },
+   {
+    "k": "Gasper",
+    "label": "LMD-GHOST + Casper FFG",
+    "hl": true
+   }
+  ],
+  "inner": "block"
+ },
+ "67": {
+  "type": "fields",
+  "struct": {
+   "name": "Attestation",
+   "lines": [
+    {
+     "key": "head",
+     "val": "→ fork choice",
+     "hl": true
+    },
+    {
+     "key": "source",
+     "val": "→ finality"
+    },
+    {
+     "key": "target",
+     "val": "→ finality"
+    }
+   ]
+  },
+  "side": [
+   {
+    "k": "Every validator",
+    "label": "Once per epoch"
+   },
+   {
+    "k": "Committees",
+    "label": "Spread over 32 slots",
+    "sub": "target size 128 · ≤ 64 per slot",
+    "hl": true
+   }
+  ]
+ },
+ "68": {
+  "type": "network",
+  "nodes": 28,
+  "hl": 1,
+  "x0": 440,
+  "hl_label": "proposer for this slot",
+  "n_label": "validators, weighted by effective balance",
+  "side": [
+   {
+    "k": "RANDAO",
+    "label": "Stake-weighted draw"
+   },
+   {
+    "k": "EIP-7917 · Fusaka",
+    "label": "Lookahead fixed in the beacon state",
+    "sub": "helps preconfirmations",
+    "hl": true
+   }
+  ]
+ },
+ "69": {
+  "type": "hash",
+  "fn": "aggregate",
+  "fn_k": "BLS12-381",
+  "inputs": [
+   {
+    "label": "Validator 1 sig"
+   },
+   {
+    "label": "Validator 2 sig"
+   },
+   {
+    "label": "Validator 3 sig"
+   },
+   {
+    "label": "… whole committee"
+   }
+  ],
+  "out": {
+   "k": "96 bytes",
+   "label": "One signature",
+   "sub": "≈ one check vs the aggregate public key",
+   "hl": true
+  }
+ },
+ "70": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "512 validators",
+    "label": "Sync committee",
+    "sub": "rotates every 256 epochs ≈ 27 h"
+   },
+   {
+    "k": "Each header",
+    "label": "One aggregate BLS sig",
+    "hl": true
+   },
+   {
+    "k": "Light client",
+    "label": "Verifies just that"
+   }
+  ],
+  "note": {
+   "k": "Altair · Oct 2021",
+   "v": "Follow Ethereum without downloading it"
+  }
+ },
+ "71": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Two different blocks, same slot",
+    "alt": true,
+    "n": "1"
+   },
+   {
+    "label": "Double vote",
+    "sub": "two attestations, same target epoch",
+    "alt": true
+   },
+   {
+    "label": "Surround vote",
+    "sub": "one vote's source→target span contains another's",
+    "alt": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Penalty",
+    "label": "Lose part of the stake, forced out",
+    "hl": true
+   }
+  ]
+ },
+ "72": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "slashed",
+    "label": "Initial cut",
+    "sub": "1/4096 of balance (Pectra · was 1/32)",
+    "at": 0.15,
+    "alt": true
+   },
+   {
+    "t": "≈ 18 days later",
+    "label": "Correlation penalty",
+    "sub": "scaled by total stake slashed then",
+    "at": 0.85,
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Alone vs in a crowd",
+   "v": "Lone mistake: little · mass slashing: everything"
+  }
+ },
+ "73": {
+  "type": "segments",
+  "head": "Stake share during the inactivity leak",
+  "total": "need 2/3 to finalize",
+  "items": [
+   {
+    "label": "Active",
+    "value": 60,
+    "display": "< 2/3 → no finality",
+    "hl": true
+   },
+   {
+    "label": "Offline · draining faster and faster",
+    "value": 40,
+    "display": "> 1/3",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "After 4 epochs without finality",
+   "v": "Offline stake shrinks until actives hold 2/3"
+  }
+ },
+ "74": {
+  "type": "formula",
+  "k": "Base reward",
+  "expr": "∝ effective balance ÷ √total stake",
+  "terms": [
+   {
+    "k": "Total issuance",
+    "v": "grows with √(total stake)"
+   },
+   {
+    "k": "Per validator",
+    "v": "yield falls as more ETH stakes"
+   }
+  ]
+ },
+ "75": {
+  "type": "split",
+  "src": {
+   "k": "Shapella · Apr 12, 2023",
+   "label": "Withdrawal sweep",
+   "sub": "no tx, no gas · ≤ 16 per block",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Partial",
+    "label": "Balance above the cap"
+   },
+   {
+    "k": "Full",
+    "label": "Exited validators"
+   }
+  ]
+ },
+ "76": {
+  "type": "bars",
+  "head": "MAX_EFFECTIVE_BALANCE",
+  "items": [
+   {
+    "label": "Before Pectra",
+    "value": 32,
+    "display": "32 ETH"
+   },
+   {
+    "label": "0x02 credentials",
+    "value": 2048,
+    "display": "2048 ETH",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "EIP-7251",
+   "v": "Auto-compounding, consolidation, fewer validators"
+  }
+ },
+ "77": {
+  "type": "compare",
+  "left": {
+   "head": "Before",
+   "items": [
+    "Only the signing key could start an exit"
+   ]
+  },
+  "right": {
+   "head": "EIP-7002 · Pectra",
+   "items": [
+    "Withdrawal credential address triggers exits",
+    "From the execution layer, via system contract",
+    "Good for pools and contracts"
+   ],
+   "hl": true
+  },
+  "vs": "→"
+ },
+ "78": {
+  "type": "bars",
+  "head": "Deposit → processed",
+  "items": [
+   {
+    "label": "eth1 data voting",
+    "value": 720,
+    "display": "≈ 12 hours"
+   },
+   {
+    "label": "EIP-6110 · in-protocol",
+    "value": 13,
+    "display": "≈ 13 minutes",
+    "hl": true
+   }
+  ]
+ },
+ "79": {
+  "type": "compare",
+  "left": {
+   "head": "EIP-7514 · Dencun",
+   "big": "8",
+   "items": [
+    "validators per epoch"
+   ]
+  },
+  "right": {
+   "head": "EIP-7251 · Pectra",
+   "big": "256 ETH",
+   "items": [
+    "per epoch, ETH-based churn",
+    "validators can hold 2048 ETH"
+   ],
+   "hl": true
+  },
+  "vs": "→",
+  "note": {
+   "k": "Churn limit",
+   "v": "Keeps the validator set stable and finality safe"
+  }
+ },
+ "80": {
+  "type": "gauge",
+  "pct": 33,
+  "mark": 33.3,
+  "big": "≤ 33%",
+  "label": "ideal max share for any one client",
+  "side": [
+   {
+    "k": "Bug in a > 1/3 client",
+    "label": "Finality can stop",
+    "alt": true
+   },
+   {
+    "k": "Bug in a 2/3 client",
+    "label": "Invalid chain finalized",
+    "bad": true
+   },
+   {
+    "k": "Diversity",
+    "label": "Others keep the chain going",
+    "hl": true
+   }
+  ]
+ },
+ "81": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Builders",
+    "label": "Build blocks"
+   },
+   {
+    "k": "Relays",
+    "label": "Pick most profitable"
+   },
+   {
+    "k": "Proposer",
+    "label": "Publishes it",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "MEV-Boost · Flashbots",
+   "v": "Proposer-builder separation, outside the protocol"
+  }
+ },
+ "82": {
+  "type": "formula",
+  "k": "One blob · EIP-4844",
+  "expr": "4,096 × 32 B = 128 KiB",
+  "terms": [
+   {
+    "k": "Carried by",
+    "v": "type-3 transactions"
+   },
+   {
+    "k": "EVM sees",
+    "v": "only a versioned hash of the KZG commitment"
+   },
+   {
+    "k": "For",
+    "v": "rollups' cheap data lane"
+   }
+  ]
+ },
+ "83": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "day 0",
+    "label": "Blob published",
+    "at": 0.12
+   },
+   {
+    "t": "4096 epochs ≈ 18 days",
+    "label": "May be pruned",
+    "alt": true,
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "nodes must serve the data"
+  ],
+  "note": {
+   "k": "Forever",
+   "v": "Only the commitment stays in blocks"
+  }
+ },
+ "84": {
+  "type": "compare",
+  "left": {
+   "head": "Blob gas market",
+   "items": [
+    "Own EIP-1559 base fee, burned",
+    "2^17 gas per blob",
+    "Dencun: target 3, max 6"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Regular gas market",
+   "items": [
+    "Separate fee",
+    "Can be expensive while blobs are near zero"
+   ]
+  }
+ },
+ "85": {
+  "type": "big",
+  "k": "KZG ceremony contributions",
+  "big": "141,416",
+  "label": "208 days · Jan 13 – Aug 8, 2023",
+  "side": [
+   {
+    "k": "Trust model",
+    "label": "1-of-N",
+    "sub": "secure if one participant kept its secret",
+    "hl": true
+   }
+  ]
+ },
+ "86": {
+  "type": "bars",
+  "head": "Blobs per block · target / max",
+  "items": [
+   {
+    "label": "Dencun",
+    "value": 3,
+    "display": "3 / 6"
+   },
+   {
+    "label": "Pectra · EIP-7691",
+    "value": 6,
+    "display": "6 / 9",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Then",
+   "v": "The baseline Fusaka built on with BPO forks"
+  }
+ },
+ "87": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Blob data",
+    "label": "Erasure-coded + split"
+   },
+   {
+    "k": "Each node",
+    "label": "Downloads samples",
+    "hl": true
+   },
+   {
+    "k": "Result",
+    "label": "High confidence it was all published"
+   }
+  ],
+  "note": {
+   "k": "PeerDAS · Dec 3, 2025",
+   "v": "Spot-checking a book instead of reading it all"
+  }
+ },
+ "88": {
+  "type": "bars",
+  "head": "Blob target / max",
+  "items": [
+   {
+    "label": "Fusaka activation",
+    "value": 6,
+    "display": "6 / 9"
+   },
+   {
+    "label": "BPO1 · Dec 9, 2025",
+    "value": 10,
+    "display": "10 / 15"
+   },
+   {
+    "label": "BPO2 · Jan 7, 2026",
+    "value": 14,
+    "display": "14 / 21",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "EIP-7892",
+   "v": "Blob-only mini-forks, no full upgrade"
+  }
+ },
+ "89": {
+  "type": "compare",
+  "left": {
+   "head": "Before Fusaka",
+   "items": [
+    "Blob base fee could fall to 1 wei",
+    "Slow to climb back"
+   ]
+  },
+  "right": {
+   "head": "EIP-7918",
+   "items": [
+    "Floor tied to execution base fee",
+    "Blobs pay a minimum"
+   ],
+   "hl": true
+  },
+  "vs": "→"
+ },
+ "90": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Type-4 tx",
+    "label": "EOA signs authorization"
+   },
+   {
+    "k": "Its code",
+    "label": "0xef0100 ‖ address",
+    "hl": true
+   },
+   {
+    "k": "Calls",
+    "label": "Run delegate's code",
+    "sub": "batching, sponsored gas, rules"
+   }
+  ],
+  "note": {
+   "k": "Same address",
+   "v": "Choose the delegate with care"
+  }
+ },
+ "91": {
+  "type": "table",
+  "head": [
+   "Covered in the series",
+   ""
+  ],
+  "cols": "1fr 1fr",
+  "rows": [
+   [
+    "Account model",
+    "Keccak addresses"
+   ],
+   [
+    "Gas + EIP-1559 burn",
+    "256-bit stack EVM"
+   ],
+   [
+    "PoS, 12 s slots",
+    "Casper FFG + LMD-GHOST"
+   ],
+   [
+    "Validators up to 2048 ETH",
+    "Blobs + PeerDAS"
+   ]
+  ],
+  "note": {
+   "k": "Every post cited a source",
+   "v": "One deep dive a day"
+  }
+ }
+}

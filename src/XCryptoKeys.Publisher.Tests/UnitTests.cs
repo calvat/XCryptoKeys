@@ -870,3 +870,16 @@ public class XAuthTests
         Assert.Contains("espaces", d);
     }
 }
+
+public class ClientIdDetectionTests
+{
+    [Fact]
+    public void Oauth2_client_id_is_recognised()
+    {
+        // Base64 de « …:1:ci », la forme des Client ID OAuth 2.0 de X (valeur inventée).
+        string fakeClientId = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes("M1Y5R3BMVy13Qmp:1:ci")).TrimEnd('=');
+        Assert.True(XCheck.LooksLikeOAuth2ClientId(fakeClientId));
+        Assert.Contains("Client ID OAuth 2.0", XCheck.DescribeKey("AccessToken", fakeClientId).Single());
+        Assert.False(XCheck.LooksLikeOAuth2ClientId("1234567890-AbCdEfGhIjKlMnOpQrStUvWxYz0123456789ab"));
+    }
+}

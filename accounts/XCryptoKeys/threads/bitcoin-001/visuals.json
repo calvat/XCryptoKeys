@@ -1,0 +1,1871 @@
+{
+ "1": {
+  "type": "table",
+  "head": [
+   "Consensus rule",
+   "Value"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "Block limit",
+    "4,000,000 weight units"
+   ],
+   [
+    "Difficulty period",
+    "2016 blocks"
+   ],
+   [
+    "Coinbase maturity",
+    "100 blocks"
+   ],
+   [
+    "Block clock",
+    "median of last 11 blocks"
+   ],
+   [
+    "2010 overflow bug",
+    "≈ 184 billion BTC"
+   ]
+  ],
+  "note": {
+   "k": "This series",
+   "v": "One rule a day, from the code and the BIPs"
+  }
+ },
+ "2": {
+  "type": "split",
+  "src": {
+   "k": "Transaction",
+   "label": "Consumes whole UTXOs",
+   "sub": "as inputs, creates new ones as outputs"
+  },
+  "to": [
+   {
+    "k": "New UTXO",
+    "label": "Payment: amount + locking script"
+   },
+   {
+    "k": "New UTXO",
+    "label": "Change back to you"
+   },
+   {
+    "k": "Not an output",
+    "label": "Fee",
+    "sub": "inputs − outputs",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Balance",
+   "v": "Sum of the UTXOs your keys can spend"
+  }
+ },
+ "3": {
+  "type": "formula",
+  "k": "Consensus math is integer-only",
+  "expr": "1 BTC = 100,000,000 sats",
+  "terms": [
+   {
+    "k": "int64",
+    "v": "amounts counted in satoshis"
+   },
+   {
+    "k": "< 1 sat",
+    "v": "cannot be sent"
+   },
+   {
+    "k": "MAX_MONEY",
+    "v": "21M BTC: any output above it is invalid"
+   }
+  ],
+  "foot": "No floating point: every node computes exactly the same amounts"
+ },
+ "4": {
+  "type": "big",
+  "k": "Real maximum supply",
+  "big": "20,999,999.9769",
+  "label": "BTC = 2,099,999,997,690,000 sats",
+  "side": [
+   {
+    "k": "Each halving",
+    "label": "50 BTC shifted right",
+    "sub": "in integer satoshis"
+   },
+   {
+    "k": "Rounding",
+    "label": "Every shift drops sat fractions",
+    "alt": true
+   },
+   {
+    "k": "So",
+    "label": "Slightly below 21 million",
+    "hl": true
+   }
+  ]
+ },
+ "5": {
+  "type": "bars",
+  "head": "Block subsidy per era (210,000 blocks)",
+  "items": [
+   {
+    "label": "from block 0",
+    "value": 50,
+    "display": "50 BTC"
+   },
+   {
+    "label": "210,000",
+    "value": 25,
+    "display": "25"
+   },
+   {
+    "label": "420,000",
+    "value": 12.5,
+    "display": "12.5"
+   },
+   {
+    "label": "630,000",
+    "value": 6.25,
+    "display": "6.25"
+   },
+   {
+    "label": "840,000 · 2024",
+    "value": 3.125,
+    "display": "3.125 BTC",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "50 × COIN >> (height / 210000)",
+   "v": "Tied to block height, never to a date"
+  }
+ },
+ "6": {
+  "type": "timeline",
+  "w": 230,
+  "events": [
+   {
+    "t": "2012-11-28",
+    "label": "Block 210,000"
+   },
+   {
+    "t": "2016-07-09",
+    "label": "Block 420,000"
+   },
+   {
+    "t": "2020-05-11",
+    "label": "Block 630,000"
+   },
+   {
+    "t": "2024-04-20",
+    "label": "Block 840,000",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Blocks came a bit faster than 10 min",
+   "v": "Each halving landed early: dates drift, heights never"
+  }
+ },
+ "7": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "5,000,000,000 sats >> halvings"
+   },
+   {
+    "label": "After 32 halvings: 1 sat"
+   },
+   {
+    "label": "33rd halving, block 6,930,000: 0",
+    "sub": "around the year 2140",
+    "hl": true
+   },
+   {
+    "label": "≥ 64 halvings: return 0 explicitly",
+    "sub": "a 64-bit shift by 64 is undefined in C++",
+    "alt": true
+   }
+  ],
+  "side": [
+   {
+    "k": "After that",
+    "label": "Miners are paid by fees alone",
+    "hl": true
+   }
+  ]
+ },
+ "8": {
+  "type": "fields",
+  "struct": {
+   "name": "Genesis block · chainparams",
+   "lines": [
+    [
+     "time",
+     "1231006505"
+    ],
+    [
+     "",
+     "2009-01-03 18:15:05 UTC"
+    ],
+    [
+     "nonce",
+     "2083236893"
+    ],
+    [
+     "nBits",
+     "0x1d00ffff"
+    ],
+    {
+     "key": "coinbase",
+     "val": "\"The Times 03/Jan/2009",
+     "hl": true
+    },
+    {
+     "key": "",
+     "val": " Chancellor on brink of",
+     "hl": true
+    },
+    {
+     "key": "",
+     "val": " second bailout for banks\"",
+     "hl": true
+    }
+   ]
+  },
+  "w": 560,
+  "side": [
+   {
+    "k": "Proof",
+    "label": "Not mined before that date",
+    "from": 4,
+    "hl": true
+   },
+   {
+    "k": "Hint",
+    "label": "Why Bitcoin was made"
+   }
+  ]
+ },
+ "9": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "BLOCK 0 · GENESIS",
+    "label": "50 BTC coinbase",
+    "sub": "hardcoded, never connected",
+    "bad": true
+   },
+   {
+    "k": "UTXO SET",
+    "label": "No entry for it",
+    "alt": true
+   },
+   {
+    "k": "SPEND ATTEMPT",
+    "label": "Missing input → fails",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Not a script lock",
+   "v": "The coin doesn't exist for nodes: a hard fork to change"
+  }
+ },
+ "10": {
+  "type": "split",
+  "src": {
+   "k": "Block 170 · 2009-01-12",
+   "label": "First non-coinbase tx",
+   "sub": "spends block 9's coinbase output",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "From",
+    "label": "Satoshi Nakamoto"
+   },
+   {
+    "k": "To",
+    "label": "Hal Finney · 10 BTC",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Before it",
+   "v": "Every transaction on chain was a block reward"
+  }
+ },
+ "11": {
+  "type": "segments",
+  "head": "Block header",
+  "total": "80 bytes",
+  "items": [
+   {
+    "label": "version",
+    "value": 4,
+    "display": "4 B"
+   },
+   {
+    "label": "prev block hash",
+    "value": 32,
+    "display": "32 B"
+   },
+   {
+    "label": "merkle root",
+    "value": 32,
+    "display": "32 B",
+    "hl": true
+   },
+   {
+    "label": "time",
+    "value": 4,
+    "display": "4 B"
+   },
+   {
+    "label": "nBits",
+    "value": 4,
+    "display": "4 B"
+   },
+   {
+    "label": "nonce",
+    "value": 4,
+    "display": "4 B"
+   }
+  ],
+  "note": {
+   "k": "Proof of work",
+   "v": "SHA-256(SHA-256(these 80 bytes)), trillions of times"
+  }
+ },
+ "12": {
+  "type": "compare",
+  "left": {
+   "head": "hash ≤ target",
+   "big": "0000…3f9a",
+   "items": [
+    "Valid block"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "hash > target",
+   "big": "0b71…e2c4",
+   "items": [
+    "Try again"
+   ]
+  },
+  "note": {
+   "k": "Difficulty",
+   "v": "difficulty-1 target ÷ current target: just a ratio"
+  }
+ },
+ "13": {
+  "type": "split",
+  "src": {
+   "k": "Nonce: 32 bits",
+   "label": "≈ 4.29 billion values",
+   "sub": "exhausted almost instantly",
+   "alt": true
+  },
+  "to": [
+   {
+    "k": "Coinbase",
+    "label": "extraNonce",
+    "sub": "changes the merkle root"
+   },
+   {
+    "k": "Header",
+    "label": "Timestamp"
+   },
+   {
+    "k": "BIP320",
+    "label": "Version rolling",
+    "sub": "some version bits",
+    "hl": true
+   }
+  ]
+ },
+ "14": {
+  "type": "formula",
+  "k": "Retarget interval",
+  "expr": "14 days ÷ 600 s = 2016 blocks",
+  "terms": [
+   {
+    "k": "nPowTargetSpacing",
+    "v": "600 s, one block per 10 min"
+   },
+   {
+    "k": "nPowTargetTimespan",
+    "v": "14 days"
+   },
+   {
+    "k": "Who decides",
+    "v": "every node recomputes on its own"
+   }
+  ]
+ },
+ "15": {
+  "type": "bars",
+  "head": "Measured timespan is clamped (pow.cpp)",
+  "items": [
+   {
+    "label": "Minimum",
+    "value": 3.5,
+    "display": "¼ × target · max 4× harder",
+    "alt": true
+   },
+   {
+    "label": "Target",
+    "value": 14,
+    "display": "14 days"
+   },
+   {
+    "label": "Maximum",
+    "value": 56,
+    "display": "4 × target · max 4× easier",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Also",
+   "v": "Target capped at powLimit = difficulty 1"
+  }
+ },
+ "16": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "PERIOD N",
+    "label": "Block 0 … 2015",
+    "sub": "measured: 2015 intervals"
+   },
+   {
+    "k": "GAP",
+    "label": "Never measured",
+    "bad": true
+   },
+   {
+    "k": "PERIOD N+1",
+    "label": "Block 0 … 2015",
+    "sub": "measured: 2015 intervals"
+   }
+  ],
+  "note": {
+   "k": "Time warp",
+   "v": "A hashrate majority can backdate and push difficulty down"
+  }
+ },
+ "17": {
+  "type": "compare",
+  "left": {
+   "head": "Testnet4 · BIP94",
+   "big": "600 s",
+   "items": [
+    "First block of a period: at most 600 s before the previous one",
+    "MAX_TIMEWARP, Core 28.0"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Mainnet",
+   "big": "open",
+   "items": [
+    "Old rule, time warp still possible",
+    "Fix in BIP54, not activated"
+   ]
+  }
+ },
+ "18": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "lower bound",
+    "label": "Later than MTP",
+    "sub": "median of last 11 blocks",
+    "at": 0.12
+   },
+   {
+    "t": "node's adjusted time",
+    "label": "Now",
+    "at": 0.5
+   },
+   {
+    "t": "+ 2 hours",
+    "label": "Rejected beyond",
+    "sub": "local check",
+    "alt": true,
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "miner picks any time in here"
+  ],
+  "note": {
+   "k": "So",
+   "v": "Consecutive block times can even go backwards"
+  }
+ },
+ "19": {
+  "type": "gauge",
+  "big": "2106",
+  "label": "nTime overflows 2106-02-07 06:28:15 UTC",
+  "side": [
+   {
+    "k": "Field",
+    "label": "Unsigned 32-bit Unix seconds"
+   },
+   {
+    "k": "Max",
+    "label": "4,294,967,295"
+   },
+   {
+    "k": "Fix",
+    "label": "Needs a consensus change",
+    "sub": "ideally deployed long before 2106",
+    "alt": true
+   }
+  ]
+ },
+ "20": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "block N",
+    "label": "Coinbase created",
+    "at": 0.12
+   },
+   {
+    "t": "block N + 100",
+    "label": "Spendable",
+    "hl": true,
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "COINBASE_MATURITY = 100 blocks ≈ 17 h"
+  ],
+  "note": {
+   "k": "Why",
+   "v": "An orphaned block's coinbase can't spread into later txs"
+  }
+ },
+ "21": {
+  "type": "segments",
+  "head": "Coinbase may claim up to subsidy + fees",
+  "total": "≤ allowed",
+  "items": [
+   {
+    "label": "Claimed by the miner",
+    "value": 85,
+    "display": "paid out",
+    "hl": true
+   },
+   {
+    "label": "Unclaimed",
+    "value": 15,
+    "display": "never created",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Gone for good",
+   "v": "Underclaimed sats are out of supply forever"
+  }
+ },
+ "22": {
+  "type": "timeline",
+  "w": 260,
+  "events": [
+   {
+    "t": "Aug 15, 2010",
+    "label": "Block 74638",
+    "sub": "2 outputs ≈ 92.2B BTC each",
+    "bad": true
+   },
+   {
+    "t": "overflow",
+    "label": "64-bit sum check passes",
+    "alt": true
+   },
+   {
+    "t": "≈ 5 hours",
+    "label": "Fixed version out"
+   },
+   {
+    "t": "later",
+    "label": "Longer chain wins",
+    "sub": "coins vanish",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Minted by the bug",
+   "v": "≈ 184 billion BTC"
+  }
+ },
+ "23": {
+  "type": "table",
+  "head": [
+   "Pair",
+   "Same txid",
+   "Lost"
+  ],
+  "rows": [
+   [
+    "1",
+    "blocks 91,812 & 91,842",
+    "50 BTC"
+   ],
+   [
+    "2",
+    "blocks 91,722 & 91,880",
+    "50 BTC"
+   ]
+  ],
+  "cols": "0.4fr 1.6fr 0.6fr",
+  "note": {
+   "k": "BIP30",
+   "v": "No txid that still has unspent outputs · 91,842 + 91,880 exempt"
+  }
+ },
+ "24": {
+  "type": "fields",
+  "struct": {
+   "name": "Coinbase scriptSig",
+   "lines": [
+    {
+     "key": "starts with",
+     "val": "block height",
+     "hl": true
+    },
+    [
+     "then",
+     "anything (extraNonce…)"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "BIP34 · block 227,931 · 2013",
+    "label": "Every coinbase txid differs",
+    "hl": true,
+    "from": 0
+   },
+   {
+    "k": "Result",
+    "label": "BIP30's duplicates can't recur"
+   }
+  ]
+ },
+ "25": {
+  "type": "timeline",
+  "w": 250,
+  "events": [
+   {
+    "t": "Core 0.14",
+    "label": "Duplicate-input check skipped",
+    "sub": "→ crash",
+    "alt": true
+   },
+   {
+    "t": "0.15 – 0.16.2",
+    "label": "Could inflate supply",
+    "sub": "same coin spent twice in one tx",
+    "bad": true
+   },
+   {
+    "t": "Sept 18, 2018",
+    "label": "Fixed in 0.16.3",
+    "hl": true
+   },
+   {
+    "t": "Sept 20",
+    "label": "Full disclosure"
+   }
+  ],
+  "note": {
+   "k": "CVE-2018-17144",
+   "v": "No exploitation was known"
+  }
+ },
+ "26": {
+  "type": "split",
+  "src": {
+   "k": "March 2013",
+   "label": "One block"
+  },
+  "to": [
+   {
+    "k": "Core 0.8 · LevelDB",
+    "label": "Valid",
+    "hl": true
+   },
+   {
+    "k": "pre-0.8 · Berkeley DB",
+    "label": "Too many DB locks: rejected",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Fix within hours (BIP50)",
+   "v": "Pools downgraded to 0.7, 0.8 nodes reorged onto it"
+  }
+ },
+ "27": {
+  "type": "tree",
+  "leaves": [
+   "tx1",
+   "tx2",
+   "tx3",
+   "tx4",
+   "tx5",
+   "tx6",
+   "tx7",
+   "tx8"
+  ],
+  "hl": [
+   2
+  ],
+  "root": "merkle root → header",
+  "x1": 330,
+  "side": [
+   {
+    "k": "Proof for one tx",
+    "label": "≈ log2(n) hashes",
+    "sub": "≈ 12 for a 4,000-tx block",
+    "hl": true
+   },
+   {
+    "k": "Any tx changed",
+    "label": "Root changes"
+   }
+  ]
+ },
+ "28": {
+  "type": "tree",
+  "leaves": [
+   "tx1",
+   "tx2",
+   "tx3"
+  ],
+  "x1": 360,
+  "root": "same root",
+  "side": [
+   {
+    "k": "Odd level",
+    "label": "Last node paired with itself",
+    "alt": true
+   },
+   {
+    "k": "Attack",
+    "label": "Duplicated txs → same root",
+    "sub": "a valid block could get cached as invalid"
+   }
+  ],
+  "note": {
+   "k": "CVE-2012-2459",
+   "v": "Core now detects this mutation"
+  }
+ },
+ "29": {
+  "type": "formula",
+  "k": "No fee field in a transaction",
+  "expr": "fee = Σ inputs − Σ outputs",
+  "terms": [
+   {
+    "k": "Consensus",
+    "v": "only requires inputs ≥ outputs"
+   },
+   {
+    "k": "Who gets it",
+    "v": "the miner, through the block's coinbase"
+   }
+  ]
+ },
+ "30": {
+  "type": "split",
+  "src": {
+   "k": "Input",
+   "label": "1 BTC coin",
+   "sub": "always spent whole",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Output 1",
+    "label": "0.3 BTC to the payee"
+   },
+   {
+    "k": "Output 2",
+    "label": "Change to a new own address"
+   },
+   {
+    "k": "Forget the change?",
+    "label": "The remainder becomes the fee",
+    "alt": true
+   }
+  ]
+ },
+ "31": {
+  "type": "split",
+  "src": {
+   "k": "nLockTime",
+   "label": "Compare with 500,000,000",
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "below",
+    "label": "Block height"
+   },
+   {
+    "k": "500,000,000 or more",
+    "label": "Unix timestamp",
+    "sub": "threshold = Nov 5, 1985 · BIP113: vs median time past"
+   }
+  ]
+ },
+ "32": {
+  "type": "fields",
+  "struct": {
+   "name": "Locking script",
+   "lines": [
+    {
+     "key": "<expiry>",
+     "val": "date or height",
+     "hl": true
+    },
+    {
+     "key": "OP_CHECKLOCKTIMEVERIFY",
+     "val": "",
+     "hl": true
+    },
+    [
+     "OP_DROP",
+     ""
+    ],
+    [
+     "<pubkey> OP_CHECKSIG",
+     ""
+    ]
+   ]
+  },
+  "w": 560,
+  "side": [
+   {
+    "k": "BIP65 · block 388,381",
+    "label": "Fails unless nLockTime is past",
+    "from": 1,
+    "hl": true
+   },
+   {
+    "k": "Soft fork",
+    "label": "Redefined OP_NOP2"
+   },
+   {
+    "k": "Enables",
+    "label": "Time-locked savings, channels"
+   }
+  ]
+ },
+ "33": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "confirmed",
+    "label": "Coin confirmed",
+    "at": 0.12
+   },
+   {
+    "t": "+ N blocks or N × 512 s",
+    "label": "Spendable",
+    "hl": true,
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "relative lock in nSequence (BIP68)"
+  ],
+  "note": {
+   "k": "CSV · block 419,328",
+   "v": "OP_CHECKSEQUENCEVERIFY: Lightning's safety windows"
+  }
+ },
+ "34": {
+  "type": "stack",
+  "head": "Stack after running the scripts",
+  "w": 420,
+  "layers": [
+   {
+    "label": "TRUE",
+    "r": "top",
+    "hl": true
+   },
+   {
+    "label": "…"
+   },
+   {
+    "label": "…"
+   }
+  ],
+  "side": [
+   {
+    "k": "Valid spend",
+    "label": "scriptSig/witness + scriptPubKey run without error",
+    "sub": "and leave true on top"
+   },
+   {
+    "k": "By design",
+    "label": "No loops, no jumps",
+    "sub": "every script finishes",
+    "hl": true
+   }
+  ]
+ },
+ "35": {
+  "type": "checklist",
+  "head": "Disabled in 2010",
+  "checks": [
+   {
+    "text": "OP_CAT",
+    "ok": false
+   },
+   {
+    "text": "OP_SUBSTR",
+    "ok": false
+   },
+   {
+    "text": "OP_MUL",
+    "ok": false
+   },
+   {
+    "text": "OP_LSHIFT",
+    "ok": false
+   }
+  ],
+  "side": [
+   {
+    "k": "Effect",
+    "label": "Script fails",
+    "sub": "even in an unexecuted branch",
+    "alt": true
+   },
+   {
+    "k": "BIP347",
+    "label": "OP_CAT in tapscript?",
+    "sub": "proposed, not active, debated"
+   }
+  ]
+ },
+ "36": {
+  "type": "table",
+  "head": [
+   "Limit (legacy & SegWit v0)",
+   "Max"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "Script size",
+    "10,000 bytes"
+   ],
+   [
+    "Non-push opcodes",
+    "201"
+   ],
+   [
+    "Stack element",
+    "520 bytes"
+   ],
+   [
+    "Stack items",
+    "1,000"
+   ],
+   [
+    "Keys per CHECKMULTISIG",
+    "20"
+   ]
+  ]
+ },
+ "37": {
+  "type": "stack",
+  "head": "What OP_CHECKMULTISIG pops",
+  "w": 480,
+  "layers": [
+   {
+    "label": "n · pubkeys"
+   },
+   {
+    "label": "m · signatures"
+   },
+   {
+    "label": "Dummy OP_0",
+    "r": "useless",
+    "alt": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Original bug",
+    "label": "Pops one item too many",
+    "from": 2,
+    "alt": true
+   },
+   {
+    "k": "BIP147 · NULLDUMMY",
+    "label": "Dummy must be empty",
+    "sub": "closes a malleability vector",
+    "hl": true
+   }
+  ]
+ },
+ "38": {
+  "type": "split",
+  "src": {
+   "k": "scriptPubKey",
+   "label": "OP_RETURN <data>",
+   "sub": "fails whenever executed"
+  },
+  "to": [
+   {
+    "k": "On chain",
+    "label": "Small data written",
+    "hl": true
+   },
+   {
+    "k": "UTXO set",
+    "label": "Never added",
+    "sub": "provably unspendable",
+    "alt": true
+   }
+  ]
+ },
+ "39": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Sender pays",
+    "label": "Address starting with 3",
+    "sub": "version byte 0x05",
+    "hl": true
+   },
+   {
+    "k": "Output commits to",
+    "label": "HASH160(redeem script)"
+   },
+   {
+    "k": "Spend",
+    "label": "Reveal script + inputs",
+    "sub": "e.g. 2-of-3 multisig"
+   }
+  ],
+  "note": {
+   "k": "BIP16 · April 1, 2012",
+   "v": "Pay a complex wallet with a short address"
+  }
+ },
+ "40": {
+  "type": "table",
+  "head": [
+   "Prefix",
+   "Type",
+   "Encoding"
+  ],
+  "rows": [
+   [
+    "`1…`",
+    "P2PKH",
+    "Base58Check · 0x00"
+   ],
+   [
+    "`3…`",
+    "P2SH",
+    "Base58Check · 0x05"
+   ],
+   [
+    "`bc1q…`",
+    "Witness v0",
+    "bech32 · BIP173"
+   ],
+   [
+    "`bc1p…`",
+    "Taproot · v1",
+    "bech32m · BIP350"
+   ]
+  ],
+  "note": {
+   "k": "Not on chain",
+   "v": "Only the scripts they encode are stored"
+  }
+ },
+ "41": {
+  "type": "compare",
+  "left": {
+   "head": "Base58 alphabet",
+   "big": "58",
+   "items": [
+    "0-9, A-Z, a-z",
+    "Minus 0, O, I and l"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Dropped look-alikes",
+   "big": "0 O I l",
+   "items": [
+    "Can't be confused when copied by hand"
+   ]
+  },
+  "note": {
+   "k": "Base58Check",
+   "v": "+ 4-byte checksum from double SHA-256"
+  }
+ },
+ "42": {
+  "type": "compare",
+  "left": {
+   "head": "bech32m · BIP350",
+   "big": "bc1p…",
+   "items": [
+    "Witness v1+ (Taproot)",
+    "Only the checksum constant changes"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "bech32 · BIP173",
+   "big": "bc1q…",
+   "items": [
+    "Witness v0 keeps it",
+    "Flaw: address ending in p + inserted/deleted q can go undetected"
+   ]
+  }
+ },
+ "43": {
+  "type": "hash",
+  "fn": "SHA-256 → RIPEMD-160",
+  "fn_k": "HASH160",
+  "inputs": [
+   {
+    "label": "Public key"
+   }
+  ],
+  "out": {
+   "k": "On chain · 20 bytes",
+   "label": "Only the hash",
+   "sub": "the full key appears only in the spending input",
+   "hl": true
+  },
+  "note": {
+   "k": "Taproot",
+   "v": "Outputs hold a 32-byte key directly"
+  }
+ },
+ "44": {
+  "type": "formula",
+  "k": "secp256k1",
+  "expr": "y² = x³ + 7",
+  "terms": [
+   {
+    "k": "Field",
+    "v": "256-bit prime"
+   },
+   {
+    "k": "Private key",
+    "v": "an integer below n ≈ 1.158 × 10^77"
+   },
+   {
+    "k": "Public key",
+    "v": "private key × G"
+   }
+  ]
+ },
+ "45": {
+  "type": "timeline",
+  "w": 260,
+  "events": [
+   {
+    "t": "first release",
+    "label": "No size limit"
+   },
+   {
+    "t": "2010",
+    "label": "1,000,000-byte limit added",
+    "sub": "by Satoshi, little explanation"
+   },
+   {
+    "t": "years",
+    "label": "Raise it? A hard fork",
+    "alt": true
+   },
+   {
+    "t": "2017",
+    "label": "SegWit: 4M weight",
+    "sub": "soft fork",
+    "hl": true
+   }
+  ]
+ },
+ "46": {
+  "type": "split",
+  "src": {
+   "k": "SegWit · block 481,824",
+   "label": "Transaction",
+   "sub": "2017-08-24"
+  },
+  "to": [
+   {
+    "k": "Legacy serialization",
+    "label": "Inputs, outputs → txid"
+   },
+   {
+    "k": "Kept aside",
+    "label": "Witness: signatures",
+    "sub": "committed via OP_RETURN in the coinbase",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Result",
+   "v": "Txid malleability fixed, more room per block"
+  }
+ },
+ "47": {
+  "type": "formula",
+  "k": "MAX_BLOCK_WEIGHT = 4,000,000 WU",
+  "expr": "weight = 3 × base + total",
+  "terms": [
+   {
+    "k": "non-witness byte",
+    "v": "4 WU"
+   },
+   {
+    "k": "witness byte",
+    "v": "1 WU: signatures 4× cheaper"
+   },
+   {
+    "k": "vbyte",
+    "v": "weight ÷ 4, used for fee rates"
+   }
+  ]
+ },
+ "48": {
+  "type": "compare",
+  "left": {
+   "head": "Before SegWit",
+   "items": [
+    "Third party flips ECDSA s → n − s",
+    "Same payment, new txid",
+    "Tracking by txid breaks"
+   ]
+  },
+  "right": {
+   "head": "After SegWit",
+   "items": [
+    "Txid excludes witness data",
+    "Unconfirmed tx chains are safe",
+    "Lightning can work"
+   ],
+   "hl": true
+  },
+  "vs": "→"
+ },
+ "49": {
+  "type": "segments",
+  "head": "Block 774,628 · Luxor · Feb 1, 2023",
+  "total": "≈ 3.96 MB",
+  "items": [
+   {
+    "label": "One Taproot witness inscription",
+    "value": 92,
+    "display": "nearly all of it",
+    "hl": true
+   },
+   {
+    "label": "rest",
+    "value": 8,
+    "display": "everything else"
+   }
+  ],
+  "cards": [
+   {
+    "k": "What it was",
+    "label": "A \"Taproot Wizard\" image"
+   },
+   {
+    "k": "Why possible",
+    "label": "Witness data is cheap in weight"
+   }
+  ]
+ },
+ "50": {
+  "type": "fields",
+  "struct": {
+   "name": "Taproot script-path witness",
+   "lines": [
+    {
+     "key": "OP_FALSE",
+     "val": "",
+     "alt": true
+    },
+    {
+     "key": "OP_IF",
+     "val": "never executed",
+     "alt": true
+    },
+    {
+     "key": "  <data…>",
+     "val": "the inscription",
+     "hl": true
+    },
+    {
+     "key": "OP_ENDIF",
+     "val": "",
+     "alt": true
+    }
+   ]
+  },
+  "w": 520,
+  "side": [
+   {
+    "k": "Tapscript",
+    "label": "No 10,000-byte script limit",
+    "from": 2
+   },
+   {
+    "k": "Bounded by",
+    "label": "Block weight only",
+    "sub": "witness bytes are cheap"
+   },
+   {
+    "k": "Status",
+    "label": "Allowed use, not a feature",
+    "hl": true
+   }
+  ]
+ },
+ "51": {
+  "type": "compare",
+  "left": {
+   "head": "Before BIP66",
+   "items": [
+    "Validity depended on OpenSSL's lax parsing",
+    "Could differ across platforms, versions"
+   ]
+  },
+  "right": {
+   "head": "BIP66 · block 363,725",
+   "items": [
+    "Strict DER encoding required",
+    "Every node agrees on what's valid"
+   ],
+   "hl": true
+  },
+  "vs": "→"
+ },
+ "52": {
+  "type": "gauge",
+  "pct": 90,
+  "big": "90%",
+  "label": "Speedy Trial threshold: 1,815 of 2,016 blocks",
+  "side": [
+   {
+    "k": "Activated",
+    "label": "Block 709,632 · 2021-11-14",
+    "hl": true
+   },
+   {
+    "k": "Taproot = 3 BIPs",
+    "label": "BIP340 + 341 + 342",
+    "sub": "Schnorr · Taproot · Tapscript"
+   }
+  ]
+ },
+ "53": {
+  "type": "bars",
+  "head": "Signature size",
+  "items": [
+   {
+    "label": "Schnorr (BIP340)",
+    "value": 64,
+    "display": "64 bytes, fixed",
+    "hl": true
+   },
+   {
+    "label": "DER ECDSA",
+    "value": 72,
+    "display": "up to 72 bytes"
+   }
+  ],
+  "note": {
+   "k": "Linear → MuSig2 (BIP327)",
+   "v": "n-of-n multisig looks like a single-key spend"
+  }
+ },
+ "54": {
+  "type": "tree",
+  "leaves": [
+   "script A",
+   "script B",
+   "script C",
+   "script D"
+  ],
+  "hl": [
+   2
+  ],
+  "root": "merkle root",
+  "x1": 360,
+  "side": [
+   {
+    "k": "Output key",
+    "label": "Internal key tweaked by the merkle root"
+   },
+   {
+    "k": "Key path",
+    "label": "Reveals no script"
+   },
+   {
+    "k": "Script path",
+    "label": "Only the leaf used + merkle proof",
+    "sub": "dashed: the proof · other rules stay hidden",
+    "hl": true
+   }
+  ],
+  "proof": true
+ },
+ "55": {
+  "type": "split",
+  "src": {
+   "k": "Tapscript",
+   "label": "Contains an OP_SUCCESSx",
+   "sub": "80, 98, 126‑129, 131‑134, 137‑138, 141‑142, 149‑153, 187‑254"
+  },
+  "to": [
+   {
+    "k": "Today",
+    "label": "Script is valid"
+   },
+   {
+    "k": "Future soft fork",
+    "label": "Gives it a meaning",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Plus leaf versions",
+   "v": "Room for safe later upgrades"
+  }
+ },
+ "56": {
+  "type": "formula",
+  "k": "Tapscript sigop budget per input",
+  "expr": "50 + witness size",
+  "terms": [
+   {
+    "k": "Each signature check",
+    "v": "costs 50"
+   },
+   {
+    "k": "Dropped",
+    "v": "10,000-byte and 201-opcode limits"
+   },
+   {
+    "k": "So",
+    "v": "the budget grows with the data paid for"
+   }
+  ]
+ },
+ "57": {
+  "type": "compare",
+  "left": {
+   "head": "Soft fork · tightens",
+   "items": [
+    "New blocks still valid to old nodes",
+    "Chain stays one",
+    "P2SH, CLTV, CSV, SegWit, Taproot"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Hard fork · loosens",
+   "items": [
+    "Old nodes reject new blocks",
+    "Chain splits"
+   ]
+  }
+ },
+ "58": {
+  "type": "gauge",
+  "pct": 95,
+  "big": "95%",
+  "label": "1,916 of 2,016 blocks set the bit",
+  "side": [
+   {
+    "k": "BIP9 versionbits",
+    "label": "Signal a bit in the header version"
+   },
+   {
+    "k": "Then",
+    "label": "Lock in, activate one period later",
+    "hl": true
+   },
+   {
+    "k": "Used for",
+    "label": "CSV and SegWit"
+   }
+  ]
+ },
+ "59": {
+  "type": "bars",
+  "head": "Cumulative work · Σ 2^256 / (target + 1)",
+  "items": [
+   {
+    "label": "Chain A · more blocks",
+    "value": 60,
+    "display": "low difficulty",
+    "alt": true
+   },
+   {
+    "label": "Chain B · fewer blocks",
+    "value": 100,
+    "display": "most work: followed",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "\"Longest chain\"",
+   "v": "Really means most cumulative proof of work"
+  }
+ },
+ "60": {
+  "type": "table",
+  "head": [
+   "Attacker hashrate",
+   "Blocks for P < 0.001"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "q = 0.1",
+    "z = 5 (0.0009137)"
+   ],
+   [
+    "q = 0.3",
+    "z = 24"
+   ]
+  ],
+  "note": {
+   "k": "Whitepaper, section 11",
+   "v": "\"6 confirmations\" is a convention, not a rule"
+  }
+ },
+ "61": {
+  "type": "network",
+  "nodes": 26,
+  "hl": 6,
+  "x0": 440,
+  "hl_label": "nodes that saw a given tx",
+  "n_label": "nodes that didn't",
+  "side": [
+   {
+    "k": "Local policy",
+    "label": "Each node, its own mempool"
+   },
+   {
+    "k": "Default",
+    "label": "-maxmempool = 300 MB",
+    "sub": "full: evict lowest feerate"
+   },
+   {
+    "k": "Miners",
+    "label": "Can include any valid tx",
+    "hl": true
+   }
+  ]
+ },
+ "62": {
+  "type": "timeline",
+  "w": 280,
+  "events": [
+   {
+    "t": "stuck",
+    "label": "Low-fee tx",
+    "alt": true,
+    "at": 0.15
+   },
+   {
+    "t": "BIP125",
+    "label": "Opt-in RBF",
+    "sub": "signaled via nSequence",
+    "at": 0.5
+   },
+   {
+    "t": "Core 28.0 · 2024",
+    "label": "Full RBF by default",
+    "sub": "replacement relayed either way",
+    "hl": true,
+    "at": 0.85
+   }
+  ],
+  "note": {
+   "k": "Replace-by-fee",
+   "v": "A higher-fee version replaces the stuck one"
+  }
+ },
+ "63": {
+  "type": "bars",
+  "head": "Weight limits",
+  "items": [
+   {
+    "label": "Consensus block",
+    "value": 4000000,
+    "display": "4,000,000 WU"
+   },
+   {
+    "label": "Standard tx (policy)",
+    "value": 400000,
+    "display": "400,000 WU",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Above it",
+   "v": "Not relayed, but a miner can still include it"
+  }
+ },
+ "64": {
+  "type": "table",
+  "head": [
+   "Output type",
+   "Dust below",
+   "Relayed?"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "P2PKH",
+    "546 sats",
+    "✗"
+   ],
+   [
+    "P2WPKH",
+    "294 sats",
+    "✗"
+   ]
+  ],
+  "note": {
+   "k": "Policy only, not consensus",
+   "v": "Threshold at 3 sat/vB (DUST_RELAY_TX_FEE)"
+  }
+ },
+ "65": {
+  "type": "bars",
+  "head": "Default -minrelaytxfee",
+  "items": [
+   {
+    "label": "Before",
+    "value": 1,
+    "display": "1 sat/vB"
+   },
+   {
+    "label": "Core 29.1 / 30.0 · 2025",
+    "value": 0.1,
+    "display": "0.1 sat/vB",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Unchanged",
+   "v": "Wallet feerates, dust feerate, estimator minimum"
+  }
+ },
+ "66": {
+  "type": "segments",
+  "head": "P2P message header · port 8333",
+  "total": "24 bytes",
+  "items": [
+   {
+    "label": "magic F9 BE B4 D9",
+    "value": 4,
+    "display": "4 B",
+    "hl": true
+   },
+   {
+    "label": "command",
+    "value": 12,
+    "display": "12 B"
+   },
+   {
+    "label": "length",
+    "value": 4,
+    "display": "4 B"
+   },
+   {
+    "label": "checksum",
+    "value": 4,
+    "display": "4 B"
+   }
+  ],
+  "note": {
+   "k": "Magic bytes",
+   "v": "Mainnet traffic can't be mistaken for testnet"
+  }
+ },
+ "67": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Sender",
+    "label": "Header + 6-byte short IDs",
+    "sub": "SipHash, + few prefilled txs",
+    "hl": true
+   },
+   {
+    "k": "Peer",
+    "label": "Rebuilds from own mempool"
+   },
+   {
+    "k": "Only if needed",
+    "label": "Asks for missing txs"
+   }
+  ],
+  "note": {
+   "k": "BIP152 compact blocks",
+   "v": "No resending full transactions"
+  }
+ },
+ "68": {
+  "type": "checklist",
+  "head": "Pruned node (-prune)",
+  "checks": [
+   {
+    "text": "Validates every block"
+   },
+   {
+    "text": "Keeps the UTXO set"
+   },
+   {
+    "text": "Old block and undo files",
+    "ok": false,
+    "sub": "deleted"
+   },
+   {
+    "text": "Serve old blocks to peers",
+    "ok": false
+   }
+  ],
+  "side": [
+   {
+    "k": "Minimum target",
+    "label": "550 MiB"
+   }
+  ]
+ },
+ "69": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Entropy",
+    "label": "128–256 bits + checksum"
+   },
+   {
+    "k": "Words",
+    "label": "12–24 from 2048",
+    "sub": "11 bits each",
+    "hl": true
+   },
+   {
+    "k": "PBKDF2",
+    "label": "Seed"
+   },
+   {
+    "k": "BIP32",
+    "label": "Key tree"
+   }
+  ],
+  "note": {
+   "k": "Wallet convention, not consensus",
+   "v": "Recovery words never touch the chain"
+  }
+ },
+ "70": {
+  "type": "table",
+  "head": [
+   "Sighash",
+   "Signature covers"
+  ],
+  "rows": [
+   [
+    "ALL",
+    "every input and output"
+   ],
+   [
+    "NONE",
+    "inputs, no outputs"
+   ],
+   [
+    "SINGLE",
+    "the output with its index"
+   ],
+   [
+    "+ ANYONECANPAY",
+    "only its own input"
+   ],
+   [
+    "DEFAULT · 0x00",
+    "Taproot: ALL, no extra byte"
+   ]
+  ],
+  "note": {
+   "k": "Taproot",
+   "v": "Signatures stay 64 bytes"
+  }
+ },
+ "71": {
+  "type": "table",
+  "cols": "1fr 1fr",
+  "head": [
+   "Covered in the series",
+   ""
+  ],
+  "rows": [
+   [
+    "UTXOs, no accounts",
+    "≈ 20,999,999.9769 BTC cap"
+   ],
+   [
+    "2016-block retarget, 4× clamp",
+    "MTP of 11 + 2-hour window"
+   ],
+   [
+    "100-block maturity",
+    "2010 overflow bug"
+   ],
+   [
+    "BIP30 / BIP34",
+    "SegWit 4M weight"
+   ],
+   [
+    "Taproot: Schnorr + MAST",
+    "Policy ≠ consensus"
+   ]
+  ],
+  "note": {
+   "k": "Bitcoin is its rules",
+   "v": "Anyone can check them in the code"
+  }
+ }
+}

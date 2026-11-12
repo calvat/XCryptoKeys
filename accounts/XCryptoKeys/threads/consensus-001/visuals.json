@@ -1,0 +1,1590 @@
+{
+ "1": {
+  "type": "network",
+  "nodes": 22,
+  "hl": 15,
+  "bad": 3,
+  "x0": 440,
+  "hl_label": "honest nodes agreeing",
+  "bad_label": "crashed or lying",
+  "n_label": "delayed messages",
+  "side": [
+   {
+    "k": "Goal",
+    "label": "One ordered log of events",
+    "hl": true
+   },
+   {
+    "k": "Despite",
+    "label": "Crashes, liars, network delays"
+   },
+   {
+    "k": "Without",
+    "label": "Any central authority",
+    "alt": true
+   }
+  ]
+ },
+ "2": {
+  "type": "split",
+  "src": {
+   "k": "Traitor general",
+   "label": "Byzantine node",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "To general A",
+    "label": "\"Attack\""
+   },
+   {
+    "k": "To general B",
+    "label": "\"Retreat\"",
+    "alt": true
+   },
+   {
+    "k": "To general C",
+    "label": "Silence",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Lamport, Shostak, Pease, 1982",
+   "v": "BFT: agree despite such nodes"
+  }
+ },
+ "3": {
+  "type": "segments",
+  "head": "n = 3f + 1 = 4 nodes (f = 1), quorums of 2f + 1 = 3",
+  "legend": false,
+  "items": [
+   {
+    "label": "A only",
+    "value": 1
+   },
+   {
+    "label": "in both A and B: 2 nodes",
+    "value": 2,
+    "hl": true
+   },
+   {
+    "label": "B only",
+    "value": 1
+   }
+  ],
+  "cards": [
+   {
+    "k": "Quorum",
+    "label": "2f + 1 = 3 nodes"
+   },
+   {
+    "k": "Two quorums overlap",
+    "label": "In ≥ f + 1 nodes, at least 1 honest",
+    "hl": true
+   },
+   {
+    "k": "Examples",
+    "lines": [
+     "4 nodes: 1 liar",
+     "100 nodes: 33 liars"
+    ]
+   }
+  ],
+  "note": {
+   "k": "So",
+   "v": "Conflicting decisions can't both pass"
+  }
+ },
+ "4": {
+  "type": "compare",
+  "left": {
+   "head": "Crash faults",
+   "big": "2f+1",
+   "items": [
+    "Node just goes silent",
+    "Paxos, Raft: simple majority",
+    "Run many databases"
+   ]
+  },
+  "right": {
+   "head": "Byzantine faults",
+   "big": "3f+1",
+   "items": [
+    "Node can lie",
+    "Needed by open blockchains"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Anyone can join",
+   "v": "So blockchains need Byzantine tolerance"
+  }
+ },
+ "5": {
+  "type": "split",
+  "src": {
+   "k": "FLP, 1985",
+   "label": "No deterministic protocol guarantees termination",
+   "sub": "fully async, even 1 crash",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "Escape 1",
+    "label": "Add randomness"
+   },
+   {
+    "k": "Escape 2",
+    "label": "Assume timing bounds"
+   },
+   {
+    "k": "Escape 3",
+    "label": "Probabilistic finality",
+    "hl": true
+   }
+  ]
+ },
+ "6": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "start",
+    "label": "Network misbehaves",
+    "sub": "delays unbounded",
+    "bad": true,
+    "at": 0.1
+   },
+   {
+    "t": "GST",
+    "label": "Global Stabilization Time",
+    "sub": "unknown in advance",
+    "at": 0.5
+   },
+   {
+    "t": "after GST",
+    "label": "Delays bounded: progress",
+    "hl": true,
+    "at": 0.9
+   }
+  ],
+  "span": [
+   0.1,
+   0.9,
+   "safe at all times"
+  ],
+  "note": {
+   "k": "Dwork, Lynch, Stockmeyer, 1988",
+   "v": "Model behind PBFT, Tendermint, HotStuff"
+  }
+ },
+ "7": {
+  "type": "compare",
+  "left": {
+   "head": "BFT (Tendermint)",
+   "items": [
+    "Favors safety",
+    "Halts during a partition"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Nakamoto (Bitcoin)",
+   "items": [
+    "Favors liveness",
+    "Blocks on each side",
+    "Reorg when it heals"
+   ]
+  },
+  "note": {
+   "k": "Partition",
+   "v": "A protocol has to pick one"
+  }
+ },
+ "8": {
+  "type": "network",
+  "nodes": 26,
+  "hl": 0,
+  "bad": 14,
+  "cluster": false,
+  "x0": 440,
+  "bad_label": "one attacker's fake identities",
+  "n_label": "real participants",
+  "side": [
+   {
+    "k": "Sybil attack",
+    "label": "Counting nodes fails",
+    "bad": true
+   },
+   {
+    "k": "PoW / PoS",
+    "label": "Weight by hashrate or stake",
+    "hl": true
+   },
+   {
+    "k": "On top",
+    "label": "Heaviest chain or 2/3 quorums"
+   }
+  ]
+ },
+ "9": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "1992",
+    "label": "Dwork & Naor",
+    "sub": "cost per email vs spam",
+    "at": 0.08
+   },
+   {
+    "t": "1997",
+    "label": "Hashcash",
+    "sub": "Adam Back",
+    "at": 0.5
+   },
+   {
+    "t": "2008",
+    "label": "Bitcoin",
+    "sub": "costly blocks",
+    "hl": true,
+    "at": 0.92
+   }
+  ],
+  "note": {
+   "k": "Same idea",
+   "v": "Moderately hard to do, easy to verify"
+  }
+ },
+ "10": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "BLOCK n",
+    "label": "hash 0000…",
+    "lines": [
+     "nonce ✓"
+    ]
+   },
+   {
+    "k": "BLOCK n+1",
+    "label": "hash 0000…",
+    "lines": [
+     "nonce ✓"
+    ]
+   },
+   {
+    "k": "BLOCK n+2",
+    "label": "hash 0000…",
+    "lines": [
+     "nonce ✓"
+    ],
+    "hl": true
+   }
+  ],
+  "branch": {
+   "at": 1,
+   "blocks": [
+    {
+     "k": "ATTACKER",
+     "label": "Must redo the work",
+     "bad": true
+    }
+   ]
+  },
+  "note": {
+   "k": "Whitepaper, section 4",
+   "v": "Nodes follow the chain with the most work"
+  }
+ },
+ "11": {
+  "type": "bars",
+  "head": "Cumulative chainwork",
+  "items": [
+   {
+    "label": "Chain A · 3 hard blocks",
+    "value": 3,
+    "display": "3 × high work",
+    "hl": true
+   },
+   {
+    "label": "Chain B · 9 easy blocks",
+    "value": 1,
+    "display": "9 × low work: loses",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Bitcoin Core",
+   "v": "Picks the most chainwork, not the most blocks"
+  }
+ },
+ "12": {
+  "type": "cycle",
+  "nodes": [
+   {
+    "k": "Mine",
+    "label": "2016 blocks"
+   },
+   {
+    "k": "Measure",
+    "label": "Actual vs expected time"
+   },
+   {
+    "k": "Retarget",
+    "label": "Difficulty, capped ×4 or ÷4",
+    "hl": true
+   }
+  ],
+  "center": {
+   "k": "Target",
+   "label": "1 block per 10 minutes"
+  }
+ },
+ "13": {
+  "type": "bars",
+  "head": "Blocks to wait for < 0.1% attack success",
+  "items": [
+   {
+    "label": "Attacker q = 10%",
+    "value": 5,
+    "display": "z = 5"
+   },
+   {
+    "label": "q = 30%",
+    "value": 24,
+    "display": "z = 24"
+   },
+   {
+    "label": "q = 45%",
+    "value": 340,
+    "display": "z = 340",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "6 confirmations",
+   "v": "A convention for a weak attacker, not a rule"
+  }
+ },
+ "14": {
+  "type": "compare",
+  "left": {
+   "head": "Probabilistic (Bitcoin)",
+   "items": [
+    "Never 100% final",
+    "Reversal odds fall exponentially per block",
+    "Assumes attacker under 50% of hashrate"
+   ]
+  },
+  "right": {
+   "head": "Explicit (Casper FFG, Tendermint)",
+   "items": [
+    "A defined point",
+    "After it, the block is final"
+   ],
+   "hl": true
+  }
+ },
+ "15": {
+  "type": "checklist",
+  "head": "With 51% of hashrate, an attacker can…",
+  "checks": [
+   {
+    "text": "Reorganize recent history",
+    "ok": true
+   },
+   {
+    "text": "Double-spend its own payments",
+    "ok": true
+   },
+   {
+    "text": "Orphan other miners' blocks",
+    "ok": true
+   },
+   {
+    "text": "Take other people's coins",
+    "ok": false,
+    "sub": "can't forge signatures"
+   },
+   {
+    "text": "Break the supply cap",
+    "ok": false,
+    "sub": "nodes reject invalid blocks"
+   }
+  ]
+ },
+ "16": {
+  "type": "gauge",
+  "pct": 51,
+  "mark": 40,
+  "big": "> 51%",
+  "label": "GHash.io, June 2014 (briefly)",
+  "side": [
+   {
+    "k": "No attack",
+    "label": "But a backlash"
+   },
+   {
+    "k": "July 2014 pledge",
+    "label": "Stay under a voluntary 40%",
+    "hl": true
+   },
+   {
+    "k": "Why pools matter",
+    "label": "The operator picks the block template",
+    "alt": true
+   }
+  ]
+ },
+ "17": {
+  "type": "table",
+  "head": [
+   "Network advantage γ",
+   "Selfish mining pays above"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "γ = 0",
+    "**1/3** of hashrate"
+   ],
+   [
+    "γ = 1/2",
+    "1/4"
+   ],
+   [
+    "γ = 1",
+    "any size"
+   ]
+  ],
+  "note": {
+   "k": "Eyal & Sirer, 2013",
+   "v": "Their fix raises the bar to 1/4"
+  }
+ },
+ "18": {
+  "type": "network",
+  "nodes": 14,
+  "hl": 1,
+  "bad": 8,
+  "cluster": true,
+  "r": 13,
+  "degree": 3,
+  "x0": 440,
+  "hl_label": "victim node",
+  "bad_label": "attacker's IP addresses",
+  "n_label": "honest network",
+  "side": [
+   {
+    "k": "Eclipse attack",
+    "label": "All the victim's peers are the attacker's",
+    "sub": "fake view → split mining, double-spend",
+    "bad": true
+   },
+   {
+    "k": "Heilman et al., 2015",
+    "label": "Bitcoin Core added countermeasures",
+    "hl": true
+   }
+  ],
+  "isolate": true
+ },
+ "19": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "BEFORE",
+    "label": "Common chain"
+   },
+   {
+    "k": "BIG BLOCK",
+    "label": "Many inputs",
+    "sub": "0.8 nodes accept (LevelDB)",
+    "alt": true
+   }
+  ],
+  "branch": {
+   "at": 0,
+   "blocks": [
+    {
+     "k": "PRE-0.8",
+     "label": "Rejected: BDB lock limit",
+     "sub": "pools downgrade, this side wins",
+     "hl": true
+    }
+   ]
+  },
+  "note": {
+   "k": "BIP 50, March 2013",
+   "v": "At least one double spend during the split"
+  }
+ },
+ "20": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Attacker",
+    "label": "Deposits BTG at exchanges"
+   },
+   {
+    "k": "Majority hashrate",
+    "label": "Reorganizes the chain",
+    "bad": true
+   },
+   {
+    "k": "Double-spend",
+    "label": "> 388,000 BTG moved",
+    "sub": "≈ $18M+ at the time",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Bitcoin Gold, May 2018",
+   "v": "Its own algorithm, little hashrate to beat"
+  }
+ },
+ "21": {
+  "type": "segments",
+  "head": "Deep reorgs on Ethereum Classic (Coinbase, Jan 2019)",
+  "total": "15 reorgs",
+  "items": [
+   {
+    "label": "with double spends",
+    "value": 12,
+    "display": "12",
+    "bad": true
+   },
+   {
+    "label": "without",
+    "value": 3,
+    "display": "3"
+   }
+  ],
+  "cards": [
+   {
+    "k": "Double spent",
+    "label": "219,500 ETC",
+    "sub": "≈ $1.1M then",
+    "bad": true
+   },
+   {
+    "k": "Double-spend reorgs",
+    "label": "25 to 123 blocks deep"
+   },
+   {
+    "k": "From",
+    "label": "January 5, 2019"
+   }
+  ]
+ },
+ "22": {
+  "type": "bars",
+  "head": "ETC reorg depth in blocks, August 2020",
+  "items": [
+   {
+    "label": "Aug 1",
+    "value": 3693,
+    "display": "≈ 3,693"
+   },
+   {
+    "label": "Aug 6",
+    "value": 4000,
+    "display": "≈ 4,000"
+   },
+   {
+    "label": "Aug 29",
+    "value": 7000,
+    "display": "> 7,000 ≈ 2 days",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Small PoW chain",
+   "v": "Cheap to overpower when the hashrate lives elsewhere"
+  }
+ },
+ "23": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "PARENT",
+    "label": "Block n"
+   },
+   {
+    "k": "MAIN",
+    "label": "Block n+1",
+    "hl": true
+   },
+   {
+    "k": "NEXT",
+    "label": "Block n+2",
+    "lines": [
+     "refs uncle"
+    ],
+    "hl": true
+   }
+  ],
+  "branch": {
+   "at": 0,
+   "blocks": [
+    {
+     "k": "UNCLE",
+     "label": "Near-miss block",
+     "sub": "referenced, partial reward",
+     "alt": true
+    }
+   ]
+  },
+  "note": {
+   "k": "GHOST (Sompolinsky & Zohar, 2013)",
+   "v": "Orphans count in fork choice · PoS today: LMD-GHOST"
+  },
+  "links": [
+   [
+    "b2",
+    "x0",
+    "alt",
+    "h"
+   ]
+  ]
+ },
+ "24": {
+  "type": "compare",
+  "left": {
+   "head": "Proof of Work",
+   "items": [
+    "Electricity",
+    "Weight = hashrate"
+   ]
+  },
+  "right": {
+   "head": "Proof of Stake",
+   "items": [
+    "Bonded coins as collateral",
+    "Weight = stake",
+    "Slashing for provable misbehavior"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Security",
+   "v": "Cost of stake, not energy spent"
+  }
+ },
+ "25": {
+  "type": "formula",
+  "k": "Peercoin coin age",
+  "expr": "coin age = amount × time held",
+  "terms": [
+   {
+    "k": "Launched",
+    "v": "August 2012"
+   },
+   {
+    "k": "Hybrid",
+    "v": "PoS blocks + PoW blocks"
+   },
+   {
+    "k": "On a split",
+    "v": "most **consumed** coin age wins"
+   }
+  ],
+  "foot": "Sunny King (pseudonym) and Scott Nadal"
+ },
+ "26": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Naive PoS validator",
+    "label": "Signs fork A and fork B",
+    "sub": "costs nothing, unlike splitting hashpower",
+    "bad": true
+   },
+   {
+    "k": "Evidence",
+    "label": "Two conflicting signed votes",
+    "sub": "cryptographic proof"
+   },
+   {
+    "k": "Slashing",
+    "label": "Stake burned",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Nothing at stake",
+   "v": "Slashing makes double-signing expensive"
+  }
+ },
+ "27": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "EARLY",
+    "label": "Old history"
+   },
+   {
+    "k": "CHECKPOINT",
+    "label": "Recent, trusted",
+    "sub": "new node syncs from here",
+    "hl": true
+   },
+   {
+    "k": "HEAD",
+    "label": "Today"
+   }
+  ],
+  "branch": {
+   "at": 0,
+   "blocks": [
+    {
+     "k": "FORGED",
+     "label": "Exited validators' old keys",
+     "sub": "refused: deeper than checkpoint",
+     "bad": true
+    }
+   ]
+  },
+  "note": {
+   "k": "Weak subjectivity",
+   "v": "Buterin, 2014"
+  }
+ },
+ "28": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "Dec 1, 2020",
+    "label": "Beacon Chain launches",
+    "sub": "PoS, alongside PoW",
+    "at": 0.1
+   },
+   {
+    "t": "Sep 15, 2022",
+    "label": "The Merge",
+    "sub": "execution layer joins",
+    "hl": true,
+    "at": 0.6
+   }
+  ],
+  "span": [
+   0.1,
+   0.6,
+   "two chains"
+  ],
+  "note": {
+   "k": "Energy use",
+   "v": "≈ −99.95% (ethereum.org)"
+  }
+ },
+ "29": {
+  "type": "segments",
+  "head": "One epoch = 32 slots × 12 s = 6.4 minutes",
+  "legend": false,
+  "items": [
+   {
+    "label": "",
+    "value": 1,
+    "hl": true
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   },
+   {
+    "label": "",
+    "value": 1
+   }
+  ],
+  "cards": [
+   {
+    "k": "Each slot",
+    "label": "1 proposer (RANDAO)",
+    "hl": true
+   },
+   {
+    "k": "Plus",
+    "label": "Committees of attesters"
+   },
+   {
+    "k": "Each epoch",
+    "label": "Every validator attests once"
+   }
+  ]
+ },
+ "30": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "EPOCH N",
+    "label": "Checkpoint",
+    "sub": "finalized",
+    "hl": true
+   },
+   {
+    "k": "EPOCH N+1",
+    "label": "Checkpoint",
+    "sub": "justified: ≥ 2/3 stake link"
+   },
+   {
+    "k": "EPOCH N+2",
+    "label": "Checkpoint",
+    "sub": "target of next link",
+    "dim": true
+   }
+  ],
+  "note": {
+   "k": "Casper FFG, 2017",
+   "v": "Justified + direct child justified = finalized"
+  }
+ },
+ "31": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "included",
+    "label": "Block in epoch N",
+    "at": 0.08
+   },
+   {
+    "t": "end of epoch N+1",
+    "label": "Justified",
+    "sub": "next checkpoint",
+    "at": 0.5
+   },
+   {
+    "t": "end of epoch N+2",
+    "label": "Finalized",
+    "sub": "≈ 15 min (12.8 to 19.2)",
+    "hl": true,
+    "at": 0.92
+   }
+  ],
+  "span": [
+   0.08,
+   0.92,
+   "could still be reorganized"
+  ],
+  "note": {
+   "k": "After",
+   "v": "Reversal would burn huge amounts of staked ETH"
+  }
+ },
+ "32": {
+  "type": "compare",
+  "vs": "+",
+  "left": {
+   "head": "LMD-GHOST",
+   "items": [
+    "Every slot: pick the head",
+    "Heaviest subtree by latest votes"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Casper FFG",
+   "items": [
+    "Every few minutes",
+    "Finalizes checkpoints"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Gasper (Buterin et al., 2020)",
+   "v": "Gasper = LMD-GHOST + Casper FFG"
+  }
+ },
+ "33": {
+  "type": "table",
+  "head": [
+   "Offence",
+   "What the validator signed",
+   "Slashable"
+  ],
+  "cols": "1fr 2fr 0.7fr",
+  "rows": [
+   [
+    "Double proposal",
+    "2 blocks for the same slot",
+    "✓"
+   ],
+   [
+    "Double vote",
+    "2 attestations, same target epoch",
+    "✓"
+   ],
+   [
+    "Surround vote",
+    "One vote's span surrounds another's",
+    "✓"
+   ],
+   [
+    "Being offline",
+    "Nothing",
+    "✗"
+   ]
+  ],
+  "note": {
+   "k": "Then",
+   "v": "Stake lost, validator ejected"
+  }
+ },
+ "34": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "day 0",
+    "label": "Burn 1/4096",
+    "sub": "0.0078125 ETH on 32 ETH",
+    "at": 0.08
+   },
+   {
+    "t": "day 18",
+    "label": "Correlation penalty",
+    "sub": "scales with total slashed",
+    "bad": true,
+    "at": 0.5
+   },
+   {
+    "t": "day 36",
+    "label": "Forced exit done",
+    "at": 0.92
+   }
+  ],
+  "span": [
+   0.08,
+   0.92,
+   "forced exit"
+  ],
+  "note": {
+   "k": "Slashed with many others",
+   "v": "Can lose the full balance"
+  }
+ },
+ "35": {
+  "type": "segments",
+  "head": "Two conflicting finalized checkpoints",
+  "total": "total stake",
+  "items": [
+   {
+    "label": "signed both: slashable",
+    "value": 1,
+    "display": "≥ 1/3",
+    "bad": true
+   },
+   {
+    "label": "rest",
+    "value": 2,
+    "display": "≤ 2/3"
+   }
+  ],
+  "cards": [
+   {
+    "k": "To revert finality",
+    "label": "Control ≈ 2/3 of stake"
+   },
+   {
+    "k": "Burned",
+    "label": "≥ 1/3 of all stake",
+    "bad": true
+   },
+   {
+    "k": "Culprits",
+    "label": "Identified by their signatures",
+    "hl": true
+   }
+  ]
+ },
+ "36": {
+  "type": "bars",
+  "head": "Attacker's share of total stake",
+  "items": [
+   {
+    "label": "> 1/3",
+    "value": 33.4,
+    "display": "can block finality"
+   },
+   {
+    "label": "> 1/2",
+    "value": 50.1,
+    "display": "dominates fork choice, censors",
+    "alt": true
+   },
+   {
+    "label": "≥ 2/3",
+    "value": 66.7,
+    "display": "finalizes its own chain",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Defenses",
+   "v": "Inactivity leak, slashing, social-layer fork"
+  }
+ },
+ "37": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "> 4 epochs",
+    "label": "No finality",
+    "alt": true
+   },
+   {
+    "k": "Each epoch",
+    "label": "Inactive stake drained",
+    "sub": "penalties grow",
+    "bad": true
+   },
+   {
+    "k": "Active > 2/3 again",
+    "label": "Finality resumes",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Meanwhile",
+   "v": "Blocks keep coming: liveness over halting"
+  }
+ },
+ "38": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "May 11, 2023",
+    "label": "Finality lost",
+    "sub": "4 epochs",
+    "bad": true,
+    "at": 0.1
+   },
+   {
+    "t": "May 12, 2023",
+    "label": "Lost again",
+    "sub": "9 epochs, inactivity leak",
+    "bad": true,
+    "at": 0.5
+   },
+   {
+    "t": "after",
+    "label": "Recovered on its own",
+    "sub": "no manual restart",
+    "hl": true,
+    "at": 0.9
+   }
+  ],
+  "note": {
+   "k": "Participation",
+   "v": "Fell to ≈ 31%; blocks kept coming"
+  }
+ },
+ "39": {
+  "type": "compare",
+  "left": {
+   "head": "Before Pectra",
+   "big": "32 ETH",
+   "items": [
+    "Max effective balance",
+    "Large stakers: many validators"
+   ]
+  },
+  "right": {
+   "head": "EIP-7251",
+   "big": "2048 ETH",
+   "items": [
+    "Max for compounding validators",
+    "Rewards on each full 1 ETH above 32",
+    "Consolidation possible"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Minimum to activate",
+   "v": "Still 32 ETH"
+  }
+ },
+ "40": {
+  "type": "compare",
+  "left": {
+   "head": "Bug in a client with > 1/3",
+   "items": [
+    "Finality can stall"
+   ]
+  },
+  "right": {
+   "head": "Bug in a client with > 2/3",
+   "items": [
+    "Invalid chain finalized",
+    "Its validators stuck, or slashed switching back"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Client diversity",
+   "v": "Several independent clients, on purpose"
+  }
+ },
+ "41": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Request reaches the primary"
+   },
+   {
+    "label": "Pre-prepare",
+    "sub": "primary proposes"
+   },
+   {
+    "label": "Prepare",
+    "sub": "2f + 1 of 3f + 1, all-to-all"
+   },
+   {
+    "label": "Commit",
+    "sub": "2f + 1, all-to-all",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "O(n²) messages",
+   "v": "Suits small validator sets (Castro & Liskov, 1999)"
+  }
+ },
+ "42": {
+  "type": "hash",
+  "fn": "Leader",
+  "fn_k": "aggregates",
+  "inputs": [
+   "Vote 1",
+   "Vote 2",
+   "Vote 3",
+   "… vote n"
+  ],
+  "out": {
+   "k": "Quorum certificate",
+   "label": "Linear communication",
+   "sub": "even on leader change",
+   "hl": true
+  },
+  "note": {
+   "k": "HotStuff, 2019",
+   "v": "3-chain commit; basis of LibraBFT"
+  }
+ },
+ "43": {
+  "type": "cycle",
+  "nodes": [
+   {
+    "k": "1",
+    "label": "Propose"
+   },
+   {
+    "k": "2",
+    "label": "Prevote"
+   },
+   {
+    "k": "3",
+    "label": "Precommit"
+   },
+   {
+    "k": "> 2/3",
+    "label": "Commit: final",
+    "hl": true
+   }
+  ],
+  "center": {
+   "k": "Tendermint / CometBFT",
+   "label": "No confirmations, no reorgs"
+  }
+ },
+ "44": {
+  "type": "gauge",
+  "pct": 33.3,
+  "mark": 33.3,
+  "big": "≥ 1/3 offline",
+  "label": "no block can commit",
+  "side": [
+   {
+    "k": "CometBFT",
+    "label": "Halts rather than forks",
+    "hl": true
+   },
+   {
+    "k": "Unlike Ethereum",
+    "label": "No leak shrinks missing stake"
+   },
+   {
+    "k": "Restart",
+    "label": "Validators must come back",
+    "alt": true
+   }
+  ]
+ },
+ "45": {
+  "type": "network",
+  "nodes": 24,
+  "hl": 21,
+  "x0": 440,
+  "r": 11,
+  "hl_label": "21 elected producers (EOSIO)",
+  "n_label": "standby candidates",
+  "side": [
+   {
+    "k": "Coin holders",
+    "label": "Stake-weighted votes elect producers"
+   },
+   {
+    "k": "Irreversible",
+    "label": "After 15 of 21 sign (2/3 + 1)",
+    "hl": true
+   },
+   {
+    "k": "Trade-off",
+    "label": "Fast, but power with a few",
+    "alt": true
+   }
+  ]
+ },
+ "46": {
+  "type": "formula",
+  "k": "Clique (EIP-225) · N = number of signers",
+  "expr": "≤ 1 in every (⌊N/2⌋ + 1) blocks",
+  "terms": [
+   {
+    "k": "Who signs",
+    "v": "whitelisted signers, in turns"
+   },
+   {
+    "k": "List changes",
+    "v": "signers vote to add or remove"
+   },
+   {
+    "k": "Used by",
+    "v": "Rinkeby testnet"
+   }
+  ],
+  "foot": "You trust whoever controls the list"
+ },
+ "47": {
+  "type": "network",
+  "nodes": 30,
+  "hl": 5,
+  "x0": 440,
+  "seed": 7,
+  "hl_label": "committee members (secret until they speak)",
+  "n_label": "other stake holders",
+  "side": [
+   {
+    "k": "VRF sortition",
+    "label": "Private, stake-weighted"
+   },
+   {
+    "k": "Each member",
+    "label": "Speaks once, with a proof",
+    "hl": true
+   },
+   {
+    "k": "Attackers",
+    "label": "Can't target them in advance",
+    "alt": true
+   }
+  ]
+ },
+ "48": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Sample k = 20 validators",
+    "sub": "stake-weighted"
+   },
+   {
+    "label": "Ask their preference"
+   },
+   {
+    "label": "≥ α agree: adopt it",
+    "sub": "α = 14 in docs · 15 in AvalancheGo"
+   },
+   {
+    "label": "β = 20 successful rounds in a row: decide",
+    "hl": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Otherwise",
+    "label": "Sample again",
+    "alt": true
+   },
+   {
+    "k": "Snowball (Avalanche)",
+    "label": "Probabilistic safety",
+    "sub": "not a fixed 2/3 quorum",
+    "hl": true
+   }
+  ]
+ },
+ "49": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "HASH 1",
+    "label": "SHA-256(seed)"
+   },
+   {
+    "k": "HASH 2",
+    "label": "SHA-256(hash 1)"
+   },
+   {
+    "k": "HASH 3",
+    "label": "SHA-256(hash 2)",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Proof of History",
+   "v": "Proves order and elapsed time: a clock, not consensus"
+  }
+ },
+ "50": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "Sep 14, 2021",
+    "label": "Grape IDO bot flood",
+    "sub": "validators out of memory",
+    "bad": true,
+    "at": 0.08
+   },
+   {
+    "t": "≈ 17 h later",
+    "label": "Coordinated restart",
+    "sub": "> 1,000 validators, 80% of stake",
+    "hl": true,
+    "at": 0.92
+   }
+  ],
+  "span": [
+   0.08,
+   0.92,
+   "network halted"
+  ]
+ },
+ "51": {
+  "type": "formula",
+  "k": "Ouroboros Praos epoch",
+  "expr": "432,000 slots × 1 s = 5 days",
+  "terms": [
+   {
+    "k": "Slot leaders",
+    "v": "self-select via stake-weighted **VRF**"
+   },
+   {
+    "k": "Ouroboros",
+    "v": "CRYPTO 2017, peer-reviewed proof"
+   }
+  ]
+ },
+ "52": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "BABE",
+    "label": "Produces blocks",
+    "sub": "VRF slot leader election"
+   },
+   {
+    "k": "GRANDPA",
+    "label": "Finalizes them",
+    "sub": "votes on chains, not blocks",
+    "hl": true
+   },
+   {
+    "k": "> 2/3 vote for a chain",
+    "label": "Whole prefix final at once",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Polkadot",
+   "v": "Catches up fast after a slowdown"
+  }
+ },
+ "53": {
+  "type": "network",
+  "nodes": 20,
+  "hl": 6,
+  "hl_links": true,
+  "degree": 4,
+  "x0": 440,
+  "hl_label": "gossip about gossip",
+  "n_label": "events in the DAG",
+  "side": [
+   {
+    "k": "Hashgraph, 2016",
+    "label": "A DAG, not a chain"
+   },
+   {
+    "k": "Virtual voting",
+    "label": "No extra vote messages",
+    "hl": true
+   },
+   {
+    "k": "aBFT",
+    "label": "< 1/3 malicious, Coq-checked"
+   }
+  ]
+ },
+ "54": {
+  "type": "stack",
+  "head": "How strangers agree",
+  "layers": [
+   {
+    "label": "Rule",
+    "r": "heaviest chain · 2/3 quorum · sampling",
+    "hl": true
+   },
+   {
+    "label": "Sybil resistance",
+    "r": "work or stake"
+   }
+  ],
+  "side": [
+   {
+    "k": "Nakamoto",
+    "label": "Liveness, wait for depth"
+   },
+   {
+    "k": "BFT",
+    "label": "Safety, explicit finality",
+    "hl": true
+   },
+   {
+    "k": "Ethereum",
+    "label": "Mixes both"
+   }
+  ],
+  "note": {
+   "k": "Reality check",
+   "v": "51% attacks have happened"
+  }
+ }
+}

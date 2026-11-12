@@ -1,0 +1,2371 @@
+{
+  "1": {
+    "type": "segments",
+    "head": "Genesis allocation",
+    "total": "42,000,000 PAC, fixed",
+    "items": [
+      {
+        "label": "Treasury · all-zero address",
+        "value": 21,
+        "display": "21M PAC",
+        "hl": true
+      },
+      {
+        "label": "Other genesis accounts",
+        "value": 21,
+        "display": "21M PAC"
+      }
+    ],
+    "note": {
+      "k": "No minting",
+      "v": "Block rewards move coins out of the treasury, supply never grows"
+    }
+  },
+  "2": {
+    "type": "cycle",
+    "nodes": [
+      {
+        "k": ":00",
+        "label": "block"
+      },
+      {
+        "k": ":10",
+        "label": "block"
+      },
+      {
+        "k": ":20",
+        "label": "block"
+      },
+      {
+        "k": ":30",
+        "label": "block"
+      },
+      {
+        "k": ":40",
+        "label": "block"
+      },
+      {
+        "k": ":50",
+        "label": "block"
+      }
+    ],
+    "center": {
+      "k": "Every minute",
+      "label": "**10 s** block interval"
+    },
+    "note": {
+      "k": "Rejected",
+      "v": "a block whose seconds are not a multiple of 10"
+    }
+  },
+  "3": {
+    "type": "bars",
+    "head": "Block reward (PIP-55)",
+    "items": [
+      {
+        "label": "Height 0 → 8M",
+        "value": 1,
+        "display": "1 PAC / block",
+        "hl": true
+      },
+      {
+        "label": "Height 8M → 24M",
+        "value": 0.5,
+        "display": "0.5 PAC / block"
+      },
+      {
+        "label": "Height 24M → ≈44M",
+        "value": 0.25,
+        "display": "0.25 PAC / block",
+        "alt": true
+      }
+    ],
+    "note": {
+      "k": "Paid from the 21M treasury",
+      "v": "8M + 8M by block 24M, the last 5M run out around block 44M"
+    }
+  },
+  "4": {
+    "type": "timeline",
+    "events": [
+      {
+        "t": "2024-01-24",
+        "label": "Genesis",
+        "sub": "block 0",
+        "at": 0.08
+      },
+      {
+        "t": "≥ 2.5 years",
+        "label": "1st halving",
+        "sub": "block 8,000,000",
+        "hl": true,
+        "at": 0.38
+      },
+      {
+        "t": "≥ 7.6 years",
+        "label": "2nd halving",
+        "sub": "block 24,000,000",
+        "alt": true,
+        "at": 0.92
+      }
+    ],
+    "note": {
+      "k": "Lower bounds",
+      "v": "Missed 10 s slots are not made up, so real dates come later"
+    }
+  },
+  "5": {
+    "type": "formula",
+    "k": "Foundation share of each block",
+    "expr": "address = list[height mod 100]",
+    "terms": [
+      {
+        "k": "list",
+        "v": "100 addresses built into the node (mainnet and testnet)"
+      },
+      {
+        "k": "0.3 PAC",
+        "v": "base amount per block"
+      },
+      {
+        "k": "× coefficient",
+        "v": "halves with the block reward: 0.15 PAC after block 8M"
+      }
+    ],
+    "foot": "The payout rotates across all 100 addresses, one block at a time"
+  },
+  "7": {
+    "type": "timeline",
+    "events": [
+      {
+        "t": "T",
+        "label": "Previous block",
+        "sub": "the new time must be strictly later",
+        "at": 0.1
+      },
+      {
+        "t": "T + 10 s",
+        "label": "Expected next slot",
+        "sub": "seconds always :00, :10, :20…",
+        "hl": true,
+        "at": 0.5
+      },
+      {
+        "t": "T + 20 s",
+        "label": "Latest allowed time",
+        "sub": "one interval past the slot, no more",
+        "alt": true,
+        "at": 0.9
+      }
+    ],
+    "span": [
+      0.1,
+      0.9,
+      "valid window"
+    ],
+    "note": {
+      "k": "Chain stalled for longer?",
+      "v": "Proposer uses current time, rounded down to 10 s"
+    }
+  },
+  "8": {
+    "type": "table",
+    "head": [
+      "Genesis parameter",
+      "Mainnet",
+      "Testnet"
+    ],
+    "hl_col": 1,
+    "rows": [
+      [
+        "Genesis time (UTC)",
+        "2024-01-24 20:24",
+        "2024-03-16 00:00"
+      ],
+      [
+        "Block interval",
+        "10 s",
+        "10 s"
+      ],
+      [
+        "Committee size",
+        "**51** validators",
+        "**51** validators"
+      ]
+    ],
+    "note": {
+      "k": "Source",
+      "v": "Straight from the genesis JSON files shipped with the node"
+    },
+    "title": "Genesis parameters: mainnet vs testnet"
+  },
+  "9": {
+    "type": "split",
+    "src": {
+      "k": "No chain ID field",
+      "label": "hash(genesis file)",
+      "sub": "compared with the built-in genesis hashes",
+      "hl": true
+    },
+    "to": [
+      {
+        "k": "= mainnet hash",
+        "label": "Mainnet",
+        "sub": "addresses `pc…` · p2p `pactus`"
+      },
+      {
+        "k": "= testnet hash",
+        "label": "Testnet",
+        "sub": "addresses `tpc…` · p2p `pactus-testnet`"
+      },
+      {
+        "k": "anything else",
+        "label": "Localnet",
+        "sub": "p2p `pactus-localnet`",
+        "alt": true
+      }
+    ]
+  },
+  "10": {
+    "type": "segments",
+    "head": "Block header",
+    "total": "138 bytes, always",
+    "items": [
+      {
+        "label": "version",
+        "value": 1,
+        "display": "1 B"
+      },
+      {
+        "label": "time",
+        "value": 4,
+        "display": "4 B",
+        "hl": true
+      },
+      {
+        "label": "prev hash",
+        "value": 32,
+        "display": "32 B"
+      },
+      {
+        "label": "state root",
+        "value": 32,
+        "display": "32 B"
+      },
+      {
+        "label": "sortition seed (BLS sig)",
+        "value": 48,
+        "display": "48 B"
+      },
+      {
+        "label": "proposer",
+        "value": 21,
+        "display": "21 B"
+      }
+    ],
+    "note": {
+      "k": "Fixed layout",
+      "v": "The store reads a block's time at a known offset, no full decode"
+    }
+  },
+  "11": {
+    "type": "hash",
+    "fn": "hash",
+    "fn_k": "block ID",
+    "inputs": [
+      "Encoded header",
+      "Parent certificate hash",
+      {
+        "label": "Tx Merkle root",
+        "hl": true
+      },
+      "Tx count"
+    ],
+    "out": {
+      "k": "Result",
+      "label": "Block ID",
+      "sub": "Txs only enter through their Merkle root"
+    },
+    "note": {
+      "k": "Change one tx",
+      "v": "→ new Merkle root → new block ID"
+    }
+  },
+  "12": {
+    "type": "tree",
+    "leaves": [
+      "tx1",
+      "tx2",
+      "tx3",
+      "tx4",
+      "tx5"
+    ],
+    "root": "Merkle root",
+    "x1": 300,
+    "side": [
+      {
+        "k": "Odd level",
+        "label": "Last node hashed with itself",
+        "sub": "so the root alone can't fix the leaf count",
+        "alt": true
+      }
+    ],
+    "note": {
+      "k": "Fix",
+      "v": "Block hash also includes the tx count"
+    }
+  },
+  "13": {
+    "type": "flow",
+    "steps": [
+      {
+        "k": "Decoder",
+        "label": "Count prefix > 1,000",
+        "sub": "refused before the list is allocated",
+        "bad": true
+      },
+      {
+        "k": "Basic check",
+        "label": "More than 1,000 txs",
+        "sub": "block rejected",
+        "bad": true
+      },
+      {
+        "k": "Validation",
+        "label": "Only blocks ≤ 1,000 txs",
+        "sub": "reach this stage",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "Hard limit",
+      "v": "1,000 transactions per block, checked twice"
+    }
+  },
+  "14": {
+    "type": "fields",
+    "struct": {
+      "name": "Certificate",
+      "lines": [
+        [
+          "height",
+          "h"
+        ],
+        [
+          "round",
+          "r"
+        ],
+        {
+          "key": "committers",
+          "val": "[0, 3, 7, 12 …]",
+          "hl": true
+        },
+        {
+          "key": "absentees",
+          "val": "[7]",
+          "alt": true
+        },
+        {
+          "key": "signature",
+          "val": "1 aggregated BLS",
+          "hl": true
+        }
+      ]
+    },
+    "side": [
+      {
+        "k": "Signers",
+        "label": "committers − absentees",
+        "from": 2
+      },
+      {
+        "k": "On chain",
+        "label": "One merged signature",
+        "sub": "no per-validator signatures",
+        "hl": true,
+        "from": 4
+      }
+    ]
+  },
+  "15": {
+    "type": "steps",
+    "steps": [
+      {
+        "label": "Walk the committee"
+      },
+      {
+        "label": "Sum the power of committers not absent"
+      },
+      {
+        "label": "Require ≥ 2f+1 of committee power",
+        "sub": "f = (n − 1) / 3"
+      },
+      {
+        "label": "Aggregate the signers' public keys"
+      },
+      {
+        "label": "Verify the one signature",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "Signature checks",
+      "v": "Exactly 1, whatever the committee size"
+    }
+  },
+  "16": {
+    "type": "chain",
+    "blocks": [
+      {
+        "k": "GENESIS",
+        "label": "Block 0",
+        "sub": "no previous certificate",
+        "dim": false
+      },
+      {
+        "k": "HEIGHT h−1",
+        "label": "Block h−1",
+        "lines": [
+          "cert of h−2"
+        ]
+      },
+      {
+        "k": "HEIGHT h",
+        "label": "Block h",
+        "lines": [
+          "cert of h−1"
+        ],
+        "sub": "checked against committee of h−1",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "Block after block",
+      "v": "Proofs of approval chain back to the start"
+    }
+  },
+  "17": {
+    "type": "compare",
+    "left": {
+      "head": "By validator number",
+      "big": "1–2 bytes",
+      "items": [
+        "int32 written as a varint",
+        "Sequential: genesis validators first",
+        "Next number on first bond tx"
+      ],
+      "hl": true
+    },
+    "right": {
+      "head": "By address",
+      "big": "21 bytes",
+      "items": [
+        "Fixed size, every time",
+        "What certificates avoid"
+      ]
+    },
+    "note": {
+      "k": "Result",
+      "v": "Small certificates, even with 51 members"
+    }
+  },
+  "18": {
+    "type": "stack",
+    "head": "Signed vote message",
+    "layers": [
+      {
+        "label": "Block hash"
+      },
+      {
+        "label": "Height"
+      },
+      {
+        "label": "Round"
+      },
+      {
+        "label": "Type tag",
+        "r": "PREPARE · PRE-VOTE · MAIN-VOTE · DECIDED",
+        "hl": true
+      }
+    ],
+    "side": [
+      {
+        "k": "Exception",
+        "label": "PRECOMMIT",
+        "sub": "has no type tag",
+        "alt": true
+      },
+      {
+        "k": "Change-proposer",
+        "label": "Also signs CP round + value"
+      }
+    ],
+    "note": {
+      "k": "So",
+      "v": "A signature can't be replayed as another vote type"
+    }
+  },
+  "19": {
+    "type": "compare",
+    "left": {
+      "head": "Canonical · accepted",
+      "big": "05",
+      "items": [
+        "Value 5 as LEB128 varint",
+        "Shortest possible encoding"
+      ],
+      "hl": true
+    },
+    "right": {
+      "head": "Non-minimal · rejected",
+      "big": "85 00",
+      "items": [
+        "Same value 5",
+        "Zero continuation byte → refused"
+      ]
+    },
+    "note": {
+      "k": "One integer, one encoding",
+      "v": "Every node hashes and signs the same bytes"
+    }
+  },
+  "20": {
+    "type": "hash",
+    "fn": "hash",
+    "fn_k": "sign bytes",
+    "inputs": [
+      "Version",
+      "Lock time",
+      "Fee",
+      "Memo",
+      "Payload type + payload"
+    ],
+    "out": {
+      "k": "Result",
+      "label": "Transaction ID",
+      "sub": "Signature and public key are **not** included"
+    },
+    "note": {
+      "k": "So",
+      "v": "The ID depends on what the tx says, not how it was signed"
+    }
+  },
+  "21": {
+    "type": "network",
+    "nodes": 34,
+    "hl": 9,
+    "hl_label": "lottery winners take a seat",
+    "n_label": "other validators",
+    "side": [
+      {
+        "k": "After every block",
+        "label": "Each validator runs a private lottery",
+        "sub": "its BLS key + the sortition seed"
+      },
+      {
+        "k": "Winners",
+        "label": "Broadcast a sortition tx"
+      }
+    ],
+    "note": {
+      "k": "Committee size",
+      "v": "51 validators"
+    }
+  },
+  "22": {
+    "type": "flow",
+    "steps": [
+      {
+        "k": "Proof",
+        "label": "BLS sign(seed ‖ pubkey)"
+      },
+      {
+        "k": "Hash",
+        "label": "BLAKE2b-256"
+      },
+      {
+        "k": "Scale",
+        "label": "into [0, total power)",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "One seed per block",
+      "v": "One output per key, verifiable with its public key"
+    }
+  },
+  "23": {
+    "type": "gauge",
+    "pct": 10,
+    "big": "10%",
+    "label": "of the stake ≈ 10% of the draws",
+    "side": [
+      {
+        "k": "Draw",
+        "label": "index in [0, total power)"
+      },
+      {
+        "k": "Win if",
+        "label": "index < own power",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "Odds",
+      "v": "power ÷ total power"
+    }
+  },
+  "24": {
+    "type": "chain",
+    "blocks": [
+      {
+        "k": "BLOCK h−1",
+        "label": "seed h−1"
+      },
+      {
+        "k": "BLOCK h",
+        "label": "seed h",
+        "lines": [
+          "= proposer's BLS sig",
+          "  over H(seed h−1)"
+        ],
+        "hl": true
+      },
+      {
+        "k": "BLOCK h+1",
+        "label": "seed h+1",
+        "lines": [
+          "= sig over H(seed h)"
+        ]
+      }
+    ],
+    "note": {
+      "k": "Every node verifies",
+      "v": "Deterministic signature: the proposer can't pick the seed"
+    }
+  },
+  "25": {
+    "type": "bars",
+    "head": "Lock time must be within…",
+    "items": [
+      {
+        "label": "Sortition tx",
+        "value": 17,
+        "display": "17 blocks ≈ 3 min",
+        "hl": true
+      },
+      {
+        "label": "Ordinary tx",
+        "value": 8640,
+        "display": "8,640 blocks ≈ 1 day"
+      }
+    ],
+    "note": {
+      "k": "So",
+      "v": "A lottery win has to be claimed quickly"
+    }
+  },
+  "26": {
+    "type": "timeline",
+    "events": [
+      {
+        "t": "height h",
+        "label": "Last bond",
+        "at": 0.12
+      },
+      {
+        "t": "h + 360",
+        "label": "Sortition txs accepted",
+        "sub": "from here on",
+        "hl": true,
+        "at": 0.88
+      }
+    ],
+    "alternate": false,
+    "w": 260,
+    "span": [
+      0.12,
+      0.88,
+      "360 blocks ≈ 1 hour at 10 s"
+    ],
+    "note": {
+      "k": "Genesis parameter",
+      "v": "bond_interval, the same on mainnet"
+    }
+  },
+  "27": {
+    "type": "segments",
+    "head": "Committee power, at each step",
+    "total": "rotation < 1/3",
+    "items": [
+      {
+        "label": "Stays seated",
+        "value": 70,
+        "display": "> 2/3"
+      },
+      {
+        "label": "Can be replaced",
+        "value": 30,
+        "display": "< 1/3",
+        "alt": true
+      }
+    ],
+    "cards": [
+      {
+        "k": "Joining in a block",
+        "label": "< 1/3 of committee power"
+      },
+      {
+        "k": "Leaving",
+        "label": "< 1/3, oldest sortition first",
+        "hl": true
+      }
+    ]
+  },
+  "28": {
+    "type": "checklist",
+    "head": "Validator in (or joining) the committee",
+    "checks": [
+      {
+        "text": "Bond tx for it",
+        "ok": false,
+        "sub": "rejected: can't top up"
+      },
+      {
+        "text": "Unbond tx for it",
+        "ok": false,
+        "sub": "rejected: can't leave with the stake"
+      },
+      {
+        "text": "Leaves the committee",
+        "ok": true,
+        "sub": "bond and unbond work again"
+      }
+    ],
+    "side": [
+      {
+        "k": "Where",
+        "label": "Strict checks",
+        "sub": "block proposal and validation"
+      }
+    ],
+    "note": {
+      "k": "Meanwhile",
+      "v": "Its stake is frozen"
+    }
+  },
+  "29": {
+    "type": "cycle",
+    "nodes": [
+      {
+        "k": "Now",
+        "label": "Current proposer",
+        "hl": true
+      },
+      "Member B",
+      "Member C",
+      "Member D",
+      {
+        "k": "Inserted here",
+        "label": "New member",
+        "alt": true
+      }
+    ],
+    "center": {
+      "k": "Round-robin",
+      "label": "Newcomers wait for everyone else"
+    }
+  },
+  "30": {
+    "type": "flow",
+    "steps": [
+      {
+        "k": "Read",
+        "label": "Last certificate",
+        "sub": "its committers"
+      },
+      {
+        "k": "Read",
+        "label": "Last block",
+        "sub": "its sortition txs"
+      },
+      {
+        "k": "Apply",
+        "label": "Rotation"
+      },
+      {
+        "k": "Result",
+        "label": "Committee rebuilt",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "No snapshot on disk",
+      "v": "The committee is derived from chain data alone"
+    }
+  },
+  "31": {
+    "type": "big",
+    "k": "Max stake per validator",
+    "big": "1,000 PAC",
+    "label": "defaults, same in the mainnet genesis",
+    "side": [
+      {
+        "k": "Each bond",
+        "label": "at least 1 PAC"
+      },
+      {
+        "k": "Exception",
+        "label": "A bond under 1 PAC is OK…",
+        "sub": "…if it brings the validator to exactly 1,000 PAC",
+        "hl": true
+      }
+    ]
+  },
+  "32": {
+    "type": "formula",
+    "k": "Voting power",
+    "expr": "power = stake in nanoPAC",
+    "terms": [
+      {
+        "k": "1 PAC",
+        "v": "= 10^9 nanoPAC"
+      },
+      {
+        "k": "Genesis bootstrap",
+        "v": "no stake, power = 1"
+      },
+      {
+        "k": "Unbond",
+        "v": "power → 0 in that same block"
+      }
+    ]
+  },
+  "33": {
+    "type": "timeline",
+    "events": [
+      {
+        "t": "block h",
+        "label": "Unbond executed",
+        "sub": "power → 0 at once",
+        "hl": true,
+        "at": 0.12
+      },
+      {
+        "t": "h + 181,440",
+        "label": "Withdraw allowed",
+        "sub": "stake finally unlocked",
+        "at": 0.88
+      }
+    ],
+    "alternate": false,
+    "w": 270,
+    "span": [
+      0.12,
+      0.88,
+      "21 days at 10 s per block"
+    ],
+    "note": {
+      "k": "Three weeks",
+      "v": "Funds stay locked after the voting weight is gone"
+    }
+  },
+  "34": {
+    "type": "checklist",
+    "head": "Fee must be exactly zero",
+    "checks": [
+      {
+        "text": "Unbond tx, fee 0",
+        "ok": true
+      },
+      {
+        "text": "Sortition tx, fee 0",
+        "ok": true
+      },
+      {
+        "text": "Subsidy tx, fee 0",
+        "ok": true
+      },
+      {
+        "text": "Unbond or sortition tx with a fee",
+        "ok": false,
+        "sub": "the block is invalid"
+      }
+    ],
+    "note": {
+      "k": "Protocol rule",
+      "v": "Basic tx check, not a mempool preference"
+    }
+  },
+  "35": {
+    "type": "fields",
+    "struct": {
+      "name": "Delegated bond · PIP-49",
+      "lines": [
+        {
+          "key": "stake",
+          "val": "exactly 1,000 PAC",
+          "hl": true
+        },
+        [
+          "expiry",
+          "a future height"
+        ],
+        [
+          "owner share",
+          "≤ 0.7 PAC / block"
+        ],
+        {
+          "key": "unbond, withdraw",
+          "val": "signed by the owner",
+          "hl": true
+        },
+        {
+          "key": "unbond",
+          "val": "only after expiry",
+          "alt": true
+        }
+      ]
+    },
+    "side": [
+      {
+        "k": "Cap",
+        "label": "0.7 PAC per block",
+        "sub": "owner's reward share, before halving",
+        "from": 2
+      },
+      {
+        "k": "In charge",
+        "label": "The owner, not the operator",
+        "hl": true,
+        "from": 3
+      }
+    ]
+  },
+  "36": {
+    "type": "gauge",
+    "pct": 75,
+    "mark": 75,
+    "big": "> 75%",
+    "label": "of committee power runs the new version",
+    "side": [
+      {
+        "k": "Then",
+        "label": "Proposer raises the block version",
+        "hl": true
+      },
+      {
+        "k": "No activation height",
+        "label": "One guard: after 8,000,000",
+        "sub": "blocks must be version 4 or higher",
+        "alt": true
+      }
+    ]
+  },
+  "37": {
+    "type": "timeline",
+    "w": 230,
+    "events": [
+      {
+        "t": "v1",
+        "label": "Initial"
+      },
+      {
+        "t": "v2",
+        "label": "Split reward",
+        "sub": "PIP-43"
+      },
+      {
+        "t": "v3",
+        "label": "Validator delegation",
+        "sub": "PIP-49"
+      },
+      {
+        "t": "v4",
+        "label": "Reward halving",
+        "sub": "PIP-55"
+      },
+      {
+        "t": "v5",
+        "label": "Native state anchoring",
+        "sub": "PIP-50 · latest",
+        "hl": true
+      }
+    ]
+  },
+  "38": {
+    "type": "formula",
+    "k": "Certificate quorum, counted in stake",
+    "expr": "2f + 1  ≈  ⅔ of power",
+    "terms": [
+      {
+        "k": "n",
+        "v": "total committee power (stake), not heads"
+      },
+      {
+        "k": "f",
+        "v": "(n − 1) / 3"
+      },
+      {
+        "k": "v2 thresholds",
+        "v": "f+1 · 2f+1 · 3f+1"
+      }
+    ]
+  },
+  "39": {
+    "type": "compare",
+    "left": {
+      "head": "consensusv2",
+      "items": [
+        "proposal → precommit",
+        "No prepare phase",
+        "One round of voting fewer"
+      ],
+      "hl": true
+    },
+    "right": {
+      "head": "Original consensus",
+      "items": [
+        "Has a prepare phase",
+        "Prepare vote still defined, marked deprecated"
+      ]
+    },
+    "note": {
+      "k": "In the repo",
+      "v": "Two implementations, the node picks one"
+    }
+  },
+  "40": {
+    "type": "bars",
+    "head": "Change-proposer timeout, from round start",
+    "items": [
+      {
+        "label": "Round 0",
+        "value": 5,
+        "display": "5 s"
+      },
+      {
+        "label": "Round 1",
+        "value": 10,
+        "display": "10 s"
+      },
+      {
+        "label": "Round 2",
+        "value": 15,
+        "display": "15 s",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "No need to wait",
+      "v": "f+1 Yes pre-votes seen → change proposer now"
+    }
+  },
+  "41": {
+    "type": "steps",
+    "steps": [
+      {
+        "label": "Pre-vote",
+        "sub": "Yes (change the proposer) or No (keep it)"
+      },
+      {
+        "label": "Main-vote",
+        "sub": "Yes, No or Abstain"
+      },
+      {
+        "label": "Decided",
+        "hl": true
+      }
+    ],
+    "side": [
+      {
+        "k": "Each vote",
+        "label": "Carries a justification",
+        "sub": "checked by the other validators"
+      },
+      {
+        "k": "No decision?",
+        "label": "Another change-proposer round",
+        "alt": true
+      }
+    ]
+  },
+  "42": {
+    "type": "split",
+    "src": {
+      "k": "Proposal held",
+      "label": "Precommits seen",
+      "sub": "counted in committee power"
+    },
+    "to": [
+      {
+        "k": "3f+1 precommits",
+        "label": "Commit immediately",
+        "sub": "fast path, no change-proposer round",
+        "hl": true
+      },
+      {
+        "k": "only 2f+1",
+        "label": "Change-proposer must decide No",
+        "sub": "keep the proposer, then commit",
+        "alt": true
+      }
+    ]
+  },
+  "43": {
+    "type": "gauge",
+    "pct": 55,
+    "mark": 66.7,
+    "big": "< 0.666667",
+    "label": "availability score of the scheduled proposer",
+    "side": [
+      {
+        "k": "Before the proposal",
+        "label": "Validators check the score"
+      },
+      {
+        "k": "Below the line (PIP-19)",
+        "label": "Proposal skipped",
+        "sub": "change proposer for that round straight away",
+        "alt": true
+      }
+    ],
+    "note": {
+      "k": "Often absent",
+      "v": "Effectively loses its turn"
+    }
+  },
+  "44": {
+    "type": "formula",
+    "k": "Availability score",
+    "expr": "1 − absent ÷ in committee",
+    "terms": [
+      {
+        "k": "Window",
+        "v": "last 60,000 certificates ≈ 6.9 days"
+      },
+      {
+        "k": "Source",
+        "v": "on-chain certificates, not self-reported"
+      },
+      {
+        "k": "No record",
+        "v": "score = 1"
+      }
+    ]
+  },
+  "45": {
+    "type": "split",
+    "src": {
+      "k": "Timer fires",
+      "label": "Tagged (height, round)",
+      "sub": "compared with the current height and round"
+    },
+    "to": [
+      {
+        "k": "matches current",
+        "label": "Handled",
+        "hl": true
+      },
+      {
+        "k": "differs",
+        "label": "Stale: ignored",
+        "sub": "no side effect",
+        "alt": true
+      }
+    ]
+  },
+  "46": {
+    "type": "timeline",
+    "alternate": false,
+    "w": 300,
+    "events": [
+      {
+        "t": "last block time",
+        "label": "Previous block",
+        "at": 0.12
+      },
+      {
+        "t": "+ 10 s",
+        "label": "New height starts",
+        "sub": "paced by the wall clock",
+        "hl": true,
+        "at": 0.88
+      }
+    ],
+    "span": [
+      0.12,
+      0.88,
+      "block interval"
+    ],
+    "note": {
+      "k": "Clock lagging?",
+      "v": "Sees 2f+1 precommits for round 0 → propose step now"
+    }
+  },
+  "47": {
+    "type": "split",
+    "src": {
+      "k": "In-process mediator",
+      "label": "Passes every proposal and vote to the other instances",
+      "hl": true
+    },
+    "to": [
+      {
+        "k": "Key 1",
+        "label": "Consensus instance"
+      },
+      {
+        "k": "Key 2",
+        "label": "Consensus instance"
+      },
+      {
+        "k": "Key 3",
+        "label": "Consensus instance"
+      }
+    ],
+    "note": {
+      "k": "Inside one node, not over the network",
+      "v": "One announces a block: the others move to the next height"
+    }
+  },
+  "48": {
+    "type": "segments",
+    "head": "BLS12-381 sizes",
+    "total": "aggregatable",
+    "items": [
+      {
+        "label": "Signature (G1)",
+        "value": 48,
+        "display": "48 bytes",
+        "hl": true
+      },
+      {
+        "label": "Public key (G2)",
+        "value": 96,
+        "display": "96 bytes"
+      }
+    ],
+    "cards": [
+      {
+        "k": "Hash-to-curve",
+        "label": "BLS_SIG_BLS12381G1_XMD:SHA-256_SSWU_RO_NUL_",
+        "sub": "IRTF BLS draft"
+      }
+    ],
+    "note": {
+      "k": "Why BLS",
+      "v": "Aggregation → one-signature block certificates"
+    }
+  },
+  "49": {
+    "type": "split",
+    "src": {
+      "k": "Signer's address",
+      "label": "Address type decides",
+      "sub": "how signature and public key are decoded and verified",
+      "hl": true
+    },
+    "to": [
+      {
+        "label": "BLS12-381"
+      },
+      {
+        "label": "Ed25519"
+      },
+      {
+        "label": "secp256k1",
+        "sub": "the curve Bitcoin uses"
+      }
+    ]
+  },
+  "50": {
+    "type": "hash",
+    "fn": "BLAKE2b‑256 → RIPEMD‑160",
+    "fn_k": "hash",
+    "inputs": [
+      {
+        "label": "Public key"
+      }
+    ],
+    "out": {
+      "k": "21 bytes",
+      "label": "1 B type + 20 B hash",
+      "lines": [
+        "bech32m: pc1… / tpc1…"
+      ],
+      "hl": true
+    },
+    "note": {
+      "k": "Encoding",
+      "v": "bech32m, like Bitcoin's newest addresses"
+    }
+  },
+  "51": {
+    "type": "table",
+    "head": [
+      "Address starts with",
+      "Type",
+      "Account"
+    ],
+    "hl_col": 0,
+    "rows": [
+      [
+        "`pc1p…`",
+        "1",
+        "Validator"
+      ],
+      [
+        "`pc1z…`",
+        "2",
+        "BLS account"
+      ],
+      [
+        "`pc1r…`",
+        "3",
+        "Ed25519 account"
+      ],
+      [
+        "`pc1y…`",
+        "4",
+        "secp256k1 account"
+      ]
+    ],
+    "note": {
+      "k": "At a glance",
+      "v": "First character after pc1 = account type"
+    }
+  },
+  "52": {
+    "type": "split",
+    "src": {
+      "k": "Type 0 · all-zero",
+      "label": "Treasury",
+      "lines": [
+        "no key controls it",
+        "fixed string, not bech32m"
+      ]
+    },
+    "to": [
+      {
+        "k": "Subsidy tx, no signature",
+        "label": "Block rewards",
+        "hl": true
+      },
+      {
+        "k": "Any other tx",
+        "label": "Impossible: no key",
+        "alt": true
+      }
+    ]
+  },
+  "53": {
+    "type": "fields",
+    "struct": {
+      "name": "HD path · m/purpose'/coin'/type'/index",
+      "lines": [
+        {
+          "key": "purpose",
+          "val": "12381 BLS · 44 Ed25519/secp256k1",
+          "hl": true
+        },
+        {
+          "key": "purpose",
+          "val": "65535 imported keys",
+          "alt": true
+        },
+        [
+          "coin",
+          "21888 mainnet · 21777 testnet"
+        ],
+        [
+          "type",
+          "address type 1–4"
+        ],
+        [
+          "index",
+          "hardened, except BLS"
+        ]
+      ]
+    },
+    "w": 620,
+    "side": [
+      {
+        "k": "Recovery",
+        "label": "One seed phrase, every derived key",
+        "hl": true
+      },
+      {
+        "k": "Imported keys",
+        "label": "Their own purpose",
+        "from": 1,
+        "alt": true
+      }
+    ]
+  },
+  "54": {
+    "type": "split",
+    "src": {
+      "k": "Master key (PIP-11)",
+      "label": "HMAC-SHA512(seed)",
+      "sub": "keyed with \"BLS12381 seed\""
+    },
+    "to": [
+      {
+        "k": "Left half",
+        "label": "BLS KeyGen → private key"
+      },
+      {
+        "k": "Right half",
+        "label": "Chain code"
+      }
+    ],
+    "note": {
+      "k": "Non-hardened children",
+      "v": "Watch-only wallets derive new receive addresses"
+    }
+  },
+  "55": {
+    "type": "flow",
+    "steps": [
+      {
+        "k": "Input",
+        "label": "Password"
+      },
+      {
+        "k": "Argon2id",
+        "label": "3 iter · 64 MiB · 4 lanes"
+      },
+      {
+        "k": "Encrypt",
+        "label": "AES-256-CTR",
+        "hl": true
+      },
+      {
+        "k": "Check",
+        "label": "4-byte MAC",
+        "sub": "detects a wrong password"
+      }
+    ],
+    "note": {
+      "k": "Tools",
+      "v": "SQLite wallets · migrate old JSON · neuter = watch-only"
+    }
+  },
+  "56": {
+    "type": "fields",
+    "struct": {
+      "name": "Anchor · PIP-50",
+      "lines": [
+        {
+          "key": "root hash",
+          "val": "32–64 bytes",
+          "hl": true
+        },
+        [
+          "manifest URI",
+          "≤ 128 bytes"
+        ],
+        {
+          "key": "deposit",
+          "val": "≥ 1 PAC locked",
+          "hl": true
+        }
+      ]
+    },
+    "side": [
+      {
+        "k": "Only in v5 blocks",
+        "label": "> 75% of committee power on v5",
+        "alt": true
+      }
+    ]
+  },
+  "57": {
+    "type": "table",
+    "cols": "0.4fr 1.2fr 0.4fr 1.2fr",
+    "head": [
+      "#",
+      "Type",
+      "#",
+      "Type"
+    ],
+    "rows": [
+      [
+        "1",
+        "Transfer",
+        "5",
+        "Withdraw"
+      ],
+      [
+        "2",
+        "Bond",
+        "6",
+        "Batch transfer"
+      ],
+      [
+        "3",
+        "Sortition",
+        "7",
+        "**Anchor**"
+      ],
+      [
+        "4",
+        "Unbond",
+        "",
+        ""
+      ]
+    ],
+    "note": {
+      "k": "Anchor (7)",
+      "v": "Invalid payload type before protocol v5 (PIP-50)"
+    }
+  },
+  "58": {
+    "type": "compare",
+    "left": {
+      "head": "Default min fee",
+      "big": "0.01 PAC",
+      "items": [
+        "Transfer, bond, withdraw",
+        "Batch transfer, anchor",
+        "First in, first out per type"
+      ],
+      "hl": true
+    },
+    "right": {
+      "head": "Free",
+      "big": "0",
+      "items": [
+        "Unbond",
+        "Sortition"
+      ]
+    },
+    "note": {
+      "k": "Mempool policy, not consensus",
+      "v": "No fee auction"
+    }
+  },
+  "59": {
+    "type": "formula",
+    "k": "Optional consumption fee",
+    "expr": "⌊c ÷ 360⌋ × c × unit price",
+    "terms": [
+      {
+        "k": "c",
+        "v": "bytes sent over 8,640 blocks ≈ 1 day"
+      },
+      {
+        "k": "c < 360",
+        "v": "fee = 0"
+      },
+      {
+        "k": "unit price",
+        "v": "0 by default: off"
+      }
+    ],
+    "foot": "Above the limit it grows faster than linearly"
+  },
+  "60": {
+    "type": "timeline",
+    "alternate": false,
+    "w": 280,
+    "events": [
+      {
+        "t": "lock time",
+        "label": "Becomes valid",
+        "sub": "future lock time refused",
+        "at": 0.12
+      },
+      {
+        "t": "+ 8,640 blocks",
+        "label": "Expires",
+        "sub": "≈ 1 day · sortition: 17",
+        "alt": true,
+        "at": 0.88
+      }
+    ],
+    "span": [
+      0.12,
+      0.88,
+      "valid window"
+    ],
+    "note": {
+      "k": "Also",
+      "v": "Memos capped at 64 bytes"
+    }
+  },
+  "61": {
+    "type": "split",
+    "src": {
+      "k": "One signed tx",
+      "label": "Batch transfer",
+      "lines": [
+        "sum of amounts",
+        "+ one fee"
+      ],
+      "hl": true
+    },
+    "to": [
+      {
+        "label": "Recipient 1"
+      },
+      {
+        "label": "Recipient 2"
+      },
+      {
+        "label": "… up to 8",
+        "sub": "addresses must be distinct",
+        "alt": true
+      }
+    ]
+  },
+  "62": {
+    "type": "bars",
+    "head": "Mempool slots per type (max_size 1,000)",
+    "items": [
+      {
+        "label": "Transfer",
+        "value": 500,
+        "display": "500 · 50%",
+        "hl": true
+      },
+      {
+        "label": "Bond",
+        "value": 100,
+        "display": "100"
+      },
+      {
+        "label": "Unbond",
+        "value": 100,
+        "display": "100"
+      },
+      {
+        "label": "…4 more types",
+        "value": 100,
+        "display": "100 each"
+      }
+    ],
+    "note": {
+      "k": "Total 1,100",
+      "v": "Full sub-pool drops its oldest entry"
+    }
+  },
+  "63": {
+    "type": "steps",
+    "steps": [
+      {
+        "label": "Take txs by type",
+        "sub": "sortition → bond → unbond → withdraw → transfer → batch → anchor"
+      },
+      {
+        "label": "Re-check strictly, drop invalid ones"
+      },
+      {
+        "label": "Trim to 999"
+      },
+      {
+        "label": "Subsidy tx first",
+        "hl": true
+      }
+    ],
+    "side": [
+      {
+        "k": "Per block",
+        "label": "≤ 1,000 transactions",
+        "hl": true
+      }
+    ]
+  },
+  "64": {
+    "type": "hash",
+    "fn": "BLAKE2b-256",
+    "fn_k": "combine",
+    "inputs": [
+      {
+        "k": "Merkle tree",
+        "label": "Accounts"
+      },
+      {
+        "k": "Merkle tree",
+        "label": "Validators"
+      }
+    ],
+    "out": {
+      "k": "In every header",
+      "label": "State root",
+      "hl": true
+    },
+    "note": {
+      "k": "Incremental",
+      "v": "After a block, only changed leaves' paths are rehashed"
+    }
+  },
+  "65": {
+    "type": "tree",
+    "leaves": [
+      "#0",
+      "#1",
+      "#2",
+      "#3",
+      "#4",
+      "#5",
+      "#6",
+      "#7"
+    ],
+    "hl": [
+      7
+    ],
+    "root": "Account tree",
+    "inner": "·",
+    "side": [
+      {
+        "k": "Sequential number",
+        "label": "Given at creation",
+        "sub": "genesis entries first"
+      },
+      {
+        "k": "Same number",
+        "label": "= leaf position in the tree",
+        "hl": true
+      }
+    ],
+    "x1": 360
+  },
+  "66": {
+    "type": "stack",
+    "head": "One LevelDB batch per block",
+    "layers": [
+      {
+        "label": "Block bytes"
+      },
+      {
+        "label": "Tx index"
+      },
+      {
+        "label": "Account + validator updates"
+      },
+      {
+        "label": "New public keys"
+      },
+      {
+        "label": "Last-info record",
+        "r": "last certificate"
+      }
+    ],
+    "side": [
+      {
+        "k": "Written atomically",
+        "label": "All or nothing",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "After a crash",
+      "v": "Nothing left out of sync"
+    }
+  },
+  "67": {
+    "type": "fields",
+    "struct": {
+      "name": "Tx index · tx ID →",
+      "lines": [
+        [
+          "height",
+          "which stored block"
+        ],
+        {
+          "key": "offset",
+          "val": "where the tx starts",
+          "hl": true
+        },
+        {
+          "key": "length",
+          "val": "how many bytes",
+          "hl": true
+        }
+      ]
+    },
+    "side": [
+      {
+        "k": "Read a tx",
+        "label": "Fetch block bytes, slice the region",
+        "hl": true,
+        "from": 1
+      },
+      {
+        "k": "Skipped",
+        "label": "Decoding the whole block",
+        "alt": true
+      }
+    ]
+  },
+  "68": {
+    "type": "compare",
+    "left": {
+      "head": "First tx of a signer",
+      "items": [
+        "Public key saved once",
+        "in a separate index"
+      ]
+    },
+    "right": {
+      "head": "Every later tx",
+      "items": [
+        "Public key stripped from the block bytes",
+        "Restored from the index on read"
+      ]
+    },
+    "vs": "→",
+    "note": {
+      "k": "Saved",
+      "v": "Disk space on every repeat sender"
+    }
+  },
+  "69": {
+    "type": "bars",
+    "head": "Blocks kept on disk",
+    "items": [
+      {
+        "label": "Full node",
+        "value": 100,
+        "display": "everything since genesis"
+      },
+      {
+        "label": "Prune default",
+        "value": 30,
+        "display": "30 days · 259,200 blocks",
+        "hl": true
+      },
+      {
+        "label": "Prune minimum",
+        "value": 10,
+        "display": "10 days",
+        "alt": true
+      }
+    ],
+    "note": {
+      "k": "Convert a full node",
+      "v": "pactus-daemon prune"
+    }
+  },
+  "70": {
+    "type": "compare",
+    "left": {
+      "head": "Sync · pull",
+      "items": [
+        "A lagging node asks peers",
+        "Direct streams",
+        "Download sessions"
+      ],
+      "hl": true
+    },
+    "right": {
+      "head": "Gossip · push",
+      "items": [
+        "Only fresh data",
+        "New-block announcements",
+        "Transactions, consensus messages"
+      ]
+    }
+  },
+  "71": {
+    "type": "table",
+    "head": [
+      "Topic",
+      "Mainnet",
+      "Testnet",
+      "Localnet"
+    ],
+    "cols": "1fr 1fr 1.2fr 1.2fr",
+    "rows": [
+      [
+        "block",
+        "pactus",
+        "pactus-testnet",
+        "pactus-localnet"
+      ],
+      [
+        "transaction",
+        "pactus",
+        "pactus-testnet",
+        "pactus-localnet"
+      ],
+      [
+        "consensus",
+        "pactus",
+        "pactus-testnet",
+        "pactus-localnet"
+      ]
+    ],
+    "note": {
+      "k": "Network name in every topic",
+      "v": "Networks never share a gossip channel"
+    }
+  },
+  "72": {
+    "type": "fields",
+    "struct": {
+      "name": "Bundle · CBOR envelope",
+      "lines": [
+        [
+          "flags",
+          "bit flags"
+        ],
+        {
+          "key": "message type",
+          "val": "declares how it travels",
+          "hl": true
+        },
+        [
+          "payload",
+          "the message"
+        ],
+        [
+          "height",
+          "consensus height"
+        ]
+      ]
+    },
+    "side": [
+      {
+        "k": "Gossiped",
+        "label": "On a topic",
+        "from": 1
+      },
+      {
+        "k": "Direct",
+        "label": "Point to point, one peer",
+        "alt": true,
+        "from": 1
+      }
+    ]
+  },
+  "73": {
+    "type": "split",
+    "src": {
+      "k": "Catching up",
+      "label": "Up to 8 sessions",
+      "sub": "never two with the same peer",
+      "hl": true
+    },
+    "to": [
+      {
+        "k": "Peer A",
+        "label": "720 blocks",
+        "sub": "answered 60 blocks per message"
+      },
+      {
+        "k": "Peer B",
+        "label": "720 blocks"
+      },
+      {
+        "k": "Peer C …",
+        "label": "720 blocks"
+      }
+    ]
+  },
+  "74": {
+    "type": "chain",
+    "blocks": [
+      {
+        "k": "HEIGHT h",
+        "label": "Committed",
+        "dim": true
+      },
+      {
+        "k": "HEIGHT h+1",
+        "label": "Block ✓ + cert ✓",
+        "sub": "commit now",
+        "hl": true
+      },
+      {
+        "k": "HEIGHT h+2",
+        "label": "Block ✓ · cert …",
+        "sub": "waits in LRU cache",
+        "alt": true
+      },
+      {
+        "k": "HEIGHT h+3",
+        "label": "Block … · cert ✓",
+        "sub": "waits",
+        "alt": true
+      }
+    ],
+    "note": {
+      "k": "Parallel download",
+      "v": "Strictly ordered commit"
+    }
+  },
+  "75": {
+    "type": "formula",
+    "k": "Download score (integer %)",
+    "expr": "(done + 1) × 100 ÷ (total + 1)",
+    "terms": [
+      {
+        "k": "New peer",
+        "v": "starts at 100"
+      },
+      {
+        "k": "Keeps failing",
+        "v": "sinks toward 0, picked less"
+      },
+      {
+        "k": "Handshake",
+        "v": "required before any request"
+      }
+    ],
+    "foot": "Peers are drawn at random, weighted by this score"
+  },
+  "76": {
+    "type": "split",
+    "src": {
+      "k": "How far behind?",
+      "label": "Lagging node"
+    },
+    "to": [
+      {
+        "k": "> 86,400 blocks ≈ 10 days",
+        "label": "FULL peers only",
+        "sub": "pruned nodes may lack those blocks",
+        "hl": true
+      },
+      {
+        "k": "within the window",
+        "label": "Any handshaken peer",
+        "sub": "pruned or full"
+      }
+    ]
+  },
+  "77": {
+    "type": "steps",
+    "steps": [
+      {
+        "label": "Outbound → Hello"
+      },
+      {
+        "label": "Inbound → HelloAck",
+        "sub": "then sends its own Hello"
+      },
+      {
+        "label": "Outbound → HelloAck"
+      },
+      {
+        "label": "Peer is known",
+        "sub": "only now can it request or serve blocks",
+        "hl": true
+      }
+    ]
+  },
+  "78": {
+    "type": "checklist",
+    "head": "Default NAT setup",
+    "checks": [
+      {
+        "text": "AutoNAT v2",
+        "sub": "detects whether the node is reachable"
+      },
+      {
+        "text": "Relay + auto-relay"
+      },
+      {
+        "text": "Hole punching"
+      },
+      {
+        "text": "UPnP port mapping",
+        "ok": "off",
+        "sub": "exists, opt-in"
+      }
+    ],
+    "note": {
+      "k": "Result",
+      "v": "Reachable even behind a home router"
+    }
+  },
+  "79": {
+    "type": "bars",
+    "head": "Connection limits (defaults)",
+    "items": [
+      {
+        "label": "Inbound max",
+        "value": 64,
+        "display": "64"
+      },
+      {
+        "label": "Outbound dials",
+        "value": 16,
+        "display": "16 = 64 / 4"
+      },
+      {
+        "label": "Redial below",
+        "value": 14,
+        "display": "14 peers",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "Every 60 s",
+      "v": "Too few peers → redial saved + bootstrap peers"
+    }
+  },
+  "80": {
+    "type": "cycle",
+    "nodes": [
+      {
+        "k": "Startup",
+        "label": "Load peers.json",
+        "sub": "+ bootstrap list"
+      },
+      {
+        "k": "Running",
+        "label": "Connect to peers"
+      },
+      {
+        "k": "Clean shutdown",
+        "label": "Save peers.json",
+        "hl": true
+      }
+    ],
+    "rx": 380,
+    "node_w": 280,
+    "center": {
+      "k": "Embedded",
+      "label": "bootstrap.json via go:embed"
+    }
+  },
+  "81": {
+    "type": "split",
+    "src": {
+      "k": "Defined once",
+      "label": ".proto files",
+      "lines": [
+        "→ buf generate"
+      ],
+      "hl": true
+    },
+    "to": [
+      {
+        "label": "gRPC stubs + REST gateway"
+      },
+      {
+        "label": "JSON-RPC bindings"
+      },
+      {
+        "label": "OpenAPI + OpenRPC specs"
+      },
+      {
+        "label": "Docs"
+      }
+    ]
+  },
+  "82": {
+    "type": "table",
+    "head": [
+      "Interface",
+      "Mainnet default"
+    ],
+    "hl_col": 1,
+    "rows": [
+      [
+        "gRPC · 5 services, 54 RPCs",
+        "**on** · 127.0.0.1:50051"
+      ],
+      [
+        "Wallet service",
+        "off (opt-in)"
+      ],
+      [
+        "REST",
+        "off"
+      ],
+      [
+        "JSON-RPC",
+        "off"
+      ],
+      [
+        "ZeroMQ",
+        "off"
+      ]
+    ],
+    "note": {
+      "k": "127.0.0.1 = local machine only",
+      "v": "Testnet defaults differ"
+    }
+  },
+  "83": {
+    "type": "split",
+    "src": {
+      "k": "Node",
+      "label": "gRPC server",
+      "sub": "the node's own API"
+    },
+    "to": [
+      {
+        "k": "Thin layer over gRPC",
+        "label": "JSON-RPC"
+      },
+      {
+        "k": "Gateway",
+        "label": "REST",
+        "sub": "Swagger UI embedded via go:embed",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "For developers",
+      "v": "An interactive API page served by the node itself"
+    }
+  },
+  "84": {
+    "type": "split",
+    "src": {
+      "k": "Off by default",
+      "label": "ZeroMQ publisher",
+      "sub": "pure-Go zmq4, no libzmq · each feed has a 2-byte topic ID"
+    },
+    "to": [
+      {
+        "label": "Block info"
+      },
+      {
+        "label": "Transaction info"
+      },
+      {
+        "label": "Raw block",
+        "sub": "header only",
+        "alt": true
+      },
+      {
+        "label": "Raw transaction"
+      },
+      {
+        "label": "Anchor info"
+      }
+    ]
+  },
+  "85": {
+    "type": "flow",
+    "steps": [
+      {
+        "k": "Source",
+        "label": ".proto services"
+      },
+      {
+        "k": "Regenerate + rebuild",
+        "label": "Generated commands"
+      },
+      {
+        "k": "CLI",
+        "label": "pactus-shell",
+        "sub": "interactive prompt mode",
+        "hl": true
+      }
+    ],
+    "note": {
+      "k": "Same definition as gRPC",
+      "v": "The shell follows the API"
+    }
+  },
+  "86": {
+    "type": "split",
+    "src": {
+      "k": "Wallet",
+      "label": "Provider"
+    },
+    "to": [
+      {
+        "label": "Local node"
+      },
+      {
+        "label": "Remote",
+        "sub": "list of gRPC servers"
+      },
+      {
+        "label": "Offline",
+        "sub": "no network calls at all",
+        "alt": true
+      }
+    ]
+  },
+  "87": {
+    "type": "split",
+    "src": {
+      "k": "Start · prune · import",
+      "label": "Lock .pactus.lock",
+      "sub": "exclusive file lock"
+    },
+    "to": [
+      {
+        "k": "1st instance",
+        "label": "Lock taken, runs",
+        "hl": true
+      },
+      {
+        "k": "2nd instance, same data",
+        "label": "Warning, exits",
+        "alt": true
+      }
+    ]
+  },
+  "88": {
+    "type": "flow",
+    "steps": [
+      {
+        "k": "Stage 1 · golang Alpine",
+        "label": "Build static binaries",
+        "sub": "CGO off · -trimpath · -s -w"
+      },
+      {
+        "k": "Stage 2 · plain alpine",
+        "label": "Copy the 3 binaries",
+        "sub": "daemon · wallet · shell",
+        "hl": true
+      }
+    ]
+  },
+  "89": {
+    "type": "flow",
+    "steps": [
+      {
+        "k": "Test logs",
+        "label": "Its random seed"
+      },
+      {
+        "k": "Rebuild",
+        "label": "NewTestSuiteFromSeed",
+        "hl": true
+      },
+      {
+        "k": "Result",
+        "label": "Same keys, heights, amounts, blocks"
+      }
+    ],
+    "note": {
+      "k": "Integration tests",
+      "v": "4 in-process nodes with fixed keys"
+    }
+  },
+  "90": {
+    "type": "compare",
+    "left": {
+      "head": "Pactus",
+      "big": "=",
+      "items": [
+        "1.18.0-beta equals 1.18.0",
+        "major.minor.patch only"
+      ],
+      "hl": true
+    },
+    "right": {
+      "head": "SemVer",
+      "big": "<",
+      "items": [
+        "Pre-release ranks below the release"
+      ]
+    },
+    "note": {
+      "k": "Version source",
+      "v": "version.json, embedded at build time"
+    }
+  }
+}

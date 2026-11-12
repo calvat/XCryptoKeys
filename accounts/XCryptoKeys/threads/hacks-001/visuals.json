@@ -1,0 +1,1392 @@
+{
+ "1": {
+  "type": "checklist",
+  "head": "What actually gave way",
+  "checks": [
+   {
+    "text": "A forgotten check",
+    "ok": false
+   },
+   {
+    "text": "A reentrant call",
+    "ok": false
+   },
+   {
+    "text": "An unchecked account",
+    "ok": false
+   },
+   {
+    "text": "A stolen or leaked signer key",
+    "ok": false
+   },
+   {
+    "text": "A tampered user interface",
+    "ok": false
+   }
+  ],
+  "side": [
+   {
+    "k": "What held",
+    "label": "The cryptography",
+    "sub": "almost never broken",
+    "hl": true
+   },
+   {
+    "k": "From The DAO, 2016",
+    "label": "to Bybit, 2025",
+    "sub": "Bybit alone: ≈ $1.5B"
+   }
+  ]
+ },
+ "2": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Attacker calls withdraw"
+   },
+   {
+    "label": "DAO sends ETH first",
+    "sub": "external call",
+    "bad": true
+   },
+   {
+    "label": "Attacker's fallback calls withdraw again",
+    "sub": "balance not zeroed yet",
+    "bad": true
+   },
+   {
+    "label": "Balance zeroed, far too late",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "June 17, 2016: ≈ 3.64M ETH",
+   "v": "Update state before sending value"
+  }
+ },
+ "3": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "JUNE 2016",
+    "label": "Drained ETH",
+    "sub": "locked 28 days in a child DAO",
+    "alt": true
+   },
+   {
+    "k": "JULY 20, 2016",
+    "label": "Hard fork",
+    "sub": "funds returned",
+    "hl": true
+   }
+  ],
+  "branch": {
+   "at": 0,
+   "blocks": [
+    {
+     "k": "NO FORK",
+     "label": "Ethereum Classic",
+     "sub": "original chain lives on"
+    }
+   ]
+  },
+  "note": {
+   "k": "The aftermath",
+   "v": "One blockchain became two"
+  }
+ },
+ "4": {
+  "type": "formula",
+  "k": "Value overflow, Aug 2010",
+  "expr": "huge + huge → wraps around 64 bits",
+  "terms": [
+   {
+    "k": "Result",
+    "v": "≈ **184 billion BTC** looked valid"
+   },
+   {
+    "k": "Block",
+    "v": "74638 · CVE-2010-5139"
+   },
+   {
+    "k": "Fix",
+    "v": "within hours; honest chain overtook it"
+   }
+  ]
+ },
+ "5": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "Sep 2011",
+    "label": "Wallet server breached",
+    "bad": true,
+    "at": 0.1
+   },
+   {
+    "t": "2014",
+    "label": "Mt. Gox collapses",
+    "bad": true,
+    "at": 0.9
+   }
+  ],
+  "span": [
+   0.1,
+   0.9,
+   "≈ 647,000 BTC siphoned, laundered via other exchanges"
+  ],
+  "note": {
+   "k": "US DOJ indictment, 2023",
+   "v": "A compromised server can bleed for years"
+  }
+ },
+ "6": {
+  "type": "bars",
+  "head": "Bitfinex 2016 theft (US DOJ)",
+  "items": [
+   {
+    "label": "BTC moved in 2016",
+    "value": 119754,
+    "display": "119,754 BTC",
+    "bad": true
+   },
+   {
+    "label": "Recovered, Feb 2022",
+    "value": 94000,
+    "display": "> 94,000 BTC ≈ $3.6B+",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Public ledger",
+   "v": "Stolen coins stayed traceable for years"
+  }
+ },
+ "7": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Wallet fallback",
+    "label": "delegatecall to library"
+   },
+   {
+    "k": "initWallet()",
+    "label": "No 'already initialized' guard",
+    "bad": true
+   },
+   {
+    "k": "Attacker",
+    "label": "Becomes owner",
+    "sub": "3 wallets, ≈ 153,037 ETH",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "July 19, 2017",
+   "v": "A setup function left callable after setup"
+  }
+ },
+ "8": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "step 1",
+    "label": "init()",
+    "sub": "owner was uninitialized",
+    "at": 0.1
+   },
+   {
+    "t": "step 2",
+    "label": "Becomes owner",
+    "at": 0.5,
+    "alt": true
+   },
+   {
+    "t": "step 3",
+    "label": "kill()",
+    "sub": "library self-destructs",
+    "bad": true,
+    "at": 0.9
+   }
+  ],
+  "note": {
+   "k": "Nov 6, 2017 · 587 wallets",
+   "v": "513,774.16 ETH frozen, still stuck"
+  }
+ },
+ "9": {
+  "type": "split",
+  "reverse": true,
+  "src": {
+   "k": "Shared library",
+   "label": "Self-destructed",
+   "sub": "empty code",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "Wallet proxy 1",
+    "label": "delegatecall → nothing"
+   },
+   {
+    "k": "Wallet proxy 2",
+    "label": "delegatecall → nothing"
+   },
+   {
+    "k": "… 587 wallets",
+    "label": "Funds intact, no logic",
+    "alt": true
+   }
+  ]
+ },
+ "10": {
+  "type": "compare",
+  "left": {
+   "head": "What Coincheck did",
+   "items": [
+    "Nearly all XEM in one hot wallet",
+    "Single-signature key",
+    "Internet-connected"
+   ]
+  },
+  "right": {
+   "head": "Available, unused",
+   "items": [
+    "NEM multisig",
+    "Cold storage"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Jan 26, 2018",
+   "v": "≈ 523M XEM (≈ $530M) behind one online key"
+  }
+ },
+ "11": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Deposit imBTC",
+    "label": "ERC-777 transfer"
+   },
+   {
+    "k": "Sender hook",
+    "label": "Runs attacker code",
+    "sub": "re-enters mid-deposit",
+    "bad": true
+   },
+   {
+    "k": "Lendf.Me",
+    "label": "Credits deposit twice",
+    "sub": "balance updated after transfer",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "April 19, 2020: ≈ $25M",
+   "v": "Reentrancy inside a token's transfer"
+  }
+ },
+ "12": {
+  "type": "compare",
+  "left": {
+   "head": "Balance scaling",
+   "big": "10000",
+   "items": [
+    "Fee changed here"
+   ]
+  },
+  "right": {
+   "head": "k safety check",
+   "big": "1000",
+   "items": [
+    "Constant left as is",
+    "Invariant 100x too loose"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Uranium Finance, April 2021",
+   "v": "≈ $50M: one constant changed, the other forgotten"
+  }
+ },
+ "13": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Crafted message",
+    "label": "Cross-chain"
+   },
+   {
+    "k": "Manager contract",
+    "label": "Calls its own data contract",
+    "bad": true
+   },
+   {
+    "k": "Keeper keys",
+    "label": "Replaced with attacker's",
+    "bad": true
+   },
+   {
+    "k": "Attacker",
+    "label": "Signs withdrawals",
+    "sub": "≈ $611M"
+   }
+  ],
+  "note": {
+   "k": "Aug 10, 2021",
+   "v": "Almost all of it later returned"
+  }
+ },
+ "14": {
+  "type": "hash",
+  "fn": "keccak → 4 bytes",
+  "fn_k": "selector",
+  "inputs": [
+   {
+    "label": "harmless-looking name (attacker's)",
+    "bad": true
+   },
+   {
+    "label": "putCurEpochConPubKeyBytes",
+    "hl": true
+   }
+  ],
+  "out": {
+   "k": "Same selector",
+   "label": "Same 4-byte ID",
+   "sub": "opens the keeper-key reset"
+  },
+  "note": {
+   "k": "Poly Network",
+   "v": "Calls built from user-chosen method names"
+  }
+ },
+ "15": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Compromised Cloudflare API key",
+    "bad": true
+   },
+   {
+    "label": "Script injected into the website"
+   },
+   {
+    "label": "Users sign approve() to attacker",
+    "bad": true
+   },
+   {
+    "label": "transferFrom drains ≈ $120M",
+    "bad": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Smart contracts",
+    "label": "Fine",
+    "hl": true
+   },
+   {
+    "k": "Weak point",
+    "label": "Web front end",
+    "bad": true
+   }
+  ]
+ },
+ "16": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "DEPOSIT",
+    "label": "Token = address 0",
+    "bad": true
+   },
+   {
+    "k": "transferFrom",
+    "label": "No code → 'success'",
+    "sub": "nothing sent",
+    "alt": true
+   },
+   {
+    "k": "BSC",
+    "label": "xETH minted",
+    "sub": "≈ $80M",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Qubit QBridge, Jan 2022",
+   "v": "A deposit that silently did nothing"
+  }
+ },
+ "17": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "verify_signatures",
+    "label": "load_instruction_at",
+    "sub": "deprecated"
+   },
+   {
+    "k": "Fake account",
+    "label": "Not the real Instructions sysvar",
+    "bad": true
+   },
+   {
+    "k": "Signature checks",
+    "label": "Skipped",
+    "bad": true
+   },
+   {
+    "k": "Solana",
+    "label": "120,000 wETH minted",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Wormhole, Feb 2, 2022",
+   "v": "One missing account check"
+  }
+ },
+ "18": {
+  "type": "bars",
+  "head": "Wormhole backing after the exploit",
+  "items": [
+   {
+    "label": "wETH on Solana",
+    "value": 120000,
+    "display": "+120,000 unbacked",
+    "bad": true
+   },
+   {
+    "label": "Jump Crypto deposit",
+    "value": 120000,
+    "display": "120,000 ETH of its own",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Users made whole",
+   "v": "By a private backer, not the protocol"
+  }
+ },
+ "19": {
+  "type": "network",
+  "nodes": 9,
+  "hl": 0,
+  "bad": 5,
+  "r": 20,
+  "degree": 3,
+  "x0": 480,
+  "bad_label": "keys the attacker held (4 Sky Mavis + 1 Axie DAO)",
+  "n_label": "other validators",
+  "side": [
+   {
+    "k": "Threshold",
+    "label": "5 of 9 signatures"
+   },
+   {
+    "k": "Withdrawn",
+    "label": "173,600 ETH + 25.5M USDC",
+    "bad": true
+   },
+   {
+    "k": "The code",
+    "label": "Did exactly what it was told",
+    "hl": true
+   }
+  ]
+ },
+ "20": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "Mar 23, 2022",
+    "label": "Two transactions",
+    "sub": "reserves emptied",
+    "bad": true,
+    "at": 0.1
+   },
+   {
+    "t": "Mar 29, 2022",
+    "label": "Discovered",
+    "alt": true,
+    "at": 0.9
+   }
+  ],
+  "span": [
+   0.1,
+   0.9,
+   "6 days, no alert fired"
+  ],
+  "note": {
+   "k": "Missing monitoring",
+   "v": "A week-long head start for the attacker"
+  }
+ },
+ "21": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "Nov 2021",
+    "label": "Axie DAO allowlists Sky Mavis",
+    "sub": "temporary, for load",
+    "at": 0.08
+   },
+   {
+    "t": "Dec 2021",
+    "label": "Program stops",
+    "sub": "permission not revoked",
+    "bad": true,
+    "at": 0.45
+   },
+   {
+    "t": "Mar 2022",
+    "label": "Used as a backdoor",
+    "sub": "5th signature obtained",
+    "bad": true,
+    "at": 0.92
+   }
+  ],
+  "note": {
+   "k": "Ronin",
+   "v": "A forgotten permission completed the quorum"
+  }
+ },
+ "22": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Spear-phishing",
+    "label": "Sky Mavis employee",
+    "bad": true
+   },
+   {
+    "k": "Access",
+    "label": "IT infrastructure, validator nodes"
+   },
+   {
+    "k": "April 2022",
+    "label": "FBI: Lazarus Group",
+    "sub": "Treasury sanctions the address",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Entry point",
+   "v": "A person, not code"
+  }
+ },
+ "23": {
+  "type": "checklist",
+  "head": "Cashio mint path checked…",
+  "checks": [
+   {
+    "text": "Accounts look right",
+    "ok": true
+   },
+   {
+    "text": "Chain of account links",
+    "ok": true
+   },
+   {
+    "text": "Mint field of the Saber LP account",
+    "ok": false,
+    "sub": "not validated"
+   }
+  ],
+  "side": [
+   {
+    "k": "Mar 23, 2022",
+    "label": "Infinite mint, ≈ $48M–52M",
+    "bad": true
+   },
+   {
+    "k": "Lesson",
+    "label": "Shape is not authenticity",
+    "hl": true
+   }
+  ]
+ },
+ "24": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Flash-borrow > $1B"
+   },
+   {
+    "label": "Deposit → voting power, same tx"
+   },
+   {
+    "label": "Reach 2/3",
+    "hl": true
+   },
+   {
+    "label": "emergencyCommit BIP-18",
+    "sub": "treasury to the attacker",
+    "bad": true
+   },
+   {
+    "label": "Repay the loan"
+   }
+  ],
+  "note": {
+   "k": "Beanstalk, Apr 17, 2022",
+   "v": "≈ $182M with votes borrowed for seconds"
+  }
+ },
+ "25": {
+  "type": "split",
+  "src": {
+   "k": "Attacker's proposals",
+   "label": "Two BIPs",
+   "sub": "no snapshot of past votes"
+  },
+  "to": [
+   {
+    "k": "BIP-18",
+    "label": "Drained the protocol",
+    "sub": "≈ $77M netted, $182M lost",
+    "bad": true
+   },
+   {
+    "k": "BIP-19",
+    "label": "$250k BEAN to Ukraine donations",
+    "alt": true
+   }
+  ]
+ },
+ "26": {
+  "type": "gauge",
+  "big": "≥ 2 keys",
+  "label": "bridge validator keys compromised",
+  "side": [
+   {
+    "k": "Likely",
+    "label": "Developer phished into installing malware"
+   },
+   {
+    "k": "Moved",
+    "label": "14 assets on Ethereum + BNB on BSC",
+    "bad": true
+   },
+   {
+    "k": "Harmony Horizon",
+    "label": "June 23, 2022"
+   }
+  ]
+ },
+ "27": {
+  "type": "fields",
+  "struct": {
+   "name": "Nomad Replica",
+   "lines": [
+    {
+     "key": "confirmAt[0x00]",
+     "val": "trusted (after upgrade)",
+     "bad": true
+    },
+    [
+     "unproven message",
+     "root = 0x00 by default"
+    ],
+    {
+     "key": "process()",
+     "val": "→ valid ✓",
+     "bad": true
+    }
+   ]
+  },
+  "side": [
+   {
+    "k": "Any message",
+    "label": "Passed, even never sent",
+    "bad": true,
+    "from": 2
+   },
+   {
+    "k": "Aug 1, 2022",
+    "label": "≈ $190M lost"
+   }
+  ]
+ },
+ "28": {
+  "type": "network",
+  "nodes": 34,
+  "hl": 6,
+  "bad": 28,
+  "x0": 440,
+  "hl_label": "white hats (≈ $8.2M to return)",
+  "bad_label": "copycat addresses",
+  "side": [
+   {
+    "k": "Copy-paste",
+    "label": "Old attack tx + own address",
+    "bad": true
+   },
+   {
+    "k": "> 300 addresses",
+    "label": "In about an hour"
+   },
+   {
+    "k": "41 of them",
+    "label": "≈ $152M, 80% of the total"
+   }
+  ]
+ },
+ "29": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "Sep 15, 2022",
+    "label": "1inch: Profanity keys crackable",
+    "at": 0.12
+   },
+   {
+    "t": "Sep 20, 2022",
+    "label": "Wintermute admin wallet drained",
+    "sub": "0x0000000… ≈ $160M",
+    "bad": true,
+    "at": 0.88
+   }
+  ],
+  "note": {
+   "k": "Not a contract bug",
+   "v": "Weak key generation"
+  }
+ },
+ "30": {
+  "type": "compare",
+  "left": {
+   "head": "Profanity seed",
+   "big": "2^32",
+   "items": [
+    "≈ 4.3 billion seeds",
+    "No one-way step",
+    "Precompute all, match the pubkey"
+   ]
+  },
+  "right": {
+   "head": "Proper private key",
+   "big": "2^256",
+   "items": [
+    "Too large to guess"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "So",
+   "v": "A vanity public key revealed its private key"
+  }
+ },
+ "31": {
+  "type": "tree",
+  "leaves": [
+   "fake msg",
+   "leaf",
+   "leaf",
+   "leaf"
+  ],
+  "root": "IAVL root (proof accepted)",
+  "inner": "node",
+  "x1": 330,
+  "hl": [
+   0
+  ],
+  "side": [
+   {
+    "k": "Proof check bug",
+    "label": "Fake message accepted",
+    "bad": true
+   },
+   {
+    "k": "Minted",
+    "label": "2M BNB"
+   },
+   {
+    "k": "Chain paused",
+    "label": "Only ≈ $100M+ left",
+    "hl": true
+   }
+  ]
+ },
+ "32": {
+  "type": "split",
+  "src": {
+   "k": "Thin MNGO market",
+   "label": "Price pushed up",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "MNGO-PERP",
+    "label": "Deep unrealized profit"
+   },
+   {
+    "k": "Counted as collateral",
+    "label": "≈ $110M borrowed",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "No code bug",
+   "v": "Collateral value was manufactured"
+  }
+ },
+ "33": {
+  "type": "checklist",
+  "head": "Euler: checkLiquidity() ran on…",
+  "checks": [
+   {
+    "text": "Borrow",
+    "ok": true
+   },
+   {
+    "text": "Withdraw",
+    "ok": true
+   },
+   {
+    "text": "Transfer",
+    "ok": true
+   },
+   {
+    "text": "donateToReserves()",
+    "ok": false,
+    "sub": "skipped"
+   }
+  ],
+  "side": [
+   {
+    "k": "Attacker",
+    "label": "Made own position insolvent, liquidated it at a discount",
+    "bad": true
+   },
+   {
+    "k": "Mar 13, 2023",
+    "label": "≈ $197M"
+   }
+  ]
+ },
+ "34": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "Mar 13, 2023",
+    "label": "Exploit",
+    "bad": true,
+    "at": 0.08
+   },
+   {
+    "t": "Mar–Apr",
+    "label": "On-chain messages",
+    "sub": "funds back in tranches",
+    "at": 0.5
+   },
+   {
+    "t": "early Apr",
+    "label": "Final $31M",
+    "sub": "all recoverable funds back",
+    "hl": true,
+    "at": 0.92
+   }
+  ],
+  "note": {
+   "k": "Then",
+   "v": "Euler opened redemptions for users"
+  }
+ },
+ "35": {
+  "type": "stack",
+  "head": "Where the Curve bug lived",
+  "layers": [
+   {
+    "label": "Pool source code",
+    "r": "@nonreentrant: correct",
+    "hl": true
+   },
+   {
+    "label": "Vyper 0.2.15 · 0.2.16 · 0.3.0",
+    "r": "compiled the lock wrongly",
+    "bad": true
+   },
+   {
+    "label": "Bytecode on-chain",
+    "r": "broken lock"
+   }
+  ],
+  "side": [
+   {
+    "k": "July 30, 2023",
+    "label": "pETH, msETH, alETH, CRV/ETH",
+    "sub": "≈ $60M+",
+    "bad": true
+   }
+  ]
+ },
+ "36": {
+  "type": "timeline",
+  "events": [
+   {
+    "t": "one PR",
+    "label": "Bug enters Vyper",
+    "bad": true,
+    "at": 0.08
+   },
+   {
+    "t": "0.3.1",
+    "label": "Fixed almost incidentally",
+    "sub": "no advisory",
+    "at": 0.45
+   },
+   {
+    "t": "July 2023",
+    "label": "Exploited",
+    "bad": true,
+    "at": 0.92
+   }
+  ],
+  "span": [
+   0.08,
+   0.92,
+   "contracts kept shipping a broken lock"
+  ],
+  "note": {
+   "k": "Audits read source",
+   "v": "Not the bytecode: the toolchain is attack surface"
+  }
+ },
+ "37": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Ex-employee",
+    "label": "Phished",
+    "bad": true
+   },
+   {
+    "k": "npm",
+    "label": "Malicious Connect Kit published"
+   },
+   {
+    "k": "CDN",
+    "label": "Dapps serve a drainer",
+    "sub": "a few hours",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Dec 14, 2023",
+   "v": "≈ $600K stolen via a poisoned library"
+  }
+ },
+ "38": {
+  "type": "checklist",
+  "head": "Orbit Bridge, Dec 31, 2023: cause?",
+  "checks": [
+   {
+    "text": "Smart contract vulnerability",
+    "ok": false,
+    "sub": "ruled out by Orbit"
+   },
+   {
+    "text": "Validator key theft",
+    "ok": false,
+    "sub": "ruled out by Orbit"
+   },
+   {
+    "text": "Root cause published",
+    "ok": false,
+    "sub": "still under investigation"
+   }
+  ],
+  "side": [
+   {
+    "k": "Withdrawn",
+    "label": "≈ $81.5M",
+    "sub": "ETH, WBTC, USDT, USDC, DAI",
+    "bad": true
+   }
+  ]
+ },
+ "39": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Fake LinkedIn recruiter",
+    "sub": "TraderTraitor (DPRK)",
+    "bad": true
+   },
+   {
+    "label": "Coding test = malicious Python script",
+    "sub": "sent to a Ginco employee"
+   },
+   {
+    "label": "Legitimate transaction request hijacked",
+    "bad": true
+   },
+   {
+    "label": "4,502.9 BTC (≈ $308M) gone",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "DMM Bitcoin, May 31, 2024",
+   "v": "A job offer was the way in"
+  }
+ },
+ "40": {
+  "type": "compare",
+  "left": {
+   "head": "Liminal's interface showed",
+   "items": [
+    "A normal transaction"
+   ]
+  },
+  "right": {
+   "head": "Payload actually signed",
+   "items": [
+    "Hands wallet control to the attacker"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "WazirX, July 18, 2024",
+   "v": "> $230M from a 3 + 1 Safe multisig"
+  }
+ },
+ "41": {
+  "type": "split",
+  "src": {
+   "k": "Malware on 3 dev machines",
+   "label": "Two different payloads",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "On screen",
+    "label": "Normal Safe data"
+   },
+   {
+    "k": "To the hardware wallet",
+    "label": "transferOwnership",
+    "bad": true
+   },
+   {
+    "k": "Fake error",
+    "label": "Sign again",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Radiant, 3 of 11",
+   "v": "≈ $50M"
+  }
+ },
+ "42": {
+  "type": "big",
+  "k": "Bybit, Feb 21, 2025",
+  "big": "≈ $1.5B",
+  "label": "401,347 ETH from a Safe multisig cold wallet",
+  "side": [
+   {
+    "k": "Keys",
+    "label": "Never stolen",
+    "hl": true
+   },
+   {
+    "k": "Signatures",
+    "label": "All genuine"
+   },
+   {
+    "k": "What failed",
+    "label": "Signers couldn't see the real payload",
+    "bad": true
+   }
+  ]
+ },
+ "43": {
+  "type": "split",
+  "src": {
+   "k": "app.safe.global",
+   "label": "Malicious JavaScript",
+   "sub": "from a compromised dev machine",
+   "bad": true
+  },
+  "to": [
+   {
+    "k": "Any other user",
+    "label": "Normal behavior"
+   },
+   {
+    "k": "Bybit-linked address",
+    "label": "Tx data swapped at signing",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Targeted",
+   "v": "Interface still showed a routine transfer"
+  }
+ },
+ "44": {
+  "type": "fields",
+  "struct": {
+   "name": "Signed Safe transaction",
+   "lines": [
+    [
+     "to",
+     "attacker contract"
+    ],
+    {
+     "key": "operation",
+     "val": "1 (delegatecall)",
+     "bad": true
+    },
+    [
+     "data",
+     "looks like an ERC-20 transfer"
+    ]
+   ]
+  },
+  "side": [
+   {
+    "k": "Runs in proxy context",
+    "label": "Overwrites storage slot 0",
+    "sub": "the implementation address",
+    "bad": true,
+    "from": 1
+   },
+   {
+    "k": "Then",
+    "label": "Draining is one step away"
+   }
+  ]
+ },
+ "45": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "Feb 21, 2025",
+    "label": "Bybit heist",
+    "bad": true,
+    "at": 0.1
+   },
+   {
+    "t": "Feb 26, 2025",
+    "label": "FBI PSA I-022625-PSA",
+    "sub": "DPRK, TraderTraitor",
+    "hl": true,
+    "at": 0.9
+   }
+  ],
+  "span": [
+   0.1,
+   0.9,
+   "5 days"
+  ],
+  "note": {
+   "k": "FBI asked",
+   "v": "Nodes, exchanges, bridges: block the attacker addresses"
+  }
+ },
+ "46": {
+  "type": "formula",
+  "k": "Cetus overflow check",
+  "expr": "checked_shlw: wrong bound for << 64",
+  "terms": [
+   {
+    "k": "Oversized value",
+    "v": "slipped past the guard"
+   },
+   {
+    "k": "Overflowed bits",
+    "v": "silently **truncated**"
+   },
+   {
+    "k": "Result",
+    "v": "near-zero deposit → huge liquidity, ≈ $223M"
+   }
+  ]
+ },
+ "47": {
+  "type": "segments",
+  "head": "Cetus loot, May 22, 2025",
+  "total": "≈ $223M",
+  "items": [
+   {
+    "label": "bridged to Ethereum",
+    "value": 60,
+    "display": "≈ $60M",
+    "bad": true
+   },
+   {
+    "label": "frozen on Sui",
+    "value": 162,
+    "display": "≈ $162M",
+    "hl": true
+   }
+  ],
+  "cards": [
+   {
+    "k": "Validators",
+    "label": "Ignored the attacker's transactions",
+    "hl": true
+   },
+   {
+    "k": "Debate",
+    "label": "Who can freeze coins on a chain?",
+    "alt": true
+   }
+  ]
+ },
+ "48": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "One step",
+    "label": "Rounds slightly the wrong way",
+    "sub": "a crumb"
+   },
+   {
+    "k": "batchSwap",
+    "label": "Many steps, one tx",
+    "alt": true
+   },
+   {
+    "k": "Accumulated",
+    "label": "Invariant + BPT price distorted",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Balancer V2, Nov 3, 2025",
+   "v": "≈ $128M through rounding"
+  }
+ },
+ "49": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "PUBLIC",
+    "label": "Honest chain"
+   },
+   {
+    "k": "PUBLIC",
+    "label": "Recent blocks",
+    "sub": "replaced",
+    "alt": true
+   }
+  ],
+  "branch": {
+   "at": 0,
+   "blocks": [
+    {
+     "k": "PRIVATE",
+     "label": "Attacker's longer chain",
+     "sub": "one reorg: > 7,000 blocks",
+     "bad": true
+    }
+   ]
+  },
+  "note": {
+   "k": "Ethereum Classic, Aug 2020",
+   "v": "Three 51% attacks in one month"
+  }
+ },
+ "50": {
+  "type": "table",
+  "head": [
+   "Bridge",
+   "Keys taken",
+   "Contract bug?"
+  ],
+  "hl_col": 1,
+  "rows": [
+   [
+    "Ronin",
+    "5 of 9",
+    "✗"
+   ],
+   [
+    "Harmony Horizon",
+    "≥ 2 of 4",
+    "✗"
+   ]
+  ],
+  "note": {
+   "k": "Pattern",
+   "v": "Huge sums, a few keys, one team"
+  }
+ },
+ "51": {
+  "type": "table",
+  "head": [
+   "Victim",
+   "Hardware wallets",
+   "Multisig",
+   "Signers saw the real tx"
+  ],
+  "hl_col": 3,
+  "rows": [
+   [
+    "WazirX",
+    "✓",
+    "✓",
+    "✗"
+   ],
+   [
+    "Radiant",
+    "✓",
+    "✓",
+    "✗"
+   ],
+   [
+    "Bybit",
+    "✓",
+    "✓",
+    "✗"
+   ]
+  ],
+  "note": {
+   "k": "Fix",
+   "v": "Decode and verify the hash on an independent device"
+  }
+ },
+ "52": {
+  "type": "split",
+  "src": {
+   "k": "Dozens of heists",
+   "label": "A few root causes"
+  },
+  "to": [
+   {
+    "k": "Code-level",
+    "label": "Reentrancy, missing checks, bad init"
+   },
+   {
+    "k": "Economic",
+    "label": "Oracles, governance, rounding"
+   },
+   {
+    "k": "Around the code",
+    "label": "Toolchain, stolen keys, tampered UIs",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "The code is rarely broken",
+   "v": "The assumptions are"
+  }
+ }
+}

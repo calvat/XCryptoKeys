@@ -1,33 +1,175 @@
-<!doctype html><html><head><meta charset="utf-8"><!-- auto-card -->
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;800&display=block" rel="stylesheet">
-<style>body{margin:0;background:#040823}.t{font-family:'Exo 2',Inter,sans-serif}.m{font-family:'JetBrains Mono',monospace}</style></head><body>
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Inter,sans-serif">
-<defs>
- <radialGradient id="bg" cx="70%" cy="50%" r="85%"><stop offset="0" stop-color="#10235b"/><stop offset=".55" stop-color="#081039"/><stop offset="1" stop-color="#040823"/></radialGradient>
- <linearGradient id="edgeT" x1="0" x2="1"><stop offset="0" stop-color="#5cfcfa"/><stop offset="1" stop-color="#ad59e9"/></linearGradient>
- <linearGradient id="cubeA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5cfcfa" stop-opacity=".35"/><stop offset="1" stop-color="#2169af" stop-opacity=".15"/></linearGradient>
- <linearGradient id="cubeB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ad59e9" stop-opacity=".35"/><stop offset="1" stop-color="#4a7ce1" stop-opacity=".15"/></linearGradient>
- <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<!doctype html><html><head><meta charset="utf-8"><!-- auto-diagram -->
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;700;800&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=block" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#040823;width:1200px;height:675px;overflow:hidden;font-family:Inter,sans-serif;color:#eaf6ff}
+.page{position:relative;width:1200px;height:675px;overflow:hidden}
+.bgsvg,.ov{position:absolute;left:0;top:0}
+.t{font-family:'Exo 2',Inter,sans-serif}
+.m,.ml,.k,.ck,.cv,.sig,.pre{font-family:'JetBrains Mono',monospace}
+.pre{position:absolute;left:60px;top:50px;color:#5cfcfa;font-size:20px;font-weight:700;letter-spacing:2px;text-shadow:0 0 10px rgba(92,252,250,.7)}
+.ttl{position:absolute;left:60px;top:80px;width:1080px;font-family:'Exo 2',sans-serif;font-weight:800;font-size:44px;line-height:1.1;white-space:nowrap}
+.sig{position:absolute;right:60px;top:624px;color:#488fdb;font-size:15px}
+.area{position:absolute;left:60px;top:165px;width:1080px;height:440px;display:flex}
+.fill{width:100%;height:100%}
+.ax{font-family:'JetBrains Mono',monospace;font-size:15px;fill:#8fa8dd}.ax.v{fill:#ad59e9}
+.cl{font-family:Inter,sans-serif;font-size:18px;font-weight:700}
+.abs{position:relative}
+.row{display:flex;flex-direction:row}
+.col{display:flex;flex-direction:column}
+.grow{flex:1;min-width:0;min-height:0}
+.center{align-items:center}
+.gap-arrow{gap:70px}
+.rowsb{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.card{background:linear-gradient(180deg,rgba(23,38,103,.85),rgba(11,32,83,.7));border:1.5px solid #2169af;border-radius:14px;padding:16px 20px;position:relative}
+.card.hl{border:2.5px solid transparent;background:linear-gradient(#0b2053,#0b2053) padding-box,linear-gradient(90deg,#5cfcfa,#ad59e9) border-box;box-shadow:0 0 22px rgba(92,252,250,.28),0 0 30px rgba(173,89,233,.18)}
+.card.alt{border:1.5px dashed #8565e4}
+.card.bad{border:2px solid #ad59e9;box-shadow:0 0 18px rgba(173,89,233,.35)}
+.card.dim{opacity:.55}
+.k{font-size:14px;letter-spacing:2.5px;text-transform:uppercase;color:#488fdb;margin-bottom:6px}
+.card.hl .k,.k.c{color:#5cfcfa}
+.k.v,.card.alt .k,.card.bad .k{color:#ad59e9}
+.lbl{font-family:'Exo 2',Inter,sans-serif;font-weight:700;font-size:23px;line-height:1.2;color:#eaf6ff}
+.lbl.sm{font-size:21px}
+.card.hl>.lbl{color:#5cfcfa}
+.card.bad>.lbl{color:#c98af5}
+.sub{font-size:16px;line-height:1.35;color:#8fa8dd;margin-top:5px}
+.sub.lg{font-size:20px}
+.ml{font-size:16px;line-height:1.55;color:#d6e8ff}
+.bigv{font-family:'Exo 2',sans-serif;font-weight:800;font-size:44px;line-height:1.05;color:#5cfcfa;text-shadow:0 0 14px rgba(92,252,250,.45)}
+b.c{color:#5cfcfa;font-weight:700}
+.c{color:#5cfcfa}.v{color:#ad59e9}
+.dimtxt{color:#7f9cd6;font-size:15px}
+.note{margin-top:22px;padding:14px 22px}
+.note .nv{font-family:'Exo 2',sans-serif;font-weight:800;font-size:26px;line-height:1.2}
+.side{flex:1;padding:24px 28px}
+.side .bigv{font-size:60px;margin:6px 0 4px}
+.side.alt .bigv{color:#c98af5;text-shadow:0 0 14px rgba(173,89,233,.45)}
+.side ul{margin:10px 0 0;padding:0;list-style:none}
+.side li{font-size:19px;line-height:1.35;margin:9px 0;padding-left:24px;position:relative;color:#dbe8ff}
+.side li:before{content:'';position:absolute;left:0;top:8px;width:10px;height:10px;border-radius:50%}
+li.c:before{background:#5cfcfa;box-shadow:0 0 8px #5cfcfa}
+li.v:before{background:#ad59e9;box-shadow:0 0 8px #ad59e9}
+.vs{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#081039;border:2px solid #4a7ce1;font-family:'JetBrains Mono';font-weight:700;font-size:15px;color:#8fa8dd}
+.fl{min-height:150px;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:20px 22px}
+.fl .lbl{font-size:25px}
+.layer{padding:11px 18px}
+.layer .lbl{font-size:20px}
+.segbar{display:flex;height:96px;border-radius:14px;overflow:hidden;border:1.5px solid #2169af;gap:3px;background:#2169af}
+.seg{display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:15px;color:#eaf6ff;white-space:nowrap;overflow:hidden;padding:0 4px}
+.seg.s0{background:#172667}.seg.s1{background:#1d3a80}.seg.s2{background:#11285f}
+.seg.hl{background:linear-gradient(90deg,rgba(92,252,250,.55),rgba(173,89,233,.55));color:#fff;font-weight:700}
+.seg.alt{background:rgba(173,89,233,.4)}
+.segleg{display:flex;flex-wrap:wrap;gap:12px 34px}
+.legi{display:flex;align-items:center;gap:10px}
+.dot{width:12px;height:12px;border-radius:50%;background:#488fdb;flex:none}
+.dot.c{background:#5cfcfa;box-shadow:0 0 8px #5cfcfa}.dot.v{background:#ad59e9;box-shadow:0 0 8px #ad59e9}
+.tl{position:relative}
+.axis{position:absolute;left:0;right:0;top:50%;height:3px;background:linear-gradient(90deg,#2169af,#5cfcfa,#ad59e9);box-shadow:0 0 10px rgba(92,252,250,.5)}
+.pt{position:absolute;top:50%;width:18px;height:18px;margin:-8px 0 0 -9px;border-radius:50%;background:#081039;border:3px solid #46b6e9}
+.pt.hl{background:#5cfcfa;border-color:#5cfcfa;box-shadow:0 0 14px #5cfcfa}
+.pt.alt{border-color:#ad59e9}
+.ev{position:absolute;display:flex;flex-direction:column;align-items:center;text-align:center}
+.ev.up{bottom:calc(50% + 20px)}.ev.dn{top:calc(50% + 20px);flex-direction:column-reverse}
+.tick{margin:6px 0;color:#46b6e9;font-size:16px}
+.tick.hl{color:#5cfcfa}.tick.alt{color:#ad59e9}
+.evc{padding:12px 14px;width:100%}
+.span{position:absolute;top:calc(50% - 26px);height:52px;border:1.5px dashed #ad59e9;border-radius:10px;display:flex;align-items:flex-start;justify-content:center}
+.span span{font-family:'JetBrains Mono';font-size:13px;color:#ad59e9;margin-top:-20px;background:#081039;padding:0 6px}
+.barrow{display:flex;align-items:center;gap:20px}
+.bl{width:280px;font-size:22px;text-align:right;flex:none}
+.bt{flex:1;display:flex;align-items:center;gap:14px}
+.bar{height:46px;border-radius:8px;background:linear-gradient(90deg,#2169af,#488fdb)}
+.dense .bar{height:32px}.dense .note{margin-top:10px}
+.bar.hl{background:linear-gradient(90deg,#5cfcfa,#ad59e9);box-shadow:0 0 16px rgba(92,252,250,.45)}
+.bar.alt{background:linear-gradient(90deg,#8565e4,#ad59e9)}
+.bv{font-size:21px;color:#d6e8ff;white-space:nowrap}
+.formula{text-align:center;padding:30px 30px}
+.expr{font-family:'Exo 2',sans-serif;font-weight:800;font-size:54px;line-height:1.15}
+.term{padding:16px 20px}
+.sym{font-family:'JetBrains Mono';font-weight:700;font-size:22px;color:#5cfcfa}
+.center{text-align:center}
+.code{padding:20px 24px;align-self:center}
+.cl{display:flex;gap:16px;font-size:17px;line-height:1.5;padding:3px 10px;margin:0 -10px;border-radius:6px}
+.ck{color:#46b6e9;min-width:var(--kw,12ch);flex:none}.cv{color:#d6e8ff}
+.cl.hlln{background:rgba(92,252,250,.12);box-shadow:inset 3px 0 #5cfcfa}.cl.hlln .cv{color:#5cfcfa}
+.cl.altln{background:rgba(173,89,233,.14);box-shadow:inset 3px 0 #ad59e9}.cl.altln .cv{color:#c98af5}
+.ctr{position:absolute;transform:translateY(-50%)}
+.tn{position:absolute;transform:translate(-50%,-50%);padding:7px 12px;font-family:'JetBrains Mono';font-size:15px;white-space:nowrap;text-align:center}
+.tn.root{font-family:'Exo 2';font-weight:800;font-size:20px;color:#5cfcfa;padding:10px 20px}
+.tn.inner{color:#8fa8dd;font-size:14px}
+.gauge{position:relative;width:380px;height:380px;flex:none}
+.gin{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 70px}
+.gbig{white-space:nowrap;font-family:'Exo 2';font-weight:800;font-size:58px;color:#5cfcfa;text-shadow:0 0 14px rgba(92,252,250,.5);line-height:1}
+.chk{display:flex;gap:18px;align-items:flex-start}
+.mk{width:38px;height:38px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:21px}
+.mk.ok{color:#040823;background:#5cfcfa;box-shadow:0 0 12px rgba(92,252,250,.6)}
+.mk.no{color:#fff;background:#ad59e9;box-shadow:0 0 12px rgba(173,89,233,.6)}
+.mk.q{color:#eaf6ff;border:2px solid #488fdb;font-size:16px;font-family:'JetBrains Mono'}
+.fn{width:200px;height:200px;flex:none;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:2.5px solid transparent;background:radial-gradient(#172667,#0b2053) padding-box,linear-gradient(135deg,#5cfcfa,#ad59e9) border-box;box-shadow:0 0 30px rgba(92,252,250,.3);padding:20px}
+.fnl{font-family:'Exo 2';font-weight:800;font-size:24px;color:#eaf6ff;line-height:1.15}
+.inp{padding:12px 18px}.inp .lbl{font-size:19px}
+.blk{padding:0 0 14px;overflow:hidden}
+.blk .bh{background:rgba(33,105,175,.35);padding:7px 16px;font-size:14px;letter-spacing:2px;color:#8fa8dd;margin-bottom:10px;min-height:32px}
+.blk.hl .bh{background:linear-gradient(90deg,rgba(92,252,250,.25),rgba(173,89,233,.25));color:#5cfcfa}
+.blk.alt .bh,.blk.bad .bh{background:rgba(173,89,233,.25);color:#c98af5}
+.blk>.lbl,.blk>.sub,.blk>.ml{padding:0 16px}
+.steps{gap:0}
+.st{display:flex;gap:20px;position:relative;padding-bottom:20px}
+.st:not(:last-child):after{content:'';position:absolute;left:21px;top:46px;bottom:2px;width:2px;background:linear-gradient(#46b6e9,rgba(70,182,233,.2))}
+.num{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-weight:700;font-size:18px;color:#5cfcfa;border:2px solid #2169af;background:#081039}
+.num.hl{background:#5cfcfa;color:#040823;border-color:#5cfcfa;box-shadow:0 0 14px rgba(92,252,250,.6)}
+.num.alt{border-color:#ad59e9;color:#ad59e9}
+.stb{padding-top:7px}
+.tbl{display:grid;padding:6px 0;gap:0}
+.th{font-family:'JetBrains Mono';font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#488fdb;padding:12px 18px;border-bottom:1.5px solid #2169af}
+.td{font-size:18px;padding:11px 18px;border-bottom:1px solid rgba(33,105,175,.35);color:#dbe8ff}
+.td.first{font-family:'Exo 2';font-weight:700;color:#eaf6ff}
+.hlc{background:rgba(92,252,250,.07)}.th.hlc{color:#5cfcfa}
+.ok{color:#5cfcfa;font-weight:800;font-size:22px;text-shadow:0 0 8px rgba(92,252,250,.6)}
+.no{color:#ad59e9;font-weight:800;font-size:22px}
+.huge{white-space:nowrap;font-family:'Exo 2';font-weight:800;font-size:110px;line-height:1;background:linear-gradient(90deg,#5cfcfa,#ad59e9);-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(92,252,250,.35))}
+.pad{padding:0 6px}
+</style></head><body><div class="page">
+<svg class="bgsvg" width="1200" height="675"><defs>
+ <radialGradient id="bg" cx="40%" cy="60%" r="85%"><stop offset="0" stop-color="#10235b"/><stop offset=".55" stop-color="#081039"/><stop offset="1" stop-color="#040823"/></radialGradient>
+ <linearGradient id="edgeD" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#5cfcfa"/><stop offset="1" stop-color="#ad59e9"/></linearGradient>
+ <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
  <filter id="soft" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="60"/></filter>
  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#2169af" stroke-opacity=".12"/></pattern>
- <g id="cube"><path d="M0,30 L52,0 L104,30 L104,92 L52,122 L0,92Z" stroke-width="2"/><path d="M0,30 L52,60 L104,30 M52,60 V122" fill="none" stroke-width="1.5" stroke-opacity=".7"/></g>
-</defs>
-<rect width="1200" height="675" fill="url(#bg)"/><rect width="1200" height="675" fill="url(#grid)"/>
-<circle cx="930" cy="360" r="190" fill="#2169af" opacity=".35" filter="url(#soft)"/>
-<circle cx="1080" cy="160" r="140" fill="#8565e4" opacity=".3" filter="url(#soft)"/>
-<g fill="none" stroke="#46b6e9" stroke-opacity=".35" stroke-width="1.5"><path d="M1200 600H1100L1070 572H960"/><path d="M1200 130H1150L1120 100H1010"/><path d="M700 675V640L730 610H820"/></g>
-<g fill="#5cfcfa" opacity=".6"><circle cx="960" cy="572" r="3"/><circle cx="1010" cy="100" r="3"/><circle cx="820" cy="610" r="3"/></g>
-<g filter="url(#glow)">
- <path d="M790,395 L870,350 M950,305 L1020,265" stroke="#5cfcfa" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
- <use href="#cube" x="700" y="360" fill="url(#cubeA)" stroke="#5cfcfa"/>
- <use href="#cube" x="860" y="270" fill="url(#cubeB)" stroke="#ad59e9"/>
- <use href="#cube" x="1020" y="180" fill="url(#cubeA)" stroke="#46b6e9"/>
-</g>
-<g class="m" font-size="12" fill="#5cfcfa" opacity=".55" text-anchor="middle"><text x="726" y="420">0x09</text><text x="886" y="330">1011</text><text x="1046" y="240">0x3f</text></g>
-<text class="m" x="60" y="92" fill="#5cfcfa" font-size="22" font-weight="700" letter-spacing="2" filter="url(#glow)">CRYPTO #MEV DARK FOREST #9</text>
-<text class="t" x="60" y="215" font-size="50" font-weight="800" fill="#eaf6ff">How a sandwich attack</text>
-<text class="t" x="60" y="275" font-size="50" font-weight="800" fill="#eaf6ff">squeezes a swap</text>
-<text x="60" y="345" font-size="24" fill="#8fa8dd">Buy just before a large swap, let it push</text>
-<text x="60" y="379" font-size="24" fill="#8fa8dd">the price, then sell right after into it.</text>
-<text class="m" x="1140" y="640" fill="#488fdb" font-size="16" text-anchor="end">@xcryptokeys</text>
-</svg></body></html>
+ <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#5cfcfa"/></marker>
+ <marker id="av" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#ad59e9"/></marker>
+</defs><rect width="1200" height="675" fill="url(#bg)"/><rect width="1200" height="675" fill="url(#grid)"/><circle cx="180" cy="300" r="170" fill="#2169af" opacity=".33" filter="url(#soft)"/><circle cx="1000" cy="200" r="160" fill="#8565e4" opacity=".28" filter="url(#soft)"/><g fill="none" stroke="#46b6e9" stroke-opacity=".3" stroke-width="1.5"><path d="M1200 600H1100L1070 572H960"/><path d="M1200 140H1150L1120 110H1010"/><path d="M700 675V650L725 625H840"/></g><g fill="#5cfcfa" opacity=".55"><circle cx="960" cy="572" r="3"/><circle cx="1010" cy="110" r="3"/><circle cx="840" cy="625" r="3"/></g><g font-family="JetBrains Mono,monospace" font-size="13" fill="#46b6e9" opacity=".2"><text x="1140" y="36" text-anchor="end">0b1011 0x1f 0x2a</text><text x="40" y="662">h = H(l ‖ r)</text></g></svg>
+<div class="pre">CRYPTO #MEV DARK FOREST #9</div>
+<div class="ttl" style="font-size:44px">How a sandwich attack squeezes a swap</div>
+<div class="area"><div class="row fill" style="gap:50px;align-items:center"><div style="width:620px;height:440px;flex:none"><svg width="620" height="440" style="overflow:visible"><line x1="56" y1="396" x2="600" y2="396" stroke="#488fdb" stroke-width="2"/><line x1="56" y1="40" x2="56" y2="396" stroke="#488fdb" stroke-width="2"/><text x="600" y="428" text-anchor="end" class="ax">pool reserve of the token bought</text><text x="48" y="24" class="ax">price ↑</text><polyline points="121.3,25.2 122.6,32.7 124.0,40.0 125.4,47.0 126.7,53.7 128.1,60.2 129.4,66.4 130.8,72.4 132.2,78.1 133.5,83.7 134.9,89.1 136.2,94.3 137.6,99.3 139.0,104.2 140.3,108.9 141.7,113.5 143.0,117.9 144.4,122.2 145.8,126.3 147.1,130.3 148.5,134.2 149.8,138.0 151.2,141.7 152.6,145.3 153.9,148.8 155.3,152.2 156.6,155.5 158.0,158.7 159.4,161.8 160.7,164.8 162.1,167.8 163.4,170.7 164.8,173.5 166.2,176.2 167.5,178.9 168.9,181.5 170.2,184.1 171.6,186.6 173.0,189.0 174.3,191.4 175.7,193.7 177.0,196.0 178.4,198.2 179.8,200.4 181.1,202.5 182.5,204.6 183.8,206.6 185.2,208.6 186.6,210.6 187.9,212.5 189.3,214.4 190.6,216.2 192.0,218.0 193.4,219.8 194.7,221.5 196.1,223.2 197.4,224.8 198.8,226.5 200.2,228.1 201.5,229.6 202.9,231.2 204.2,232.7 205.6,234.2 207.0,235.6 208.3,237.1 209.7,238.5 211.0,239.9 212.4,241.2 213.8,242.6 215.1,243.9 216.5,245.2 217.8,246.4 219.2,247.7 220.6,248.9 221.9,250.1 223.3,251.3 224.6,252.5 226.0,253.6 227.4,254.7 228.7,255.8 230.1,256.9 231.4,258.0 232.8,259.1 234.2,260.1 235.5,261.2 236.9,262.2 238.2,263.2 239.6,264.1 241.0,265.1 242.3,266.1 243.7,267.0 245.0,267.9 246.4,268.9 247.8,269.8 249.1,270.6 250.5,271.5 251.8,272.4 253.2,273.2 254.6,274.1 255.9,274.9 257.3,275.7 258.6,276.5 260.0,277.3 261.4,278.1 262.7,278.9 264.1,279.7 265.4,280.4 266.8,281.2 268.2,281.9 269.5,282.6 270.9,283.3 272.2,284.1 273.6,284.8 275.0,285.4 276.3,286.1 277.7,286.8 279.0,287.5 280.4,288.1 281.8,288.8 283.1,289.4 284.5,290.0 285.8,290.7 287.2,291.3 288.6,291.9 289.9,292.5 291.3,293.1 292.6,293.7 294.0,294.3 295.4,294.9 296.7,295.4 298.1,296.0 299.4,296.6 300.8,297.1 302.2,297.7 303.5,298.2 304.9,298.7 306.2,299.3 307.6,299.8 309.0,300.3 310.3,300.8 311.7,301.3 313.0,301.8 314.4,302.3 315.8,302.8 317.1,303.3 318.5,303.8 319.8,304.2 321.2,304.7 322.6,305.2 323.9,305.6 325.3,306.1 326.6,306.6 328.0,307.0 329.4,307.4 330.7,307.9 332.1,308.3 333.4,308.7 334.8,309.2 336.2,309.6 337.5,310.0 338.9,310.4 340.2,310.8 341.6,311.2 343.0,311.6 344.3,312.0 345.7,312.4 347.0,312.8 348.4,313.2 349.8,313.6 351.1,314.0 352.5,314.3 353.8,314.7 355.2,315.1 356.6,315.5 357.9,315.8 359.3,316.2 360.6,316.5 362.0,316.9 363.4,317.2 364.7,317.6 366.1,317.9 367.4,318.3 368.8,318.6 370.2,318.9 371.5,319.3 372.9,319.6 374.2,319.9 375.6,320.3 377.0,320.6 378.3,320.9 379.7,321.2 381.0,321.5 382.4,321.8 383.8,322.1 385.1,322.4 386.5,322.7 387.8,323.0 389.2,323.3 390.6,323.6 391.9,323.9 393.3,324.2 394.6,324.5 396.0,324.8 397.4,325.1 398.7,325.4 400.1,325.6 401.4,325.9 402.8,326.2 404.2,326.5 405.5,326.7 406.9,327.0 408.2,327.3 409.6,327.5 411.0,327.8 412.3,328.1 413.7,328.3 415.0,328.6 416.4,328.8 417.8,329.1 419.1,329.3 420.5,329.6 421.8,329.8 423.2,330.1 424.6,330.3 425.9,330.6 427.3,330.8 428.6,331.0 430.0,331.3 431.4,331.5 432.7,331.7 434.1,332.0 435.4,332.2 436.8,332.4 438.2,332.7 439.5,332.9 440.9,333.1 442.2,333.3 443.6,333.5 445.0,333.8 446.3,334.0 447.7,334.2 449.0,334.4 450.4,334.6 451.8,334.8 453.1,335.0 454.5,335.2 455.8,335.5 457.2,335.7 458.6,335.9 459.9,336.1 461.3,336.3 462.6,336.5 464.0,336.7 465.4,336.9 466.7,337.1 468.1,337.3 469.4,337.4 470.8,337.6 472.2,337.8 473.5,338.0 474.9,338.2 476.2,338.4 477.6,338.6 479.0,338.8 480.3,338.9 481.7,339.1 483.0,339.3 484.4,339.5 485.8,339.7 487.1,339.8 488.5,340.0 489.8,340.2 491.2,340.4 492.6,340.5 493.9,340.7 495.3,340.9 496.6,341.1 498.0,341.2 499.4,341.4 500.7,341.6 502.1,341.7 503.4,341.9 504.8,342.1 506.2,342.2 507.5,342.4 508.9,342.5 510.2,342.7 511.6,342.9 513.0,343.0 514.3,343.2 515.7,343.3 517.0,343.5 518.4,343.6 519.8,343.8 521.1,344.0 522.5,344.1 523.8,344.3 525.2,344.4 526.6,344.6 527.9,344.7 529.3,344.9 530.6,345.0 532.0,345.1 533.4,345.3 534.7,345.4 536.1,345.6 537.4,345.7 538.8,345.9 540.2,346.0 541.5,346.1 542.9,346.3 544.2,346.4 545.6,346.6 547.0,346.7 548.3,346.8 549.7,347.0 551.0,347.1 552.4,347.2 553.8,347.4 555.1,347.5 556.5,347.6 557.8,347.8 559.2,347.9 560.6,348.0 561.9,348.2 563.3,348.3 564.6,348.4 566.0,348.5 567.4,348.7 568.7,348.8 570.1,348.9 571.4,349.0 572.8,349.2 574.2,349.3 575.5,349.4 576.9,349.5 578.2,349.6 579.6,349.8 581.0,349.9 582.3,350.0 583.7,350.1 585.0,350.2 586.4,350.4 587.8,350.5 589.1,350.6 590.5,350.7 591.8,350.8 593.2,350.9 594.6,351.1 595.9,351.2 597.3,351.3 598.6,351.4 600.0,351.5" fill="none" stroke="#5cfcfa" stroke-width="4"  filter="url(#glowL)"/><text x="562.4" y="335.2" class="cl" fill="#5cfcfa">AMM curve</text><circle cx="328.0" cy="307.0" r="8" fill="#eaf6ff" filter="url(#glow)"/><text x="342.0" y="295.0" text-anchor="start" class="cl" fill="#eaf6ff">0 · before</text><circle cx="246.4" cy="268.8" r="8" fill="#ad59e9" filter="url(#glow)"/><text x="260.4" y="256.8" text-anchor="start" class="cl" fill="#ad59e9">1 · bot buys first</text><circle cx="219.2" cy="247.6" r="8" fill="#ad59e9" filter="url(#glow)"/><text x="205.2" y="235.6" text-anchor="end" class="cl" fill="#ad59e9">3 · bot sells back</text><circle cx="164.8" cy="173.5" r="8" fill="#ad59e9" filter="url(#glow)"/><text x="178.8" y="161.5" text-anchor="start" class="cl" fill="#ad59e9">2 · victim buys at a worse price</text></svg></div><div class="col grow" style="gap:18px;justify-content:center"><div class="card bad"  style=""><div class="k">Sandwich</div><div class="lbl">Front-run + victim + back-run</div></div><div class="card"  style=""><div class="k">Risk for the bot</div><div class="lbl">Not atomic (ethereum.org)</div></div></div></div></div>
+<svg class="ov" width="1200" height="675" style="pointer-events:none"><defs><filter id="glowL" filterUnits="userSpaceOnUse" x="0" y="0" width="1200" height="675"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g id="links" fill="none" stroke-width="2.5" filter="url(#glowL)"></g></svg>
+<div class="sig">@xcryptokeys</div>
+</div><script>
+document.fonts.ready.then(()=>{
+ const L = []; const ov = document.getElementById('links'); const P = document.querySelector('.page').getBoundingClientRect();
+ for (const [a,b,kind,dir] of L){
+  const A=document.getElementById(a), B=document.getElementById(b); if(!A||!B) continue;
+  const ra=A.getBoundingClientRect(), rb=B.getBoundingClientRect(); let d;
+  if (dir==='down'){ const x1=ra.left+ra.width/2-P.left, y1=ra.bottom-P.top+4, x2=rb.left-P.left-6, y2=rb.top+rb.height/2-P.top;
+    d=`M${x1},${y1} C${x1},${y2} ${x1},${y2} ${x2},${y2}`; }
+  else if (dir==='loop'){ const x1=ra.left+ra.width/2-P.left, y1=ra.bottom-P.top+4, x2=rb.left+rb.width/2-P.left, y2=rb.bottom-P.top+8;
+    const yy=Math.max(y1,y2)+38; d=`M${x1},${y1} C${x1},${yy} ${x2},${yy} ${x2},${y2}`; }
+  else if (rb.right < ra.left) { const x1=ra.left-P.left-2, y1=ra.top+ra.height/2-P.top, x2=rb.right-P.left+6, y2=rb.top+rb.height/2-P.top, m=(x1+x2)/2;
+    d=`M${x1},${y1} C${m},${y1} ${m},${y2} ${x2},${y2}`; }
+  else { const x1=ra.right-P.left+2, y1=ra.top+ra.height/2-P.top, x2=rb.left-P.left-6, y2=rb.top+rb.height/2-P.top, m=(x1+x2)/2;
+    d=`M${x1},${y1} C${m},${y1} ${m},${y2} ${x2},${y2}`; }
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path'); p.setAttribute('d',d);
+  p.setAttribute('stroke', kind==='alt'?'#ad59e9':'#5cfcfa'); if(kind==='alt') p.setAttribute('stroke-dasharray','7 6');
+  p.setAttribute('marker-end', kind==='alt'?'url(#av)':'url(#a)'); ov.appendChild(p);
+ }
+ // contrôle de débordement, lu par render.js
+ const bad=[]; const ar=document.querySelector('.area').getBoundingClientRect();
+ const ttl=document.querySelector('.ttl'); if (ttl.scrollWidth>ttl.clientWidth+1) bad.push('title too long');
+ document.querySelectorAll('.area *').forEach(e=>{const r=e.getBoundingClientRect(); if(!r.width) return;
+   if(r.right>ar.right+12||r.bottom>ar.bottom+14||r.left<ar.left-12||r.top<ar.top-14) bad.push('outside: '+(e.className||e.tagName)+' '+(e.textContent||'').slice(0,30));
+   if((e.classList.contains('card'))&&(e.scrollHeight>e.clientHeight+2||e.scrollWidth>e.clientWidth+2)) bad.push('card overflow: '+e.textContent.slice(0,30)); });
+ document.body.dataset.overflow = [...new Set(bad)].slice(0,5).join(' | ');
+ document.body.dataset.ready='1';
+});
+</script></body></html>

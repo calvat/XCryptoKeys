@@ -1,0 +1,1536 @@
+{
+ "1": {
+  "type": "compare",
+  "left": {
+   "head": "Public forever",
+   "items": [
+    "Every tx since Jan 3, 2009",
+    "Anyone can download the ledger"
+   ]
+  },
+  "right": {
+   "head": "Hidden… until found",
+   "items": [
+    "Only the address ↔ person link",
+    "Police have traced it for a decade"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Bitcoin is",
+   "v": "Pseudonymous, not anonymous"
+  }
+ },
+ "2": {
+  "type": "network",
+  "nodes": 24,
+  "hl": 1,
+  "bad": 8,
+  "x0": 440,
+  "hl_label": "address linked to a name (KYC, donation page, shop)",
+  "bad_label": "its past payments and counterparties: exposed",
+  "n_label": "rest of the graph",
+  "side": [
+   {
+    "k": "Pseudonym",
+    "label": "Like a pen name"
+   },
+   {
+    "k": "One link",
+    "label": "Exposes the whole history",
+    "hl": true
+   }
+  ],
+  "cluster": true,
+  "degree": 3
+ },
+ "3": {
+  "type": "compare",
+  "left": {
+   "head": "Whitepaper · §10 advice",
+   "items": [
+    "New key pair for every transaction"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Satoshi's own caveat",
+   "items": [
+    "Multi-input txs \"necessarily reveal that their inputs were owned by the same owner\""
+   ]
+  },
+  "note": {
+   "k": "From day one",
+   "v": "The design never claimed full anonymity"
+  }
+ },
+ "4": {
+  "type": "compare",
+  "left": {
+   "head": "Bank model",
+   "items": [
+    "Records limited to the parties",
+    "+ a trusted third party"
+   ]
+  },
+  "right": {
+   "head": "Bitcoin · stock tape",
+   "items": [
+    "Every tx announced publicly",
+    "Shows time and size, not who",
+    "Privacy = anonymous public keys"
+   ],
+   "hl": true
+  }
+ },
+ "5": {
+  "type": "split",
+  "src": {
+   "k": "One transaction",
+   "label": "Spends 3 inputs",
+   "sub": "one wallet signs them all"
+  },
+  "to": [
+   {
+    "label": "Address A"
+   },
+   {
+    "label": "Address B"
+   },
+   {
+    "label": "Address C"
+   }
+  ],
+  "reverse": true,
+  "note": {
+   "k": "Common-input heuristic",
+   "v": "A + B + C = one owner · clusters grow transitively"
+  }
+ },
+ "6": {
+  "type": "split",
+  "src": {
+   "k": "UTXO spent whole",
+   "label": "Payment tx"
+  },
+  "to": [
+   {
+    "k": "round amount",
+    "label": "0.5 BTC → payee"
+   },
+   {
+    "k": "fresh address, same script type",
+    "label": "0.1373 BTC → change",
+    "sub": "still the sender's",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Meiklejohn et al., 2013",
+   "v": "Spot the change, find the sender"
+  }
+ },
+ "7": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Step 1",
+    "label": "344 test transactions",
+    "sub": "with services"
+   },
+   {
+    "k": "Step 2",
+    "label": "Tag their addresses"
+   },
+   {
+    "k": "Step 3",
+    "label": "Cluster with heuristics",
+    "sub": "multi-input + change",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "A Fistful of Bitcoins · IMC 2013",
+   "v": "Tracing firms scale up the same method"
+  }
+ },
+ "8": {
+  "type": "compare",
+  "left": {
+   "head": "One reused address",
+   "items": [
+    "Balance, income, counterparties: one public record",
+    "Anchor to cluster your other coins"
+   ]
+  },
+  "right": {
+   "head": "HD wallet (BIP32)",
+   "items": [
+    "Fresh address per receive"
+   ],
+   "hl": true
+  }
+ },
+ "9": {
+  "type": "steps",
+  "steps": [
+   {
+    "label": "Observer sends dust to used addresses",
+    "alt": true
+   },
+   {
+    "label": "Wallet spends dust with other UTXOs"
+   },
+   {
+    "label": "Common-input heuristic links them",
+    "bad": true,
+    "alt": true
+   }
+  ],
+  "side": [
+   {
+    "k": "Defense",
+    "label": "Coin control: leave dust unspent",
+    "hl": true
+   }
+  ]
+ },
+ "10": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Cluster",
+    "label": "Many addresses"
+   },
+   {
+    "k": "KYC exchange",
+    "label": "Deposit / withdrawal",
+    "sub": "records + subpoenas",
+    "hl": true
+   },
+   {
+    "k": "Result",
+    "label": "A real name",
+    "bad": true
+   }
+  ],
+  "note": {
+   "k": "Weak point",
+   "v": "On- and off-ramps, not the chain"
+  }
+ },
+ "11": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "2016",
+    "label": "Bitfinex theft",
+    "at": 0.12,
+    "alt": true
+   },
+   {
+    "t": "2022",
+    "label": "Arrests",
+    "hl": true,
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "new heuristics, leaks, seized servers"
+  ],
+  "note": {
+   "k": "Public + permanent",
+   "v": "Privacy has to hold forever"
+  }
+ },
+ "12": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "12:01 · WALLET A",
+    "label": "0.4271 BTC out"
+   },
+   {
+    "k": "HOPS / MIXER",
+    "label": "…",
+    "dim": true
+   },
+   {
+    "k": "12:09 · WALLET Z",
+    "label": "0.4271 BTC in",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Amount + timing",
+   "v": "Connect flows when address heuristics fail"
+  }
+ },
+ "13": {
+  "type": "network",
+  "nodes": 30,
+  "hl": 4,
+  "bad": 1,
+  "x0": 440,
+  "hl_label": "spy machines connected to many nodes",
+  "bad_label": "client that broadcast the tx",
+  "hl_links": false,
+  "side": [
+   {
+    "k": "CCS 2014",
+    "label": "Link txs to the sender's IP",
+    "sub": "even behind NAT"
+   },
+   {
+    "k": "Who hears first",
+    "label": "Guesses the source",
+    "hl": true
+   }
+  ]
+ },
+ "14": {
+  "type": "compare",
+  "left": {
+   "head": "BIP37 Bloom filters",
+   "items": [
+    "Client sends a filter",
+    "Leaks many of its addresses (2014)"
+   ]
+  },
+  "right": {
+   "head": "BIP157/158",
+   "items": [
+    "Client downloads filters",
+    "Checks them locally"
+   ],
+   "hl": true
+  },
+  "vs": "→"
+ },
+ "15": {
+  "type": "split",
+  "src": {
+   "k": "Ethereum account model",
+   "label": "0xA11CE…",
+   "sub": "one reused address"
+  },
+  "to": [
+   {
+    "label": "Swaps"
+   },
+   {
+    "label": "NFTs"
+   },
+   {
+    "label": "Salary"
+   },
+   {
+    "label": "Approvals + DeFi positions"
+   }
+  ],
+  "note": {
+   "k": "No fresh address per payment",
+   "v": "One explorer page shows it all"
+  }
+ },
+ "16": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "ENS",
+    "label": "alice.eth"
+   },
+   {
+    "k": "forward + reverse records",
+    "label": "0xA11CE…",
+    "hl": true
+   },
+   {
+    "k": "Linked social profile",
+    "label": "Public identity",
+    "bad": true
+   }
+  ]
+ },
+ "17": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "Nov 28, 2018",
+    "label": "First addresses on an OFAC list",
+    "sub": "SamSam ransomware exchangers",
+    "hl": true,
+    "at": 0.15
+   },
+   {
+    "t": "today",
+    "label": "Routine",
+    "sub": "compliance tools screen transfers",
+    "at": 0.85
+   }
+  ],
+  "note": {
+   "k": "Only possible because",
+   "v": "Blockchains are traceable"
+  }
+ },
+ "18": {
+  "type": "big",
+  "k": "Seized from Ross Ulbricht",
+  "big": "144,000 BTC",
+  "label": "Oct 2013 · then the largest seizure",
+  "side": [
+   {
+    "k": "Silk Road",
+    "label": "Darknet market on Bitcoin"
+   },
+   {
+    "k": "2014–2015",
+    "label": "US Marshals auction the coins"
+   },
+   {
+    "k": "Lesson",
+    "label": "Bitcoin did not hide him",
+    "hl": true
+   }
+  ]
+ },
+ "19": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "2013",
+    "label": "Silk Road shut down",
+    "at": 0.12
+   },
+   {
+    "t": "Nov 2020",
+    "label": "≈ 69,370 BTC forfeited",
+    "sub": "'Individual X' traced (Chainalysis)",
+    "hl": true,
+    "at": 0.88
+   }
+  ],
+  "span": [
+   0.12,
+   0.88,
+   "7 years on a public ledger"
+  ]
+ },
+ "20": {
+  "type": "timeline",
+  "w": 260,
+  "events": [
+   {
+    "t": "Sept 2012",
+    "label": "Withdrawal exploit",
+    "sub": "50,000+ BTC",
+    "bad": true
+   },
+   {
+    "t": "Nov 2021",
+    "label": "Raid",
+    "sub": "floor safe + popcorn tin"
+   },
+   {
+    "t": "2022",
+    "label": "Guilty plea",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "James Zhong",
+   "v": "Nine years was not enough"
+  }
+ },
+ "21": {
+  "type": "bars",
+  "head": "Bitfinex hack",
+  "items": [
+   {
+    "label": "Stolen · 2016",
+    "value": 119754,
+    "display": "119,754 BTC",
+    "alt": true
+   },
+   {
+    "label": "Seized · Feb 2022",
+    "value": 94000,
+    "display": "≈ 94,000 BTC (≈ $3.6B)",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Traced for years",
+   "v": "Thousands of txs, to wallets they controlled"
+  }
+ },
+ "22": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Layering",
+    "label": "Wallets, fake IDs"
+   },
+   {
+    "k": "",
+    "label": "Chain-hopping"
+   },
+   {
+    "k": "",
+    "label": "Darknet market, mixers"
+   },
+   {
+    "k": "Nov 2024",
+    "label": "5 years in prison",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "The trail",
+   "v": "Still sat on public ledgers"
+  }
+ },
+ "23": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "2021",
+    "label": "Colonial pays DarkSide",
+    "sub": "ransom in Bitcoin",
+    "bad": true,
+    "at": 0.1
+   },
+   {
+    "t": "public ledger",
+    "label": "Transfers followed",
+    "at": 0.5
+   },
+   {
+    "t": "June 2021",
+    "label": "63.7 BTC seized",
+    "sub": "≈ $2.3M, FBI held the key",
+    "hl": true,
+    "at": 0.9
+   }
+  ]
+ },
+ "24": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Each user",
+    "label": "Unique BTC address"
+   },
+   {
+    "k": "Payments traced",
+    "label": "Server + admin found",
+    "sub": "South Korea"
+   },
+   {
+    "k": "Oct 2019",
+    "label": "337 users arrested",
+    "sub": "US + 11 countries",
+    "hl": true
+   }
+  ]
+ },
+ "25": {
+  "type": "split",
+  "src": {
+   "k": "April 2022",
+   "label": "Hydra Market",
+   "sub": "largest Russian-language darknet market"
+  },
+  "to": [
+   {
+    "k": "Germany",
+    "label": "Servers shut, ≈ $25M BTC seized",
+    "hl": true
+   },
+   {
+    "k": "US Treasury · Apr 5",
+    "label": "Sanctioned + 100+ addresses listed"
+   }
+  ]
+ },
+ "26": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "Feb 21, 2025",
+    "label": "≈ $1.5B stolen from Bybit",
+    "sub": "mostly ETH",
+    "bad": true,
+    "at": 0.12
+   },
+   {
+    "t": "Feb 26",
+    "label": "FBI: North Korea",
+    "sub": "'TraderTraitor' · addresses published",
+    "hl": true,
+    "at": 0.88
+   }
+  ],
+  "note": {
+   "k": "Ask to exchanges and nodes",
+   "v": "Block transactions with these addresses"
+  }
+ },
+ "27": {
+  "type": "hash",
+  "fn": "CoinJoin",
+  "fn_k": "one combined tx",
+  "inputs": [
+   {
+    "label": "Alice's input"
+   },
+   {
+    "label": "Bob's input"
+   },
+   {
+    "label": "Carol's input"
+   }
+  ],
+  "out": {
+   "k": "Inputs ≠ one owner",
+   "label": "Common-input rule broken",
+   "sub": "each signs only their own input",
+   "hl": true
+  },
+  "note": {
+   "k": "Gregory Maxwell · 2013",
+   "v": "Nobody can steal the others' coins"
+  }
+ },
+ "28": {
+  "type": "split",
+  "src": {
+   "k": "CoinJoin",
+   "label": "N inputs",
+   "sub": "amounts alone: 1-in-N odds per equal output"
+  },
+  "to": [
+   {
+    "label": "0.1 BTC"
+   },
+   {
+    "label": "0.1 BTC"
+   },
+   {
+    "label": "0.1 BTC · … ×N",
+    "hl": true
+   },
+   {
+    "k": "change",
+    "label": "0.0372 BTC",
+    "sub": "not equal: still linkable",
+    "alt": true
+   }
+  ]
+ },
+ "29": {
+  "type": "checklist",
+  "head": "After a CoinJoin",
+  "checks": [
+   {
+    "text": "Spend mixed outputs separately"
+   },
+   {
+    "text": "Merge with change or unmixed coins",
+    "ok": false,
+    "sub": "common-input relinks them"
+   },
+   {
+    "text": "Merge mixed outputs together",
+    "ok": false
+   },
+   {
+    "text": "Send straight to a KYC exchange",
+    "ok": false
+   }
+  ],
+  "note": {
+   "k": "Not a magic eraser",
+   "v": "Privacy depends on the coin's whole history"
+  }
+ },
+ "30": {
+  "type": "compare",
+  "left": {
+   "head": "Makers",
+   "items": [
+    "Offer coins as liquidity",
+    "Earn fees"
+   ]
+  },
+  "right": {
+   "head": "Takers",
+   "items": [
+    "Pay to CoinJoin right away"
+   ]
+  },
+  "vs": "⇄",
+  "note": {
+   "k": "JoinMarket · Jan 9, 2015",
+   "v": "No central coordinator"
+  }
+ },
+ "31": {
+  "type": "timeline",
+  "w": 280,
+  "events": [
+   {
+    "t": "Oct 31, 2018",
+    "label": "Wasabi 1.0",
+    "sub": "CoinJoin for non-experts"
+   },
+   {
+    "t": "June 2022",
+    "label": "2.0 · WabiSabi"
+   },
+   {
+    "t": "June 1, 2024",
+    "label": "zkSNACKs coordinator off",
+    "sub": "regulatory risk",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Still",
+   "v": "Open-source wallet works with other coordinators"
+  }
+ },
+ "32": {
+  "type": "big",
+  "k": "Whirlpool + Ricochet (DOJ)",
+  "big": "80,000+ BTC",
+  "label": "incl. $237M+ of criminal proceeds",
+  "side": [
+   {
+    "k": "Charged 2024",
+    "label": "Samourai Wallet founders"
+   },
+   {
+    "k": "Sentenced Nov 2025",
+    "label": "5 and 4 years",
+    "sub": "unlicensed money transmitting",
+    "hl": true
+   }
+  ]
+ },
+ "33": {
+  "type": "split",
+  "src": {
+   "k": "PayJoin · BIP78",
+   "label": "Payment tx",
+   "lines": [
+    "in: sender's coin",
+    "in: receiver's coin"
+   ],
+   "hl": true
+  },
+  "to": [
+   {
+    "k": "Heuristic fooled",
+    "label": "Sender + receiver 'merged'",
+    "alt": true
+   },
+   {
+    "k": "Amount fooled",
+    "label": "Receiver output ≠ price paid",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Looks like",
+   "v": "An ordinary payment"
+  }
+ },
+ "34": {
+  "type": "compare",
+  "left": {
+   "head": "Taproot key-path spend",
+   "items": [
+    "Multisig or contract",
+    "Looks like one Schnorr key",
+    "Unused branches never shown"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Before",
+   "items": [
+    "Script type gave it away"
+   ]
+  },
+  "note": {
+   "k": "Block 709,632 · Nov 2021",
+   "v": "Fewer clues for trackers"
+  }
+ },
+ "35": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "SENDER",
+    "label": "Payer"
+   },
+   {
+    "k": "HOP 1",
+    "label": "Knows prev + next only",
+    "hl": true
+   },
+   {
+    "k": "HOP 2",
+    "label": "Knows prev + next only",
+    "hl": true
+   },
+   {
+    "k": "RECEIVER",
+    "label": "Payee"
+   }
+  ],
+  "note": {
+   "k": "Onion routing (Sphinx)",
+   "v": "Opens/closes are public · traffic analysis can still link"
+  }
+ },
+ "36": {
+  "type": "hash",
+  "fn": "Mixer",
+  "fn_k": "custodial",
+  "inputs": [
+   {
+    "label": "Deposit A"
+   },
+   {
+    "label": "Deposit B"
+   },
+   {
+    "label": "Deposit C"
+   }
+  ],
+  "out": {
+   "k": "Operator keeps",
+   "label": "The full who→who map",
+   "sub": "trust it not to steal · leak or seizure exposes users",
+   "bad": true
+  }
+ },
+ "37": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 250,
+  "events": [
+   {
+    "t": "2011",
+    "label": "Bitcoin Fog opens",
+    "at": 0.08
+   },
+   {
+    "t": "2021",
+    "label": "Shut down",
+    "alt": true,
+    "at": 0.62
+   },
+   {
+    "t": "Nov 8, 2024",
+    "label": "Operator: 12.5 years",
+    "hl": true,
+    "at": 0.92
+   }
+  ],
+  "span": [
+   0.08,
+   0.62,
+   "2011–2021: 1.2M+ BTC ≈ $400M moved"
+  ],
+  "note": {
+   "k": "US DOJ",
+   "v": "Much of it from darknet markets"
+  }
+ },
+ "38": {
+  "type": "big",
+  "k": "Helix mixer · 2014–2017",
+  "big": "354,000 BTC",
+  "label": "≈ $300M at the time (DOJ)",
+  "side": [
+   {
+    "k": "Tied to",
+    "label": "Grams darknet search engine"
+   },
+   {
+    "k": "Nov 2024",
+    "label": "Larry Harmon: 3 years",
+    "hl": true
+   }
+  ]
+ },
+ "39": {
+  "type": "bars",
+  "head": "ChipMixer · taken down Mar 15, 2023",
+  "items": [
+   {
+    "label": "Allegedly mixed",
+    "value": 152000,
+    "display": "≈ 152,000 BTC"
+   },
+   {
+    "label": "Seized",
+    "value": 1909,
+    "display": "≈ 1,909 BTC · €44M + 4 servers",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Germany + US + Europol",
+   "v": "Including ransomware payments"
+  }
+ },
+ "40": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Ronin bridge hack",
+    "label": "Lazarus Group",
+    "bad": true
+   },
+   {
+    "k": "Laundering",
+    "label": "Blender.io"
+   },
+   {
+    "k": "May 6, 2022",
+    "label": "First OFAC mixer sanction",
+    "hl": true
+   }
+  ]
+ },
+ "41": {
+  "type": "chain",
+  "blocks": [
+   {
+    "k": "MAY 2022",
+    "label": "Blender.io sanctioned",
+    "dim": true
+   },
+   {
+    "k": "SUCCESSOR (ELLIPTIC)",
+    "label": "Sinbad.io",
+    "sub": "used by Lazarus",
+    "alt": true
+   },
+   {
+    "k": "NOV 29, 2023",
+    "label": "Sanctioned + site seized",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Pattern",
+   "v": "When one mixer closes, another appears"
+  }
+ },
+ "42": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Deposit",
+    "label": "Fixed amount + commitment"
+   },
+   {
+    "k": "Pool",
+    "label": "Same-size deposits",
+    "sub": "= anonymity set"
+   },
+   {
+    "k": "Withdraw",
+    "label": "zk-SNARK → fresh address",
+    "sub": "proves 'one of these', not which",
+    "hl": true
+   }
+  ]
+ },
+ "43": {
+  "type": "big",
+  "k": "Laundered since 2019 (Treasury)",
+  "big": "$7B+",
+  "label": "incl. $455M+ stolen by Lazarus",
+  "side": [
+   {
+    "k": "Aug 8, 2022",
+    "label": "OFAC designates Tornado Cash"
+   },
+   {
+    "k": "A first",
+    "label": "Immutable open-source code sanctioned",
+    "hl": true
+   }
+  ]
+ },
+ "44": {
+  "type": "timeline",
+  "w": 300,
+  "events": [
+   {
+    "t": "Aug 8, 2022",
+    "label": "Sanctioned"
+   },
+   {
+    "t": "Nov 26, 2024",
+    "label": "Fifth Circuit",
+    "sub": "immutable contracts aren't 'property'",
+    "hl": true
+   },
+   {
+    "t": "Mar 21, 2025",
+    "label": "Delisted"
+   }
+  ]
+ },
+ "45": {
+  "type": "big",
+  "k": "Alexey Pertsev · May 14, 2024",
+  "big": "64 months",
+  "label": "money laundering · 's-Hertogenbosch, NL",
+  "side": [
+   {
+    "k": "Status",
+    "label": "Appealed"
+   },
+   {
+    "k": "The test",
+    "label": "Can writing privacy code make you liable?",
+    "hl": true
+   }
+  ]
+ },
+ "46": {
+  "type": "checklist",
+  "head": "Roman Storm · SDNY · Aug 2025",
+  "checks": [
+   {
+    "text": "Unlicensed money transmitting conspiracy",
+    "ok": true,
+    "sub": "convicted"
+   },
+   {
+    "text": "Money laundering conspiracy",
+    "ok": "?",
+    "sub": "jury deadlocked"
+   },
+   {
+    "text": "Sanctions conspiracy",
+    "ok": "?",
+    "sub": "jury deadlocked"
+   }
+  ],
+  "side": [
+   {
+    "k": "Verdict",
+    "label": "Split",
+    "sub": "one count convicted, two deadlocked",
+    "hl": true
+   }
+  ]
+ },
+ "47": {
+  "type": "table",
+  "head": [
+   "Hidden",
+   "By",
+   "Monero"
+  ],
+  "hl_col": 2,
+  "rows": [
+   [
+    "Sender",
+    "Ring signatures",
+    "✓"
+   ],
+   [
+    "Receiver",
+    "Stealth addresses",
+    "✓"
+   ],
+   [
+    "Amount",
+    "RingCT",
+    "✓"
+   ]
+  ],
+  "note": {
+   "k": "On by default",
+   "v": "Everyone shares one big anonymity set"
+  }
+ },
+ "48": {
+  "type": "network",
+  "nodes": 16,
+  "hl": 16,
+  "x0": 440,
+  "hl_links": false,
+  "degree": 2,
+  "hl_label": "16 ring members: which one signed?",
+  "side": [
+   {
+    "k": "CLSAG",
+    "label": "1 real + 15 decoys"
+   },
+   {
+    "k": "Since v0.18 · Aug 2022",
+    "label": "Ring size 16"
+   },
+   {
+    "k": "Key images",
+    "label": "Stop double spends",
+    "hl": true
+   }
+  ]
+ },
+ "49": {
+  "type": "split",
+  "src": {
+   "k": "One public address",
+   "label": "View + spend keys"
+  },
+  "to": [
+   {
+    "label": "One-time key #1"
+   },
+   {
+    "label": "One-time key #2"
+   },
+   {
+    "label": "One-time key #3"
+   }
+  ],
+  "note": {
+   "k": "Recipient scans with the private view key",
+   "v": "Outsiders can't tie payments together"
+  }
+ },
+ "50": {
+  "type": "timeline",
+  "w": 300,
+  "events": [
+   {
+    "t": "2017",
+    "label": "RingCT mandatory",
+    "sub": "Pedersen commitments + range proofs"
+   },
+   {
+    "t": "Oct 2018",
+    "label": "Bulletproofs",
+    "sub": "much smaller proofs"
+   },
+   {
+    "t": "Aug 2022",
+    "label": "Bulletproofs+",
+    "sub": "smaller, faster again",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Hidden amounts still add up",
+   "v": "No coins created from nothing"
+  }
+ },
+ "51": {
+  "type": "compare",
+  "left": {
+   "head": "Private view key",
+   "items": [
+    "Read incoming outputs",
+    "For auditor, accountant, tax office"
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Private spend key",
+   "items": [
+    "Spend the funds",
+    "Never shared"
+   ]
+  }
+ },
+ "52": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "Stem",
+    "label": "Random path, one peer at a time"
+   },
+   {
+    "k": "Fluff",
+    "label": "Flood to the network",
+    "hl": true
+   }
+  ],
+  "note": {
+   "k": "Dandelion++ · v0.16 (2020)",
+   "v": "Original broadcaster hard to spot"
+  }
+ },
+ "53": {
+  "type": "bars",
+  "head": "Early Monero (Möser et al., 2018)",
+  "items": [
+   {
+    "label": "Inputs deducible",
+    "value": 62,
+    "display": "≈ 62%",
+    "alt": true
+   },
+   {
+    "label": "Newest ring member = real",
+    "value": 80,
+    "display": "≈ 80% right",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Weak decoys",
+   "v": "Bigger rings and better decoy selection followed"
+  }
+ },
+ "54": {
+  "type": "compare",
+  "left": {
+   "head": "IRS contracts · Sept 2020",
+   "big": "$1.25M",
+   "items": [
+    "Chainalysis + Integra FEC",
+    "Up to $625K each"
+   ]
+  },
+  "right": {
+   "head": "Public result",
+   "big": "none",
+   "items": [
+    "No break of Monero's crypto shown",
+    "No general tracing method"
+   ],
+   "hl": true
+  }
+ },
+ "55": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 280,
+  "events": [
+   {
+    "t": "first",
+    "label": "Monitoring tag",
+    "at": 0.15
+   },
+   {
+    "t": "Feb 20, 2024",
+    "label": "Binance delists XMR",
+    "alt": true,
+    "at": 0.85
+   }
+  ],
+  "note": {
+   "k": "Why",
+   "v": "Default privacy vs AML and Travel Rule duties"
+  }
+ },
+ "56": {
+  "type": "hash",
+  "fn": "zk-SNARK",
+  "fn_k": "Zerocash",
+  "inputs": [
+   {
+    "label": "Sender",
+    "sub": "encrypted"
+   },
+   {
+    "label": "Receiver",
+    "sub": "encrypted"
+   },
+   {
+    "label": "Amount",
+    "sub": "encrypted"
+   }
+  ],
+  "out": {
+   "k": "On-chain",
+   "label": "Proof: valid + balanced",
+   "hl": true
+  },
+  "note": {
+   "k": "Zcash · Oct 28, 2016",
+   "v": "Encryption, not decoys"
+  }
+ },
+ "57": {
+  "type": "compare",
+  "left": {
+   "head": "Statement proven",
+   "items": [
+    "\"I'm over 18\"",
+    "\"I own an unspent note in this set\""
+   ],
+   "hl": true
+  },
+  "right": {
+   "head": "Revealed",
+   "items": [
+    "Nothing else",
+    "No birth date, no note"
+   ]
+  },
+  "vs": "≠",
+  "note": {
+   "k": "zk-SNARKs",
+   "v": "Short, fast to verify: Zcash, Tornado Cash"
+  }
+ },
+ "58": {
+  "type": "compare",
+  "vs": "&",
+  "left": {
+   "head": "Zcash t-addresses",
+   "items": [
+    "Transparent, like Bitcoin UTXOs"
+   ]
+  },
+  "right": {
+   "head": "Zcash shielded pools",
+   "items": [
+    "Private, but optional",
+    "Usage heuristics shrink the anonymity set (Kappos et al., 2018)"
+   ],
+   "hl": true
+  },
+  "note": {
+   "k": "Usage patterns",
+   "v": "Heuristics shrink the shielded crowd to hide in"
+  }
+ },
+ "59": {
+  "type": "big",
+  "big": "≈4.5M ZEC",
+  "label": "Sapling + Orchard, Oct 2025 record",
+  "side": [
+   {
+    "k": "Partly driven by",
+    "label": "Shield-by-default wallets"
+   },
+   {
+    "k": "Bigger pool",
+    "label": "Bigger anonymity set",
+    "hl": true
+   }
+  ],
+  "k": "Shielded supply"
+ },
+ "60": {
+  "type": "compare",
+  "left": {
+   "head": "Original SNARKs",
+   "items": [
+    "Trusted setup ceremony",
+    "'Toxic waste' had to be destroyed"
+   ]
+  },
+  "right": {
+   "head": "Orchard · Halo 2",
+   "items": [
+    "No trusted setup",
+    "NU5 · May 31, 2022"
+   ],
+   "hl": true
+  },
+  "vs": "→"
+ },
+ "61": {
+  "type": "split",
+  "src": {
+   "k": "ZIP 310",
+   "label": "Viewing key"
+  },
+  "to": [
+   {
+    "k": "Auditor / compliance",
+    "label": "Sees the transactions",
+    "hl": true
+   },
+   {
+    "k": "Everyone else",
+    "label": "Still private"
+   },
+   {
+    "k": "Spend authority",
+    "label": "None",
+    "alt": true
+   }
+  ]
+ },
+ "62": {
+  "type": "network",
+  "nodes": 30,
+  "hl": 18,
+  "bad": 4,
+  "x0": 440,
+  "hl_label": "approved association set",
+  "bad_label": "known illicit deposits, excluded",
+  "side": [
+   {
+    "k": "Privacy Pools · 2023",
+    "label": "ZK proof: my deposit is in the approved set"
+   },
+   {
+    "k": "Not revealed",
+    "label": "Which deposit",
+    "hl": true
+   }
+  ]
+ },
+ "63": {
+  "type": "flow",
+  "steps": [
+   {
+    "k": "VASP A",
+    "label": "Originator info"
+   },
+   {
+    "k": "Travels with the transfer",
+    "label": "FATF R.16",
+    "hl": true
+   },
+   {
+    "k": "VASP B",
+    "label": "Beneficiary info"
+   }
+  ],
+  "note": {
+   "k": "EU",
+   "v": "Applies from the first euro"
+  }
+ },
+ "64": {
+  "type": "timeline",
+  "alternate": false,
+  "w": 300,
+  "events": [
+   {
+    "t": "2024",
+    "label": "AMLR 2024/1624",
+    "sub": "Art. 79",
+    "at": 0.15
+   },
+   {
+    "t": "July 10, 2027",
+    "label": "No anonymous crypto accounts",
+    "sub": "incl. 'anonymity-enhancing coins'",
+    "alt": true,
+    "at": 0.85
+   }
+  ],
+  "note": {
+   "k": "No coin named",
+   "v": "XMR and ZEC are common examples"
+  }
+ },
+ "65": {
+  "type": "bars",
+  "head": "Illicit addresses received (Chainalysis, lower bound)",
+  "items": [
+   {
+    "label": "2024 · first reported",
+    "value": 40.9,
+    "display": "$40.9B"
+   },
+   {
+    "label": "2024 · revised",
+    "value": 57.2,
+    "display": "$57.2B"
+   },
+   {
+    "label": "2025",
+    "value": 154,
+    "display": "$154B record",
+    "alt": true
+   }
+  ],
+  "note": {
+   "k": "Still",
+   "v": "Under 1% of on-chain volume"
+  }
+ },
+ "66": {
+  "type": "split",
+  "src": {
+   "k": "Public ledger",
+   "label": "Who can see what"
+  },
+  "to": [
+   {
+    "k": "Competitors",
+    "label": "Salaries, suppliers"
+   },
+   {
+    "k": "Thieves",
+    "label": "Balances"
+   },
+   {
+    "k": "Hostile regimes",
+    "label": "Donations"
+   }
+  ],
+  "note": {
+   "k": "Selective disclosure",
+   "v": "Show what you choose, to whom you choose"
+  }
+ },
+ "67": {
+  "type": "table",
+  "head": [
+   "Tool",
+   "Hides",
+   "Limit"
+  ],
+  "rows": [
+   [
+    "Plain Bitcoin",
+    "nothing",
+    "clustering + KYC"
+   ],
+   [
+    "CoinJoin",
+    "input links",
+    "history, merges"
+   ],
+   [
+    "Monero",
+    "sender, receiver, amount",
+    "exchange access"
+   ],
+   [
+    "Zcash shielded",
+    "all, via zk-SNARKs",
+    "optional use"
+   ]
+  ],
+  "note": {
+   "k": "Traceable by default",
+   "v": "Private with effort · the law keeps moving"
+  }
+ }
+}
