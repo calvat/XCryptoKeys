@@ -25,7 +25,10 @@
       "sub": "Your balance is just the sum of unspent coins your keys can unlock."
     },
     "source": "https://bitcoin.org/bitcoin.pdf",
-    "status": "checked"
+    "status": "posted",
+    "posted_at": "2026-11-13T08:30:01Z",
+    "tweet_id": "2121158628623184319",
+    "url": "https://x.com/xcryptokeys/status/2121158628623184319"
   },
   {
     "index": 3,
