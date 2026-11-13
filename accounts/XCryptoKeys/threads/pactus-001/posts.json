@@ -92,10 +92,7 @@
       "sub": "Seconds a multiple of 10, after the previous block, never far past the next slot."
     },
     "source": "pactus code: state/state.go (validateBlockTime, proposeNextBlockTime)",
-    "status": "posted",
-    "posted_at": "2026-11-12T11:41:27Z",
-    "tweet_id": "2120844417627996224",
-    "url": "https://x.com/xcryptokeys/status/2120844417627996224"
+    "status": "checked"
   },
   {
     "index": 8,
