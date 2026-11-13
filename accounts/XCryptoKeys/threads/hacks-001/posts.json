@@ -25,7 +25,10 @@
       "sub": "A reentrancy bug let a malicious contract call back in again and again."
     },
     "source": "https://cryptobriefing.com/dao-exploit-10th-anniversary-ethereum/",
-    "status": "checked"
+    "status": "posted",
+    "posted_at": "2026-11-13T13:00:02Z",
+    "tweet_id": "2121226579372016013",
+    "url": "https://x.com/xcryptokeys/status/2121226579372016013"
   },
   {
     "index": 3,
