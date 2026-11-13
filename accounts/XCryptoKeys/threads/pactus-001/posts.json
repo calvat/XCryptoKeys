@@ -26,7 +26,10 @@
       "sub": "Block times always land on the same 10-second marks of each minute."
     },
     "source": "pactus code: genesis/genesis_params.go, state/state.go (validateBlockTime)",
-    "status": "checked"
+    "status": "posted",
+    "posted_at": "2026-11-13T07:00:01Z",
+    "tweet_id": "2121135979255758944",
+    "url": "https://x.com/xcryptokeys/status/2121135979255758944"
   },
   {
     "index": 3,
