@@ -26,7 +26,10 @@
       "sub": "secp256k1 is a Koblitz curve from SEC 2, almost never used before Bitcoin."
     },
     "source": "https://en.bitcoin.it/wiki/Secp256k1",
-    "status": "checked"
+    "status": "posted",
+    "posted_at": "2026-11-13T11:30:01Z",
+    "tweet_id": "2121203927551012999",
+    "url": "https://x.com/xcryptokeys/status/2121203927551012999"
   },
   {
     "index": 3,
