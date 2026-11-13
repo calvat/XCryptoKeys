@@ -67,8 +67,13 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
                 continue;
             }
 
-            int next = campaign.LastPostedIndex + 1;
-            if (next > campaign.MaxIndex)
+            // Republication : un post déjà passé (index <= last_posted_index) mis en « republish », par exemple
+            // parce qu'il a été supprimé de X. Il part tout de suite, sans toucher à last_posted_index / last_posted_at :
+            // le calendrier des posts suivants ne bouge pas. Un seul post par campagne et par passage, comme d'habitude.
+            int? lost = campaign.RepublishIndex;
+            bool republish = lost is not null;
+            int next = lost ?? campaign.LastPostedIndex + 1;
+            if (!republish && next > campaign.MaxIndex)
             {
                 if (options.DryRun) log.Info($"{Tag(campaign)} tous les posts sont publiés ; la campagne passerait en inactive.");
                 else log.Action($"{Tag(campaign)} tous les posts sont publiés ; campagne passée en inactive.");
@@ -80,10 +85,10 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
                 continue;
             }
 
-            DateTimeOffset due;
+            DateTimeOffset due = options.Now;
             try
             {
-                due = Schedule.NextDue(campaign.LastPostedAt, campaign.IntervalDays, campaign.PostTime, options.Now);
+                if (!republish) due = Schedule.NextDue(campaign.LastPostedAt, campaign.IntervalDays, campaign.PostTime, options.Now);
             }
             catch (FormatException ex)
             {
@@ -116,7 +121,7 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
                 }
                 continue;
             }
-            if (postStatus != "checked")
+            if (postStatus != "checked" && !republish)
             {
                 log.Error($"{Tag(campaign)} post #{next} en statut « {postStatus} », pas « checked » ; campagne bloquée.");
                 continue;
@@ -136,7 +141,7 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
 
             if (options.DryRun)
             {
-                log.Info($"{Tag(campaign)} DRY-RUN post #{next} ({TweetText.WeightedLength(text)} car.)" +
+                log.Info($"{Tag(campaign)} DRY-RUN {(republish ? "republication du " : "")}post #{next} ({TweetText.WeightedLength(text)} car.)" +
                          (image is null ? " sans image" : $" avec {Path.GetFileName(image)}") + $" :\n{text}" +
                          (alt is null ? "" : $"\n  alt : {alt}"));
                 published++;
@@ -179,11 +184,12 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
             string url = string.IsNullOrWhiteSpace(username)
                 ? $"https://x.com/i/web/status/{tweetId}"
                 : $"https://x.com/{username}/status/{tweetId}";
-            log.PostPublished($"{Tag(campaign)} post #{next}/{campaign.MaxIndex} publié : {url}");
+            log.PostPublished($"{Tag(campaign)} post #{next}/{campaign.MaxIndex} {(republish ? "republié" : "publié")} : {url}");
 
             try
             {
-                campaign.MarkPosted(next, CurrentTime, tweetId, url);
+                if (republish) campaign.MarkRepublished(next, CurrentTime, tweetId, url);
+                else campaign.MarkPosted(next, CurrentTime, tweetId, url);
             }
             catch (Exception ex)
             {
@@ -191,7 +197,7 @@ public sealed class Publisher(Settings settings, Account account, Log log, XClie
                 log.Error($"{Tag(campaign)} POST #{next} PUBLIÉ ({url}) MAIS status.json/posts.json NON MIS À JOUR : {ex.Message}");
                 throw;
             }
-            CommitCampaign(campaign, $"Publication : {account.Name}/{campaign.Name} #{next}\n\n{url}");
+            CommitCampaign(campaign, $"Publication : {account.Name}/{campaign.Name} #{next}{(republish ? " (republication)" : "")}\n\n{url}");
             published++;
         }
 

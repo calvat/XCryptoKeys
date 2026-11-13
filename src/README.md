@@ -15,6 +15,8 @@ Programme C# (.NET 10) qui publie sur X les posts préparés dans `accounts/<Com
 
 Un post est **bloqué** (erreur dans le log, la campagne attend) s'il n'est pas `checked`, si la version demandée n'existe pas, ou s'il dépasse 280 caractères tels que X les compte, hashtag de campagne compris. Les autres campagnes continuent.
 
+**Republier un post déjà passé** (par exemple supprimé de X) : dans `posts.json`, mettre son `status` à `republish` et retirer `posted_at`, `tweet_id` et `url`. Au passage suivant, il part tout de suite, à la place du post normal de la campagne pour ce passage (le post normal suit 15 minutes plus tard s'il est dû). Seul `posts.json` est mis à jour : `last_posted_index`, `last_posted_at` et donc le calendrier des posts suivants ne changent pas. Cela ne vaut que pour un index inférieur ou égal à `last_posted_index`.
+
 Un compte dont les clés X ne sont pas encore renseignées (`account.local.json` absent, vide ou resté à l'exemple) est **en attente** : rien n'est publié pour lui, une ligne d'information dans le log, pas d'erreur. Dès que les 4 clés sont dans le fichier, le passage suivant publie, sans rien réinstaller. Des clés **en partie** renseignées sont une erreur (compte ignoré, erreur dans le log) ; les autres comptes continuent. Les lignes du log sont préfixées par `[Compte/campagne]`.
 
 ## Hashtag de campagne

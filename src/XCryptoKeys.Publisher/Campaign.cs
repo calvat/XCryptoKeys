@@ -6,6 +6,9 @@ namespace XCryptoKeys.Publisher;
 /// <summary>Une campagne : accounts/&lt;compte&gt;/threads/&lt;nom&gt;-&lt;NNN&gt;/ avec posts.json, status.json et les images post_N.png.</summary>
 public sealed class Campaign
 {
+    /// <summary>Statut à mettre à la main sur un post déjà passé pour qu'il soit republié au passage suivant.</summary>
+    public const string RepublishStatus = "republish";
+
     public static readonly string[] ImageExtensions = [".png", ".jpg", ".jpeg", ".webp", ".gif"];
 
     public string Name { get; }
@@ -50,6 +53,17 @@ public sealed class Campaign
 
     public int MaxIndex => Posts.OfType<JsonObject>().Select(p => p["index"]?.GetValue<int>() ?? 0).DefaultIfEmpty(0).Max();
 
+    /// <summary>
+    /// Plus petit index déjà passé (1..last_posted_index) dont le post est en « republish » : un post à republier,
+    /// par exemple parce qu'il a été supprimé de X. Null s'il n'y en a pas.
+    /// </summary>
+    public int? RepublishIndex =>
+        Posts.OfType<JsonObject>()
+            .Select(p => (Index: p["index"]?.GetValue<int>() ?? 0, Status: (string?)p["status"]))
+            .Where(p => p.Index >= 1 && p.Index <= LastPostedIndex && p.Status == RepublishStatus)
+            .Select(p => (int?)p.Index)
+            .Min();
+
     public JsonObject? FindPost(int index) =>
         Posts.OfType<JsonObject>().FirstOrDefault(p => p["index"]?.GetValue<int>() == index);
 
@@ -68,6 +82,18 @@ public sealed class Campaign
         if (index >= MaxIndex) Status["status"] = "inactive";
         JsonFile.Write(StatusPath, Status, StatusFormat);
 
+        var post = FindPost(index)!;
+        post["status"] = "posted";
+        post["posted_at"] = at;
+        post["tweet_id"] = tweetId;
+        post["url"] = url;
+        JsonFile.Write(PostsPath, Posts, PostsFormat);
+    }
+
+    /// <summary>Enregistre un post republié : seul posts.json change, status.json (et donc le calendrier) reste tel quel.</summary>
+    public void MarkRepublished(int index, DateTimeOffset postedAt, string tweetId, string url)
+    {
+        string at = postedAt.UtcDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
         var post = FindPost(index)!;
         post["status"] = "posted";
         post["posted_at"] = at;

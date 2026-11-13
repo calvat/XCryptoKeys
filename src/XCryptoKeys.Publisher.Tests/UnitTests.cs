@@ -227,6 +227,49 @@ public class PublisherTests
     }
 
     [Fact]
+    public async Task Past_post_back_to_checked_is_republished_without_moving_the_schedule()
+    {
+        // #1 supprimé de X et mis en « republish » ; #2 déjà en ligne ; #3 dû seulement demain.
+        string statusJson = """{"status": "active", "last_posted_index": 2, "last_posted_at": "2026-11-13T09:00:01Z", "interval_days": 1, "post_time": "09:00", "hashtag": "#XCKdem1"}""";
+        string repo = MakeRepo(statusJson);
+        string dir = Path.Combine(repo, "accounts", "Demo", "threads", "demo-001");
+        File.WriteAllText(Path.Combine(dir, "posts.json"), """
+            [
+              {"index": 1, "simple": "Demo #1: first", "status": "republish", "card": {"title": "First"}},
+              {"index": 2, "simple": "Demo #2: second", "status": "posted", "posted_at": "2026-11-13T09:00:01Z", "tweet_id": "2", "url": "u2"},
+              {"index": 3, "simple": "Demo #3: third", "status": "checked"}
+            ]
+            """);
+        var settings = MakeSettings(repo);
+        using var log = new Log(null, 0);
+        var fake = new FakeX();
+        using var x = new XClient(settings.XFor("Demo"), log, fake);
+        var now = new DateTimeOffset(2026, 11, 13, 14, 30, 0, TimeSpan.Zero);
+
+        // Dry-run : annonce la republication, n'envoie rien.
+        Assert.Equal(1, await new Publisher(settings, DemoAccount(repo), log, null, null, new RunOptions(true, now, null)).RunAsync(default));
+        Assert.Empty(fake.Requests);
+
+        int n = await new Publisher(settings, DemoAccount(repo), log, x, null, new RunOptions(false, now, null)).RunAsync(default);
+
+        Assert.Equal(1, n);
+        Assert.Equal(["/2/media/upload", "/2/media/metadata", "/2/tweets"], fake.Requests.Select(r => r.Path));
+        Assert.Equal("Demo #1: first #XCKdem1", (string?)JsonNode.Parse(fake.Requests[2].Body)!["text"]);
+        var posts = JsonNode.Parse(File.ReadAllText(Path.Combine(dir, "posts.json")))!;
+        Assert.Equal("posted", (string?)posts[0]!["status"]);
+        Assert.Equal("123456", (string?)posts[0]!["tweet_id"]);
+        Assert.Equal("2", (string?)posts[1]!["tweet_id"]);
+        Assert.Equal("checked", (string?)posts[2]!["status"]);
+        // status.json intact : #3 reste prévu demain à 09:00.
+        Assert.Equal(JsonNode.Parse(statusJson)!.ToJsonString(), JsonNode.Parse(File.ReadAllText(Path.Combine(dir, "status.json")))!.ToJsonString());
+
+        // Passage suivant : rien à republier, #3 pas encore dû.
+        Assert.Equal(0, await new Publisher(settings, DemoAccount(repo), log, x, null, new RunOptions(false, now.AddMinutes(15), null)).RunAsync(default));
+        Assert.Equal(3, fake.Requests.Count);
+        Directory.Delete(repo, true);
+    }
+
+    [Fact]
     public async Task Dry_run_and_inactive_campaigns_send_nothing()
     {
         string repo = MakeRepo("""{"status": "inactive", "last_posted_index": 0, "last_posted_at": null, "interval_days": 1, "post_time": "09:00"}""");
